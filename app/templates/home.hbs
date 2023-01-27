@@ -1,0 +1,60 @@
+<Hero />
+
+<div class="au-u-flex">
+
+  <SearchSidebar />
+
+  <section
+    class="au-u-flex au-u-flex--column"
+    style="width: 100%; height: 100%;"
+  >
+    <AuFormRow
+      @alignment="inline"
+      class="au-u-margin-bottom au-u-margin-top au-u-padding-right-large"
+      style="margin-left: auto;"
+    >
+      <AuLabel for="sort-on" style="width: 80px; white-space: nowrap;">
+        Sorteer op
+      </AuLabel>
+      <select type="select" class="au-c-input" style="width: 200px;">
+        <option>Datum</option>
+        <option>Relevantie</option>
+      </select>
+    </AuFormRow>
+    <div class="au-u-padding-left-large au-u-padding-right-large">
+
+      <section class="au-o-flow au-u-flex au-u-flex--column">
+        <DecisionCard />
+        <DecisionCard />
+        <DecisionCard />
+      </section>
+      <AuToolbar @border="top" @size="large" @nowrap={{true}}>
+        <div class="au-c-pagination">
+
+          <div class="au-c-pagination__list-item">
+            <AuButton @skin="link" @icon="nav-left" @iconAlignment="left">Vorige
+              pagina</AuButton>
+          </div>
+          <p>
+
+            <span class="au-u-hidden-visually">Resultaten</span>
+
+            <strong>
+              1 - 9
+            </strong>
+            van 18
+          </p>
+
+          <div class="au-c-pagination__list-item">
+            <AuButton
+              @skin="link"
+              @icon="nav-right"
+              @iconAlignment="right"
+            >Volgende pagina</AuButton>
+
+          </div>
+        </div>
+      </AuToolbar>
+    </div>
+  </section>
+</div>

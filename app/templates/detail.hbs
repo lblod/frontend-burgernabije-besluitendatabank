@@ -1,0 +1,141 @@
+{{page-title "Detail"}}
+
+<div class="au-u-flex" style="height: 100%;">
+  <section id="detail-left-section" class="au-u-flex au-u-flex--column">
+
+    <AuToolbar @size="medium" class="au-u-margin-small" as |Group|>
+
+      <Group>
+        <ul class="au-c-list-horizontal au-c-list-horizontal--small">
+          <li class="au-c-list-horizontal__item">
+            <AuLink @route="home" @icon="arrow-left">
+              Agendapunten
+            </AuLink>
+          </li>
+          <li class="au-c-list-horizontal__item">
+            NAAM
+          </li>
+        </ul>
+      </Group>
+    </AuToolbar>
+
+    <AuCard
+      @shadow={{true}}
+      @size="small"
+      style="border-top:solid 5px #FFE615;"
+      class="au-o-region-small au-u-margin-large au-u-margin-top-small au-u-padding"
+      as |c|
+    >
+      <c.header>
+
+        <AuLink
+          @route="detail"
+          class="au-u-h3 au-u-medium"
+          style=" text-decoration: none; "
+        >
+          Politieverordening - Regeling van het verkeer in de Nieuwstraat
+
+        </AuLink>
+
+      </c.header>
+      <c.content>
+        <section
+          class="au-u-flex au-u-muted au-u-margin-top-tiny"
+          style=" align-items: center;"
+        >
+          <AuIcon class="au-u-margin-right-small" @size="large" @icon="check" />
+          <p>Tijdelijke verordening wegverkeer - 19 november 2021 - Lange kant</p>
+        </section>
+        <section
+          class="au-u-flex au-u-muted au-u-margin-top-tiny"
+          style=" align-items: center;"
+        >
+          <AuIcon
+            class="au-u-margin-right-small"
+            @size="large"
+            @icon="message"
+          />
+          <p>Gemeente Haagt</p>
+        </section>
+        <section
+          class="au-u-flex au-u-muted au-u-margin-top-tiny"
+          style=" align-items: center;"
+        >
+          <AuIcon
+            class="au-u-margin-right-small"
+            @size="large"
+            @icon="calendar"
+          />
+          <p>Goedgekeurd op 09/06/2021</p>
+        </section>
+
+        <section>
+          <p>Op vrijdag 19 november 2021 worden er werken uitgevoerd in de Lange
+            Kant ter hoogte van nr 3. Hiervoor is het afsluiten van de straat
+            aangevraagd van 7u30 tot 12u.</p>
+        </section>
+      </c.content>
+    </AuCard>
+  </section>
+  <section
+    id="detail-right-section"
+    class="au-u-background-gray-100 au-u-1-2"
+    style="height: 100%;"
+  >
+    <AuCard
+      @flex={{true}}
+      @shadow={{true}}
+      @size="small"
+      style="border-left:solid 5px #FFE615; height: 35rem;"
+      class="au-o-region-small au-u-margin-large au-u-margin-top-huge au-u-padding"
+      as |c|
+    >
+      <c.header @badgeIcon={{"user-check"}} @badgeSkin="none">
+
+        <h1 class="au-u-h4 au-u-medium">
+          Contacteer de gemeente
+        </h1>
+
+      </c.header>
+      <c.content>
+        <AuContent>
+          <div
+            class="au-u-flex au-u-flex--column au-o-flow--small au-u-margin-left-large au-u-margin-top-small"
+          >
+
+            <section class="au-u-flex au-u-flex--column au-u-muted">
+              <h5>Email</h5>
+              <AuLinkExternal
+                href={{"lol"}}
+                @icon="mail"
+                @iconAlignment="right"
+              >
+                info@gemeente.be
+              </AuLinkExternal>
+            </section>
+            <section class="au-u-flex au-u-flex--column au-u-muted">
+              <h5>Telefoon</h5>
+              <AuLinkExternal
+                href={{"lol"}}
+                @icon="website"
+                @iconAlignment="right"
+              >
+                02 553 35 09
+              </AuLinkExternal>
+            </section>
+            <section class="au-u-flex au-u-flex--column au-u-muted">
+              <h5>Website</h5>
+              <AuLinkExternal
+                href={{"lol"}}
+                @icon="external-link"
+                @iconAlignment="right"
+              >
+                http://www.zorg-en-gezondheid.be
+              </AuLinkExternal>
+            </section>
+          </div>
+        </AuContent>
+      </c.content>
+    </AuCard>
+  </section>
+</div>

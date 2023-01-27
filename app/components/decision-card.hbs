@@ -1,1 +1,19 @@
-{{yield}}
+<AuCard @size="small" class="au-o-region-small" as |c|>
+  <c.header>
+    <AuHeading @level="1" @skin="3">
+      <AuLink @route="detail">
+        Politieverordening - Regeling van het verkeer in de Nieuwstraat
+
+      </AuLink>
+    </AuHeading>
+  </c.header>
+  <c.content>
+    <p>De buurtbewoners van de Nieuwstraat organiseren van 25 tot 29 juli en van
+      8 tot 12 augustus 2022, elke dag van 10 tot 18 uur, een speelstraat in hun
+      straat. Hiervoor wordt de straat, gedeelte van huisnummer 1 tot nr. 21,
+      afgesloten.</p>
+  </c.content>
+  <c.footer>
+    datum - gemeente - iets?
+  </c.footer>
+</AuCard>
