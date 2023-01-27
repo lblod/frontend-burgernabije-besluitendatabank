@@ -1,7 +1,17 @@
-{{page-title "FrontendBurgernabijeBesluitendatabank"}}
+{{page-title "BurgerBesluitenDB"}}
 
-{{!-- The following component displays Ember's default welcome message. --}}
-<WelcomePage />
-{{!-- Feel free to remove this! --}}
+<AuApp>
+  <Navbar />
+  <Hero />
+  <AuMainContainer tyle="height: 100%;" as |m|>
 
-{{outlet}}
+    <m.content>
+
+      <div class="au-u-flex" style="height: 100%;">
+        {{outlet}}
+      </div>
+
+    </m.content>
+  </AuMainContainer>
+  <Footer />
+</AuApp>

@@ -1,0 +1,52 @@
+<div class="au-c-sidebar au-o-layout--large" style="width: 30%;">
+  <div class="au-c-sidebar__content au-u-padding-large">
+    <AuContent>
+      <h1>Ik zoek...</h1>
+      <section>
+        <AuFormRow
+          @alignment="inline"
+          class="au-u-padding-top-small au-u-padding-bottom-small"
+        >
+
+          <AuLabel for={{"municipality"}}>
+            Gemeente
+          </AuLabel>
+          <AuInput
+            id={{"municipality"}}
+            placeholder={{"Selecteer een optie"}}
+            @handleChange={{this.handleChange}}
+            @type={{"text"}}
+          />
+        </AuFormRow>
+        <AuFormRow
+          class="au-u-padding-top-small au-u-padding-bottom-small"
+          @alignment="inline"
+        >
+          <AuLabel for={{"keyword"}}>
+            Trefwoord
+          </AuLabel>
+          <AuInput
+            placeholder="Terrasvergunning"
+            id={{"keyword"}}
+            @handleChange={{this.handleChange}}
+            @type={{"text"}}
+          />
+        </AuFormRow>
+        <AuFormRow
+          class="au-u-padding-top-small au-u-padding-bottom-small"
+          @alignment="inline"
+        >
+
+          <AuLabel for={{"date"}}>
+            Datum
+          </AuLabel>
+          <AuInput
+            id={{"date"}}
+            @handleChange={{this.handleChange}}
+            @type={{"date"}}
+          />
+        </AuFormRow>
+      </section>
+    </AuContent>
+  </div>
+</div>
