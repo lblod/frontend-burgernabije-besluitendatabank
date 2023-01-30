@@ -24,9 +24,18 @@
     <div class="au-u-padding-left-large au-u-padding-right-large">
 
       <section class="au-o-flow au-u-flex au-u-flex--column">
-        <DecisionCard />
-        <DecisionCard />
-        <DecisionCard />
+        {{#each this.model as |item|}}
+          <DecisionCard
+            @id={{item.id}}
+            @title={{item.title}}
+            @body={{item.body}}
+            @startDate={{item.startDate}}
+            @endDate={{item.endDate}}
+            @approvedDate={{item.approvedDate}}
+            @municipality={{item.municipality}}
+          />
+        {{/each}}
+
       </section>
       <AuToolbar @border="top" @size="large" @nowrap={{true}}>
         <div class="au-c-pagination">

@@ -13,3 +13,10 @@ html {
 // body {
 //   font-size: 1.6rem;
 // }
+
+.card-hover:hover {
+  // border-top: solid 5px #ffe615;
+  box-shadow: 0 -5px 0 #ffe615;
+  transition: all 10ms;
+  cursor: pointer;
+}
