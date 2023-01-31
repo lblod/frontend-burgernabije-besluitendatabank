@@ -6,8 +6,11 @@ export default Factory.extend({
     return faker.datatype.uuid();
   },
   title() {
-    //  Politieverordening - Regeling van het verkeer in de Nieuwstraat
-    return faker.lorem.sentence();
+    return faker.helpers.randomize([
+      "Politieverordening - Regeling van het verkeer in de Nieuwstraat",
+      "Mobiliteit - Tijdelijke verordening op het wegverkeer - Afsluiten Lange Kant op 19-11-21",
+      "Mobiliteit - Tijdelijke verordening op het wegverkeer - Dakvernieuwingswerken in opdracht van Volkswoningbouw Herent",
+    ]);
   },
 
   body() {
@@ -18,25 +21,30 @@ export default Factory.extend({
     return faker.lorem.paragraph();
   },
 
-  approvedDate() {
+  approveddate() {
     return faker.date.past();
   },
 
-  startData() {
-    return faker.date.past();
+  startdate() {
+    return faker.date.past(1);
   },
 
-  endDate() {
-    return faker.date.future();
+  enddate() {
+    return faker.date.future(1);
   },
 
   municipality() {
     return faker.helpers.randomize([
       "Antwerpen",
+      "Antwerpen OCMW",
       "Aalst",
+      "Aalst OCMW",
       "Gent",
+      "Gent OCMW",
       "Brugge",
+      "Brugge OCMW",
       "Hasselt",
+      "Hasselt OCMW",
     ]);
   },
 });

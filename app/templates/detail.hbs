@@ -13,7 +13,7 @@
             </AuLink>
           </li>
           <li class="au-c-list-horizontal__item">
-            {{this.model}}
+            {{this.model.id}}
           </li>
         </ul>
       </Group>
@@ -33,7 +33,7 @@
           class="au-u-h3 au-u-medium"
           style=" text-decoration: none; "
         >
-          Politieverordening - Regeling van het verkeer in de Nieuwstraat
+          {{this.model.title}}
 
         </AuLink>
 
@@ -44,7 +44,9 @@
           style=" align-items: center;"
         >
           <AuIcon class="au-u-margin-right-small" @size="large" @icon="check" />
-          <p>Tijdelijke verordening wegverkeer - 19 november 2021 - Lange kant</p>
+          <p>Tijdelijke verordening wegverkeer -
+            {{iso-formatter this.model.startdate}}
+            - Lange kant</p>
         </section>
         <section
           class="au-u-flex au-u-muted au-u-margin-top-tiny"
@@ -55,7 +57,7 @@
             @size="large"
             @icon="message"
           />
-          <p>Gemeente Haagt</p>
+          <p>Gemeente {{this.model.municipality}}</p>
         </section>
         <section
           class="au-u-flex au-u-muted au-u-margin-top-tiny"
@@ -66,13 +68,11 @@
             @size="large"
             @icon="calendar"
           />
-          <p>Goedgekeurd op 09/06/2021</p>
+          <p>Goedgekeurd op {{iso-formatter this.model.approveddate}}</p>
         </section>
 
         <section>
-          <p>Op vrijdag 19 november 2021 worden er werken uitgevoerd in de Lange
-            Kant ter hoogte van nr 3. Hiervoor is het afsluiten van de straat
-            aangevraagd van 7u30 tot 12u.</p>
+          <p>{{this.model.body}}</p>
         </section>
       </c.content>
     </AuCard>

@@ -11,12 +11,20 @@
           <AuLabel for={{"municipality"}}>
             Gemeente
           </AuLabel>
-          <AuInput
-            id={{"municipality"}}
-            placeholder={{"Selecteer een optie"}}
-            @handleChange={{this.handleChange}}
-            @type={{"text"}}
-          />
+          <PowerSelect
+            style="width: 100%;"
+            id="municipality"
+            placeholder={{this.municipalityPlaceholder}}
+            @selected={{this.municipalitySelected}}
+            @onChange={{this.municipalityOnChange}}
+            @options={{this.municipalityOptions}}
+            @allowClear={{this.municipalityAllowClear}}
+            @noMatchesMessage={{"Geen gemeente gevonden"}}
+            @searchMessage="Aan het zoeken..."
+            as |singleSelect|
+          >
+            {{singleSelect}}
+          </PowerSelect>
         </AuFormRow>
         <AuFormRow
           class="au-u-padding-top-small au-u-padding-bottom-small"
@@ -26,9 +34,9 @@
             Trefwoord
           </AuLabel>
           <AuInput
-            placeholder="Terrasvergunning"
+            placeholder={{this.keywordPlaceholder}}
             id={{"keyword"}}
-            @handleChange={{this.handleChange}}
+            @handleChange={{this.handleKeywordChange}}
             @type={{"text"}}
           />
         </AuFormRow>
@@ -42,7 +50,7 @@
           </AuLabel>
           <AuInput
             id={{"date"}}
-            @handleChange={{this.handleChange}}
+            @handleChange={{this.handleDateChange}}
             @type={{"date"}}
           />
         </AuFormRow>

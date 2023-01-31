@@ -1,9 +1,11 @@
-<AuLink @route="detail" @model={{this.id}}>
+<LinkTo @route="detail" @model={{this.id}}>
   <AuCard
     @size="small"
-    class="au-o-region-small card-hover au-o-layout--large"
+    class="au-o-region-large card-hover au-u-padding-bottom au-u-padding"
+    style="height: 20rem;"
     as |c|
   >
+
     <c.header>
       <AuHeading @level="1" @skin="3">
         <AuLink>
@@ -22,4 +24,4 @@
       {{this.municipality}}
     </c.footer>
   </AuCard>
-</AuLink>
+</LinkTo>
