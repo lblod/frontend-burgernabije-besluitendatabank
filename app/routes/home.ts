@@ -18,7 +18,7 @@ export default class HomeRoute extends Route {
     console.log(params);
 
     const data = await (await fetch("https://api.basisregisters.vlaanderen.be/v2/gemeenten/")).json()
-    const gemeenten = data.gemeenten.map((municipality: {
+    const municipalities = data.gemeenten.map((municipality: {
       gemeentenaam: {geografischeNaam: {spelling: string}}
     }) => municipality.gemeentenaam.geografischeNaam.spelling);
 
@@ -34,7 +34,7 @@ export default class HomeRoute extends Route {
         page: page,
         limit: 3,
       }),
-      municipalities: gemeenten,
+      municipalities: municipalities,
     });
   }
 }
