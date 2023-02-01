@@ -3,7 +3,7 @@ import Route from "@ember/routing/route";
 import { service } from "@ember/service";
 import Store from "@ember-data/store";
 import Ember from "ember";
-import getMunicipalitiesFromVlaanderen from "frontend-burgernabije-besluitendatabank/utils/apivlaanderen";
+import { getMunicipalitiesFromVlaanderen, ApiVlaanderenMunicipality } from "frontend-burgernabije-besluitendatabank/utils/apivlaanderen";
 
 export default class HomeRoute extends Route {
   @service declare store: Store;
@@ -18,7 +18,7 @@ export default class HomeRoute extends Route {
     const municipality = params.municipality ? params.municipality : null;
     console.log(params);
 
-    const municipalities = await getMunicipalitiesFromVlaanderen();
+    const municipalities = await getMunicipalitiesFromVlaanderen(true);
 
 
     /*
