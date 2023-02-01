@@ -3,6 +3,7 @@ import Route from "@ember/routing/route";
 import { service } from "@ember/service";
 import Store from "@ember-data/store";
 import Ember from "ember";
+import getMunicipalitiesFromVlaanderen from "frontend-burgernabije-besluitendatabank/utils/apivlaanderen";
 
 export default class HomeRoute extends Route {
   @service declare store: Store;
@@ -17,10 +18,8 @@ export default class HomeRoute extends Route {
     const municipality = params.municipality ? params.municipality : null;
     console.log(params);
 
-    const data = await (await fetch("https://api.basisregisters.vlaanderen.be/v2/gemeenten/")).json()
-    const municipalities = data.gemeenten.map((municipality: {
-      gemeentenaam: {geografischeNaam: {spelling: string}}
-    }) => municipality.gemeentenaam.geografischeNaam.spelling);
+    const municipalities = await getMunicipalitiesFromVlaanderen();
+
 
     /*
     const municipalities = this.store.findAll("municipalities");
