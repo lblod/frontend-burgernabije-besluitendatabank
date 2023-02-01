@@ -12,10 +12,21 @@ export default class HomeRoute extends Route {
     municipality: { refreshModel: true },
   };
 
-  model(params: any) {
+  async model(params: any) {
     const page = params.page ? params.page : 0;
     const municipality = params.municipality ? params.municipality : null;
     console.log(params);
+
+    const data = await (await fetch("https://api.basisregisters.vlaanderen.be/v2/gemeenten/")).json()
+    const gemeenten = data.gemeenten.map((municipality: {
+      gemeentenaam: {geografischeNaam: {spelling: string}}
+    }) => municipality.gemeentenaam.geografischeNaam.spelling);
+
+    /*
+    const municipalities = this.store.findAll("municipalities");
+    console.log("muni")
+    console.log(municipalities)
+    */
 
     return Ember.RSVP.hash({
       items: this.store.query("items", {
@@ -23,7 +34,7 @@ export default class HomeRoute extends Route {
         page: page,
         limit: 3,
       }),
-      municipalities: this.store.findAll("municipalities"),
+      municipalities: gemeenten,
     });
   }
 }

@@ -6,7 +6,7 @@
     @municipalityPlaceholder="Selecteer een optie"
     @municipalitySelected={{this.selected}}
     @municipalityOnChange={{this.handleMunicipalityChange}}
-    @municipalityOptions={{this.options}}
+    @municipalityOptions={{@model.municipalities}}
     @municipalityAllowClear={{true}}
     @keywordPlaceholder={{"Terrasvergunning"}}
     @keywordOnChange={{this.handleKeywordChange}}
