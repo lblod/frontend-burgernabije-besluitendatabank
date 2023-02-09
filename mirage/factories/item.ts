@@ -1,6 +1,6 @@
 import { Factory } from "miragejs";
 import faker from "faker";
-
+import { municipalities } from "../mockdata";
 export default Factory.extend({
   id() {
     return faker.datatype.uuid();
@@ -34,17 +34,6 @@ export default Factory.extend({
   },
 
   municipality() {
-    return faker.helpers.randomize([
-      "Antwerpen",
-      "Antwerpen OCMW",
-      "Aalst",
-      "Aalst OCMW",
-      "Gent",
-      "Gent OCMW",
-      "Brugge",
-      "Brugge OCMW",
-      "Hasselt",
-      "Hasselt OCMW",
-    ]);
+    return faker.helpers.randomize(municipalities);
   },
 });

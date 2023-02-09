@@ -11,7 +11,9 @@ interface ArgsInterface {
   keywordPlaceholder: string;
   keywordOnChange: string;
 
-  dateHandleChange: () => void;
+  dateHandleChange: (d: any) => void;
+  startDate: any;
+  endDate: any;
 }
 
 export default class SearchSidebar extends Component<ArgsInterface> {
@@ -39,6 +41,14 @@ export default class SearchSidebar extends Component<ArgsInterface> {
 
   get keywordOnChange() {
     return this.args.keywordOnChange;
+  }
+
+  get startDate() {
+    return this.args.startDate;
+  }
+
+  get endDate() {
+    return this.args.endDate;
   }
 
   get dateHandleChange() {
