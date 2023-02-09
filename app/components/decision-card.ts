@@ -23,11 +23,11 @@ export default class DecisionCard extends Component<ArgsInterface> {
   }
 
   get startDate() {
-    return format(parseISO(this.args.startDate), "MM/dd/yyyy");
+    return format(parseISO(this.args.startDate), "dd/MM/yyyy");
   }
 
   get endDate() {
-    return format(parseISO(this.args.endDate), "MM/dd/yyyy");
+    return format(parseISO(this.args.endDate), "dd/MM/yyyy");
   }
 
   get municipality() {

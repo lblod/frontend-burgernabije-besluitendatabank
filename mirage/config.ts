@@ -1,3 +1,5 @@
+import { format, parseISO, isAfter, isBefore } from "date-fns";
+
 export default function () {
   this.urlPrefix = "http://localhost:4200"; // make this `http://localhost:8080`, for example, if your API is on a different server
   this.namespace = "/api"; // make this `/api`, for example, if your API is namespaced
@@ -7,12 +9,11 @@ export default function () {
   //   console.log(schema.items.all());
   //   return schema.items.all();
   // });
-  
 
   // Uncomment this to let mirage pass through the requests to vlaanderen api
   this.passthrough("https://api.basisregisters.vlaanderen.be/**");
   //this.passthrough("/municipalities");
-  
+
   /*
   this.create('municipality', {
     title: "Ayoo"
@@ -54,7 +55,7 @@ export default function () {
       return { data: items };
     }
   });
-  
+
 
  /*
   this.get("https://api.basisregisters.vlaanderen.be/**", function(schema, request) {
@@ -81,26 +82,27 @@ export default function () {
     }
   });
   */
-  
+
   this.get("/items", function (schema, request) {
     let qp = request.queryParams;
     let items;
 
     if (qp && JSON.stringify(qp) !== "{}") {
-      let page = parseInt(qp.page);
-      let limit = parseInt(qp.limit);
+      let page = parseInt(qp?.page);
+      let limit = parseInt(qp?.limit);
+      let startDate = qp?.startDate;
+      let endDate = parseISO(qp?.endDate);
       let municipality = qp.municipality;
-      console.log(qp);
       let start = page * limit;
       let end = start + limit;
-      console.log("MIRAGE");
-      console.log(municipality);
       if (municipality)
         items = schema.items.where({ municipality: municipality });
       else items = schema.items.all();
-
-      console.log(items)
-      console.log("@@@")
+      if (startDate) {
+        items = items.filter((item: any) => {
+          return isAfter(item.startdate, parseISO(startDate));
+        });
+      }
 
       let filtered = items.slice(start, end);
       return filtered;

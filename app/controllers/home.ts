@@ -1,11 +1,10 @@
 import Controller from "@ember/controller";
 import { action } from "@ember/object";
-import Router from "@ember/routing/router";
 import RouterService from "@ember/routing/router-service";
 import { service } from "@ember/service";
 import { tracked } from "@glimmer/tracking";
 import Store from "@ember-data/store";
-import axios from "axios";
+
 export default class HomeController extends Controller {
   @service declare router: RouterService;
   @service declare store: Store;
@@ -14,13 +13,14 @@ export default class HomeController extends Controller {
   @tracked selected = "";
   @action handleKeywordChange() {}
 
-  @action handleDateChange() {}
-
   @tracked queryParams = ["page"];
   @tracked page = 0;
 
   @tracked entriesStart = 0;
   @tracked entriesEnd = 3;
+
+  @tracked startDate = undefined;
+  @tracked endDate = undefined;
 
   @action handleMunicipalityChange(m: any) {
     this.selected = m;
@@ -29,6 +29,21 @@ export default class HomeController extends Controller {
       queryParams: {
         page: this.page,
         municipality: m,
+        startDate: this.startDate,
+        endDate: this.endDate,
+      },
+    });
+  }
+
+  @action handleDateChange(d: any) {
+    this.startDate = d!.target.value;
+    this.page = 0;
+    this.router.transitionTo("home", {
+      queryParams: {
+        page: this.page,
+        municipality: this.selected,
+        startDate: this.startDate,
+        endDate: this.endDate,
       },
     });
   }
@@ -41,6 +56,8 @@ export default class HomeController extends Controller {
       queryParams: {
         page: this.page,
         municipality: this.selected,
+        startDate: this.startDate,
+        endDate: this.endDate,
       },
     });
   }
@@ -54,6 +71,8 @@ export default class HomeController extends Controller {
         queryParams: {
           page: this.page,
           municipality: this.selected,
+          startDate: this.startDate,
+          endDate: this.endDate,
         },
       });
     }
