@@ -85,29 +85,33 @@ export default function () {
 
   this.get("/items", function (schema, request) {
     let qp = request.queryParams;
+    const {
+      page,
+      limit,
+      startDate,
+      municipality,
+    }: { page: number; limit: number; startDate: any; municipality: string } =
+      qp;
     let items;
 
     if (qp && JSON.stringify(qp) !== "{}") {
-      let page = parseInt(qp?.page);
-      let limit = parseInt(qp?.limit);
-      let startDate = qp?.startDate;
-      let endDate = parseISO(qp?.endDate);
-      let municipality = qp.municipality;
-      let start = page * limit;
-      let end = start + limit;
-      if (municipality)
+      if (municipality) {
         items = schema.items.where({ municipality: municipality });
-      else items = schema.items.all();
+      } else items = schema.items.all();
       if (startDate) {
-        items = items.filter((item: any) => {
-          return isAfter(item.startdate, parseISO(startDate));
-        });
+        items = items.filter((item) =>
+          isAfter(parseISO(item.startdate), parseISO(startDate))
+        );
       }
+      if (page) {
+        let start: number = page * limit;
+        let end: number = start + Number(limit);
 
-      let filtered = items.slice(start, end);
-      return filtered;
-    } else {
-      return { data: items };
+        console.log(start);
+        console.log(end);
+        return items.slice(start, end);
+      }
+      return items;
     }
   });
 
