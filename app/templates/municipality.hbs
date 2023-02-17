@@ -1,0 +1,34 @@
+{{page-title this.model}}
+
+<div class="au-u-flex" style="height: 100%;width: 100%">
+  <section
+    id="detail-left-section"
+    class="au-u-flex au-u-flex--column"
+    style="height: 100%; width: 100%"
+  >
+
+    <AuToolbar @size="medium" class="au-u-margin-small" as |Group|>
+
+      <Group>
+        <ul class="au-c-list-horizontal au-c-list-horizontal--small">
+          <li class="au-c-list-horizontal__item">
+            <AuLink @route="home" @icon="arrow-left">
+              Agendapunten
+            </AuLink>
+          </li>
+          <li class="au-c-list-horizontal__item">
+            {{this.model}}
+          </li>
+        </ul>
+      </Group>
+    </AuToolbar>
+    <section
+      id="detail-right-section"
+      class="au-u-background-gray-100 au-u-1-2"
+      style="height: 100%; width: 100%;"
+    >
+
+    </section>
+
+  </section>
+</div>
