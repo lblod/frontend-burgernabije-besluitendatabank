@@ -57,7 +57,9 @@
             @size="large"
             @icon="message"
           />
-          <p>Gemeente {{this.model.municipality}}</p>
+          <LinkTo @route="municipality" @model={{this.model.municipality}}>
+            <p>Gemeente {{this.model.municipality}}</p>
+          </LinkTo>
         </section>
         <section
           class="au-u-flex au-u-muted au-u-margin-top-tiny"
@@ -69,6 +71,18 @@
             @icon="calendar"
           />
           <p>Goedgekeurd op {{iso-formatter this.model.approveddate}}</p>
+        </section><section
+          class="au-u-flex au-u-muted au-u-margin-top-tiny"
+          style=" align-items: center;"
+        >
+          <AuIcon
+            class="au-u-margin-right-small"
+            @size="large"
+            @icon="calendar"
+          />
+          <p>
+            Bekijk agendapunt op de website van de gemeente
+          </p>
         </section>
 
         <section>
@@ -93,7 +107,7 @@
       <c.header @badgeIcon={{"user-check"}} @badgeSkin="none">
 
         <h1 class="au-u-h4 au-u-medium">
-          Contacteer de gemeente
+          Meer info
         </h1>
 
       </c.header>
@@ -102,31 +116,10 @@
           <div
             class="au-u-flex au-u-flex--column au-o-flow--small au-u-margin-left-large au-u-margin-top-small"
           >
-
-            <section class="au-u-flex au-u-flex--column au-u-muted">
-              <h5>Email</h5>
-              <AuLinkExternal
-                href={{"lol"}}
-                @icon="mail"
-                @iconAlignment="right"
-              >
-                info@gemeente.be
-              </AuLinkExternal>
-            </section>
-            <section class="au-u-flex au-u-flex--column au-u-muted">
-              <h5>Telefoon</h5>
-              <AuLinkExternal
-                href={{"lol"}}
-                @icon="website"
-                @iconAlignment="right"
-              >
-                02 553 35 09
-              </AuLinkExternal>
-            </section>
             <section class="au-u-flex au-u-flex--column au-u-muted">
               <h5>Website</h5>
               <AuLinkExternal
-                href={{"lol"}}
+                href={{"http://www.zorg-en-gezondheid.be"}}
                 @icon="external-link"
                 @iconAlignment="right"
               >
