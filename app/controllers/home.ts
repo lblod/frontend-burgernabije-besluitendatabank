@@ -8,8 +8,6 @@ import Store from "@ember-data/store";
 export default class HomeController extends Controller {
   @service declare router: RouterService;
   @service declare store: Store;
-
-  //@tracked options = ["antwerpen"];
   @tracked selected = "";
   @action handleKeywordChange() {}
 
