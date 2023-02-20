@@ -1,10 +1,24 @@
-<AuMainHeader
-  @brandLink="https://www.vlaanderen.be/nl"
-  {{! @homeRoute="docs.templates.app-sidebar" }}
-  @appTitle="Bobcat"
-  {{! @contactRoute="docs.templates.app-sidebar" }}
->
-  <AuButton @skin="link" @icon="login" role="menuitem">
-    Aanmelden
-  </AuButton>
+<AuMainHeader @homeRoute="home" @appTitle="Bobcat">
+  <li class="au-c-list-horizontal__item">
+    <AuLink @route="help" @skin="secondary">
+      <AuIcon @icon="question-circle" @alignment="left" />
+      Help
+    </AuLink>
+  </li>
+  <li class="au-c-list-horizontal__item">
+    {{!-- {{#if session.isAuthenticated}}
+      <AcmidmLogout
+        @tagName="button"
+        class="au-c-button au-c-button--tertiary"
+        role="menuitem"
+      >
+        <AuIcon @icon="logout" @alignment="left" />
+        Afmelden
+      </AcmidmLogout>
+    {{else}}
+      <AcmidmLogin role="menuitem" @styles="au-c-button au-c-button--tertiary">
+        <AuIcon @icon="login" @alignment="left" />Aanmelden
+      </AcmidmLogin>
+    {{/if}} --}}
+  </li>
 </AuMainHeader>
