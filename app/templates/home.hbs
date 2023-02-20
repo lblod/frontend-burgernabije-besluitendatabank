@@ -1,8 +1,19 @@
 <Hero />
 
-<div class="au-u-flex">
+<div class="au-u-flex" style="height: 100%;">
 
-  <SearchSidebar />
+  <SearchSidebar
+    @municipalityPlaceholder="Selecteer een optie"
+    @municipalitySelected={{this.selected}}
+    @municipalityOnChange={{this.handleMunicipalityChange}}
+    @municipalityOptions={{@model.municipalities}}
+    @municipalityAllowClear={{true}}
+    @keywordPlaceholder={{"Terrasvergunning"}}
+    @keywordOnChange={{this.handleKeywordChange}}
+    @dateHandleChange={{this.handleDateChange}}
+    @startDate={{this.startDate}}
+    @endDate={{this.endDate}}
+  />
 
   <section
     class="au-u-flex au-u-flex--column"
@@ -21,35 +32,47 @@
         <option>Relevantie</option>
       </select>
     </AuFormRow>
-    <div class="au-u-padding-left-large au-u-padding-right-large">
+    <div
+      class="au-u-padding-left-large au-u-padding-right-large au-u-flex au-u-flex--column"
+      style="height: 100%;"
+    >
 
-      <section class="au-o-flow au-u-flex au-u-flex--column">
-        {{#each this.model as |item|}}
+      <section
+        class="au-o-flow au-u-flex au-u-flex--column"
+        style="height: 100%;"
+      >
+        {{#each this.model.items as |item|}}
           <DecisionCard
             @id={{item.id}}
             @title={{item.title}}
             @body={{item.body}}
-            @startDate={{item.startDate}}
-            @endDate={{item.endDate}}
-            @approvedDate={{item.approvedDate}}
+            @approvedDate={{item.approveddate}}
+            @startDate={{item.startdate}}
+            @endDate={{item.enddate}}
             @municipality={{item.municipality}}
           />
         {{/each}}
 
       </section>
-      <AuToolbar @border="top" @size="large" @nowrap={{true}}>
+      <AuToolbar style="margin-top: auto;" @size="large" @nowrap={{true}}>
         <div class="au-c-pagination">
 
           <div class="au-c-pagination__list-item">
-            <AuButton @skin="link" @icon="nav-left" @iconAlignment="left">Vorige
-              pagina</AuButton>
+            <AuButton
+              @skin="link"
+              @icon="nav-left"
+              @iconAlignment="left"
+              {{on "click" this.previousPage}}
+            >Vorige pagina</AuButton>
           </div>
           <p>
 
             <span class="au-u-hidden-visually">Resultaten</span>
 
             <strong>
-              1 - 9
+              {{this.entriesStart}}
+              -
+              {{this.entriesEnd}}
             </strong>
             van 18
           </p>
@@ -59,6 +82,7 @@
               @skin="link"
               @icon="nav-right"
               @iconAlignment="right"
+              {{on "click" this.nextPage}}
             >Volgende pagina</AuButton>
 
           </div>

@@ -56,6 +56,7 @@
     "@types/ember-data__store": "^4.0.2",
     "@types/ember-qunit": "^6.1.1",
     "@types/ember-resolver": "^9.0.0",
+    "@types/node": "^18.14.0",
     "@types/qunit": "^2.19.4",
     "@types/rsvp": "^4.0.4",
     "babel-eslint": "^10.1.0",
@@ -76,11 +77,12 @@
     "ember-cli-typescript": "^5.2.1",
     "ember-data": "~4.9.1",
     "ember-faker": "^2.0.1",
-    "ember-fetch": "^8.1.2",
     "ember-load-initializers": "^2.1.2",
     "ember-page-title": "^7.0.0",
+    "ember-power-select": "^6.0.1",
     "ember-qunit": "^6.1.1",
     "ember-resolver": "^10.0.0",
+    "ember-simple-auth": "^4.2.2",
     "ember-source": "~4.10.0",
     "ember-template-lint": "^5.3.1",
     "eslint": "^7.32.0",
@@ -103,5 +105,11 @@
   },
   "ember": {
     "edition": "octane"
+  },
+  "dependencies": {
+    "axios": "^1.2.6",
+    "date-fns": "^2.29.3",
+    "localforage": "^1.10.0",
+    "luxon": "^3.2.1"
   }
 }

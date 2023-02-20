@@ -4,10 +4,11 @@ import RouterService from "@ember/routing/router-service";
 import { service } from "@ember/service";
 import { tracked } from "@glimmer/tracking";
 import Store from "@ember-data/store";
-
-export default class HomeController extends Controller {
+export default class MunicipalityController extends Controller {
   @service declare router: RouterService;
   @service declare store: Store;
+
+  //@tracked options = ["antwerpen"];
   @tracked selected = "";
   @action handleKeywordChange() {}
 
@@ -23,12 +24,10 @@ export default class HomeController extends Controller {
   @action handleMunicipalityChange(m: any) {
     this.selected = m;
     this.page = 0;
-    this.router.transitionTo("home", {
+    this.router.transitionTo("municipality", {
       queryParams: {
         page: this.page,
         municipality: m,
-        startDate: this.startDate,
-        endDate: this.endDate,
       },
     });
   }
@@ -36,12 +35,10 @@ export default class HomeController extends Controller {
   @action handleDateChange(d: any) {
     this.startDate = d!.target.value;
     this.page = 0;
-    this.router.transitionTo("home", {
+    this.router.transitionTo("municipality", {
       queryParams: {
         page: this.page,
         municipality: this.selected,
-        startDate: this.startDate,
-        endDate: this.endDate,
       },
     });
   }
@@ -50,12 +47,10 @@ export default class HomeController extends Controller {
     this.page++;
     this.entriesStart = this.page * 3;
     this.entriesEnd = this.page * 3 + 3;
-    this.router.transitionTo("home", {
+    this.router.transitionTo("municipality", {
       queryParams: {
         page: this.page,
         municipality: this.selected,
-        startDate: this.startDate,
-        endDate: this.endDate,
       },
     });
   }
@@ -65,12 +60,10 @@ export default class HomeController extends Controller {
       this.page--;
       this.entriesStart = this.page * 3;
       this.entriesEnd = this.page * 3 + 3;
-      this.router.transitionTo("home", {
+      this.router.transitionTo("municipality", {
         queryParams: {
           page: this.page,
           municipality: this.selected,
-          startDate: this.startDate,
-          endDate: this.endDate,
         },
       });
     }

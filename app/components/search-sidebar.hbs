@@ -8,27 +8,37 @@
           class="au-u-padding-top-small au-u-padding-bottom-small"
         >
 
-          <AuLabel for={{"municipality"}}>
+          <AuLabel for={{"municipality"}} style="width: 30%;">
             Gemeente
           </AuLabel>
-          <AuInput
-            id={{"municipality"}}
-            placeholder={{"Selecteer een optie"}}
-            @handleChange={{this.handleChange}}
-            @type={{"text"}}
-          />
+          <PowerSelect
+            style="width: 100%;"
+            id="municipality"
+            @placeholder={{this.municipalityPlaceholder}}
+            @selected={{this.municipalitySelected}}
+            @onChange={{this.municipalityOnChange}}
+            @options={{this.municipalityOptions}}
+            @allowClear={{this.municipalityAllowClear}}
+            @noMatchesMessage={{"Geen gemeente gevonden"}}
+            @searchMessage="Aan het zoeken..."
+            @searchEnabled={{true}}
+            as |singleSelect|
+          >
+            {{singleSelect}}
+          </PowerSelect>
         </AuFormRow>
         <AuFormRow
           class="au-u-padding-top-small au-u-padding-bottom-small"
           @alignment="inline"
         >
-          <AuLabel for={{"keyword"}}>
+          <AuLabel for={{"keyword"}} style="width: 30%;">
             Trefwoord
           </AuLabel>
           <AuInput
-            placeholder="Terrasvergunning"
+            style="width: 100%;"
+            placeholder={{this.keywordPlaceholder}}
             id={{"keyword"}}
-            @handleChange={{this.handleChange}}
+            onChange={{this.handleKeywordChange}}
             @type={{"text"}}
           />
         </AuFormRow>
@@ -37,13 +47,15 @@
           @alignment="inline"
         >
 
-          <AuLabel for={{"date"}}>
+          <AuLabel for={{"date"}} style="width: 30%;">
             Datum
           </AuLabel>
           <AuInput
             id={{"date"}}
-            @handleChange={{this.handleChange}}
+            style="width: 100%;"
+            onChange={{this.dateHandleChange}}
             @type={{"date"}}
+            {{!-- @value={{this.startDate}} --}}
           />
         </AuFormRow>
       </section>
