@@ -28,55 +28,53 @@
       </Group>
     </AuToolbar>
     <div
-      class="au-u-padding-left-large au-u-padding-right-large au-u-flex"
+      class="au-u-padding-left-large au-u-padding-right-large au-u-flex au-u-background-gray-100"
       style="height: 100%;"
     >
       <section
         id="detail-left-section"
-        class="au-o-flow au-u-flex au-u-flex--column"
+        class="au-o-flow"
         style="height: 100%; width: 50%;"
       >
         <AuHeading @level="1" @skin="3">
 
-          Mensen
+          Participanten
         </AuHeading>
 
-        <AuCard
-          @shadow={{true}}
-          @size="small"
-          class="au-o-region-small au-u-margin-large au-u-margin-top-small au-u-padding"
-          as |c|
-        />
-        <AuCard
-          @shadow={{true}}
-          @size="small"
-          class="au-o-region-small au-u-margin-large au-u-margin-top-small au-u-padding"
-          as |c|
-        />
-        <AuCard
-          @shadow={{true}}
-          @size="small"
-          class="au-o-region-small au-u-margin-large au-u-margin-top-small au-u-padding"
-          as |c|
-        />
+        <section
+          id="detail-left-section"
+          class="au-o-flow au-u-flex au-u-flex--wrap au-u-padding-bottom"
+          style="height: 100%; justify-content: space-around;"
+        >
+
+          <ParticipantCard />
+          <ParticipantCard />
+          <ParticipantCard />
+          <ParticipantCard />
+          <ParticipantCard />
+          <ParticipantCard />
+        </section>
 
       </section>
       <section
         id="detail-left-section"
-        class="au-u-background-gray-100 au-u-padding au-o-flow au-u-flex au-u-flex--column"
+        class="au au-u-flex au-u-flex--column au-u-background-gray-100 au-u-padding"
         style="height: 100%; width: 50%;"
       >
-        {{#each this.model.items as |item|}}
-          <DecisionCard
-            @id={{item.id}}
-            @title={{item.title}}
-            @body={{item.body}}
-            @approvedDate={{item.approveddate}}
-            @startDate={{item.startdate}}
-            @endDate={{item.enddate}}
-            @municipality={{item.municipality}}
-          />
-        {{/each}}
+        <section class="au-o-flow au-u-flex au-u-flex--column">
+
+          {{#each this.model.items as |item|}}
+            <DecisionCard
+              @id={{item.id}}
+              @title={{item.title}}
+              @body={{item.body}}
+              @approvedDate={{item.approveddate}}
+              @startDate={{item.startdate}}
+              @endDate={{item.enddate}}
+              @municipality={{item.municipality}}
+            />
+          {{/each}}
+        </section>
         <AuToolbar style="margin-top: auto;" @size="large" @nowrap={{true}}>
           <div class="au-c-pagination">
 
