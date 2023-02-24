@@ -22,7 +22,9 @@ export default class MunicipalityRoute extends Route {
         page: page,
         limit: 3,
       }),
+      title: municipality,
     });
+
     return data;
   }
 }
