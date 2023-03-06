@@ -12,6 +12,12 @@ export default function () {
 
   // Uncomment this to let mirage pass through the requests to vlaanderen api
   this.passthrough("https://api.basisregisters.vlaanderen.be/**");
+  this.passthrough(
+    "https://tni.widgets.burgerprofiel.dev-vlaanderen.be/api/v1/widget/7eed3599-96aa-435b-bc43-fe13d2fc0531"
+  );
+  this.passthrough(
+    "https://tni.widgets.burgerprofiel.dev-vlaanderen.be/api/v1/widget/7eed3599-96aa-435b-bc43-fe13d2fc0531"
+  );
   //this.passthrough("/municipalities");
 
   /*
