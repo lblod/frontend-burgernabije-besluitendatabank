@@ -1,7 +1,19 @@
 {{page-title "BurgerBesluitenDB"}}
 
 <AuApp style="height: 100vh;">
-  <Navbar />
+  {{! <Navbar /> }}
+
+  <script
+    src="https://tni.widgets.burgerprofiel.dev-vlaanderen.be/api/v1/widget/21dc043f-e4f4-4e3b-89dc-643e8942ab0e/embed"
+  ></script>
+
+  {{!-- {{#if this.hasExternallySourcedHeader}}
+    <div class="l-external-header">
+      <div class="l-external-header__placeholder">
+        <header {{vl-widget this.VO_HEADER_WIDGET_URL}}></header>
+      </div>
+    </div>
+  {{/if}} --}}
 
   <AuMainContainer tyle="height: 100%;" as |m|>
 
@@ -13,5 +25,8 @@
 
     </m.content>
   </AuMainContainer>
-  <Footer />
+  {{! <Footer /> }}
+  {{#if this.hasExternallySourcedFooter}}
+    <footer {{vl-widget this.VO_FOOTER_WIDGET_URL}}></footer>
+  {{/if}}
 </AuApp>
