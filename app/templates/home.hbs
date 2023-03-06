@@ -21,73 +21,31 @@
   >
     <AuFormRow
       @alignment="inline"
-      class="au-u-margin-bottom au-u-margin-top au-u-padding-right-large"
-      style="margin-left: auto;"
+      class="au-u-margin-bottom au-u-margin-top au-u-padding-right-large au-u-padding-left-large"
     >
-      <AuLabel for="sort-on" style="width: 80px; white-space: nowrap;">
-        Sorteer op
-      </AuLabel>
-      <select type="select" class="au-c-input" style="width: 200px;">
-        <option>Datum</option>
-        <option>Relevantie</option>
-      </select>
+      <section class="au-u-flex" style="align-items: center;">
+        <AuLabel class="au-u-padding-right">Weergave</AuLabel>
+        <AuButton @skin="secondary"><AuLink @route="home.map">
+            Kaart</AuLink></AuButton>
+        <AuButton @skin="primary"><AuLink
+            @route="home.list"
+          >Lijst</AuLink></AuButton>
+      </section>
+      <section style="margin-left: auto;" class="au-u-flex">
+        <AuLabel for="sort-on" style="width: 80px; white-space: nowrap;">
+          Sorteer op
+        </AuLabel>
+        <select type="select" class="au-c-input" style="width: 200px;">
+          <option>Datum</option>
+          <option>Relevantie</option>
+        </select>
+      </section>
     </AuFormRow>
     <div
       class="au-u-padding-left-large au-u-padding-right-large au-u-flex au-u-flex--column"
       style="height: 100%;"
     >
-
-      <section
-        class="au-o-flow au-u-flex au-u-flex--column"
-        style="height: 100%;"
-      >
-        {{#each this.model.items as |item|}}
-          <DecisionCard
-            @id={{item.id}}
-            @title={{item.title}}
-            @body={{item.body}}
-            @approvedDate={{item.approveddate}}
-            @startDate={{item.startdate}}
-            @endDate={{item.enddate}}
-            @municipality={{item.municipality}}
-          />
-        {{/each}}
-
-      </section>
-      <AuToolbar style="margin-top: auto;" @size="large" @nowrap={{true}}>
-        <div class="au-c-pagination">
-
-          <div class="au-c-pagination__list-item">
-            <AuButton
-              @skin="link"
-              @icon="nav-left"
-              @iconAlignment="left"
-              {{on "click" this.previousPage}}
-            >Vorige pagina</AuButton>
-          </div>
-          <p>
-
-            <span class="au-u-hidden-visually">Resultaten</span>
-
-            <strong>
-              {{this.entriesStart}}
-              -
-              {{this.entriesEnd}}
-            </strong>
-            van 18
-          </p>
-
-          <div class="au-c-pagination__list-item">
-            <AuButton
-              @skin="link"
-              @icon="nav-right"
-              @iconAlignment="right"
-              {{on "click" this.nextPage}}
-            >Volgende pagina</AuButton>
-
-          </div>
-        </div>
-      </AuToolbar>
+      {{outlet}}
     </div>
   </section>
 </div>
