@@ -15,7 +15,8 @@
       href="{{rootURL}}assets/frontend-burgernabije-besluitendatabank.css"
     />
     <link rel="icon" href="{{rootURL}}assets/logo.png" type="image/x-icon" />
-
+    <script src="https://prod.widgets.burgerprofiel.vlaanderen.be/api/v1/node_modules/@govflanders/vl-widget-polyfill/dist/index.js"></script>
+    <script src="https://prod.widgets.burgerprofiel.vlaanderen.be/api/v1/node_modules/@govflanders/vl-widget-client/dist/index.js"></script>
     {{content-for "head-footer"}}
   </head>
   <body>
@@ -23,7 +24,6 @@
 
     <script src="{{rootURL}}assets/vendor.js"></script>
     <script src="{{rootURL}}assets/frontend-burgernabije-besluitendatabank.js"></script>
-
     {{content-for "body-footer"}}
   </body>
 </html>
