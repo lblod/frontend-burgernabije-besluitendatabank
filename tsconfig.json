@@ -1,26 +1,24 @@
 {
   "extends": "@tsconfig/ember/tsconfig.json",
+  "types": ["node"],
+  "typeRoots": ["../node_modules/@types"],
   "compilerOptions": {
-
+    "noImplicitAny": false,
+    "types": ["node"],
     // The combination of `baseUrl` with `paths` allows Ember's classic package
     // layout, which is not resolvable with the Node resolution algorithm, to
     // work with TypeScript.
     "baseUrl": ".",
     "paths": {
-      "frontend-burgernabije-besluitendatabank/tests/*": [
-        "tests/*"
-      ],
-      "frontend-burgernabije-besluitendatabank/*": [
-        "app/*"
-      ],
-      "*": [
-        "types/*"
-      ]
+      "frontend-burgernabije-besluitendatabank/tests/*": ["tests/*"],
+      "frontend-burgernabije-besluitendatabank/*": ["app/*"],
+      "*": ["types/*"]
     }
   },
   "include": [
     "app/**/*",
     "tests/**/*",
-    "types/**/*"
+    "types/**/*",
+    "app/config/environment.d.ts"
   ]
 }
