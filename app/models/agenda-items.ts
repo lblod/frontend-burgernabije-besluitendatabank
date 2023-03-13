@@ -1,4 +1,5 @@
 import Model, { attr } from "@ember-data/model";
+import DS from "ember-data";
 
 export default class ItemsModel extends Model {
   @attr("string") declare title: string;
@@ -8,3 +9,7 @@ export default class ItemsModel extends Model {
   @attr("date") declare enddate: Date;
   @attr("string") declare municipality: string;
 }
+
+// export default DS.Model.extend({
+//   data: DS.attr(),
+// });
