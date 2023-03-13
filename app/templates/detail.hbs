@@ -33,7 +33,11 @@
           class="au-u-h3 au-u-medium"
           style=" text-decoration: none; "
         >
-          {{this.model.title}}
+          {{#if this.model.attributes.title}}
+            {{this.model.attributes.title}}
+          {{else}}
+            NO TITLE
+          {{/if}}
 
         </AuLink>
 
@@ -45,7 +49,11 @@
         >
           <AuIcon class="au-u-margin-right-small" @size="large" @icon="check" />
           <p>Tijdelijke verordening wegverkeer -
-            {{iso-formatter this.model.startdate}}
+            {{#if this.model.attributes.startdate}}
+              {{iso-formatter this.model.attributes.startdate}}
+            {{else}}
+              NO DATE
+            {{/if}}
             - Lange kant</p>
         </section>
         <section
@@ -58,7 +66,12 @@
             @icon="message"
           />
           <LinkTo @route="municipality" @model={{this.model.municipality}}>
-            <p>Gemeente {{this.model.municipality}}</p>
+            <p>Gemeente
+              {{#if this.model.attributes.municipality}}
+                {{this.model.attributes.municipality}}
+              {{else}}
+                NO MUNICIPALITY
+              {{/if}}</p>
           </LinkTo>
         </section>
         <section
@@ -70,7 +83,13 @@
             @size="large"
             @icon="calendar"
           />
-          <p>Goedgekeurd op {{iso-formatter this.model.approveddate}}</p>
+
+          <p>Goedgekeurd op
+            {{#if this.model.attributes.approveddate}}
+              {{iso-formatter this.model.attributes.approveddate}}
+            {{else}}
+              NO DATE
+            {{/if}}</p>
         </section><section
           class="au-u-flex au-u-muted au-u-margin-top-tiny"
           style=" align-items: center;"
@@ -81,12 +100,24 @@
             @icon="calendar"
           />
           <p>
-            Bekijk agendapunt op de website van de gemeente
+            {{#if this.model.attributes.alternatelink}}
+              <a href="{{this.model.attributes.alternatelink}}">Bekijk
+                agendapunt op de website van de gemeente</a>
+            {{else}}
+              Bekijk agendapunt op de website van de gemeente
+            {{/if}}
+
           </p>
         </section>
 
         <section>
-          <p>{{this.model.body}}</p>
+          <p>
+            {{#if this.model.attributes.body}}
+              {{this.model.attributes.body}}
+            {{else}}
+              NO DESCRIPTION
+            {{/if}}
+          </p>
         </section>
         <section>
           <VoteOverview />
