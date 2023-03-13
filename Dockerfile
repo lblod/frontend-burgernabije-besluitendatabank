@@ -1,7 +1,4 @@
-FROM madnificent/ember:3.28.5 as builder
-
-ENV GENERATE_SOURCEMAP=false
-ENV NODE_OPTIONS=--max-old-space-size=16384
+FROM madnificent/ember:4.9.2 as builder
 
 LABEL maintainer="info@redpencil.io"
 

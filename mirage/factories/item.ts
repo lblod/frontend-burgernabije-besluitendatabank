@@ -1,5 +1,5 @@
-import { Factory } from "miragejs";
 import faker from "faker";
+import { Factory } from "miragejs";
 import { municipalities } from "../mockdata";
 export default Factory.extend({
   id() {
