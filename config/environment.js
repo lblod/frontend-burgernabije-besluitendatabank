@@ -3,7 +3,7 @@
 module.exports = function (environment) {
   const ENV = {
     modulePrefix: "frontend-burgernabije-besluitendatabank",
-    environment,
+    environment: "production",
     rootURL: "/",
     locationType: "history",
     VO_HEADER_WIDGET_URL:
@@ -23,6 +23,12 @@ module.exports = function (environment) {
       // when it is created
     },
   };
+
+  if (environment === "production") {
+    ENV["ember-cli-mirage"] = {
+      enabled: false,
+    };
+  }
 
   // if (environment === "development") {
   //   ENV["ember-cli-mirage"] = {
