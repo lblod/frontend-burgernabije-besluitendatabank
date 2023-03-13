@@ -45,34 +45,4 @@ export default class HomeController extends Controller {
       },
     });
   }
-
-  @action nextPage() {
-    this.page++;
-    this.entriesStart = this.page * 3;
-    this.entriesEnd = this.page * 3 + 3;
-    this.router.transitionTo("home", {
-      queryParams: {
-        page: this.page,
-        municipality: this.selected,
-        startDate: this.startDate,
-        endDate: this.endDate,
-      },
-    });
-  }
-
-  @action previousPage() {
-    if (this.page > 0) {
-      this.page--;
-      this.entriesStart = this.page * 3;
-      this.entriesEnd = this.page * 3 + 3;
-      this.router.transitionTo("home", {
-        queryParams: {
-          page: this.page,
-          municipality: this.selected,
-          startDate: this.startDate,
-          endDate: this.endDate,
-        },
-      });
-    }
-  }
 }
