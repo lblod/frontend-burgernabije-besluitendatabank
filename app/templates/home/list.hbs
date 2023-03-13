@@ -1,8 +1,6 @@
 {{page-title "List"}}
 <section class="au-o-flow au-u-flex au-u-flex--column" style="height: 100%;">
   {{#each this.model.agenda_items as |item|}}
-    {{!-- <p>{{item.attributes.title}}</p>
-    <p>{{item.id}}</p> --}}
     <DecisionCard
       @id={{item.id}}
       @title={{item.attributes.title}}
