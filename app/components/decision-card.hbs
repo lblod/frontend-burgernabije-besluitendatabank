@@ -14,14 +14,22 @@
       </AuHeading>
     </c.header>
     <c.content>
-      <p>{{this.body}}</p>
+      <p>{{#if this.body}}
+          {{this.body}}
+        {{/if}}</p>
     </c.content>
     <c.footer>
-      {{this.startDate}}
+      {{#if this.startDate}}
+        {{this.startDate}}
+      {{/if}}
       tot
-      {{this.endDate}}
+      {{#if this.endDate}}
+        {{this.endDate}}
+      {{/if}}
       -
-      {{this.municipality}}
+      {{#if this.municipality}}
+        {{this.municipality}}
+      {{/if}}
     </c.footer>
   </AuCard>
 </LinkTo>
