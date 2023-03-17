@@ -3,6 +3,7 @@
   "types": ["node"],
   "typeRoots": ["../node_modules/@types"],
   "compilerOptions": {
+    "resolveJsonModule": true,
     "noImplicitAny": false,
     "types": ["node"],
     // The combination of `baseUrl` with `paths` allows Ember's classic package

@@ -1,15 +1,16 @@
 {{page-title "List"}}
 <section class="au-o-flow au-u-flex au-u-flex--column" style="height: 100%;">
-  {{#each this.model.items as |item|}}
+  {{#each this.model.agenda_items as |item|}}
     <DecisionCard
       @id={{item.id}}
-      @title={{item.title}}
+      @title={{item.attributes.title}}
       @body={{item.body}}
       @approvedDate={{item.approveddate}}
       @startDate={{item.startdate}}
       @endDate={{item.enddate}}
       @municipality={{item.municipality}}
     />
+
   {{/each}}
 
 </section>

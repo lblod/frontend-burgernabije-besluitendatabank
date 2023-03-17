@@ -1,5 +1,4 @@
 import Controller from "@ember/controller";
-import config from "frontend-burgernabije-besluitendatabank/config/environment";
 
 export default class ApplicationController extends Controller {
   VO_HEADER_WIDGET_URL =

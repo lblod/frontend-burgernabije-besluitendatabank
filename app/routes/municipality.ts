@@ -17,7 +17,7 @@ export default class MunicipalityRoute extends Route {
     const { municipality, page } = params;
 
     const data = await Ember.RSVP.hash({
-      items: this.store.query("items", {
+      agenda_items: this.store.query("agenda-items", {
         municipality: municipality,
         page: page,
         limit: 3,

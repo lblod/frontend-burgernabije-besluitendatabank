@@ -13,24 +13,28 @@ interface ArgsInterface {
 
 export default class DecisionCard extends Component<ArgsInterface> {
   get id() {
-    return this.args.id;
+    return this.args.id ? this.args.id : "No id";
   }
   get title() {
-    return this.args.title;
+    return this.args.title ? this.args.title : "No title";
   }
   get body() {
     return this.args.body;
   }
 
   get startDate() {
-    return format(parseISO(this.args.startDate), "dd/MM/yyyy");
+    return this.args.startDate
+      ? format(parseISO(this.args.startDate), "dd/MM/yyyy")
+      : null;
   }
 
   get endDate() {
-    return format(parseISO(this.args.endDate), "dd/MM/yyyy");
+    return this.args.endDate
+      ? format(parseISO(this.args.endDate), "dd/MM/yyyy")
+      : null;
   }
 
   get municipality() {
-    return this.args.municipality;
+    return this.args.municipality ? this.args.municipality : "No municipality";
   }
 }
