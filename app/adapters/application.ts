@@ -1,5 +1,6 @@
 import DS from "ember-data";
 
+// Docs: https://guides.emberjs.com/release/models/customizing-adapters/
 export default DS.JSONAPIAdapter.extend({
   // host: "http://localhost:4200",
   // namespace: "api",

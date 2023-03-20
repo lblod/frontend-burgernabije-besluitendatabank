@@ -33,7 +33,7 @@ export default class HomeRoute extends Route {
     // return resp;
 
     // const resp = await
-    const resp = await Ember.RSVP.hash({
+    const data = await Ember.RSVP.hash({
       agenda_items: axios
         .get(
           `https://burgernabije-besluitendatabank-dev.s.redhost.be/agenda-items?page[number]=${page}&page[size]=3`
@@ -46,7 +46,7 @@ export default class HomeRoute extends Route {
         }),
       municipalities: municipalities,
     });
-    console.log(resp);
-    return resp;
+    console.log(data);
+    return data;
   }
 }
