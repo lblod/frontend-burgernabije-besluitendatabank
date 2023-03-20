@@ -1,11 +1,22 @@
 import Controller from "@ember/controller";
 import { action } from "@ember/object";
+import RouterService from "@ember/routing/router-service";
+import { service } from "@ember/service";
 import { tracked } from "@glimmer/tracking";
-import municipalities from "../../utils/geoJson.json";
+import { data } from "frontend-burgernabije-besluitendatabank/utils/geoJson";
 export default class Map extends Controller {
-  @tracked geoData = municipalities;
-  @action onLocationfound(e: any) {
-    console.log(e);
+  @service declare router: RouterService;
+  @tracked geoData = data;
+
+  @action handleLayerClick(e: any) {
+    this.router.transitionTo(
+      "municipality",
+      e.target.feature.properties.ADMUNADU
+    );
+  }
+
+  @action onEachFeature(feature: any, layer: any) {
+    layer.on("click", this.handleLayerClick);
   }
   @action style() {
     return {
