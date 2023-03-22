@@ -3,9 +3,11 @@ import { action } from "@ember/object";
 import RouterService from "@ember/routing/router-service";
 import { service } from "@ember/service";
 import { tracked } from "@glimmer/tracking";
-import { data } from "frontend-burgernabije-besluitendatabank/utils/geoJson";
+// @ts-ignore
+import data from "public/geoJson.ts";
 export default class Map extends Controller {
   @service declare router: RouterService;
+
   @tracked geoData = data;
 
   @action handleLayerClick(e: any) {
