@@ -3,7 +3,7 @@
 module.exports = function (environment) {
   const ENV = {
     modulePrefix: "frontend-burgernabije-besluitendatabank",
-    environment: "production",
+    environment,
     rootURL: "/",
     locationType: "history",
     VO_HEADER_WIDGET_URL:
@@ -25,21 +25,32 @@ module.exports = function (environment) {
   };
 
   if (environment === "production") {
+    // ENV["ember-cli-mirage"] = {
+    //   enabled: true,
+    //   directory: "mirage",
+    // };
+    ENV["ember-cli-mirage"] = {
+      enabled: false,
+    };
+    ENV.API_URL = "https://burgernabije-besluitendatabank-dev.s.redhost.be/api";
+  }
+
+  if (environment === "development") {
+    // ENV["ember-cli-mirage"] = {
+    //   enabled: true,
+    //   directory: "mirage",
+    // };
     ENV["ember-cli-mirage"] = {
       enabled: true,
     };
-  }
+    ENV.API_URL = "http://localhost:4200/api";
 
-  // if (environment === "development") {
-  //   ENV["ember-cli-mirage"] = {
-  //     enabled: true,
-  //   };
-  // ENV.APP.LOG_RESOLVER = true;
-  // ENV.APP.LOG_ACTIVE_GENERATION = true;
-  // ENV.APP.LOG_TRANSITIONS = true;
-  // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
-  // ENV.APP.LOG_VIEW_LOOKUPS = true;
-  // }
+    // ENV.APP.LOG_RESOLVER = true;
+    // ENV.APP.LOG_ACTIVE_GENERATION = true;
+    // ENV.APP.LOG_TRANSITIONS = true;
+    // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
+    // ENV.APP.LOG_VIEW_LOOKUPS = true;
+  }
 
   // if (environment === "test") {
   //   // Testem prefers this...

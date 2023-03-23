@@ -3,8 +3,8 @@ import Route from "@ember/routing/route";
 import { service } from "@ember/service";
 import axios from "axios";
 import Ember from "ember";
+import ENV from "frontend-burgernabije-besluitendatabank/config/environment";
 import { getMunicipalitiesFromVlaanderen } from "frontend-burgernabije-besluitendatabank/utils/apivlaanderen";
-
 export default class HomeRoute extends Route {
   @service declare store: Store;
 
@@ -31,9 +31,7 @@ export default class HomeRoute extends Route {
     // const resp = await
     const resp = await Ember.RSVP.hash({
       agenda_items: axios
-        .get(
-          `https://burgernabije-besluitendatabank-dev.s.redhost.be/api/agenda-items?page[number]=${page}&page[size]=3`
-        )
+        .get(`${ENV.API_URL}/agenda-items?page[number]=${page}&page[size]=3`)
         .then((resp) => {
           return resp.data.data;
         })
