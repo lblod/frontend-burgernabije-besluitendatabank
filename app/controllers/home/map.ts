@@ -3,18 +3,15 @@ import { action } from "@ember/object";
 import RouterService from "@ember/routing/router-service";
 import { service } from "@ember/service";
 import { tracked } from "@glimmer/tracking";
-// @ts-ignore
-import data from "public/geoJson.ts";
+import { municipalities } from "../../utils/flandersMunicipalities";
 export default class Map extends Controller {
   @service declare router: RouterService;
 
-  @tracked geoData = data;
+  @tracked geoData = municipalities;
 
   @action handleLayerClick(e: any) {
-    this.router.transitionTo(
-      "municipality",
-      e.target.feature.properties.ADMUNADU
-    );
+    console.log(e.target.feature.properties.NAAM);
+    this.router.transitionTo("municipality", e.target.feature.properties.NAAM);
   }
 
   @action onEachFeature(feature: any, layer: any) {

@@ -62,18 +62,22 @@
         style="height: 100%; width: 50%;"
       >
         <section class="au-o-flow au-u-flex au-u-flex--column">
+          {{#if this.model.agenda_items}}
 
-          {{#each this.model.agenda_items as |item|}}
-            <DecisionCard
-              @id={{item.id}}
-              @title={{item.title}}
-              @body={{item.body}}
-              @approvedDate={{item.approveddate}}
-              @startDate={{item.startdate}}
-              @endDate={{item.enddate}}
-              @municipality={{item.municipality}}
-            />
-          {{/each}}
+            {{#each this.model.agenda_items as |item|}}
+              <DecisionCard
+                @id={{item.id}}
+                @title={{item.title}}
+                @body={{item.body}}
+                @approvedDate={{item.approveddate}}
+                @startDate={{item.startdate}}
+                @endDate={{item.enddate}}
+                @municipality={{item.municipality}}
+              />
+            {{/each}}
+          {{else}}
+            <p>no data</p>
+          {{/if}}
         </section>
         <AuToolbar style="margin-top: auto;" @size="large" @nowrap={{true}}>
           <div class="au-c-pagination">
