@@ -25,11 +25,9 @@
     >
       <section class="au-u-flex" style="align-items: center;">
         <AuLabel class="au-u-padding-right">Weergave</AuLabel>
-        <AuButton @skin="secondary"><AuLink @route="home.map">
-            Kaart</AuLink></AuButton>
-        <AuButton @skin="primary"><AuLink
-            @route="home.list"
-          >Lijst</AuLink></AuButton>
+        <AuLink @skin="button" @route="home.map">
+          Kaart</AuLink>
+        <AuLink @route="home.list" @skin="button-secondary">Lijst</AuLink>
       </section>
       <section style="margin-left: auto;" class="au-u-flex">
         <AuLabel for="sort-on" style="width: 80px; white-space: nowrap;">
