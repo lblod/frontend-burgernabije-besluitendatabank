@@ -1,3 +1,5 @@
+import ENV from "frontend-burgernabije-besluitendatabank/config/environment";
+
 export default function (server) {
-  server.createList("item", 300);
+  ENV.environment === "development" && server.createList("item", 300);
 }
