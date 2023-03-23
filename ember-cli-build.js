@@ -4,6 +4,9 @@ const EmberApp = require("ember-cli/lib/broccoli/ember-app");
 
 module.exports = function (defaults) {
   const app = new EmberApp(defaults, {
+    autoImport: {
+      exclude: ["flandersMunicipalities.ts"],
+    },
     fingerprint: {
       exclude: [
         "images/layers-2x.png",
