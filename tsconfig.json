@@ -20,6 +20,7 @@
     "app/**/*",
     "tests/**/*",
     "types/**/*",
-    "app/config/environment.d.ts"
+    "app/config/environment.d.ts",
+    "flandersMunicipalities.ts"
   ]
 }
