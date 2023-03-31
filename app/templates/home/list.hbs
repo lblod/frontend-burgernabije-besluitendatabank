@@ -2,12 +2,12 @@
   {{#each this.model.agenda_items as |item|}}
     <DecisionCard
       @id={{item.id}}
-      @title={{item.attributes.title}}
-      @body={{item.body}}
+      @title={{item.title_agenda.value}}
+      @body={{item.description.value}}
       @approvedDate={{item.approveddate}}
-      @startDate={{item.startdate}}
+      @startDate={{item.geplandeStart.value}}
       @endDate={{item.enddate}}
-      @municipality={{item.municipality}}
+      @municipality={{item.eenheid_werkingsgebied_label.value}}
     />
 
   {{/each}}
