@@ -1,9 +1,9 @@
+import Store from "@ember-data/store";
 import Controller from "@ember/controller";
 import { action } from "@ember/object";
 import RouterService from "@ember/routing/router-service";
 import { service } from "@ember/service";
 import { tracked } from "@glimmer/tracking";
-import Store from "@ember-data/store";
 
 export default class HomeController extends Controller {
   @service declare router: RouterService;
@@ -13,6 +13,10 @@ export default class HomeController extends Controller {
 
   @tracked queryParams = ["page"];
   @tracked page = 0;
+
+  @tracked isOnListRoute = () => {
+    return this.router.currentRouteName === "list";
+  };
 
   @tracked entriesStart = 0;
   @tracked entriesEnd = 3;
