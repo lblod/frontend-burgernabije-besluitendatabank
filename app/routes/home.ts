@@ -4,7 +4,10 @@ import { service } from "@ember/service";
 import axios from "axios";
 import Ember from "ember";
 import { getMunicipalitiesFromVlaanderen } from "frontend-burgernabije-besluitendatabank/utils/apivlaanderen";
-import { getAllMunicipalitiesQuery } from "frontend-burgernabije-besluitendatabank/utils/sparqlQueries";
+import {
+  getAllAgendaItemsQuery,
+  getAllMunicipalitiesQuery,
+} from "frontend-burgernabije-besluitendatabank/utils/sparqlQueries";
 export default class HomeRoute extends Route {
   @service declare store: Store;
 
@@ -34,7 +37,7 @@ export default class HomeRoute extends Route {
         .get(
           "https://qa.centrale-vindplaats.lblod.info/sparql?query=" +
             encodeURIComponent(
-              getAllMunicipalitiesQuery({ municipality: municipality })
+              getAllAgendaItemsQuery({ municipality: municipality })
             ),
           {
             headers: {
@@ -43,23 +46,27 @@ export default class HomeRoute extends Route {
           }
         )
         .then((response) => {
-          console.log(getAllMunicipalitiesQuery({}));
-          console.log(response.data.results.bindings);
           return response.data.results.bindings;
         })
         .catch((error) => {
-          console.log(getAllMunicipalitiesQuery({}));
           console.error(error);
         }),
-      // agenda_items: axios
-      //   .get(`${ENV.API_URL}/agenda-items?page[number]=${page}&page[size]=3`)
-      //   .then((resp) => {
-      //     return resp.data.data;
-      //   })
-      //   .catch((err) => {
-      //     console.error(err);
-      //   }),
-      municipalities: municipalities,
+      municipalities: axios
+        .get(
+          "https://qa.centrale-vindplaats.lblod.info/sparql?query=" +
+            encodeURIComponent(getAllMunicipalitiesQuery()),
+          {
+            headers: {
+              Accept: "application/sparql-results+json",
+            },
+          }
+        )
+        .then((response) => {
+          return response.data.results.bindings;
+        })
+        .catch((error) => {
+          console.error(error);
+        }),
     });
     console.log(resp);
     return resp;

@@ -1,7 +1,6 @@
 <ContentHeader />
 
 <div class="au-u-flex" style="height: 100%;">
-  <p>{{this.getSparqlQuery}}</p>
   <SearchSidebar
     @municipalityPlaceholder="Selecteer een optie"
     @municipalitySelected={{this.selected}}
@@ -25,7 +24,7 @@
     >
       <section class="au-u-flex" style="align-items: center;">
         <AuLabel class="au-u-padding-right">Weergave</AuLabel>
-        {{#if this.activeRouteIsList}}
+        {{#if (eq this.currentRoute "home.list")}}
           <AuLink
             {{!-- @skin={{if this.isOnListRoute "button-secondary" "button"}} --}}
             @skin="button"
@@ -36,10 +35,10 @@
         {{else}}
           <AuLink
             {{!-- @skin={{if this.isOnListRoute "button-secondary" "button"}} --}}
-            @skin="button-secondary"
+            @skin="button"
             @route="home.list"
           >
-            Map
+            List
           </AuLink>
         {{/if}}
         {{!-- <AuLink
