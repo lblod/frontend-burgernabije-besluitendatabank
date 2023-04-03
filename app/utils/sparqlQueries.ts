@@ -1,9 +1,10 @@
 export const getAllAgendaItemsQuery = ({
   municipality,
+  offset = 0,
 }: {
   municipality?: string;
+  offset?: number;
 }): string => {
-  console.log(municipality);
   return `PREFIX besluit: <http://data.vlaanderen.be/ns/besluit#>
 PREFIX mandaat: <http://data.vlaanderen.be/ns/mandaat#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -76,7 +77,8 @@ SELECT DISTINCT ?geplandeStart ?location ?title_agenda ?description ?bestuurscla
           FILTER (?geplandeStart > ?filterDate || ?geplandeStart = ?filterDate)
         }
         ORDER BY DESC(?geplandeStart) xsd:integer( ?title_agenda ) ASC(?title_agenda)
-LIMIT 10
+LIMIT 3
+OFFSET ${offset}
 `;
 };
 

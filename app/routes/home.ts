@@ -32,12 +32,22 @@ export default class HomeRoute extends Route {
     // return resp;
 
     // const resp = await
+
+    console.log(
+      getAllAgendaItemsQuery({
+        municipality: municipality,
+        offset: page * 3,
+      })
+    );
     const resp = await Ember.RSVP.hash({
       agenda_items: axios
         .get(
           "https://qa.centrale-vindplaats.lblod.info/sparql?query=" +
             encodeURIComponent(
-              getAllAgendaItemsQuery({ municipality: municipality })
+              getAllAgendaItemsQuery({
+                municipality: municipality,
+                offset: page * 3,
+              })
             ),
           {
             headers: {
