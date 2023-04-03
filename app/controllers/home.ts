@@ -11,12 +11,12 @@ export default class HomeController extends Controller {
   @tracked selected = "";
   @action handleKeywordChange() {}
 
+  get currentRoute() {
+    return this.router.currentRouteName;
+  }
+
   @tracked queryParams = ["page"];
   @tracked page = 0;
-
-  @tracked isOnListRoute = () => {
-    return this.router.currentRouteName === "list";
-  };
 
   @tracked entriesStart = 0;
   @tracked entriesEnd = 3;
