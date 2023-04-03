@@ -1,4 +1,4 @@
-export const getAllMunicipalitiesQuery = ({
+export const getAllAgendaItemsQuery = ({
   municipality,
 }: {
   municipality?: string;
@@ -77,5 +77,56 @@ SELECT DISTINCT ?geplandeStart ?location ?title_agenda ?description ?bestuurscla
         }
         ORDER BY DESC(?geplandeStart) xsd:integer( ?title_agenda ) ASC(?title_agenda)
 LIMIT 10
+`;
+};
+
+export const getAllMunicipalitiesQuery = () => {
+  return `
+  PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+  PREFIX mandaat: <http://data.vlaanderen.be/ns/mandaat#>
+  PREFIX besluit: <http://data.vlaanderen.be/ns/besluit#>
+  PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+  PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+  SELECT DISTINCT ?start ?eind ?achternaam ?voornaam ?bestuursfunctie ?fractie ?bestuurseenheidnaam WHERE {
+  ?mandataris a mandaat:Mandataris .
+  ?mandataris mandaat:start ?start.
+  OPTIONAL {?mandataris mandaat:einde ?eind.}
+  OPTIONAL {?mandataris mandaat:rangorde ?rangorde.}
+  OPTIONAL {?mandataris mandaat:beleidsdomein ?beleid;
+            skos:prefLabel ?beleidsdomein.}
+
+  ?mandataris mandaat:isBestuurlijkeAliasVan ?person .
+  ?person a <http://www.w3.org/ns/person#Person> .
+  ?person <http://xmlns.com/foaf/0.1/familyName> ?achternaam .
+  ?person <http://data.vlaanderen.be/ns/persoon#gebruikteVoornaam> ?voornaam.
+
+  ?mandataris <http://www.w3.org/ns/org#holds> ?functie .
+  ?functie <http://www.w3.org/ns/org#role> ?rol .
+  ?rol <http://www.w3.org/2004/02/skos/core#prefLabel> 'Burgemeester' .
+
+  OPTIONAL {?mandataris <http://www.w3.org/ns/org#hasMembership> ?lid .
+        ?lid <http://www.w3.org/ns/org#organisation> ?o.
+        ?o a mandaat:Fractie.
+        ?o <https://www.w3.org/ns/regorg#legalName> ?fractie.}
+
+  ?mandataris <http://www.w3.org/ns/org#holds> ?manda .
+  ?manda a mandaat:Mandaat .
+  ?specializationInTime <http://www.w3.org/ns/org#hasPost> ?manda.
+  ?manda <http://www.w3.org/ns/org#role> ?bo .
+  ?bo <http://www.w3.org/2004/02/skos/core#prefLabel> ?bestuursorgaanTijd .
+  ?specializationInTime mandaat:isTijdspecialisatieVan ?boo  .
+  ?boo <http://www.w3.org/2004/02/skos/core#prefLabel> ?bestuursorgaan .
+  ?boo besluit:classificatie ?classificatie.
+  ?classificatie skos:prefLabel ?bestuursclassificatie .
+  ?boo besluit:bestuurt ?s .
+  ?s a besluit:Bestuurseenheid .
+  ?s besluit:werkingsgebied [rdfs:label ?bestuurseenheidnaam]
+
+  FILTER (?eind >= xsd:date(NOW()) || NOT EXISTS {?mandataris mandaat:einde ?eind.} )
+  }
+
+  ORDER BY ASC(?bestuurseenheidnaam) ASC(?fractie) ASC(?voornaam)
 `;
 };
