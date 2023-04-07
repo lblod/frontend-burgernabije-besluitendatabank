@@ -1,4 +1,8 @@
-<LinkTo style="height: 100%;" @route="detail" @model={{this.title}}>
+<LinkTo
+  style="height: 30%; max-height: 30%;"
+  @route="detail"
+  @model={{this.title}}
+>
   <AuCard
     @size="small"
     class="card-hover au-u-padding-bottom au-u-padding"
@@ -13,8 +17,8 @@
         </AuLink>
       </AuHeading>
     </c.header>
-    <c.content>
-      <p>{{#if this.body}}
+    <c.content style="overflow: scroll;">
+      <p style="max-lines: 3;">{{#if this.body}}
           {{this.body}}
         {{/if}}</p>
     </c.content>

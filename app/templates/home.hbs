@@ -25,27 +25,14 @@
       <section class="au-u-flex" style="align-items: center;">
         <AuLabel class="au-u-padding-right">Weergave</AuLabel>
         {{#if (eq this.currentRoute "home.list")}}
-          <AuLink
-            {{!-- @skin={{if this.isOnListRoute "button-secondary" "button"}} --}}
-            @skin="button"
-            @route="home.map"
-          >
+          <AuLink @skin="button" @route="home.map">
             Kaart
           </AuLink>
         {{else}}
-          <AuLink
-            {{!-- @skin={{if this.isOnListRoute "button-secondary" "button"}} --}}
-            @skin="button"
-            @route="home.list"
-          >
+          <AuLink @skin="button" @route="home.list">
             List
           </AuLink>
         {{/if}}
-        {{!-- <AuLink
-          @route="home.list"
-          @skin={{if this.isOnListRoute "button" "button-secondary"}}
-        >Lijst
-        </AuLink> --}}
       </section>
       <section style="margin-left: auto;" class="au-u-flex">
         <AuLabel for="sort-on" style="width: 80px; white-space: nowrap;">
