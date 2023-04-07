@@ -1,7 +1,7 @@
-<LinkTo @route="detail" @model={{this.id}}>
+<LinkTo style="height: 100%;" @route="detail" @model={{this.title}}>
   <AuCard
     @size="small"
-    class="au-o-region-large card-hover au-u-padding-bottom au-u-padding"
+    class="card-hover au-u-padding-bottom au-u-padding"
     style="height: 100%;"
     as |c|
   >
@@ -21,10 +21,6 @@
     <c.footer>
       {{#if this.startDate}}
         {{this.startDate}}
-      {{/if}}
-      tot
-      {{#if this.endDate}}
-        {{this.endDate}}
       {{/if}}
       -
       {{#if this.municipality}}
