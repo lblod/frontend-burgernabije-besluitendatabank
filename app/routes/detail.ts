@@ -2,22 +2,43 @@ import Store from "@ember-data/store";
 import Route from "@ember/routing/route";
 import { service } from "@ember/service";
 import axios from "axios";
-import ENV from "frontend-burgernabije-besluitendatabank/config/environment";
+import { getOneAgendaItemByTitle } from "frontend-burgernabije-besluitendatabank/utils/sparqlQueries";
 
 export default class DetailRoute extends Route {
   @service declare store: Store;
   async model(params: any) {
     const { id } = params;
     return await axios
-      .get(`${ENV.API_URL}/agenda-items?filter[id]=${id}`)
-      .then((resp) => {
-        console.log(resp.data.data[0]);
-        return resp.data.data[0];
+      .get(
+        "https://qa.centrale-vindplaats.lblod.info/sparql?query=" +
+          encodeURIComponent(
+            getOneAgendaItemByTitle({
+              title: id,
+            })
+          ),
+        {
+          headers: {
+            Accept: "application/sparql-results+json",
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data.results.bindings[0]);
+        return response.data.results.bindings[0];
       })
-      .catch((err) => {
-        console.log(err);
-        return err;
+      .catch((error) => {
+        console.error(error);
       });
+    // return await axios
+    //   .get(`${ENV.API_URL}/agenda-items?filter[id]=${id}`)
+    //   .then((resp) => {
+    //     console.log(resp.data.data[0]);
+    //     return resp.data.data[0];
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     return err;
+    //   });
     // return this.store.findRecord("agenda_items", id);
   }
 }

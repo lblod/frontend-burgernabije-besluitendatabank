@@ -37,8 +37,8 @@
           class="au-u-h3 au-u-medium"
           style=" text-decoration: none; "
         >
-          {{#if this.model.attributes.title}}
-            {{this.model.attributes.title}}
+          {{#if this.model.title_agenda.value}}
+            {{this.model.title_agenda.value}}
           {{else}}
             NO TITLE
           {{/if}}
@@ -52,13 +52,13 @@
           style=" align-items: center;"
         >
           <AuIcon class="au-u-margin-right-small" @size="large" @icon="check" />
-          <p>Tijdelijke verordening wegverkeer -
-            {{#if this.model.attributes.startdate}}
-              {{iso-formatter this.model.attributes.startdate}}
+          <p>{{this.model.title_agenda.value}}
+            -
+            {{#if this.model.geplandeStart.value}}
+              {{iso-formatter this.model.geplandeStart.value}}
             {{else}}
               NO DATE
-            {{/if}}
-            - Lange kant</p>
+            {{/if}}</p>
         </section>
         <section
           class="au-u-flex au-u-muted au-u-margin-top-tiny"
@@ -69,10 +69,13 @@
             @size="large"
             @icon="message"
           />
-          <LinkTo @route="municipality" @model={{this.model.municipality}}>
+          <LinkTo
+            @route="municipality"
+            @model={{this.model.eenheid_werkingsgebied_label.value}}
+          >
             <p>Gemeente
-              {{#if this.model.attributes.municipality}}
-                {{this.model.attributes.municipality}}
+              {{#if this.model.eenheid_werkingsgebied_label.value}}
+                {{this.model.eenheid_werkingsgebied_label.value}}
               {{else}}
                 NO MUNICIPALITY
               {{/if}}</p>
@@ -87,25 +90,9 @@
             @size="large"
             @icon="calendar"
           />
-
-          <p>Goedgekeurd op
-            {{#if this.model.attributes.approveddate}}
-              {{iso-formatter this.model.attributes.approveddate}}
-            {{else}}
-              NO DATE
-            {{/if}}</p>
-        </section><section
-          class="au-u-flex au-u-muted au-u-margin-top-tiny"
-          style=" align-items: center;"
-        >
-          <AuIcon
-            class="au-u-margin-right-small"
-            @size="large"
-            @icon="calendar"
-          />
           <p>
             {{#if this.model.attributes.alternatelink}}
-              ©π
+
               <a href="{{this.model.alternatelink}}">Bekijk agendapunt op de
                 website van de gemeente</a>
             {{else}}
@@ -117,10 +104,8 @@
 
         <section>
           <p>
-            {{#if this.model.attributes.body}}
-              {{this.model.attributes.body}}
-            {{else}}
-              NO DESCRIPTION
+            {{#if this.model.description.value}}
+              {{this.model.description.value}}
             {{/if}}
           </p>
         </section>
