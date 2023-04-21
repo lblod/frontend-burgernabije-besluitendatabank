@@ -1,10 +1,18 @@
 export const getAllAgendaItemsQuery = ({
   municipality,
   offset = 0,
+  sort,
+  plannedStart,
+  keyWord,
 }: {
   municipality?: string;
   offset?: number;
+  sort?: string;
+  plannedStart?: string;
+  keyWord?: string;
 }): string => {
+  const keyWordArray = keyWord?.split(" ");
+
   return `PREFIX besluit: <http://data.vlaanderen.be/ns/besluit#>
 PREFIX mandaat: <http://data.vlaanderen.be/ns/mandaat#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -18,7 +26,7 @@ SELECT DISTINCT ?geplandeStart ?location ?title_agenda ?description ?bestuurscla
   ?zitting a besluit:Zitting .
   ?zitting besluit:geplandeStart ?geplandeStart .
   OPTIONAL { ?zitting <http://www.w3.org/ns/prov#atLocation> ?location}
-
+  FILTER(xsd:date(?geplandeStart) >= xsd:date("${plannedStart}"))
   ?zitting besluit:behandelt ?agendapunt.
   ?agendapunt a besluit:Agendapunt .
   ?agendapunt terms:title ?title .
@@ -64,6 +72,27 @@ SELECT DISTINCT ?geplandeStart ?location ?title_agenda ?description ?bestuurscla
 
           FILTER(?bestuursclassificatie = "Gemeenteraad" || ?bestuursclassificatie = "Raad voor Maatschappelijk Welzijn")
 
+          ${
+            keyWordArray
+              ? keyWordArray
+                  .map((w) => {
+                    return `
+          FILTER (
+            EXISTS {
+              ?agendapunt terms:title ?title .
+              FILTER(contains(lcase(str(?title)), lcase("${w}")))
+            }
+            ||
+            EXISTS {
+              ?agendapunt terms:description ?description .
+              FILTER(contains(lcase(str(?description)), lcase("${w}")))
+            }
+          )`;
+                  })
+                  .join("\n")
+              : ""
+          }
+
           BIND(day(now()) AS ?day)
           BIND(IF(?day < 10, "-0", "-") AS ?day2)
           BIND(month(now()) - 3 AS ?month)
@@ -76,12 +105,25 @@ SELECT DISTINCT ?geplandeStart ?location ?title_agenda ?description ?bestuurscla
           BIND(STRDT(?dayTofilter, xsd:date) AS ?filterDate)
           FILTER (?geplandeStart > ?filterDate || ?geplandeStart = ?filterDate)
         }
-        ORDER BY DESC(?geplandeStart) xsd:integer( ?title_agenda ) ASC(?title_agenda)
-LIMIT 3
-OFFSET ${offset}
-`;
-};
+        ${sort === "datum" ? "ORDER BY ASC(?geplandeStart)" : ""}
 
+        LIMIT 3
+        OFFSET ${offset}
+        `;
+};
+// IF(contains(lcase(str(?description)), lcase("kader")), 1, 0)) DESC
+
+// FILTER (
+//   EXISTS {
+//     ?agendapunt terms:title ?title .
+//     FILTER(contains(lcase(str(?title)), lcase("${keyWord}")))
+//   }
+//   ||
+//   EXISTS {
+//     ?agendapunt terms:description ?description .
+//     FILTER(contains(lcase(str(?description)), lcase("${keyWord}")))
+//   }
+// )
 export const getOneAgendaItemByTitle = ({
   title,
 }: {

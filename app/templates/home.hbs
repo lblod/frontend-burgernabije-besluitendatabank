@@ -38,9 +38,14 @@
         <AuLabel for="sort-on" style="width: 80px; white-space: nowrap;">
           Sorteer op
         </AuLabel>
-        <select type="select" class="au-c-input" style="width: 200px;">
-          <option>Datum</option>
+        <select
+          type="select"
+          onchange={{action "handleSort"}}
+          class="au-c-input"
+          style="width: 200px;"
+        >
           <option>Relevantie</option>
+          <option>Datum</option>
         </select>
       </section>
     </AuFormRow>

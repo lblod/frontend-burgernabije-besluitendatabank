@@ -14,6 +14,9 @@ export default class HomeRoute extends Route {
   queryParams = {
     page: { refreshModel: true },
     municipality: { refreshModel: true },
+    sort: { refreshModel: true },
+    plannedStart: { refreshModel: true },
+    keyWord: { refreshModel: true },
     //   startDate: { refreshModel: true },
     //   endDate: { refreshModel: true },
   };
@@ -21,6 +24,9 @@ export default class HomeRoute extends Route {
   async model(params: any) {
     const page = params.page ? params.page : 0;
     const municipality = params.municipality ? params.municipality : null;
+    const sort = params.sort ? params.sort : "relevantie";
+    const plannedStart = params.plannedStart ? params.plannedStart : null;
+    const keyWord = params.keyWord ? params.keyWord : null;
     // const startDate = params.startDate ? params.startDate : null;
     // const endDate = params.endDate ? params.endDate : null;
 
@@ -41,6 +47,9 @@ export default class HomeRoute extends Route {
               getAllAgendaItemsQuery({
                 municipality: municipality,
                 offset: page * 3,
+                sort: sort,
+                plannedStart: plannedStart,
+                keyWord: keyWord,
               })
             ),
           {

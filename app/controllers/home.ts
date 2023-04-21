@@ -9,7 +9,6 @@ export default class HomeController extends Controller {
   @service declare router: RouterService;
   @service declare store: Store;
   @tracked selected = "";
-  @action handleKeywordChange() {}
 
   get currentRoute() {
     return this.router.currentRouteName;
@@ -20,9 +19,10 @@ export default class HomeController extends Controller {
 
   @tracked entriesStart = 0;
   @tracked entriesEnd = 3;
+  @tracked keyWord = "";
+  @tracked sort = "relevantie";
 
-  @tracked startDate = undefined;
-  @tracked endDate = undefined;
+  @tracked plannedStart = undefined;
 
   @action handleMunicipalityChange(m: any) {
     this.selected = m;
@@ -31,21 +31,41 @@ export default class HomeController extends Controller {
       queryParams: {
         page: this.page,
         municipality: m,
-        startDate: this.startDate,
-        endDate: this.endDate,
+        sort: this.sort,
+        plannedStart: this.plannedStart,
+        keyWord: this.keyWord,
       },
     });
   }
 
-  @action handleDateChange(d: any) {
-    this.startDate = d!.target.value;
+  @action handleSort(e: any) {
+    this.sort = e.target.value.toLowerCase();
+  }
+
+  @action handleKeywordChange(e: any) {
+    this.keyWord = e.target.value;
     this.page = 0;
     this.router.transitionTo("home", {
       queryParams: {
         page: this.page,
         municipality: this.selected,
-        startDate: this.startDate,
-        endDate: this.endDate,
+        sort: this.sort,
+        plannedStart: this.plannedStart,
+        keyWord: this.keyWord,
+      },
+    });
+  }
+
+  @action handleDateChange(d: any) {
+    this.plannedStart = d!.target.value;
+    this.page = 0;
+    this.router.transitionTo("home", {
+      queryParams: {
+        page: this.page,
+        municipality: this.selected,
+        sort: this.sort,
+        plannedStart: this.plannedStart,
+        keyWord: this.keyWord,
       },
     });
   }
