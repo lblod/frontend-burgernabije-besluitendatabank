@@ -5,6 +5,8 @@ import Store from "@ember-data/store";
 export default class ListRoute extends Route {
     @service declare store: Store;
 
+    size = 3;
+
 
     queryParams = {
         page: { refreshModel: true },
@@ -18,7 +20,8 @@ export default class ListRoute extends Route {
     
         let agendaItems = await this.store.query("agenda-items", {
           page: {
-            number: page
+            number: page,
+            size: this.size
           }
         });
 
