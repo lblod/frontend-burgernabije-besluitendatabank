@@ -11,6 +11,8 @@ export default class HomeListController extends Controller {
   //   @tracked selected = "";
   //   @action handleKeywordChange() {}
   //   @tracked queryParams = ["page"];
+  @tracked queryParams = ["page"];
+
   @tracked page = 0;
   @tracked entriesStart = 0;
   @tracked entriesEnd = 3;

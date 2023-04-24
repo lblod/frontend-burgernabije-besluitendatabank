@@ -14,8 +14,6 @@ export default class HomeController extends Controller {
   @tracked queryParams = ["page"];
   @tracked page = 0;
 
-  @tracked entriesStart = 0;
-  @tracked entriesEnd = 3;
 
   @tracked startDate = undefined;
   @tracked endDate = undefined;

@@ -1,5 +1,5 @@
 <section class="au-o-flow au-u-flex au-u-flex--column" style="height: 100%;">
-  {{#each this.model.agenda_items as |item|}}
+  {{#each @model as |item|}}
     <DecisionCard
       @id={{item.id}}
       @title={{item.title}}
