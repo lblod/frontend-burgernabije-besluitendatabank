@@ -22,7 +22,11 @@ export default class HomeRoute extends Route {
     // const endDate = params.endDate ? params.endDate : null;
 
     const municipalities = await getMunicipalitiesFromVlaanderen(true);
-    let agendaItems = await this.store.findAll("agenda-items");
+    let agendaItems = await this.store.query("agenda-items", {
+      page: {
+        number: page
+      }
+    });
     // TODO let both find at the same time, also not findall bc jaysus
     //let municipalities = await this.store.findAll("municipality)")
 
