@@ -1,5 +1,5 @@
 <section class="au-o-flow au-u-flex au-u-flex--column" style="height: 100%;">
-  {{#each @model as |item|}}
+  {{#each @model.agendaItems as |item|}}
     <DecisionCard
       @id={{item.id}}
       @title={{item.title}}
@@ -24,6 +24,7 @@
       <span class="au-u-hidden-visually">Resultaten</span>
 
       <strong>
+        {{ @model.entriesStart }} - {{ @model.entriesEnd }}
       </strong>
       van 
     </p>

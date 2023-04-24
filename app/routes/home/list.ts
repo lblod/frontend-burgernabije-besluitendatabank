@@ -25,7 +25,14 @@ export default class ListRoute extends Route {
           }
         });
 
+        const entriesStart = page * this.size;
+        const entriesEnd = entriesStart + this.size;
+
         console.log(agendaItems)
-        return agendaItems;
+        return { 
+          "agendaItems": agendaItems,
+          "entriesStart": entriesStart,
+          "entriesEnd": entriesEnd
+        };
       }
 }
