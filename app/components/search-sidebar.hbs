@@ -11,7 +11,7 @@
           <AuLabel for={{"municipality"}} style="width: 30%;">
             Gemeente
           </AuLabel>
-          <PowerSelect
+          <PowerSelectMultiple
             style="width: 100%;"
             id="municipality"
             @placeholder={{this.municipalityPlaceholder}}
@@ -25,7 +25,7 @@
             as |singleSelect|
           >
             {{singleSelect}}
-          </PowerSelect>
+          </PowerSelectMultiple>
         </AuFormRow>
         <AuFormRow
           class="au-u-padding-top-small au-u-padding-bottom-small"
