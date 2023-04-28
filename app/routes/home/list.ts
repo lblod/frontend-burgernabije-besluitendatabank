@@ -18,11 +18,12 @@ export default class ListRoute extends Route {
         // const startDate = params.startDate ? params.startDate : null;
         // const endDate = params.endDate ? params.endDate : null;
     
-        let agendaItems = await this.store.query("agenda-items", {
+        let agendaItems = await this.store.query("agenda-item", {
           page: {
             number: page,
             size: this.size
-          }
+          },
+          include: 'session'//,session.is-gehouden-door'
         });
 
         const entriesStart = page * this.size;
