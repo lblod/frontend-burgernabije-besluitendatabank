@@ -1,7 +1,7 @@
-import faker from "ember-faker";
-import { Factory } from "miragejs";
+import Mirage, { faker } from "ember-cli-mirage";
 import { municipalities } from "../mockdata";
-export default Factory.extend({
+
+export default Mirage.Factory.extend({
   id() {
     return faker.datatype.uuid();
   },
