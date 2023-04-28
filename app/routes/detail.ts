@@ -4,12 +4,17 @@ import { service } from "@ember/service";
 
 export default class DetailRoute extends Route {
   @service declare store: Store;
-  async model(params: any) {
-    let item = await this.store.findRecord("agenda-item", params.id, {
-      include: 'session,session.is-gehouden-door'
+
+  model(params: any) {
+    return this.store.query("agenda-item", 
+    { 
+      filter: {
+        "title": params.title
+      },
+      include: 'session,session.governing-agent'
+    }).then((agendaItem) => {
+      console.log(agendaItem);
+      return agendaItem.get("firstObject");
     });
-    console.log(item)
-    return item;
-    //return
   }
 }

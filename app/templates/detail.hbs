@@ -39,27 +39,25 @@
         >
           {{#if this.model.title}}
             {{this.model.title}}
-          {{else}}
-            NO TITLE
           {{/if}}
 
         </AuLink>
 
       </c.header>
       <c.content>
-        <section
-          class="au-u-flex au-u-muted au-u-margin-top-tiny"
-          style=" align-items: center;"
-        >
-          <AuIcon class="au-u-margin-right-small" @size="large" @icon="check" />
-          <p>Tijdelijke verordening wegverkeer -
-            {{#if this.model.session.startedAt}}
-              {{this.model.session.startedAt}}
-            {{else}}
-              NO DATE
-            {{/if}}
-            - Lange kant</p>
-        </section>
+        {{#if this.model.session.startedAt}}
+          <section
+            class="au-u-flex au-u-muted au-u-margin-top-tiny"
+            style=" align-items: center;"
+          >
+            <AuIcon class="au-u-margin-right-small" @size="large" @icon="check" />
+            <p>
+                {{iso-formatter this.model.session.startedAt}}
+              - Lange kant</p>
+            
+          </section>
+        {{/if}}
+
         <section
           class="au-u-flex au-u-muted au-u-margin-top-tiny"
           style=" align-items: center;"
@@ -73,8 +71,6 @@
             <p>Gemeente
               {{#if this.model.municipality}}
                 {{this.model.municipality}}
-              {{else}}
-                NO MUNICIPALITY
               {{/if}}</p>
           </LinkTo>
         </section>
@@ -90,7 +86,7 @@
 
           <p>Goedgekeurd op
             {{#if this.model.approveddate}}
-              {{ this.model.approveddate}}
+              {{iso-formatter this.model.approveddate}}
             {{else}}
               NO DATE
             {{/if}}</p>
@@ -104,11 +100,9 @@
             @icon="calendar"
           />
           <p>
-            {{#if this.model.alternatelink}}
-              <a href="{{this.model.alternatelink}}">Bekijk
+            {{#if this.model.alternateLink}}
+              <a href="{{this.model.alternateLink}}">Bekijk
                 agendapunt op de website van de gemeente</a>
-            {{else}}
-              Bekijk agendapunt op de website van de gemeente
             {{/if}}
 
           </p>
