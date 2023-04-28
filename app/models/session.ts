@@ -5,5 +5,5 @@ export default class SessionsModel extends Model {
     @attr("date") declare endedAt: Date;
 
     @belongsTo("agenda-item") agendaItem;
-    @belongsTo("is-gehouden-door") isGehoudenDoor;
+    @belongsTo("governing-agent") governingAgent;
 }

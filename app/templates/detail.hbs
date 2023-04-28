@@ -37,8 +37,8 @@
           class="au-u-h3 au-u-medium"
           style=" text-decoration: none; "
         >
-          {{#if this.model.attributes.title}}
-            {{this.model.attributes.title}}
+          {{#if this.model.title}}
+            {{this.model.title}}
           {{else}}
             NO TITLE
           {{/if}}
@@ -53,8 +53,8 @@
         >
           <AuIcon class="au-u-margin-right-small" @size="large" @icon="check" />
           <p>Tijdelijke verordening wegverkeer -
-            {{#if this.model.attributes.startdate}}
-              {{iso-formatter this.model.attributes.startdate}}
+            {{#if this.model.session.startedAt}}
+              {{this.model.session.startedAt}}
             {{else}}
               NO DATE
             {{/if}}
@@ -71,8 +71,8 @@
           />
           <LinkTo @route="municipality" @model={{this.model.municipality}}>
             <p>Gemeente
-              {{#if this.model.attributes.municipality}}
-                {{this.model.attributes.municipality}}
+              {{#if this.model.municipality}}
+                {{this.model.municipality}}
               {{else}}
                 NO MUNICIPALITY
               {{/if}}</p>
@@ -89,8 +89,8 @@
           />
 
           <p>Goedgekeurd op
-            {{#if this.model.attributes.approveddate}}
-              {{iso-formatter this.model.attributes.approveddate}}
+            {{#if this.model.approveddate}}
+              {{ this.model.approveddate}}
             {{else}}
               NO DATE
             {{/if}}</p>
@@ -104,8 +104,8 @@
             @icon="calendar"
           />
           <p>
-            {{#if this.model.attributes.alternatelink}}
-              <a href="{{this.model.attributes.alternatelink}}">Bekijk
+            {{#if this.model.alternatelink}}
+              <a href="{{this.model.alternatelink}}">Bekijk
                 agendapunt op de website van de gemeente</a>
             {{else}}
               Bekijk agendapunt op de website van de gemeente
@@ -116,8 +116,8 @@
 
         <section>
           <p>
-            {{#if this.model.attributes.body}}
-              {{this.model.attributes.body}}
+            {{#if this.model.body}}
+              {{this.model.body}}
             {{else}}
               NO DESCRIPTION
             {{/if}}

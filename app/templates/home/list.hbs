@@ -3,7 +3,7 @@
     <DecisionCard
       @id={{item.id}}
       @title={{item.title}}
-      @startDate={{if item.session.startedAt item.session.startedAt null}}
+      @startDate={{item.session.startedAt}}
       @endDate={{item.session.endedAt}}
     />
   {{/each}}

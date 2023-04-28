@@ -23,7 +23,7 @@ export default class ListRoute extends Route {
             number: page,
             size: this.size
           },
-          include: 'session'//,session.is-gehouden-door'
+          include: 'session,session.is-gehouden-door'
         });
 
         const entriesStart = page * this.size;
