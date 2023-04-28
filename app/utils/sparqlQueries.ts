@@ -12,6 +12,7 @@ export const getAllAgendaItemsQuery = ({
   keyWord?: string;
 }): string => {
   const keyWordArray = keyWord?.split(" ");
+  const municipalityArr = municipality?.split(",");
 
   return `PREFIX besluit: <http://data.vlaanderen.be/ns/besluit#>
 PREFIX mandaat: <http://data.vlaanderen.be/ns/mandaat#>
@@ -35,39 +36,71 @@ SELECT DISTINCT ?geplandeStart ?location ?title_agenda ?description ?bestuurscla
     ?agendapunt besluit:geplandOpenbaar ?OpenbaarOfNiet .
     BIND (IF(?openbaarOfNiet = 1, "Openbaar", "Openbaar niet") as ?geplandOpenbaar)
   }
+  ${
+    municipalityArr !== undefined && municipalityArr !== null
+      ? municipalityArr
+          .map(
+            (m) =>
+              ` {
+      ?zitting a besluit:Zitting.
+      ?zitting besluit:isGehoudenDoor ?bestuursorgaan.
+      ?bestuursorgaan besluit:classificatie ?classificatie.
+      ?classificatie skos:prefLabel ?bestuursclassificatie .
+      ?bestuursorgaan besluit:bestuurt ?eenheid.
+      ?eenheid a besluit:Bestuurseenheid .
+      ?eenheid besluit:werkingsgebied ?eenheid_werkingsgebied.
+      ?eenheid_werkingsgebied rdfs:label ?eenheid_werkingsgebied_label.
+      ${
+        m !== undefined && m !== null
+          ? `?eenheid besluit:werkingsgebied [rdfs:label "${m}"].`
+          : ""
+      }
+    }
+    UNION
+    {
+      ?zitting a besluit:Zitting.
+      ?zitting besluit:isGehoudenDoor ?bestuursorgaanInTijd.
+      ?bestuursorgaanInTijd mandaat:isTijdspecialisatieVan ?bestuursorgaan.
+      ?bestuursorgaan besluit:classificatie ?classificatie.
+      ?classificatie skos:prefLabel ?bestuursclassificatie .
+      ?bestuursorgaan besluit:bestuurt ?eenheid.
+      ?eenheid a besluit:Bestuurseenheid .
+      ?eenheid besluit:werkingsgebied ?eenheid_werkingsgebied.
+      ?eenheid_werkingsgebied rdfs:label ?eenheid_werkingsgebied_label.
+      ${
+        m !== undefined && m !== null
+          ? `?eenheid besluit:werkingsgebied [rdfs:label "${m}"].`
+          : ""
+      }
+    }`
+          )
+          .join("UNION\n")
+      : `
+      {
+        ?zitting a besluit:Zitting.
+        ?zitting besluit:isGehoudenDoor ?bestuursorgaan.
+        ?bestuursorgaan besluit:classificatie ?classificatie.
+        ?classificatie skos:prefLabel ?bestuursclassificatie .
+        ?bestuursorgaan besluit:bestuurt ?eenheid.
+        ?eenheid a besluit:Bestuurseenheid .
+        ?eenheid besluit:werkingsgebied ?eenheid_werkingsgebied.
+        ?eenheid_werkingsgebied rdfs:label ?eenheid_werkingsgebied_label.
+      }
+      UNION
+      {
+        ?zitting a besluit:Zitting.
+        ?zitting besluit:isGehoudenDoor ?bestuursorgaanInTijd.
+        ?bestuursorgaanInTijd mandaat:isTijdspecialisatieVan ?bestuursorgaan.
+        ?bestuursorgaan besluit:classificatie ?classificatie.
+        ?classificatie skos:prefLabel ?bestuursclassificatie .
+        ?bestuursorgaan besluit:bestuurt ?eenheid.
+        ?eenheid a besluit:Bestuurseenheid .
+        ?eenheid besluit:werkingsgebied ?eenheid_werkingsgebied.
+        ?eenheid_werkingsgebied rdfs:label ?eenheid_werkingsgebied_label.
+      }`
+  }
 
-  {
-    ?zitting a besluit:Zitting.
-    ?zitting besluit:isGehoudenDoor ?bestuursorgaan.
-    ?bestuursorgaan besluit:classificatie ?classificatie.
-    ?classificatie skos:prefLabel ?bestuursclassificatie .
-    ?bestuursorgaan besluit:bestuurt ?eenheid.
-    ?eenheid a besluit:Bestuurseenheid .
-    ?eenheid besluit:werkingsgebied ?eenheid_werkingsgebied.
-    ?eenheid_werkingsgebied rdfs:label ?eenheid_werkingsgebied_label.
-    ${
-      municipality !== undefined && municipality !== null
-        ? `?eenheid besluit:werkingsgebied [rdfs:label "${municipality}"].`
-        : ""
-    }
-  }
-  UNION
-  {
-    ?zitting a besluit:Zitting.
-    ?zitting besluit:isGehoudenDoor ?bestuursorgaanInTijd.
-    ?bestuursorgaanInTijd mandaat:isTijdspecialisatieVan ?bestuursorgaan.
-    ?bestuursorgaan besluit:classificatie ?classificatie.
-    ?classificatie skos:prefLabel ?bestuursclassificatie .
-    ?bestuursorgaan besluit:bestuurt ?eenheid.
-    ?eenheid a besluit:Bestuurseenheid .
-    ?eenheid besluit:werkingsgebied ?eenheid_werkingsgebied.
-    ?eenheid_werkingsgebied rdfs:label ?eenheid_werkingsgebied_label.
-    ${
-      municipality !== undefined && municipality !== null
-        ? `?eenheid besluit:werkingsgebied [rdfs:label "${municipality}"].`
-        : ""
-    }
-  }
+
 
 
           FILTER(?bestuursclassificatie = "Gemeenteraad" || ?bestuursclassificatie = "Raad voor Maatschappelijk Welzijn")
@@ -105,10 +138,9 @@ SELECT DISTINCT ?geplandeStart ?location ?title_agenda ?description ?bestuurscla
           BIND(STRDT(?dayTofilter, xsd:date) AS ?filterDate)
           FILTER (?geplandeStart > ?filterDate || ?geplandeStart = ?filterDate)
         }
-        ${sort === "datum" ? "ORDER BY ASC(?geplandeStart)" : ""}
-
-        LIMIT 3
-        OFFSET ${offset}
+        ${sort === "datum" ? "ORDER BY DESC(?geplandeStart)" : ""}
+        OFFSET ${offset ? offset : 0}
+        LIMIT ${offset ? 10 + Number(offset) : 10}
         `;
 };
 // IF(contains(lcase(str(?description)), lcase("kader")), 1, 0)) DESC
@@ -244,4 +276,62 @@ export const getAllMunicipalitiesQuery = () => {
 
   ORDER BY ASC(?bestuurseenheidnaam) ASC(?fractie) ASC(?voornaam)
 `;
+};
+
+export const getGemeenteRaadsleden = ({
+  municipality,
+}: {
+  municipality: string;
+}) => {
+  return `
+
+  PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+  PREFIX mandaat: <http://data.vlaanderen.be/ns/mandaat#>
+  PREFIX besluit: <http://data.vlaanderen.be/ns/besluit#>
+  PREFIX bevat: <http://www.w3.org/ns/org#hasPost>
+  PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+  PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+  SELECT DISTINCT (GROUP_CONCAT(DISTINCT ?start; separator = " , ") AS ?starts) (GROUP_CONCAT(DISTINCT ?eind; separator = " , ") AS ?einds) ?achternaam ?voornaam ?fractie  (GROUP_CONCAT(DISTINCT ?bestuursfunctie; separator = " , ") AS ?bestuursfuncties) (GROUP_CONCAT(DISTINCT ?bestuursclassificatie; separator = " , ") AS ?bestuursclassificaties) (GROUP_CONCAT(DISTINCT ?beleidsdomein; separator = " , ") AS ?beleidsdomeins) WHERE {
+
+      ?mandataris a mandaat:Mandataris .
+      ?mandataris mandaat:start ?start.
+      OPTIONAL {?mandataris mandaat:einde ?eind.}
+      OPTIONAL {?mandataris mandaat:rangorde ?rangorde.}
+      OPTIONAL {?mandataris mandaat:beleidsdomein ?beleid.
+                  ?beleid skos:prefLabel ?beleidsdomein.}
+
+      ?mandataris mandaat:isBestuurlijkeAliasVan ?person .
+      ?person a <http://www.w3.org/ns/person#Person> .
+      ?person <http://xmlns.com/foaf/0.1/familyName> ?achternaam .
+      ?person <http://data.vlaanderen.be/ns/persoon#gebruikteVoornaam> ?voornaam.
+
+      ?mandataris <http://www.w3.org/ns/org#holds> ?functie .
+      ?functie <http://www.w3.org/ns/org#role> ?rol .
+      ?rol <http://www.w3.org/2004/02/skos/core#prefLabel> ?bestuursfunctie .
+
+      OPTIONAL {?mandataris <http://www.w3.org/ns/org#hasMembership> ?lid .
+          ?lid <http://www.w3.org/ns/org#organisation> ?o.
+          ?o a mandaat:Fractie .
+              ?o <https://www.w3.org/ns/regorg#legalName> ?fractie.}
+
+      ?mandataris <http://www.w3.org/ns/org#holds> ?manda .
+      ?manda a mandaat:Mandaat .
+      ?specializationInTime <http://www.w3.org/ns/org#hasPost> ?manda.
+      ?manda <http://www.w3.org/ns/org#role> ?bo .
+      ?bo <http://www.w3.org/2004/02/skos/core#prefLabel> ?bestuursorgaanTijd .
+      ?specializationInTime mandaat:isTijdspecialisatieVan ?boo  .
+      ?boo <http://www.w3.org/2004/02/skos/core#prefLabel> ?bestuursorgaan .
+      ?boo besluit:classificatie ?classificatie.
+      ?classificatie skos:prefLabel ?bestuursclassificatie .
+      ?boo besluit:bestuurt ?s .
+      ?s a besluit:Bestuurseenheid .
+      ?s besluit:werkingsgebied [rdfs:label "${municipality}"]
+
+      FILTER (?eind >= xsd:date(NOW()) || NOT EXISTS {?mandataris mandaat:einde ?eind.} )
+  }
+
+  ORDER BY ASC(?fractie) ASC(?voornaam)
+  `;
 };

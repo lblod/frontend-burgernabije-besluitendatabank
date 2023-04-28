@@ -17,6 +17,7 @@ export default class HomeRoute extends Route {
     sort: { refreshModel: true },
     plannedStart: { refreshModel: true },
     keyWord: { refreshModel: true },
+    offset: { refreshModel: true },
     //   startDate: { refreshModel: true },
     //   endDate: { refreshModel: true },
   };
@@ -27,17 +28,11 @@ export default class HomeRoute extends Route {
     const sort = params.sort ? params.sort : "relevantie";
     const plannedStart = params.plannedStart ? params.plannedStart : null;
     const keyWord = params.keyWord ? params.keyWord : null;
+    const offset = params.offset ? params.offset : 0;
     // const startDate = params.startDate ? params.startDate : null;
     // const endDate = params.endDate ? params.endDate : null;
 
     const municipalities = await getMunicipalitiesFromVlaanderen(true);
-
-    // const resp = await this.store.findAll("agenda-items");
-
-    // console.log(resp);
-    // return resp;
-
-    // const resp = await
 
     const resp = await Ember.RSVP.hash({
       agenda_items: axios
@@ -46,10 +41,10 @@ export default class HomeRoute extends Route {
             encodeURIComponent(
               getAllAgendaItemsQuery({
                 municipality: municipality,
-                offset: page * 3,
                 sort: sort,
                 plannedStart: plannedStart,
                 keyWord: keyWord,
+                offset: offset,
               })
             ),
           {
@@ -81,7 +76,6 @@ export default class HomeRoute extends Route {
           console.error(error);
         }),
     });
-    console.log(resp);
     return resp;
   }
 }

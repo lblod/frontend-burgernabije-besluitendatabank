@@ -1,6 +1,6 @@
 {{page-title this.model.name}}
 
-<div class="au-u-flex" style="height: 100%;width: 100%">
+<div class="au-u-flex" style="height: 100%;width: 100%;">
   <section
     id="detail-left-section"
     class="au-u-flex au-u-flex--column"
@@ -39,7 +39,7 @@
 
         <section
           class="au-o-flow au-u-flex au-u-flex--column"
-          style="height: 100%;"
+          style="height: 100%; overflow-y: scroll;"
         >
           {{#if this.model.agenda_items}}
 
@@ -102,12 +102,14 @@
 
           Gemeenteraadsleden
         </AuHeading>
-        <ParticipantCard />
-        <ParticipantCard />
-        <ParticipantCard />
-        <ParticipantCard />
-        <ParticipantCard />
-        <ParticipantCard />
+        {{#if this.model.gemeenteraadsleden}}
+
+          {{#each this.model.gemeenteraadsleden as |person|}}
+            <ParticipantCard @person={{person}} />
+          {{/each}}
+        {{else}}
+          <p>no data</p>
+        {{/if}}
       </section>
     </div>
   </section>
