@@ -3,8 +3,9 @@
     <DecisionCard
       @id={{item.id}}
       @title={{item.title}}
+      @startDate={{if item.session.startedAt item.session.startedAt null}}
+      @endDate={{item.session.endedAt}}
     />
-
   {{/each}}
 
 </section>

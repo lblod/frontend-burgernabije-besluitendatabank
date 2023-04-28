@@ -14,7 +14,7 @@
       </AuHeading>
     </c.header>
     <c.content>
-      <p>{{#if this.body}}
+      <p>{{#if  this.body}}
           {{this.body}}
         {{/if}}</p>
     </c.content>
@@ -22,13 +22,12 @@
       {{#if this.startDate}}
         {{this.startDate}}
       {{/if}}
-      tot
       {{#if this.endDate}}
-        {{this.endDate}}
+        tot {{this.endDate}}
       {{/if}}
-      -
+      
       {{#if this.municipality}}
-        {{this.municipality}}
+        - {{this.municipality}}
       {{/if}}
     </c.footer>
   </AuCard>
