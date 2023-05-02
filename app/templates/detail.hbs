@@ -45,19 +45,22 @@
 
       </c.header>
       <c.content>
-        {{#if this.model.session.startedAt}}
+        
+        {{#if this.model.session.approvedDate}}
           <section
             class="au-u-flex au-u-muted au-u-margin-top-tiny"
             style=" align-items: center;"
           >
             <AuIcon class="au-u-margin-right-small" @size="large" @icon="check" />
             <p>
-                {{iso-formatter this.model.session.startedAt}}
-              - Lange kant</p>
-            
+                Goedgekeurd - {{iso-formatter this.model.session.approvedDate}}
+              
+            </p>
           </section>
         {{/if}}
+        
 
+        {{#if this.model.municipality}}
         <section
           class="au-u-flex au-u-muted au-u-margin-top-tiny"
           style=" align-items: center;"
@@ -67,13 +70,13 @@
             @size="large"
             @icon="message"
           />
+          
           <LinkTo @route="municipality" @model={{this.model.municipality}}>
-            <p>Gemeente
-              {{#if this.model.municipality}}
-                {{this.model.municipality}}
-              {{/if}}</p>
+            <p>Gemeente {{this.model.municipality}}</p>
           </LinkTo>
         </section>
+        {{/if}}
+        {{#if this.model.alternateLink}}
         <section
           class="au-u-flex au-u-muted au-u-margin-top-tiny"
           style=" align-items: center;"
@@ -83,37 +86,20 @@
             @size="large"
             @icon="calendar"
           />
-
-          <p>Goedgekeurd op
-            {{#if this.model.approveddate}}
-              {{iso-formatter this.model.approveddate}}
-            {{else}}
-              NO DATE
-            {{/if}}</p>
-        </section><section
-          class="au-u-flex au-u-muted au-u-margin-top-tiny"
-          style=" align-items: center;"
-        >
-          <AuIcon
-            class="au-u-margin-right-small"
-            @size="large"
-            @icon="calendar"
-          />
           <p>
-            {{#if this.model.alternateLink}}
               <a href="{{this.model.alternateLink}}">Bekijk
                 agendapunt op de website van de gemeente</a>
-            {{/if}}
-
           </p>
         </section>
+        {{/if}}
 
         <section>
           <p>
             {{#if this.model.body}}
               {{this.model.body}}
             {{else}}
-              NO DESCRIPTION
+              We hebben geen beschrijving gekregen van het bestuursorgaan. Vraag uw gemeente om te integreren met ons platform,
+              of bekijk de info op hun website <a href="{{this.model.alternateLink}}">hier</a>!
             {{/if}}
           </p>
         </section>
