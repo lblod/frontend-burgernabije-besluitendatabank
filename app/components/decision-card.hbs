@@ -14,16 +14,13 @@
       </AuHeading>
     </c.header>
     <c.content>
-      <p>{{#if  this.body}}
+      <p>{{#if this.body}}
           {{this.body}}
         {{/if}}</p>
     </c.content>
     <c.footer>
-      {{#if this.startDate}}
-        {{this.startDate}}
-      {{/if}}
-      {{#if this.endDate}}
-        tot {{this.endDate}}
+      {{#if this.dateRange}}
+        {{this.dateRange}}
       {{/if}}
       
       {{#if this.municipality}}

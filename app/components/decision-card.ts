@@ -34,6 +34,18 @@ export default class DecisionCard extends Component<ArgsInterface> {
       : null;
   }
 
+  get dateRange() {
+    if (!this.endDate && !this.startDate) return undefined;
+    if (!this.endDate) return this.startDate;
+    if (!this.startDate) return this.endDate
+
+    if (this.startDate != this.endDate) {
+        return this.startDate + " tot " + this.endDate;
+    } else {
+        return this.endDate;
+    }
+}
+
   get municipality() {
     return this.args.municipality ? this.args.municipality : null;
   }
