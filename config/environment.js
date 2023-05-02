@@ -25,10 +25,6 @@ module.exports = function (environment) {
   };
 
   if (environment === "production") {
-    // ENV["ember-cli-mirage"] = {
-    //   enabled: true,
-    //   directory: "mirage",
-    // };
     ENV["ember-cli-mirage"] = {
       enabled: false,
     };
@@ -36,20 +32,10 @@ module.exports = function (environment) {
   }
 
   if (environment === "development") {
-    // ENV["ember-cli-mirage"] = {
-    //   enabled: true,
-    //   directory: "mirage",
-    // };
     ENV["ember-cli-mirage"] = {
-      enabled: true,
+      enabled: false,
     };
     ENV.API_URL = "http://localhost:4200/api";
-
-    // ENV.APP.LOG_RESOLVER = true;
-    // ENV.APP.LOG_ACTIVE_GENERATION = true;
-    // ENV.APP.LOG_TRANSITIONS = true;
-    // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
-    // ENV.APP.LOG_VIEW_LOOKUPS = true;
   }
 
   // if (environment === "test") {

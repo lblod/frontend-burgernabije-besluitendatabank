@@ -7,7 +7,7 @@ interface ArgsInterface {}
 export default class VoteOverview extends Component<ArgsInterface> {
   @tracked pie = {
     label: {
-      format: function (value, ratio, id) {
+      format: function (value: any, ratio: any, id: any) {
         return value;
       },
     },
@@ -15,10 +15,10 @@ export default class VoteOverview extends Component<ArgsInterface> {
 
   @tracked tooltip = {
     format: {
-      title: (d) => {
+      title: (d: any) => {
         return "Data " + d;
       },
-      value: (value, ratio, id) => {
+      value: (value: any, ratio: any, id: any) => {
         var format = id === "data1" ? d3.format(",") : d3.format("$");
         return format(value);
       },
