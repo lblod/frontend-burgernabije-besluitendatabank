@@ -11,21 +11,15 @@ export default class HomeController extends Controller {
   @tracked selected = "";
   @action handleKeywordChange() {}
 
-  @tracked queryParams = ["page"];
-  @tracked page = 0;
 
-  @tracked entriesStart = 0;
-  @tracked entriesEnd = 3;
 
   @tracked startDate = undefined;
   @tracked endDate = undefined;
 
   @action handleMunicipalityChange(m: any) {
     this.selected = m;
-    this.page = 0;
     this.router.transitionTo("home", {
       queryParams: {
-        page: this.page,
         municipality: m,
         startDate: this.startDate,
         endDate: this.endDate,
@@ -35,10 +29,8 @@ export default class HomeController extends Controller {
 
   @action handleDateChange(d: any) {
     this.startDate = d!.target.value;
-    this.page = 0;
     this.router.transitionTo("home", {
       queryParams: {
-        page: this.page,
         municipality: this.selected,
         startDate: this.startDate,
         endDate: this.endDate,

@@ -1,4 +1,4 @@
-<LinkTo @route="detail" @model={{this.id}}>
+<LinkTo @route="detail" @model={{this.title}}>
   <AuCard
     @size="small"
     class="au-o-region-large card-hover au-u-padding-bottom au-u-padding"
@@ -19,16 +19,12 @@
         {{/if}}</p>
     </c.content>
     <c.footer>
-      {{#if this.startDate}}
-        {{this.startDate}}
+      {{#if this.dateRange}}
+        {{this.dateRange}}
       {{/if}}
-      tot
-      {{#if this.endDate}}
-        {{this.endDate}}
-      {{/if}}
-      -
+      
       {{#if this.municipality}}
-        {{this.municipality}}
+        - {{this.municipality}}
       {{/if}}
     </c.footer>
   </AuCard>

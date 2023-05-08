@@ -28,3 +28,7 @@ You can check out more info on besluitendatabanken [here](https://lokaalbestuur.
 
 - Build the application: `ember build`
 - The built application will be located in the `dist/` directory.
+
+## Discussions
+### Ember-Data@3
+For some reason beyond human comprehension, Ember-Data refused to work as is documented in the *latest documentation* when using v4, but it did on v3. So guess what. It's v3 now.

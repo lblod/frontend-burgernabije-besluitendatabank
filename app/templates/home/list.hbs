@@ -1,15 +1,11 @@
 <section class="au-o-flow au-u-flex au-u-flex--column" style="height: 100%;">
-  {{#each this.model.agenda_items as |item|}}
+  {{#each @model.agendaItems as |item|}}
     <DecisionCard
       @id={{item.id}}
-      @title={{item.attributes.title}}
-      @body={{item.body}}
-      @approvedDate={{item.approveddate}}
-      @startDate={{item.startdate}}
-      @endDate={{item.enddate}}
-      @municipality={{item.municipality}}
+      @title={{item.title}}
+      @startDate={{item.session.startedAt}}
+      @endDate={{item.session.endedAt}}
     />
-
   {{/each}}
 
 </section>
@@ -29,11 +25,9 @@
       <span class="au-u-hidden-visually">Resultaten</span>
 
       <strong>
-        {{this.entriesStart}}
-        -
-        {{this.entriesEnd}}
+        {{ @model.entriesStart }} - {{ @model.entriesEnd }}
       </strong>
-      van 18
+      van 
     </p>
 
     <div class="au-c-pagination__list-item">

@@ -37,29 +37,30 @@
           class="au-u-h3 au-u-medium"
           style=" text-decoration: none; "
         >
-          {{#if this.model.attributes.title}}
-            {{this.model.attributes.title}}
-          {{else}}
-            NO TITLE
+          {{#if this.model.title}}
+            {{this.model.title}}
           {{/if}}
 
         </AuLink>
 
       </c.header>
       <c.content>
-        <section
-          class="au-u-flex au-u-muted au-u-margin-top-tiny"
-          style=" align-items: center;"
-        >
-          <AuIcon class="au-u-margin-right-small" @size="large" @icon="check" />
-          <p>Tijdelijke verordening wegverkeer -
-            {{#if this.model.attributes.startdate}}
-              {{iso-formatter this.model.attributes.startdate}}
-            {{else}}
-              NO DATE
-            {{/if}}
-            - Lange kant</p>
-        </section>
+        
+        {{#if this.model.session.approvedDate}}
+          <section
+            class="au-u-flex au-u-muted au-u-margin-top-tiny"
+            style=" align-items: center;"
+          >
+            <AuIcon class="au-u-margin-right-small" @size="large" @icon="check" />
+            <p>
+                Goedgekeurd - {{iso-formatter this.model.session.approvedDate}}
+              
+            </p>
+          </section>
+        {{/if}}
+        
+
+        {{#if this.model.municipality}}
         <section
           class="au-u-flex au-u-muted au-u-margin-top-tiny"
           style=" align-items: center;"
@@ -69,15 +70,13 @@
             @size="large"
             @icon="message"
           />
+          
           <LinkTo @route="municipality" @model={{this.model.municipality}}>
-            <p>Gemeente
-              {{#if this.model.attributes.municipality}}
-                {{this.model.attributes.municipality}}
-              {{else}}
-                NO MUNICIPALITY
-              {{/if}}</p>
+            <p>Gemeente {{this.model.municipality}}</p>
           </LinkTo>
         </section>
+        {{/if}}
+        {{#if this.model.alternateLink}}
         <section
           class="au-u-flex au-u-muted au-u-margin-top-tiny"
           style=" align-items: center;"
@@ -87,39 +86,20 @@
             @size="large"
             @icon="calendar"
           />
-
-          <p>Goedgekeurd op
-            {{#if this.model.attributes.approveddate}}
-              {{iso-formatter this.model.attributes.approveddate}}
-            {{else}}
-              NO DATE
-            {{/if}}</p>
-        </section><section
-          class="au-u-flex au-u-muted au-u-margin-top-tiny"
-          style=" align-items: center;"
-        >
-          <AuIcon
-            class="au-u-margin-right-small"
-            @size="large"
-            @icon="calendar"
-          />
           <p>
-            {{#if this.model.attributes.alternatelink}}
-              <a href="{{this.model.attributes.alternatelink}}">Bekijk
+              <a href="{{this.model.alternateLink}}">Bekijk
                 agendapunt op de website van de gemeente</a>
-            {{else}}
-              Bekijk agendapunt op de website van de gemeente
-            {{/if}}
-
           </p>
         </section>
+        {{/if}}
 
         <section>
           <p>
-            {{#if this.model.attributes.body}}
-              {{this.model.attributes.body}}
+            {{#if this.model.description}}
+              {{this.model.description}}
             {{else}}
-              NO DESCRIPTION
+              We hebben geen beschrijving gekregen van het bestuursorgaan. Vraag uw gemeente om te integreren met ons platform,
+              of bekijk de info op hun website <a href="{{this.model.alternateLink}}">hier</a>!
             {{/if}}
           </p>
         </section>

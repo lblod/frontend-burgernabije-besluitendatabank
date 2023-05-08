@@ -11,9 +11,9 @@ export default class HomeListController extends Controller {
   //   @tracked selected = "";
   //   @action handleKeywordChange() {}
   //   @tracked queryParams = ["page"];
+  @tracked queryParams = ["page"];
+
   @tracked page = 0;
-  @tracked entriesStart = 0;
-  @tracked entriesEnd = 3;
   //   @tracked startDate = undefined;
   //   @tracked endDate = undefined;
   //   @action handleMunicipalityChange(m: any) {
@@ -41,9 +41,8 @@ export default class HomeListController extends Controller {
   //     });
   //   }
   @action nextPage() {
+    console.log("meow")
     this.page++;
-    this.entriesStart = this.page * 3;
-    this.entriesEnd = this.page * 3 + 3;
     this.router.transitionTo("home", {
       queryParams: {
         page: this.page,
@@ -53,8 +52,6 @@ export default class HomeListController extends Controller {
   @action previousPage() {
     if (this.page > 0) {
       this.page--;
-      this.entriesStart = this.page * 3;
-      this.entriesEnd = this.page * 3 + 3;
       this.router.transitionTo("home", {
         queryParams: {
           page: this.page,

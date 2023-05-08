@@ -6,8 +6,8 @@ interface ArgsInterface {
   title: string;
   body: string;
   approvedDate: string;
-  startDate: string;
-  endDate: string;
+  startDate: Date;
+  endDate: Date;
   municipality: string;
 }
 
@@ -24,17 +24,29 @@ export default class DecisionCard extends Component<ArgsInterface> {
 
   get startDate() {
     return this.args.startDate
-      ? format(parseISO(this.args.startDate), "dd/MM/yyyy")
+      ? format(this.args.startDate, "dd/MM/yyyy")
       : null;
   }
 
   get endDate() {
     return this.args.endDate
-      ? format(parseISO(this.args.endDate), "dd/MM/yyyy")
+      ? format(this.args.endDate, "dd/MM/yyyy")
       : null;
   }
 
+  get dateRange() {
+    if (!this.endDate && !this.startDate) return undefined;
+    if (!this.endDate) return this.startDate;
+    if (!this.startDate) return this.endDate
+
+    if (this.startDate != this.endDate) {
+        return this.startDate + " tot " + this.endDate;
+    } else {
+        return this.endDate;
+    }
+}
+
   get municipality() {
-    return this.args.municipality ? this.args.municipality : "No municipality";
+    return this.args.municipality ? this.args.municipality : null;
   }
 }
