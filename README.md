@@ -2,7 +2,7 @@
 
 [The front-end for BNB](https://burgernabije-besluitendatabank-dev.s.redhost.be/), a site that uses linked data to empower everyone in Flanders to consult the decisions made by their local authorities.
 
-You can check out more info on besluitendatabanken [here](https://lokaalbestuur.vlaanderen.be/besluitendatabank), and the [back-end](https://github.com/lblod/app-burgernabije-besluitendatabank) here. The back-end repo will also contain general project information.
+You can check out more info on besluitendatabanken [here](https://lokaalbestuur.vlaanderen.be/besluitendatabank), and the [back-end](https://github.com/lblod/app-burgernabije-besluitendatabank) here. The back-end repo will also contain general project information; this repo should only contain information needed specifically for the front-end itself.
 
 ## Tutorial: Getting Started
 ### Prerequisites
