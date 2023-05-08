@@ -19,9 +19,8 @@
     "lint:js": "eslint . --cache",
     "lint:js:fix": "eslint . --fix",
     "dev": "ember serve --environment=development",
-    "dev:proxy": "ember serve --environment=development --proxy=https://burgernabije-besluitendatabank-dev.s.redhost.be/",
     "prod": "ember serve --watch --environment=production",
-    "prod:proxy": "ember serve --watch --environment=production --proxy=https://burgernabije-besluitendatabank-dev.s.redhost.be/",
+    "proxy": "ember serve --watch --environment=production --proxy=https://burgernabije-besluitendatabank-dev.s.redhost.be/",
     "start": "ember serve --watch",
     "test": "concurrently \"npm:lint\" \"npm:test:*\" --names \"lint,test:\"",
     "test:ember": "ember test"
