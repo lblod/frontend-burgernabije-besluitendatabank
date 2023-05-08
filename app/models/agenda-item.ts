@@ -1,4 +1,5 @@
 import Model, { attr, belongsTo } from "@ember-data/model";
+import SessionsModel from "./session";
 
 export default class AgendaItemsModel extends Model {
   @attr("string") declare title: string;
@@ -6,6 +7,6 @@ export default class AgendaItemsModel extends Model {
   @attr("string") declare alternateLink: string;
   @attr("boolean") declare plannedforpublic : boolean;
 
-  @belongsTo("session") session;
+  @belongsTo("session") declare session : SessionsModel;
 }
 
