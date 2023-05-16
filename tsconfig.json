@@ -25,6 +25,8 @@
     "app/**/*",
     "tests/**/*",
     "types/**/*",
-    "mirage/**/*"
+    "mirage/**/*",
+    "app/config/environment.d.ts",
+    "app/templates/flandersMunicipalities.ts"
   ]
 }

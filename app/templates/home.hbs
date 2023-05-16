@@ -1,7 +1,6 @@
 <ContentHeader />
 
 <div class="au-u-flex" style="height: 100%;">
-
   <SearchSidebar
     @municipalityPlaceholder="Selecteer een optie"
     @municipalitySelected={{this.selected}}
@@ -25,23 +24,34 @@
     >
       <section class="au-u-flex" style="align-items: center;">
         <AuLabel class="au-u-padding-right">Weergave</AuLabel>
-        <AuLink @skin="button" @route="home.map">
-          Kaart</AuLink>
-        <AuLink @route="home.list" @skin="button-secondary">Lijst</AuLink>
+        {{#if (eq this.currentRoute "home.list")}}
+          <AuLink @skin="button" @route="home.map">
+            Kaart
+          </AuLink>
+        {{else}}
+          <AuLink @skin="button" @route="home.list">
+            List
+          </AuLink>
+        {{/if}}
       </section>
       <section style="margin-left: auto;" class="au-u-flex">
         <AuLabel for="sort-on" style="width: 80px; white-space: nowrap;">
           Sorteer op
         </AuLabel>
-        <select type="select" class="au-c-input" style="width: 200px;">
-          <option>Datum</option>
+        <select
+          type="select"
+          onchange={{action "handleSort"}}
+          class="au-c-input"
+          style="width: 200px;"
+        >
           <option>Relevantie</option>
+          <option>Datum</option>
         </select>
       </section>
     </AuFormRow>
     <div
       class="au-u-padding-left-large au-u-padding-right-large au-u-flex au-u-flex--column"
-      style="height: 100%;"
+      style="overflow-y: scroll; height: auto; padding-bottom:10vh; scroll-behavior: smooth;"
     >
       {{outlet}}
     </div>

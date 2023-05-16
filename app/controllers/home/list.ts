@@ -6,57 +6,35 @@ import { service } from "@ember/service";
 import { tracked } from "@glimmer/tracking";
 
 export default class HomeListController extends Controller {
-  @service declare router: RouterService;
+  @service declare inViewport: any;
   @service declare store: Store;
-  //   @tracked selected = "";
-  //   @action handleKeywordChange() {}
-  //   @tracked queryParams = ["page"];
-  @tracked queryParams = ["page"];
+  @service declare router: RouterService;
 
-  @tracked page = 0;
-  //   @tracked startDate = undefined;
-  //   @tracked endDate = undefined;
-  //   @action handleMunicipalityChange(m: any) {
-  //     this.selected = m;
-  //     this.page = 0;
-  //     this.router.transitionTo("home", {
-  //       queryParams: {
-  //         page: this.page,
-  //         municipality: m,
-  //         startDate: this.startDate,
-  //         endDate: this.endDate,
-  //       },
-  //     });
-  //   }
-  //   @action handleDateChange(d: any) {
-  //     this.startDate = d!.target.value;
-  //     this.page = 0;
-  //     this.router.transitionTo("home", {
-  //       queryParams: {
-  //         page: this.page,
-  //         municipality: this.selected,
-  //         startDate: this.startDate,
-  //         endDate: this.endDate,
-  //       },
-  //     });
-  //   }
-  @action nextPage() {
-    console.log("meow")
-    this.page++;
+  @action
+  setupInViewport() {
+    console.log("meow?");
+    const loader = document.getElementById("loader");
+    const viewportTolerance = { bottom: 200 };
+    const { onEnter, _onExit } = this.inViewport.watchElement(loader, {
+      viewportTolerance,
+    });
+    // pass the bound method to `onEnter` or `onExit`
+    onEnter(this.didEnterViewport.bind(this));
+  }
+
+  didEnterViewport() {
+    this.infinityLoad();
+  }
+  @tracked offset = 10;
+
+  @action async infinityLoad() {
+    this.offset += 10;
+    console.log(this.offset);
+
     this.router.transitionTo("home", {
       queryParams: {
-        page: this.page,
+        offset: this.offset,
       },
     });
-  }
-  @action previousPage() {
-    if (this.page > 0) {
-      this.page--;
-      this.router.transitionTo("home", {
-        queryParams: {
-          page: this.page,
-        },
-      });
-    }
   }
 }
