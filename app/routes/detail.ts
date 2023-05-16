@@ -29,16 +29,5 @@ export default class DetailRoute extends Route {
       .catch((error) => {
         console.error(error);
       });
-    // return await axios
-    //   .get(`${ENV.API_URL}/agenda-items?filter[id]=${id}`)
-    //   .then((resp) => {
-    //     console.log(resp.data.data[0]);
-    //     return resp.data.data[0];
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     return err;
-    //   });
-    // return this.store.findRecord("agenda_items", id);
   }
 }

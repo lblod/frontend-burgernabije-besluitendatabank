@@ -54,6 +54,7 @@ export default class HomeRoute extends Route {
           }
         )
         .then((response) => {
+          console.log(response.data.results.bindings);
           return response.data.results.bindings;
         })
         .catch((error) => {
