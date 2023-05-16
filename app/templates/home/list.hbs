@@ -1,6 +1,6 @@
 <section 
   {{did-insert this.setupInViewport}}
-  class="au-o-flow au-u-flex au-u-flex--column" style="height: 100%;">
+  class="au-o-flow au-u-flex au-u-flex--column" >
   {{#each @model as |item|}}
     <DecisionCard
       @id={{item.id}}
@@ -11,7 +11,8 @@
     />
   {{/each}}
 </section>
+
 <AuLoader
-  style="height: 20vh; display: flex; justify-content: center; align-items: center;"
+  style="height: 40px; display: flex; justify-content: center; align-items: center; margin-bottom: 30px;"
   id="loader"
 >Nieuwe Agendapunten aan het Laden</AuLoader>
