@@ -2,24 +2,29 @@
 
 const EmberApp = require("ember-cli/lib/broccoli/ember-app");
 
+const environment = process.env.EMBER_ENV;
+const IS_PROD = environment === "production";
+const IS_TEST = environment === "test";
+
 module.exports = function (defaults) {
   const app = new EmberApp(defaults, {
     autoImport: {
       exclude: ["flandersMunicipalities.ts"],
+      useSwcParser: true,
+    },
+    hinting: IS_TEST,
+    tests: IS_TEST,
+    "ember-cli-babel": {
+      includePolyfill: IS_PROD,
+    },
+    autoprefixer: {
+      sourcemap: false,
     },
     sourcemaps: {
-      enabled: false,
+      enabled: IS_PROD,
     },
     fingerprint: {
       enabled: true,
-      generateAssetMap: true,
-      exclude: [
-        "images/layers-2x.png",
-        "images/layers.png",
-        "images/marker-icon-2x.png",
-        "images/marker-icon.png",
-        "images/marker-shadow.png",
-      ],
     },
     "@appuniversum/ember-appuniversum": {
       disableWormholeElement: true,
@@ -29,18 +34,10 @@ module.exports = function (defaults) {
     },
     autoImport: {
       resolve: {
-        extensions: [".js", ".json"], // Specify the file extensions to resolve
-      },
-      webpack: {
-        // node: {
-        // faker: true,
-        // },
+        extensions: [".js", ".json"],
       },
     },
   });
-  app.import("node_modules/url-polyfill/url-polyfill.min.js");
-  app.import("node_modules/@govflanders/vl-widget-polyfill/dist/index.js");
-  app.import("node_modules/@govflanders/vl-widget-client/dist/index.js");
 
   return app.toTree();
 };
