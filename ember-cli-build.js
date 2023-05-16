@@ -7,7 +7,12 @@ module.exports = function (defaults) {
     autoImport: {
       exclude: ["flandersMunicipalities.ts"],
     },
+    sourcemaps: {
+      enabled: false,
+    },
     fingerprint: {
+      enabled: true,
+      generateAssetMap: true,
       exclude: [
         "images/layers-2x.png",
         "images/layers.png",
@@ -23,6 +28,9 @@ module.exports = function (defaults) {
       includePolyfill: true,
     },
     autoImport: {
+      resolve: {
+        extensions: [".js", ".json"], // Specify the file extensions to resolve
+      },
       webpack: {
         // node: {
         // faker: true,

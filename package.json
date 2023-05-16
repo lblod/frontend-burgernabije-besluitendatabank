@@ -12,19 +12,12 @@
   },
   "scripts": {
     "build": "ember build --environment=production",
-    "lint": "concurrently \"npm:lint:*(!fix)\" --names \"lint:\"",
-    "lint:fix": "concurrently \"npm:lint:*:fix\" --names \"fix:\"",
-    "lint:hbs": "ember-template-lint .",
-    "lint:hbs:fix": "ember-template-lint . --fix",
-    "lint:js": "eslint . --cache",
-    "lint:js:fix": "eslint . --fix",
     "dev": "ember serve --environment=development",
-    "prod": "ember serve --environment=production",
-    "test": "concurrently \"npm:lint\" \"npm:test:*\" --names \"lint,test:\"",
-    "test:ember": "ember test"
+    "prod": "ember serve --environment=production"
   },
   "devDependencies": {
     "@appuniversum/ember-appuniversum": "^2.2.0",
+    "@ember/jquery": "^2.0.0",
     "@ember/optional-features": "^2.0.0",
     "@ember/string": "^3.0.1",
     "@ember/test-helpers": "^2.9.3",
@@ -66,7 +59,7 @@
     "babel-eslint": "^10.1.0",
     "broccoli-asset-rev": "^3.0.0",
     "concurrently": "^7.6.0",
-    "ember-auto-import": "^2.5.0",
+    "ember-auto-import": "^2.6.3",
     "ember-c3": "^4.0.2",
     "ember-cli": "~4.10.0",
     "ember-cli-app-version": "^5.0.0",
@@ -76,6 +69,7 @@
     "ember-cli-htmlbars": "^6.2.0",
     "ember-cli-inject-live-reload": "^2.1.0",
     "ember-cli-mirage": "v3.0.0-alpha.1",
+    "ember-cli-moment-shim": "^3.8.0",
     "ember-cli-sass": "^11.0.1",
     "ember-cli-sri": "^2.1.1",
     "ember-cli-terser": "^4.0.2",
@@ -113,6 +107,7 @@
     "edition": "octane"
   },
   "dependencies": {
+    "au-date-range-picker": "^0.0.1",
     "axios": "^1.3.4",
     "c3": "0.7.20",
     "d3": "6.6.0",
