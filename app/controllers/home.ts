@@ -40,7 +40,6 @@ export default class HomeController extends Controller {
 
   @action handleKeywordChange(e: any) {
     this.keyWord = e.target.value;
-    this.page = 0;
     this.router.transitionTo("home", {
       queryParams: {
         municipality: this.selected,
@@ -53,10 +52,8 @@ export default class HomeController extends Controller {
 
   @action handleDateChange(d: any) {
     this.plannedStart = d!.target.value;
-    this.page = 0;
     this.router.transitionTo("home", {
       queryParams: {
-        page: this.page,
         municipality: this.selected,
         sort: this.sort,
         plannedStart: this.plannedStart,

@@ -1,5 +1,5 @@
 <LinkTo
-  style="height: 30%; max-height: 30%; overflow: hidden;"
+  style="height: 30%; max-height: 30%;"
   @route="detail"
   @model={{this.title}}
 >
@@ -20,8 +20,8 @@
     <c.content
       style="text-overflow: ellipsis;display: flex; word-wrap: break-word;  text-decoration: none;"
     >
-      <p style="text-decoration: none; height: 100%;">{{#if this.body}}
-          {{this.body}}
+      <p style="text-decoration: none; height: 100%;">{{#if this.description }}
+          {{this.description}}
         {{/if}}</p>
     </c.content>
     <c.footer>

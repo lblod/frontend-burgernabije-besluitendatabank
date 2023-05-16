@@ -31,7 +31,7 @@ export default class HomeListController extends Controller {
     this.offset += 10;
     console.log(this.offset);
 
-    this.router.transitionTo("home", {
+    this.router.transitionTo("home.list", {
       queryParams: {
         offset: this.offset,
       },

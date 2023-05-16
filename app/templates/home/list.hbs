@@ -1,47 +1,16 @@
 <section 
   {{did-insert this.setupInViewport}}
   class="au-o-flow au-u-flex au-u-flex--column" style="height: 100%;">
-  {{#each @model.agendaItems as |item|}}
+  {{#each @model as |item|}}
     <DecisionCard
       @id={{item.id}}
       @title={{item.title}}
+      @description={{item.description}}
       @startDate={{item.session.startedAt}}
       @endDate={{item.session.endedAt}}
     />
   {{/each}}
 </section>
-<AuToolbar style="margin-top: auto;" @size="large" @nowrap={{true}}>
-  <div class="au-c-pagination">
-
-    <div class="au-c-pagination__list-item">
-      <AuButton
-        @skin="link"
-        @icon="nav-left"
-        @iconAlignment="left"
-        {{on "click" this.previousPage}}
-      >Vorige pagina</AuButton>
-    </div>
-    <p>
-
-      <span class="au-u-hidden-visually">Resultaten</span>
-
-      <strong>
-        {{ @model.entriesStart }} - {{ @model.entriesEnd }}
-      </strong>
-      van 
-    </p>
-
-    <div class="au-c-pagination__list-item">
-      <AuButton
-        @skin="link"
-        @icon="nav-right"
-        @iconAlignment="right"
-        {{on "click" this.nextPage}}
-      >Volgende pagina</AuButton>
-
-    </div>
-  </div>
-</AuToolbar>
 <AuLoader
   style="height: 20vh; display: flex; justify-content: center; align-items: center;"
   id="loader"

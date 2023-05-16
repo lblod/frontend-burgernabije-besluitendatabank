@@ -28,7 +28,8 @@ export default class SearchSidebar extends Component<ArgsInterface> {
 
   get municipalityOptions() {
     // return an array of strings with municipality.bestuurseenheidnaam.value
-
+    return {};
+    
     const municipalities = this.args.municipalityOptions
       .map((municipality: any) => municipality.bestuurseenheidnaam.value)
       .reduce((unique, item) => {

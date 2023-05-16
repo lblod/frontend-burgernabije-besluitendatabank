@@ -4,7 +4,7 @@ import { format, parseISO } from "date-fns";
 interface ArgsInterface {
   id: string;
   title: string;
-  body: string;
+  description: string;
   approvedDate: string;
   startDate: Date;
   endDate: Date;
@@ -18,8 +18,8 @@ export default class DecisionCard extends Component<ArgsInterface> {
   get title() {
     return this.args.title ? this.args.title : "No title";
   }
-  get body() {
-    return this.args.body;
+  get description() {
+    return this.args.description;
   }
 
   get startDate() {
