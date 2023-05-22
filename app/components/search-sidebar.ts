@@ -1,5 +1,4 @@
 import Component from "@glimmer/component";
-import { format, parseISO } from "date-fns";
 
 interface ArgsInterface {
   municipalityPlaceholder: string;
@@ -28,7 +27,17 @@ export default class SearchSidebar extends Component<ArgsInterface> {
   }
 
   get municipalityOptions() {
-    return this.args.municipalityOptions;
+    // return an array of strings with municipality.bestuurseenheidnaam.value
+    return {};
+    
+    const municipalities = this.args.municipalityOptions
+      .map((municipality: any) => municipality.bestuurseenheidnaam.value)
+      .reduce((unique, item) => {
+        return unique.includes(item) ? unique : [...unique, item];
+      }, []);
+    console.log(municipalities);
+
+    return municipalities;
   }
 
   get municipalityAllowClear() {

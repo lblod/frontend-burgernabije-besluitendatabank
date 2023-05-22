@@ -3,12 +3,21 @@ import Route from "@ember/routing/route";
 import { service } from "@ember/service";
 import axios from "axios";
 import Ember from "ember";
-import ENV from "frontend-burgernabije-besluitendatabank/config/environment";
 import { getMunicipalitiesFromVlaanderen } from "frontend-burgernabije-besluitendatabank/utils/apivlaanderen";
+import {
+  getAllAgendaItemsQuery,
+  getAllMunicipalitiesQuery,
+} from "frontend-burgernabije-besluitendatabank/utils/sparqlQueries";
 export default class HomeRoute extends Route {
   @service declare store: Store;
 
+
+
   async model(params: any) {
+ 
+    // const startDate = params.startDate ? params.startDate : null;
+    // const endDate = params.endDate ? params.endDate : null;
+
     const municipalities = await getMunicipalitiesFromVlaanderen(true);
     console.log(municipalities)
     return municipalities;
@@ -23,16 +32,46 @@ export default class HomeRoute extends Route {
     /*
     const resp = await Ember.RSVP.hash({
       agenda_items: axios
-        .get(`${ENV.API_URL}/agenda-items?page[number]=${page}&page[size]=3`)
-        .then((resp) => {
-          return resp.data.data;
+        .get(
+          "https://qa.centrale-vindplaats.lblod.info/sparql?query=" +
+            encodeURIComponent(
+              getAllAgendaItemsQuery({
+                municipality: municipality,
+                sort: sort,
+                plannedStart: plannedStart,
+                keyWord: keyWord,
+                offset: offset,
+              })
+            ),
+          {
+            headers: {
+              Accept: "application/sparql-results+json",
+            },
+          }
+        )
+        .then((response) => {
+          return response.data.results.bindings;
         })
-        .catch((err) => {
-          console.error(err);
+        .catch((error) => {
+          console.error(error);
         }),
-      municipalities: municipalities,
+      municipalities: axios
+        .get(
+          "https://qa.centrale-vindplaats.lblod.info/sparql?query=" +
+            encodeURIComponent(getAllMunicipalitiesQuery()),
+          {
+            headers: {
+              Accept: "application/sparql-results+json",
+            },
+          }
+        )
+        .then((response) => {
+          return response.data.results.bindings;
+        })
+        .catch((error) => {
+          console.error(error);
+        }),
     });
-    console.log(resp);
     return resp;
     */
   }

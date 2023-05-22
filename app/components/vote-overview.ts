@@ -35,10 +35,10 @@ export default class VoteOverview extends Component<ArgsInterface> {
   };
   // the three color levels for the percentage values
   color = {
-    pattern: ["#B2CCEF", "#5990DE", "#0055CC"],
-    threshold: {
-      values: [30, 60, 90, 100],
-    },
+    pattern: ["#B2CCEF", "#F1AEAE", "#b1dcbb"],
+    // threshold: {
+    //   values: [30, 60, 90, 100],
+    // },
   };
 
   // chart title

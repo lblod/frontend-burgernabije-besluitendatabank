@@ -1,6 +1,6 @@
 {{page-title this.model.id}}
 
-<div class="au-u-flex" style="height: 100%; width: 100%;">
+<div class="au-u-flex detail-container" style="height: 100%; width: 100%;">
   <section
     style="height: 100%; width: 100%;"
     id="detail-left-section"
@@ -65,14 +65,34 @@
           class="au-u-flex au-u-muted au-u-margin-top-tiny"
           style=" align-items: center;"
         >
+          <AuIcon class="au-u-margin-right-small" @size="large" @icon="check" />
+          <p>{{this.model.title_agenda.value}}
+            -
+            {{#if this.model.geplandeStart.value}}
+              {{iso-formatter this.model.geplandeStart.value}}
+            {{else}}
+              NO DATE
+            {{/if}}</p>
+        </section>
+        <section
+          class="au-u-flex au-u-muted au-u-margin-top-tiny"
+          style=" align-items: center;"
+        >
           <AuIcon
             class="au-u-margin-right-small"
             @size="large"
             @icon="message"
           />
-          
-          <LinkTo @route="municipality" @model={{this.model.municipality}}>
-            <p>Gemeente {{this.model.municipality}}</p>
+          <LinkTo
+            @route="municipality"
+            @model={{this.model.eenheid_werkingsgebied_label.value}}
+          >
+            <p>Gemeente
+              {{#if this.model.eenheid_werkingsgebied_label.value}}
+                {{this.model.eenheid_werkingsgebied_label.value}}
+              {{else}}
+                NO MUNICIPALITY
+              {{/if}}</p>
           </LinkTo>
         </section>
         {{/if}}
@@ -111,7 +131,7 @@
   </section>
   <section
     id="detail-right-section"
-    class="au-u-background-gray-100 au-u-1-2"
+    class="au-u-background-gray-100"
     style="height: 100%; width: 100%;"
   >
     <AuCard

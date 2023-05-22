@@ -4,6 +4,7 @@ import RouterService from "@ember/routing/router-service";
 import { service } from "@ember/service";
 import { tracked } from "@glimmer/tracking";
 import { municipalities } from "../../utils/flandersMunicipalities";
+
 export default class Map extends Controller {
   @service declare router: RouterService;
 
