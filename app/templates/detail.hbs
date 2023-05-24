@@ -124,7 +124,11 @@
           </p>
         </section>
         <section>
-          <VoteOverview />
+          <VoteOverview
+            @neutral={{this.model.aantalOnthouders.value}}
+            @for={{this.model.aantalVoorstanders.value}}
+            @against={{this.model.aantalTegenstanders.value}}
+          />
         </section>
       </c.content>
     </AuCard>

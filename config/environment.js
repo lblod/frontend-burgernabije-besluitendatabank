@@ -25,8 +25,16 @@ module.exports = function (environment) {
   };
 
   if (environment === "production") {
+    // ENV["ember-cli-mirage"] = {
+    //   enabled: true,
+    //   directory: "mirage",
+    // };
+
+    ENV.yappConfigKey = "dev";
+
     ENV["ember-cli-mirage"] = {
       enabled: false,
+      excludeFilesFromBuild: true,
     };
     ENV.API_URL = "https://burgernabije-besluitendatabank-dev.s.redhost.be/api";
   }
@@ -38,7 +46,12 @@ module.exports = function (environment) {
     ENV.API_URL = "http://localhost:4200/api";
   }
 
-  // if (environment === "test") {
+  if (environment === "test") {
+    ENV["ember-cli-mirage"] = {
+      enabled: true,
+    };
+    ENV.API_URL = "http://localhost:4200/api";
+  }
   //   // Testem prefers this...
   //   ENV.locationType = "none";
 

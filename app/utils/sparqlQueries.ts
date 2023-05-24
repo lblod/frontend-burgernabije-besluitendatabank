@@ -23,10 +23,16 @@ PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX ext: <http://mu.semte.ch/vocabularies/ext/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT DISTINCT ?geplandeStart ?location ?title_agenda ?description ?bestuursclassificatie ?eenheid_werkingsgebied_label WHERE {
+SELECT DISTINCT ?geplandeStart ?location ?title_agenda ?description ?bestuursclassificatie ?eenheid_werkingsgebied_label ?aantalTegenstanders ?aantalVoorstanders ?aantalOnthouders WHERE {
   ?zitting a besluit:Zitting .
   ?zitting besluit:geplandeStart ?geplandeStart .
   OPTIONAL { ?zitting <http://www.w3.org/ns/prov#atLocation> ?location}
+
+  ?stemming a besluit:Stemming .
+  ?stemming besluit:aantalTegenstanders ?aantalTegenstanders .
+  ?stemming besluit:aantalVoorstanders ?aantalVoorstanders .
+  ?stemming besluit:aantalOnthouders ?aantalOnthouders .
+
   FILTER(xsd:date(?geplandeStart) >= xsd:date("${plannedStart}"))
   ?zitting besluit:behandelt ?agendapunt.
   ?agendapunt a besluit:Agendapunt .
@@ -170,10 +176,15 @@ PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX ext: <http://mu.semte.ch/vocabularies/ext/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT DISTINCT ?geplandeStart ?location ?title_agenda ?description ?bestuursclassificatie ?eenheid_werkingsgebied_label WHERE {
+SELECT DISTINCT ?geplandeStart ?location ?title_agenda ?description ?bestuursclassificatie ?eenheid_werkingsgebied_label ?aantalTegenstanders ?aantalVoorstanders ?aantalOnthouders WHERE {
   ?zitting a besluit:Zitting .
   ?zitting besluit:geplandeStart ?geplandeStart .
   OPTIONAL { ?zitting <http://www.w3.org/ns/prov#atLocation> ?location}
+
+  ?stemming a besluit:Stemming .
+  ?stemming besluit:aantalTegenstanders ?aantalTegenstanders .
+  ?stemming besluit:aantalVoorstanders ?aantalVoorstanders .
+  ?stemming besluit:aantalOnthouders ?aantalOnthouders .
 
   ?zitting besluit:behandelt ?agendapunt.
   ?agendapunt a besluit:Agendapunt .
@@ -239,6 +250,7 @@ export const getAllMunicipalitiesQuery = () => {
   SELECT DISTINCT ?start ?eind ?achternaam ?voornaam ?bestuursfunctie ?fractie ?bestuurseenheidnaam WHERE {
   ?mandataris a mandaat:Mandataris .
   ?mandataris mandaat:start ?start.
+
   OPTIONAL {?mandataris mandaat:einde ?eind.}
   OPTIONAL {?mandataris mandaat:rangorde ?rangorde.}
   OPTIONAL {?mandataris mandaat:beleidsdomein ?beleid;

@@ -26,6 +26,7 @@
           >
             {{singleSelect}}
           </PowerSelectMultiple>
+
         </AuFormRow>
         <AuFormRow
           class="au-u-padding-top-small au-u-padding-bottom-small"
@@ -50,11 +51,14 @@
           <AuLabel for={{"date"}} style="width: 30%;">
             Datum
           </AuLabel>
-          <AuInput
+          <AuDateRangePicker
             id={{"date"}}
+            label="Optional label"
+            start="20150101"
+            end="20151231"
+            width="block"
             style="width: 100%;"
             onChange={{this.dateHandleChange}}
-            @type={{"date"}}
           />
         </AuFormRow>
       </section>
