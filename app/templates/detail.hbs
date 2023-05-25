@@ -1,4 +1,4 @@
-{{page-title this.model.id}}
+{{page-title this.model.title}}
 
 <div class="au-u-flex detail-container" style="height: 100%; width: 100%;">
   <section
@@ -17,7 +17,7 @@
             </AuLink>
           </li>
           <li class="au-c-list-horizontal__item">
-            {{this.model.id}}
+            {{this.model.title}}
           </li>
         </ul>
       </Group>
@@ -124,11 +124,13 @@
           </p>
         </section>
         <section>
-          <VoteOverview
-            @neutral={{this.model.aantalOnthouders.value}}
-            @for={{this.model.aantalVoorstanders.value}}
-            @against={{this.model.aantalTegenstanders.value}}
-          />
+          {{#each this.model.handledBy.hasVotes as |vote|}}
+            <VoteOverview 
+              @numberOfAbstentions={{vote.numberOfAbstentions}}
+              @numberOfOpponents={{vote.numberOfOpponents}}
+              @numberOfProponents={{vote.numberOfProponents}}
+            />
+          {{/each}}
         </section>
       </c.content>
     </AuCard>
