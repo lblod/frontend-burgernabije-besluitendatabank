@@ -42,8 +42,9 @@ module.exports = function (environment) {
   if (environment === "development") {
     ENV["ember-cli-mirage"] = {
       enabled: false,
+      excludeFilesFromBuild: true,
     };
-    ENV.API_URL = "http://localhost:4200/api";
+    ENV.API_URL = "https://burgernabije-besluitendatabank-dev.s.redhost.be/api";
   }
 
   if (environment === "test") {
