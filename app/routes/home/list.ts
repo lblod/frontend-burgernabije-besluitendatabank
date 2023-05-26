@@ -13,35 +13,45 @@ interface ResourcesInterface {
 export default class ListRoute extends Route {
     @service declare store: Store;
 
-    size = 3;
-
-
     queryParams = {
-      page: { refreshModel: true },
-      municipality: { refreshModel: true },
-      sort: { refreshModel: true },
-      plannedStart: { refreshModel: true },
-      plannedEnd: { refreshModel: true },
-      keyWord: { refreshModel: true },
-      offset: { refreshModel: true },
-      //   startDate: { refreshModel: true },
-      //   endDate: { refreshModel: true },
+      municipality: { 
+        refreshModel: true,
+        as: "gemeente" 
+      },
+      sort: { 
+        refreshModel: true,
+        as: "sorteren" 
+      },
+      plannedStartBottomMargin: { 
+        refreshModel: true,
+        as: "begin" 
+      },
+      plannedStartTopMargin: { 
+        refreshModel: true,
+        as: "eind" 
+      },
+      keyWord: { 
+        refreshModel: true,
+        as: "trefwoord" 
+      },
+      offset: { 
+        refreshModel: true,
+        as: "aantal"
+       },
     };
+
+    offset = 10;
+
       async model(params: any) {
-        const page = params.page ? params.page : 0;
         const municipality = params.municipality ? params.municipality : null;
         const sort = params.sort ? params.sort : "relevantie";
         const plannedStart = params.plannedStart ? params.plannedStart : null;
         const plannedEnd = params.plannedEnd ? params.plannedEnd : null;
         const keyWord = params.keyWord ? params.keyWord : null;
-        const offset = params.offset ? params.offset : 0;
-        // const municipality = params.municipality ? params.municipality : null;
-        // const startDate = params.startDate ? params.startDate : null;
-        // const endDate = params.endDate ? params.endDate : null;
 
         let queryParams: ResourcesInterface = {
           page: {
-            size: 10 + params.offset
+            size: params.offset
           },
           include: 'session,session.governing-agent',
           filter: {}
@@ -49,8 +59,7 @@ export default class ListRoute extends Route {
 
 
         if (plannedStart || plannedEnd) {
-          console.log(plannedStart)
-          console.log(plannedEnd)
+          // Expected format: YYYY-MM-DD
           let sessionFilter: {[key:string]: any} = {};
 
           if (plannedStart) {
@@ -64,14 +73,8 @@ export default class ListRoute extends Route {
           }  
         }
 
-
-
-     
-    
         let agendaItems = await this.store.query("agenda-item", queryParams);
 
-        const entriesStart = page * this.size;
-        console.log(agendaItems)
         return agendaItems;
       }
 }
