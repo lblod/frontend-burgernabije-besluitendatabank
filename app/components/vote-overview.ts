@@ -3,24 +3,23 @@ import { tracked } from "@glimmer/tracking";
 import d3 from "d3";
 
 interface ArgsInterface {
-  neutral?: number;
-  for?: number;
-  against?: number;
+  numberOfAbstentions: number;
+  numberOfOpponents: number;
+  numberOfProponents: number;
 }
 
 export default class VoteOverview extends Component<ArgsInterface> {
-  get neutral() {
-    console.log(this.args);
-    return this.args.neutral ? this.args.neutral : 0;
+
+  get numberOfAbstentions() {
+    return this.args.numberOfAbstentions || 0;
+  }
+  get numberOfOpponents() {
+    return this.args.numberOfOpponents || 0;
+  }
+  get numberOfProponents() {
+    return this.args.numberOfProponents || 0;
   }
 
-  get for() {
-    return this.args.for ? this.args.for : 0;
-  }
-
-  get against() {
-    return this.args.against ? this.args.against : 0;
-  }
   @tracked pie = {
     label: {
       format: function (value: any, ratio: any, id: any) {
@@ -43,9 +42,9 @@ export default class VoteOverview extends Component<ArgsInterface> {
 
   @tracked data = {
     columns: [
-      ["Voor", this.for],
-      ["Tegen", this.against],
-      ["Onthouden", this.neutral],
+      ["Voor", this.numberOfProponents],
+      ["Tegen", this.numberOfOpponents],
+      ["Onthouden", this.numberOfAbstentions],
     ],
     type: "pie",
   };
