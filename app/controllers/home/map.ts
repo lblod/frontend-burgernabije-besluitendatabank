@@ -11,12 +11,12 @@ export default class MapComponent extends Controller {
   @service declare router: RouterService;
   @action
   initMap() {
-    let provincesData;
-    let gemeenteData;
+    let provincesData: any;
+    let gemeenteData: any;
     const router = this.router;
-    let mandatenData;
-    let features;
-    let agendaData;
+    let mandatenData: any;
+    let features: any;
+    let agendaData: any;
     let besluitData;
     const width = 800;
     const height = 400;
@@ -37,7 +37,7 @@ export default class MapComponent extends Controller {
 
     const projection = geoMercator().scale(13400).translate([-590, 14120]);
 
-    const path = geoPath().projection(projection);
+    const path: any = geoPath().projection(projection);
 
     async function drawMap() {
       g.selectAll("path")
@@ -45,14 +45,14 @@ export default class MapComponent extends Controller {
         .enter()
         .append("path")
         .attr("class", "municipalities")
-        .attr("id", (gemeenteDataItem) => {
+        .attr("id", (gemeenteDataItem: any) => {
           let name = gemeenteDataItem.properties["name_nl"];
           return name;
         })
         .attr("d", path)
-        .attr("fill", (gemeenteDataItem) => {
+        .attr("fill", (gemeenteDataItem: any) => {
           let name = gemeenteDataItem.properties["name_nl"];
-          agendaData.forEach((e) => {
+          agendaData.forEach((e: any) => {
             if (name === e.name) {
               const datenow = new Date(Date.now()).setHours(0, 0, 0, 0); // toDateString()
               const f = new Date(e.geplandeStart);
@@ -138,23 +138,27 @@ export default class MapComponent extends Controller {
         .text("Agenda recente 3 maanden");
     }
     const map = async () =>
-      d3.json("assets/api/vlaanderen.json").then((data, error) => {
+      //@ts-ignore
+      d3.json("assets/api/vlaanderen.json").then((data: any, error: any) => {
         if (error) {
           console.error(error);
         } else {
           provincesData = topojson.feature(
             data,
             data.objects.provinces
+            //@ts-ignore
           ).features;
           gemeenteData = topojson.feature(
             data,
             data.objects.municipalities
+            //@ts-ignore
           ).features;
           ``;
 
           features = new Map(
             topojson
               .feature(data, data.objects.municipalities)
+              //@ts-ignore
               .features.map((d) => [d.properties.name_nl, d])
           );
 
@@ -190,18 +194,23 @@ export default class MapComponent extends Controller {
       });
     map();
 
-    async function over(name) {
+    async function over(name: any) {
       let eenBurgemeester: any = [];
-      mandatenData.then((info) => {
-        let input_name = info.find((hu) => hu.bestuurseenheidnaam === name);
+      mandatenData.then((info: any) => {
+        let input_name = info.find(
+          (hu: any) => hu.bestuurseenheidnaam === name
+        );
         let put_name = input_name.bestuurseenheidnaam;
-        let bestuurseenheids = d3.group(info, (d) => d.bestuurseenheidnaam); //d3.group(info, d => d[19]);
-        let bestuurseenheid = bestuurseenheids.get(put_name);
+        let bestuurseenheids = d3.group(
+          info,
+          (d: any) => d.bestuurseenheidnaam
+        ); //d3.group(info, d => d[19]);
+        let bestuurseenheid: any = bestuurseenheids.get(put_name);
         let formatTime = new Date();
         let today = formatTime.getTime();
         let bestuurperiod = new Date("1/1/2019");
         let period_Start = bestuurperiod.getTime();
-        bestuurseenheid.forEach((burgemeesters) => {
+        bestuurseenheid.forEach((burgemeesters: any) => {
           let start_date = new Date(burgemeesters.start);
           let bestuur_Start = start_date.getTime();
           let end_date = new Date(burgemeesters.eind);
@@ -246,7 +255,7 @@ export default class MapComponent extends Controller {
 
     async function fetch_mandataris() {
       const endpointUrl = "https://centrale-vindplaats.lblod.info/sparql";
-      const results = [];
+      const results: any = [];
       return await axios
         .get(
           "https://qa.centrale-vindplaats.lblod.info/sparql?query=" +
@@ -397,7 +406,7 @@ export default class MapComponent extends Controller {
         //@ts-ignore
         .then(results);
       const realdata: any = [];
-      data_qa.data.results.bindings.forEach((e) => {
+      data_qa.data.results.bindings.forEach((e: any) => {
         realdata.push({
           bestuurseenheidnaam: e.bestuurseenheidnaam.value,
           // geplandeStart: e.filterDate1.value,
@@ -405,17 +414,18 @@ export default class MapComponent extends Controller {
         });
       });
 
-      const hu = d3.group(realdata, (d) => d.bestuurseenheidnaam);
+      const hu = d3.group(realdata, (d: any) => d.bestuurseenheidnaam);
       const eenheidnaam: any = [];
       for (const [key, value] of hu) {
         eenheidnaam.push({
           bestuurseenheidnaam: key,
+          //@ts-ignore
           geplandeStart: value[0].geplandeStart,
         });
       }
       const agendadata: any = [];
       console.log(features["Symbol"]);
-      eenheidnaam.forEach((e) => {
+      eenheidnaam.forEach((e: any) => {
         const feature: any = features.get(e.bestuurseenheidnaam);
         console.log(feature);
         agendadata.push({
@@ -425,10 +435,10 @@ export default class MapComponent extends Controller {
         });
       });
 
-      agendadata.filter((d) => d.position);
+      agendadata.filter((d: any) => d.position);
       // console.log(agendadata);
       agendadata.sort(
-        (a, b) =>
+        (a: any, b: any) =>
           d3.ascending(a.position[1], b.position[1]) ||
           d3.ascending(a.position[0], b.position[0])
       );
@@ -436,7 +446,7 @@ export default class MapComponent extends Controller {
     }
 
     async function hasBesluit() {
-      const results = [];
+      const results: any = [];
       const data_qa: any = await axios
         .get(
           "https://qa.centrale-vindplaats.lblod.info/sparql?query=" +
@@ -514,11 +524,11 @@ export default class MapComponent extends Controller {
         //@ts-ignore
         .then(results);
       const realdata: any = [];
-      data_qa.data.results.bindings.forEach((e) => {
+      data_qa.data.results.bindings.forEach((e: any) => {
         realdata.push(e.bestuurseenheidnaam.value);
       });
       const result: any = [];
-      realdata.forEach((e) => result.push({ e }));
+      realdata.forEach((e: any) => result.push({ e }));
       return result;
     }
   }
