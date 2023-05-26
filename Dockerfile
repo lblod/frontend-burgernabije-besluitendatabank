@@ -3,9 +3,8 @@ FROM madnificent/ember:4.9.2 as builder
 LABEL maintainer="info@redpencil.io"
 
 WORKDIR /app
-RUN npm install -g npm@18
 COPY package.json yarn.lock ./
-RUN yarn install
+RUN yarn install --ignore-engines
 COPY . .
 RUN ember build -prod
 
