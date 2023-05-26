@@ -1,24 +1,3 @@
-{{!-- <LeafletMap
-  id="map-cursor"
-  @lat={{this.lat}}
-  @lng={{this.lng}}
-  @zoom={{this.zoom}}
-  @onClick={{this.onMapClick}}
-  as |layers|
->
-  <layers.geojson
-    @geoJSON={{this.geoData}}
-    @style={{this.style}}
-    @onEachFeature={{this.onEachFeature}}
-    @onLocationfound={{this.onLocationfound}}
-    @onLoad={{this.onLoad}}
-  />
-  <layers.tile
-    @url="https://tile.informatievlaanderen.be/ws/raadpleegdiensten/wmts?SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&LAYER=grb_bsk_grijs&STYLE=&FORMAT=image/png&TILEMATRIXSET=GoogleMapsVL&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}"
-  />
-
-</LeafletMap> --}}
-
 <div id="tooltip"><AuLoader /></div>
 {{! template-lint-disable no-invalid-interactive }}
 <div class="bp-map" {{did-insert this.initMap}}>

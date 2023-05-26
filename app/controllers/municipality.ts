@@ -15,57 +15,15 @@ export default class MunicipalityController extends Controller {
   @tracked queryParams = ["page"];
   @tracked page = 0;
 
-  @tracked entriesStart = 0;
-  @tracked entriesEnd = 3;
-
   @tracked startDate = undefined;
   @tracked endDate = undefined;
 
   @action handleMunicipalityChange(m: any) {
     this.selected = m;
-    this.page = 0;
     this.router.transitionTo("municipality", {
       queryParams: {
-        page: this.page,
-        municipality: m,
+        gemeente: m,
       },
     });
-  }
-
-  @action handleDateChange(d: any) {
-    this.startDate = d!.target.value;
-    this.page = 0;
-    this.router.transitionTo("municipality", {
-      queryParams: {
-        page: this.page,
-        municipality: this.selected,
-      },
-    });
-  }
-
-  @action nextPage() {
-    this.page++;
-    this.entriesStart = this.page * 3;
-    this.entriesEnd = this.page * 3 + 3;
-    this.router.transitionTo("municipality", {
-      queryParams: {
-        page: this.page,
-        municipality: this.selected,
-      },
-    });
-  }
-
-  @action previousPage() {
-    if (this.page > 0) {
-      this.page--;
-      this.entriesStart = this.page * 3;
-      this.entriesEnd = this.page * 3 + 3;
-      this.router.transitionTo("municipality", {
-        queryParams: {
-          page: this.page,
-          municipality: this.selected,
-        },
-      });
-    }
   }
 }

@@ -114,7 +114,7 @@
     "edition": "octane"
   },
   "dependencies": {
-    "au-date-range-picker": "^0.0.3",
+    "au-date-range-picker": "^0.1.0",
     "axios": "^1.3.4",
     "c3": "0.7.20",
     "d3": "6.6.0",

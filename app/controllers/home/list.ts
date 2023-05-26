@@ -12,7 +12,6 @@ export default class HomeListController extends Controller {
 
   @action
   setupInViewport() {
-    console.log("meow?");
     const loader = document.getElementById("loader");
     const viewportTolerance = { bottom: 200 };
     const { onEnter, _onExit } = this.inViewport.watchElement(loader, {
@@ -29,7 +28,6 @@ export default class HomeListController extends Controller {
 
   @action async infinityLoad() {
     this.offset += 10;
-    console.log(this.offset);
 
     this.router.transitionTo("home.list", {
       queryParams: {
