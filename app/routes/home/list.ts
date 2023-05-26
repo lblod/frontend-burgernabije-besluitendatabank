@@ -53,7 +53,7 @@ export default class ListRoute extends Route {
           page: {
             size: params.offset
           },
-          include: 'session,session.governing-agent',
+          include: 'session,session.governing-body',
           filter: {}
         }
 
