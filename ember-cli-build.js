@@ -16,6 +16,9 @@ module.exports = function (defaults) {
         },
       },
       useSwcParser: true,
+      resolve: {
+        extensions: [".js", ".json"],
+      },
     },
     hinting: IS_TEST,
     tests: IS_TEST,
@@ -36,11 +39,6 @@ module.exports = function (defaults) {
     },
     "ember-cli-babel": {
       includePolyfill: true,
-    },
-    autoImport: {
-      resolve: {
-        extensions: [".js", ".json"],
-      },
     },
     "ember-cli-terser": {
       enabled: true,
