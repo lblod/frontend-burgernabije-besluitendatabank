@@ -14,6 +14,7 @@ module.exports = function (defaults) {
         node: {
           global: true,
         },
+      },
       useSwcParser: true,
     },
     hinting: IS_TEST,
