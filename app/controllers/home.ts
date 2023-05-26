@@ -14,22 +14,23 @@ export default class HomeController extends Controller {
     return this.router.currentRouteName;
   }
 
-
   @tracked entriesStart = 0;
   @tracked entriesEnd = 3;
   @tracked keyWord = "";
   @tracked sort = "relevantie";
 
-  @tracked plannedStart = undefined;
+  @tracked begin = undefined;
+  @tracked eind = undefined;
 
   @action handleMunicipalityChange(m: any) {
     this.selected = m;
     this.router.transitionTo("home", {
       queryParams: {
-        municipality: m,
-        sort: this.sort,
-        plannedStart: this.plannedStart,
-        keyWord: this.keyWord,
+        gemeente: m,
+        sorteren: this.sort,
+        begin: this.begin,
+        eind: this.eind,
+        trefwoord: this.keyWord,
       },
     });
   }
@@ -42,23 +43,31 @@ export default class HomeController extends Controller {
     this.keyWord = e.target.value;
     this.router.transitionTo("home", {
       queryParams: {
-        municipality: this.selected,
-        sort: this.sort,
-        plannedStart: this.plannedStart,
-        keyWord: this.keyWord,
+        gemeente: this.selected,
+        sorteren: this.sort,
+        begin: this.begin,
+        eind: this.eind,
+        trefwoord: this.keyWord,
       },
     });
   }
 
-  @action handleDateChange(d: any) {
-    this.plannedStart = d!.target.value;
+  @tracked dateRange = "";
+  @action applyDatePicker(picker: any, start: any, end: any) {
+    this.begin = start;
+    this.eind = end;
     this.router.transitionTo("home", {
       queryParams: {
-        municipality: this.selected,
-        sort: this.sort,
-        plannedStart: this.plannedStart,
-        keyWord: this.keyWord,
+        gemeente: this.selected,
+        sorteren: this.sort,
+        begin: this.begin,
+        eind: this.eind,
+        trefwoord: this.keyWord,
       },
     });
   }
+
+  @action hideDatePicker(picker: any, start: any, end: any) {}
+
+  @action cancelDatePicker(picker: any, start: any, end: any) {}
 }

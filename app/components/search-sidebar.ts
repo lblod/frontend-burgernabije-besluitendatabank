@@ -10,7 +10,9 @@ interface ArgsInterface {
   keywordPlaceholder: string;
   keywordOnChange: string;
 
-  dateHandleChange: (d: any) => void;
+  applyDatePicker: () => any;
+  hideDatePicker: () => any;
+  cancelDatePicker: () => any;
   startDate: any;
   endDate: any;
 }
@@ -26,18 +28,17 @@ export default class SearchSidebar extends Component<ArgsInterface> {
     return this.args.municipalityOnChange;
   }
 
-  get municipalityOptions() {
-    // return an array of strings with municipality.bestuurseenheidnaam.value
-    return {};
-    
-    const municipalities = this.args.municipalityOptions
-      .map((municipality: any) => municipality.bestuurseenheidnaam.value)
-      .reduce((unique, item) => {
-        return unique.includes(item) ? unique : [...unique, item];
-      }, []);
-    console.log(municipalities);
+  get applyDatePicker() {
+    return this.args.applyDatePicker;
+  }
 
-    return municipalities;
+  get hideDatePicker() {
+    return this.args.hideDatePicker;
+  }
+
+  get cancelDatePicker() {
+    console.log(this.args);
+    return this.args.cancelDatePicker;
   }
 
   get municipalityAllowClear() {
@@ -56,11 +57,18 @@ export default class SearchSidebar extends Component<ArgsInterface> {
     return this.args.startDate;
   }
 
-  get endDate() {
-    return this.args.endDate;
+  get municipalityOptions() {
+    const municipalities = this.args.municipalityOptions
+      .map((municipality: any) => municipality)
+      .reduce((unique, item) => {
+        return unique.includes(item) ? unique : [...unique, item];
+      }, []);
+    console.log(municipalities);
+
+    return municipalities;
   }
 
-  get dateHandleChange() {
-    return this.args.dateHandleChange;
+  get endDate() {
+    return this.args.endDate;
   }
 }
