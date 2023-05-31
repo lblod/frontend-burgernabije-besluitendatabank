@@ -41,12 +41,8 @@ export default class HomeController extends Controller {
 
   @action handleKeywordChange(e: any) {
     this.keyWord = e.target.value;
-    this.router.transitionTo("home", {
+    this.router.transitionTo("home.list", {
       queryParams: {
-        gemeente: this.selected,
-        sorteren: this.sort,
-        begin: this.begin,
-        eind: this.eind,
         trefwoord: this.keyWord,
       },
     });
@@ -56,12 +52,12 @@ export default class HomeController extends Controller {
   @action applyDatePicker(picker: any, start: any, end: any) {
     this.begin = start;
     this.eind = end;
-    this.router.transitionTo("home", {
+    this.router.transitionTo("home.list", {
       queryParams: {
         gemeente: this.selected,
         sorteren: this.sort,
-        begin: this.begin,
-        eind: this.eind,
+        begin: start,
+        eind: end,
         trefwoord: this.keyWord,
       },
     });

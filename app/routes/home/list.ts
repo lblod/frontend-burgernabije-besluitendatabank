@@ -8,7 +8,10 @@ interface ResourcesInterface {
   };
   include: String;
   municipality?: String;
-  filter?: {};
+  filter?: {
+    ":or:"?: {}
+    session?: {}
+  };
 }
 
 export default class ListRoute extends Route {
@@ -23,11 +26,11 @@ export default class ListRoute extends Route {
       refreshModel: true,
       as: "sorteren",
     },
-    plannedStartBottomMargin: {
+    plannedStartMin: {
       refreshModel: true,
       as: "begin",
     },
-    plannedStartTopMargin: {
+    plannedStartMax: {
       refreshModel: true,
       as: "eind",
     },
@@ -46,8 +49,8 @@ export default class ListRoute extends Route {
   async model(params: any) {
     const municipality = params.gemeente ? params.gemeente : null;
     const sort = params.sort ? params.sort : "relevantie";
-    const plannedStart = params.plannedStart ? params.plannedStart : null;
-    const plannedEnd = params.plannedEnd ? params.plannedEnd : null;
+    const plannedStartMin = params.plannedStartMin ? params.plannedStartMin : null;
+    const plannedStartMax = params.plannedStartMax ? params.plannedStartMax : null;
     const keyWord = params.keyWord ? params.keyWord : null;
 
     let queryParams: ResourcesInterface = {
@@ -56,23 +59,30 @@ export default class ListRoute extends Route {
       },
       municipality: municipality,
       // include: 'session,session.governing-agent',
-      include: "session",
-      filter: {},
+      include: "session"
     };
 
-    if (plannedStart || plannedEnd) {
+    // Had to assign it here for typescript rr
+    queryParams.filter = {};
+
+    if (keyWord) {
+      queryParams.filter[":or:"] = {
+        "title": keyWord,
+        "description": keyWord
+      }
+    }
+
+    if (plannedStartMin || plannedStartMax || keyWord) {
       // Expected format: YYYY-MM-DD
       let sessionFilter: { [key: string]: any } = {};
 
-      if (plannedStart) {
-        sessionFilter[":gt:started-at"] = plannedStart;
+      if (plannedStartMin) {
+        sessionFilter[":gt:started-at"] = plannedStartMin;
       }
-      if (plannedEnd) {
-        sessionFilter[":lt:ended-at"] = plannedEnd;
+      if (plannedStartMax) {
+        sessionFilter[":lt:ended-at"] = plannedStartMax;
       }
-      queryParams.filter = {
-        session: sessionFilter,
-      };
+      queryParams.filter.session = sessionFilter;
     }
 
     let agendaItems = await this.store.query("agenda-item", queryParams);
