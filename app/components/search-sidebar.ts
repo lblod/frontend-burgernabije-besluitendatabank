@@ -2,7 +2,6 @@ import Component from "@glimmer/component";
 
 interface ArgsInterface {
   municipalityPlaceholder: string;
-  municipalitySelected: string;
   municipalityOnChange: () => void;
   municipalityOptions: Array<any>;
   municipalityAllowClear: boolean;
@@ -13,16 +12,20 @@ interface ArgsInterface {
   applyDatePicker: () => any;
   hideDatePicker: () => any;
   cancelDatePicker: () => any;
-  startDate: any;
-  endDate: any;
+  
+  
+  valueMunicipality: string;
+  valueKeyword: any;
+  valueStartDate: any;
+  valueEndDate: any;
 }
 
 export default class SearchSidebar extends Component<ArgsInterface> {
   get municipalityPlaceholder() {
     return this.args.municipalityPlaceholder;
   }
-  get municipalitySelected() {
-    return this.args.municipalitySelected;
+  get valueMunicipality() {
+    return this.args.valueMunicipality;
   }
   get municipalityOnChange() {
     return this.args.municipalityOnChange;
@@ -53,8 +56,12 @@ export default class SearchSidebar extends Component<ArgsInterface> {
     return this.args.keywordOnChange;
   }
 
-  get startDate() {
-    return this.args.startDate;
+  get valueKeyword() {
+    return this.args.valueKeyword;
+  }
+
+  get valueStartDate() {
+    return this.args.valueStartDate.replace(/-/g, "");
   }
 
   get municipalityOptions() {
@@ -68,7 +75,7 @@ export default class SearchSidebar extends Component<ArgsInterface> {
     return municipalities;
   }
 
-  get endDate() {
-    return this.args.endDate;
+  get valueEndDate() {
+    return this.args.valueEndDate.replace(/-/g, "");
   }
 }

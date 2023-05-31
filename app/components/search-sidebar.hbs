@@ -40,6 +40,7 @@
             placeholder={{this.keywordPlaceholder}}
             id={{"keyword"}}
             onChange={{this.keywordOnChange}}
+            @value={{this.valueKeyword}}
             @type={{"text"}}
           />
         </AuFormRow>
@@ -54,8 +55,8 @@
           <AuDateRangePicker
             id={{"date"}}
             @label="Optional label"
-            @start="20150101"
-            @end="20151231"
+            @start={{this.valueStartDate}}
+            @end={{this.valueEndDate}}
             @width="block"
             style="width: 100rem;"
             @cancelAction={{action this.cancelDatePicker}}
