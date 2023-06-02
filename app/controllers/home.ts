@@ -31,6 +31,7 @@ export default class HomeController extends Controller {
         trefwoord: e.target.value,
       },
     });
+    this.send("refreshListRoute");
   }
 
   @action applyDatePicker(picker: any, start: any, end: any) {
@@ -40,6 +41,7 @@ export default class HomeController extends Controller {
         eind: end,
       },
     });
+    this.send("refreshListRoute");
   }
 
   @action hideDatePicker(picker: any, start: any, end: any) {}
