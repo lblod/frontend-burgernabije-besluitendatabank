@@ -14,11 +14,11 @@
           <PowerSelectMultiple
             style="width: 100%;"
             id="municipality"
-            @placeholder={{this.municipalityPlaceholder}}
-            @selected={{this.municipalitySelected}}
-            @onChange={{this.municipalityOnChange}}
-            @options={{this.municipalityOptions}}
-            @allowClear={{this.municipalityAllowClear}}
+            @placeholder={{@municipalityPlaceholder}}
+            @selected={{@municipalitySelected}}
+            @onChange={{@municipalityOnChange}}
+            @options={{@municipalityOptions}}
+            @allowClear={{@municipalityAllowClear}}
             @noMatchesMessage={{"Geen gemeente gevonden"}}
             @searchMessage="Aan het zoeken..."
             @searchEnabled={{true}}
@@ -37,10 +37,10 @@
           </AuLabel>
           <AuInput
             style="width: 100%;"
-            placeholder={{this.keywordPlaceholder}}
+            placeholder={{@keywordPlaceholder}}
             id={{"keyword"}}
-            onChange={{this.keywordOnChange}}
-            @value={{this.valueKeyword}}
+            onChange={{@keywordOnChange}}
+            @value={{@valueKeyword}}
             @type={{"text"}}
           />
         </AuFormRow>
@@ -55,13 +55,13 @@
           <AuDateRangePicker
             id={{"date"}}
             @label="Optional label"
-            @start={{this.valueStartDate}}
-            @end={{this.valueEndDate}}
+            @start={{@valueStartDate}}
+            @end={{@valueEndDate}}
             @width="block"
             style="width: 100rem;"
-            @cancelAction={{action this.cancelDatePicker}}
-            @applyAction={{action this.applyDatePicker}}
-            @hideAction={{action this.hideDatePicker}}
+            @cancelAction={{action @cancelDatePicker}}
+            @applyAction={{action @applyDatePicker}}
+            @hideAction={{action @hideDatePicker}}
           />
         </AuFormRow>
       </section>

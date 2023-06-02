@@ -13,6 +13,14 @@ export default class HomeController extends Controller {
     return this.router.currentRouteName;
   }
 
+  /* Old code from search-sidebar.ts
+      const municipalities = this.MunicipalityOptions
+      .map((municipality: any) => municipality)
+      .reduce((unique, item) => {
+        return unique.includes(item) ? unique : [...unique, item];
+      }, []);
+  */
+
   @action handleMunicipalityChange(m: any) {
     this.router.transitionTo("home", {
       queryParams: {
