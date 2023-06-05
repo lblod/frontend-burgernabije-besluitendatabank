@@ -14,14 +14,16 @@
           <PowerSelectMultiple
             style="width: 100%;"
             id="municipality"
-            @placeholder={{@municipalityPlaceholder}}
-            @selected={{@municipalitySelected}}
             @onChange={{@municipalityOnChange}}
+            @selected={{@valueMunicipality}}
             @options={{@municipalityOptions}}
             @allowClear={{@municipalityAllowClear}}
+            @placeholder={{@municipalityPlaceholder}}
             @noMatchesMessage={{"Geen gemeente gevonden"}}
             @searchMessage="Aan het zoeken..."
             @searchEnabled={{true}}
+
+
             as |singleSelect|
           >
             {{singleSelect}}

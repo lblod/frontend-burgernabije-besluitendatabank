@@ -14,7 +14,14 @@ interface AgendaItemsRequestInterface {
   municipality?: String;
   filter?: {
     ":or:"?: {}
-    session?: {}
+    session?: {
+      "governing-body"?: {
+        "administrative-unit": {
+          "name"?: {},
+          "location"? : {}
+        }
+      }
+    }
   };
 }
 
@@ -41,7 +48,7 @@ export default class ListRoute extends Route {
     params = model;
     
 
-    let municipality = params.gemeente ? params.gemeente : null;
+    let municipality = params.municipality ? params.municipality : null;
     let sort = params.sort ? params.sort : "relevantie";
     let plannedStartMin = params.plannedStartMin ? params.plannedStartMin : null;
     let plannedStartMax = params.plannedStartMax ? params.plannedStartMax : null;
@@ -66,9 +73,18 @@ export default class ListRoute extends Route {
       }
     }
 
-    if (plannedStartMin || plannedStartMax || keyword) {
+    if (municipality || plannedStartMin || plannedStartMax) {
+      req.filter.session = {};
+    }
+
+    if (plannedStartMin || plannedStartMax || municipality) {
       // Expected format: YYYY-MM-DD
       let sessionFilter: { [key: string]: any } = {};
+
+      if (municipality) {
+        //sessionFilter["governing-body"] = {"administrative-unit": { "location": {"label": municipality} }};
+        sessionFilter["governing-body"] = {"administrative-unit": { "name": municipality } };
+      }
 
       if (plannedStartMin) {
         sessionFilter[":gt:started-at"] = plannedStartMin;

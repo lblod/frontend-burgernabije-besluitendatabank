@@ -27,6 +27,7 @@ export default class HomeController extends Controller {
         gemeente: m
       },
     });
+    this.send("refreshListRoute");
   }
 
   @action handleSort(e: any) {
