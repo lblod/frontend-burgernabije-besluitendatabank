@@ -25,52 +25,17 @@ module.exports = function (environment) {
   };
 
   if (environment === "production") {
-    // ENV["ember-cli-mirage"] = {
-    //   enabled: true,
-    //   directory: "mirage",
-    // };
-
     ENV.yappConfigKey = "dev";
-
-    ENV["ember-cli-mirage"] = {
-      enabled: false,
-      excludeFilesFromBuild: true,
-    };
     ENV.API_URL = "https://burgernabije-besluitendatabank-dev.s.redhost.be/api";
-  }
-
-  if (environment === "development") {
-    ENV["ember-cli-mirage"] = {
-      enabled: false,
-      excludeFilesFromBuild: true,
-    };
+  } else if (environment === "development") {
     ENV.API_URL = "https://burgernabije-besluitendatabank-dev.s.redhost.be/api";
+  } else if (environment === "test") {
+    ENV.locationType = 'none';
+    ENV.APP.LOG_ACTIVE_GENERATION = false;
+    ENV.APP.LOG_VIEW_LOOKUPS = false;
+    ENV.APP.rootElement = '#ember-testing';
+    ENV.APP.autoboot = false;
   }
-
-  if (environment === "test") {
-    ENV["ember-cli-mirage"] = {
-      enabled: true,
-    };
-    ENV.API_URL = "http://localhost:4200/api";
-  }
-  //   // Testem prefers this...
-  //   ENV.locationType = "none";
-
-  //   // keep test console output quieter
-  //   ENV.APP.LOG_ACTIVE_GENERATION = false;
-  //   ENV.APP.LOG_VIEW_LOOKUPS = false;
-
-  //   ENV.APP.rootElement = "#ember-testing";
-  //   ENV.APP.autoboot = false;
-  // }
-
-  // if (environment === "production") {
-  //   ENV["ember-cli-mirage"] = {
-  //     enabled: true,
-  //   };
-
-  // here you can enable a production-specific feature
-  // }
 
   return ENV;
 };
