@@ -2,3 +2,4 @@ node_modules
 dist
 .travis.yml
 *.log
+*/.DS_Store
