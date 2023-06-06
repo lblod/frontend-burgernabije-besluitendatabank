@@ -74,7 +74,6 @@
     "ember-cli-htmlbars": "^6.2.0",
     "ember-cli-htmlbars-inline-precompile": "^3.0.2",
     "ember-cli-inject-live-reload": "^2.1.0",
-    "ember-cli-mirage": "v3.0.0-alpha.1",
     "ember-cli-moment-shim": "^3.8.0",
     "ember-cli-sass": "^11.0.1",
     "ember-cli-sri": "^2.1.1",

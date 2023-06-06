@@ -10,9 +10,6 @@
       "frontend-burgernabije-besluitendatabank/tests/*": [
         "tests/*"
       ],
-      "frontend-burgernabije-besluitendatabank/mirage/*": [
-        "mirage/*"
-      ],
       "frontend-burgernabije-besluitendatabank/*": [
         "app/*"
       ],
@@ -25,7 +22,6 @@
     "app/**/*",
     "tests/**/*",
     "types/**/*",
-    "mirage/**/*",
     "app/config/environment.d.ts",
     "app/templates/flandersMunicipalities.ts"
   ]
