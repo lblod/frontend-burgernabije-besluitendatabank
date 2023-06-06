@@ -1,0 +1,15 @@
+{{page-title "Zitting"}}
+
+<div class="au-u-flex detail-container" style="overflow-y: scroll;">
+  <section style="height: fit-content; width: 100%;" class="au-u-flex au-u-flex--column">
+    {{#each this.agendaItemsSorted as |item|}}
+    <DecisionCard 
+      @id={{item.id}} 
+      @title={{item.title}} 
+      @description={{item.description}}
+      @startDate={{item.session.startedAt}} 
+      @endDate={{item.session.endedAt}} 
+      />
+    {{/each}}
+  </section>
+</div>

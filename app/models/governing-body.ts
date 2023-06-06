@@ -1,10 +1,10 @@
-import Model, { attr, belongsTo } from '@ember-data/model';
+import Model, { attr, belongsTo, type AsyncBelongsTo } from '@ember-data/model';
 import SessionModel from './session';
 import AdministrativeUnitModel from './administrative-unit';
 
 export default class GoverningBodyModel extends Model {
-    @attr("string") declare name: string;
+    @attr("string", { defaultValue: "Ontbrekende name" }) declare name: string;
 
-    @belongsTo("administrative-unit") declare administrativeUnit: AdministrativeUnitModel;
-    @belongsTo("session") declare session: SessionModel;
+    @belongsTo("administrative-unit", { async: false }) declare administrativeUnit: AdministrativeUnitModel;
+    @belongsTo("session") declare session: AsyncBelongsTo<SessionModel>;
 }
