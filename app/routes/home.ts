@@ -4,6 +4,8 @@ import { tracked } from "@glimmer/tracking";
 import { service } from "@ember/service";
 import { getMunicipalitiesFromVlaanderen } from "frontend-burgernabije-besluitendatabank/utils/apivlaanderen";
 import { set } from "@ember/object";
+import Controller from "@ember/controller";
+import Transition from "@ember/routing/transition";
 
 
 export default class HomeRoute extends Route {
@@ -11,7 +13,7 @@ export default class HomeRoute extends Route {
 
   queryParams = {
     municipality: {
-      as: "gemeente",
+      as: "gemeentes",
     },
     sort: {
       as: "sorteren",

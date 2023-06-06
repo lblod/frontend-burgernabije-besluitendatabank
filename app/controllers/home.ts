@@ -9,18 +9,20 @@ export default class HomeController extends Controller {
   @service declare router: RouterService;
   @service declare store: Store;
 
-  @tracked municipality = [];
-
+  @tracked selectedMunicipality: Array<string> = [];
+  
+  
   get currentRoute() {
     return this.router.currentRouteName;
   }
 
   @action handleMunicipalityChange(m: any) {
-    console.log(m);
-    this.municipality = m;
+    this.selectedMunicipality = m;
+
+    
     this.router.transitionTo("home", {
       queryParams: {
-        gemeente: "Brugge",
+        gemeentes: this.selectedMunicipality.join("+")
       },
     });
     this.send("refreshListRoute");
