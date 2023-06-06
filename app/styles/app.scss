@@ -28,7 +28,7 @@
 }
 
 html {
-  font-size: 50%;
+  font-size: 60%;
 }
 // body {
 //   font-size: 1.6rem;
@@ -127,5 +127,15 @@ cursor {
   cursor: pointer;
 }
 
+.truncate {
+  display: -webkit-box;
+  -webkit-line-clamp: 7; /* Number of lines to show */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1.2em;
+  line-height: 1.2em; /* Adjust the line height as needed */
+  max-height: calc(1.2em * 5);
+}
+
 @import "ember-appuniversum/p-ember-power-select";
-// @import "ember-power-select";

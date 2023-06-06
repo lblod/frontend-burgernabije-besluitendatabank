@@ -55,8 +55,11 @@ export default class ListRoute extends Route {
         size: params.offset,
       },
       municipality: municipality,
-      // include: 'session,session.governing-agent',
-      include: "session",
+      include: [
+        "session",
+        "session.governing-body",
+        "session.governing-body.administrative-unit",
+      ].join(","),
       filter: {},
     };
 

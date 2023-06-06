@@ -1,4 +1,4 @@
-<LinkTo @route="detail" @model={{this.id}}>
+<LinkTo style="text-decoration: none;" @route="detail" @model={{this.item.id}}>
   <AuCard
     @size="small"
     class="card-hover au-u-padding-bottom au-u-padding"
@@ -9,24 +9,32 @@
     <c.header>
       <AuHeading @level="1" @skin="3">
         <AuLink style="text-overflow: ellipsis; max-height: 50%;">
-          {{this.title}}
+          {{this.item.title}}
         </AuLink>
       </AuHeading>
     </c.header>
-    <c.content
-      style="text-overflow: ellipsis;display: flex; word-wrap: break-word;  text-decoration: none;"
-    >
-      <p style="text-decoration: none; height: 100%;">{{#if this.description }}
-          {{this.description}}
-        {{/if}}</p>
+    <c.content>
+      {{#if this.item.description}}
+        <p class="truncate">{{this.item.description}}</p>
+      {{/if}}
     </c.content>
     <c.footer>
       {{#if this.dateRange}}
         {{this.dateRange}}
+      {{else}}
+        Geen Datum
       {{/if}}
-      
-      {{#if this.municipality}}
-        - {{this.municipality}}
+      -
+      {{#if this.item.session.governingBody.name}}
+        {{this.item.session.governingBody.name}}
+      {{else}}
+        Geen Bestuurorgaan
+      {{/if}}
+      -
+      {{#if this.item.session.governingBody.administrativeUnit.name}}
+        {{this.item.session.governingBody.administrativeUnit.name}}
+      {{else}}
+        Geen Bestuurseenheid
       {{/if}}
     </c.footer>
   </AuCard>

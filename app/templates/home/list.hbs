@@ -1,13 +1,12 @@
-<section 
+<section
   {{did-insert this.setupInViewport}}
-  class="au-o-flow au-u-flex au-u-flex--column" >
+  class="au-o-flow au-u-flex au-u-flex--column"
+>
   {{#each @model as |item|}}
     <DecisionCard
-      @id={{item.id}}
-      @title={{item.title}}
-      @description={{item.description}}
       @startDate={{item.session.startedAt}}
       @endDate={{item.session.endedAt}}
+      @item={{item}}
     />
   {{/each}}
 </section>
