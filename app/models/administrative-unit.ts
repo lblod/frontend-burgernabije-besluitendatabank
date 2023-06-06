@@ -4,7 +4,7 @@ import AdministrativeUnitClasssificationCodeModel from './location';
 import LocationModel from './location';
 
 export default class AdministrativeUnitModel extends Model {
-    @attr("string") declare name: string;
+    @attr("string", { defaultValue: "Ontbrekende gemeente" }) declare name: string;
 
     @hasMany("governing-body") declare governingBodies: GoverningBodyModel;
     @belongsTo("administrative-unit-classification-code") declare classification: AdministrativeUnitClasssificationCodeModel;

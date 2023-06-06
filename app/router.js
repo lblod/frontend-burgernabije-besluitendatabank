@@ -15,4 +15,7 @@ Router.map(function () {
     this.route("list", { path: "/" });
     this.route("map", { path: "/kaart" });
   });
+  this.route('sessions', { path: "/zittingen" }, function() {
+    this.route('session', { path: "/:session_id" });
+  });
 });
