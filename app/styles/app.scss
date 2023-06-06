@@ -28,7 +28,7 @@
 }
 
 html {
-  font-size: 60%;
+  font-size: 55%;
 }
 // body {
 //   font-size: 1.6rem;
@@ -135,7 +135,8 @@ cursor {
   text-overflow: ellipsis;
   font-size: 1.2em;
   line-height: 1.2em; /* Adjust the line height as needed */
-  max-height: calc(1.2em * 5);
+  // max-height however many times the line height fits in 100%
+  max-height: 4.8em;
 }
 
 @import "ember-appuniversum/p-ember-power-select";
