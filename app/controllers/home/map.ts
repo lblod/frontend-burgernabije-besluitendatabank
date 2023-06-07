@@ -244,8 +244,6 @@ export default class MapComponent extends Controller {
             case "TEAM":
             case "Lijst":
           }
-          console.log(eenBurgemeester);
-          //  console.log(classColor);
           return (document.querySelector(
             "#tooltip"
           )!.innerHTML = `<span class="gemeente">${name}</span> | ${eenBurgemeester[0].voornaam} ${eenBurgemeester[0].achternaam} <span class="fractie ${classColor}">${eenBurgemeester[0].fractie.value}</span>`);

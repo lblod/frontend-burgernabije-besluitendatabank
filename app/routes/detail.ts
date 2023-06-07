@@ -12,31 +12,18 @@ export default class DetailRoute extends Route {
         // 'session.governing-body',
         // 'session.governing-body.administrative-unit',
         // 'handled-by',
-        'handled-by.has-votes',
+        "handled-by.has-votes",
         // 'handled-by.has-votes.has-presents',
         // 'handled-by.has-votes.has-abstainers',
-        'handled-by.has-votes.has-abstainers.alias',
+        "handled-by.has-votes.has-abstainers.alias",
         // 'handled-by.has-votes.has-voters',
         // 'handled-by.has-votes.has-opponents',
-        'handled-by.has-votes.has-opponents.alias',
+        "handled-by.has-votes.has-opponents.alias",
         // 'handled-by.has-votes.has-proponents',
-        'handled-by.has-votes.has-proponents.alias',
-      ].join(',')
+        "handled-by.has-votes.has-proponents.alias",
+      ].join(","),
     });
 
-    // console.log(agendaItems);
-
     return agendaItems;
-
-    // return this.store.query("agenda-item", 
-    // { 
-    //   filter: {
-    //     "title": params.title
-    //   },
-    //   include: 'session,session.governing-agent'
-    // }).then((agendaItem) => {
-    //   console.log(agendaItem);
-    //   return agendaItem.get("firstObject");
-    // });
   }
 }

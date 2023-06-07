@@ -3,17 +3,22 @@
 <div class="au-u-flex" style="height: 100%;">
   <SearchSidebar
     @municipalityPlaceholder="Selecteer een optie"
-    @municipalitySelected={{this.selected}}
     @municipalityOnChange={{this.handleMunicipalityChange}}
     @municipalityOptions={{@model}}
     @municipalityAllowClear={{true}}
+
+
     @keywordPlaceholder={{"Terrasvergunning"}}
     @keywordOnChange={{this.handleKeywordChange}}
+
     @applyDatePicker={{this.applyDatePicker}}
     @cancelDatePicker={{this.cancelDatePicker}}
     @hideDatePicker={{this.hideDatePicker}}
-    @startDate={{this.startDate}}
-    @endDate={{this.endDate}}
+
+    @valueMunicipality={{this.selectedMunicipality}}
+    @valueKeyword={{this.keyword}}
+    @valueStartDate={{this.plannedStartMin}}
+    @valueEndDate={{this.plannedStartMax}}
   />
 
   <section

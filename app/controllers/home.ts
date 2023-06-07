@@ -8,63 +8,49 @@ import { tracked } from "@glimmer/tracking";
 export default class HomeController extends Controller {
   @service declare router: RouterService;
   @service declare store: Store;
-  @tracked selected = "";
+
+  @tracked selectedMunicipality: Array<string> = [];
 
   get currentRoute() {
     return this.router.currentRouteName;
   }
 
-  @tracked entriesStart = 0;
-  @tracked entriesEnd = 3;
-  @tracked keyWord = "";
-  @tracked sort = "relevantie";
-
-  @tracked begin = undefined;
-  @tracked eind = undefined;
-
   @action handleMunicipalityChange(m: any) {
-    this.selected = m;
+    this.selectedMunicipality = m;
+
     this.router.transitionTo("home", {
       queryParams: {
-        gemeente: m,
-        sorteren: this.sort,
-        begin: this.begin,
-        eind: this.eind,
-        trefwoord: this.keyWord,
+        // query for multiselect
+        // gemeentes: this.selectedMunicipality.join("+"),
+
+        // temporary query for single select
+        gemeentes: m,
       },
     });
+    this.send("refreshListRoute");
   }
 
   @action handleSort(e: any) {
-    this.sort = e.target.value.toLowerCase();
+    //this.sort = e.target.value.toLowerCase();
   }
 
   @action handleKeywordChange(e: any) {
-    this.keyWord = e.target.value;
-    this.router.transitionTo("home", {
+    this.router.transitionTo("home.list", {
       queryParams: {
-        gemeente: this.selected,
-        sorteren: this.sort,
-        begin: this.begin,
-        eind: this.eind,
-        trefwoord: this.keyWord,
+        trefwoord: e.target.value,
       },
     });
+    this.send("refreshListRoute");
   }
 
-  @tracked dateRange = "";
   @action applyDatePicker(picker: any, start: any, end: any) {
-    this.begin = start;
-    this.eind = end;
-    this.router.transitionTo("home", {
+    this.router.transitionTo("home.list", {
       queryParams: {
-        gemeente: this.selected,
-        sorteren: this.sort,
-        begin: this.begin,
-        eind: this.eind,
-        trefwoord: this.keyWord,
+        begin: start,
+        eind: end,
       },
     });
+    this.send("refreshListRoute");
   }
 
   @action hideDatePicker(picker: any, start: any, end: any) {}

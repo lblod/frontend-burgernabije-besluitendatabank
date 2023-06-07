@@ -1,58 +1,60 @@
 import Store from "@ember-data/store";
+import { action } from "@ember/object";
 import Route from "@ember/routing/route";
 import { service } from "@ember/service";
+import { tracked } from "@glimmer/tracking";
 
-interface ResourcesInterface {
+interface AgendaItemsRequestInterface {
   page: {
     size: Number;
   };
   include: String;
   municipality?: String;
-  filter?: {};
+  filter?: {
+    ":or:"?: {};
+    session?: {
+      "governing-body"?: {
+        "administrative-unit": {
+          name?: {};
+          location?: {};
+        };
+      };
+    };
+  };
 }
 
 export default class ListRoute extends Route {
   @service declare store: Store;
 
   queryParams = {
-    municipality: {
-      refreshModel: true,
-      as: "gemeente",
-    },
-    sort: {
-      refreshModel: true,
-      as: "sorteren",
-    },
-    plannedStartBottomMargin: {
-      refreshModel: true,
-      as: "begin",
-    },
-    plannedStartTopMargin: {
-      refreshModel: true,
-      as: "eind",
-    },
-    keyWord: {
-      refreshModel: true,
-      as: "trefwoord",
-    },
-    offset: {
-      refreshModel: true,
-      as: "aantal",
-    },
+    offset: {},
   };
+  @tracked offset = 10;
 
-  offset = 10;
+  @action
+  refreshListRoute() {
+    this.refresh();
+  }
 
   async model(params: any) {
-    const municipality = params.gemeente ? params.gemeente : null;
-    const sort = params.sort ? params.sort : "relevantie";
-    const plannedStart = params.plannedStart ? params.plannedStart : null;
-    const plannedEnd = params.plannedEnd ? params.plannedEnd : null;
-    const keyWord = params.keyWord ? params.keyWord : null;
+    let offset = params.offset;
 
-    let queryParams: ResourcesInterface = {
+    let model: any = this.paramsFor("home");
+    params = model;
+
+    let municipality = params.municipality ? params.municipality : null;
+    let sort = params.sort ? params.sort : "relevantie";
+    let plannedStartMin = params.plannedStartMin
+      ? params.plannedStartMin
+      : null;
+    let plannedStartMax = params.plannedStartMax
+      ? params.plannedStartMax
+      : null;
+    let keyword = params.keyword ? params.keyword : null;
+
+    let req: AgendaItemsRequestInterface = {
       page: {
-        size: params.offset,
+        size: offset,
       },
       municipality: municipality,
       include: [
@@ -63,22 +65,41 @@ export default class ListRoute extends Route {
       filter: {},
     };
 
-    if (plannedStart || plannedEnd) {
-      // Expected format: YYYY-MM-DD
-      let sessionFilter: { [key: string]: any } = {};
+    // Had to assign it here for typescript rr
+    req.filter = {};
 
-      if (plannedStart) {
-        sessionFilter[":gt:started-at"] = plannedStart;
-      }
-      if (plannedEnd) {
-        sessionFilter[":lt:ended-at"] = plannedEnd;
-      }
-      queryParams.filter = {
-        session: sessionFilter,
+    if (keyword) {
+      req.filter[":or:"] = {
+        title: keyword,
+        description: keyword,
       };
     }
 
-    let agendaItems = await this.store.query("agenda-item", queryParams);
+    if (municipality || plannedStartMin || plannedStartMax) {
+      req.filter.session = {};
+    }
+
+    if (plannedStartMin || plannedStartMax || municipality) {
+      // Expected format: YYYY-MM-DD
+      let sessionFilter: { [key: string]: any } = {};
+
+      if (municipality) {
+        //sessionFilter["governing-body"] = {"administrative-unit": { "location": {"label": municipality} }};
+        sessionFilter["governing-body"] = {
+          "administrative-unit": { name: municipality },
+        };
+      }
+
+      if (plannedStartMin) {
+        sessionFilter[":gt:started-at"] = plannedStartMin;
+      }
+      if (plannedStartMax) {
+        sessionFilter[":lt:ended-at"] = plannedStartMax;
+      }
+      req.filter.session = sessionFilter;
+    }
+
+    let agendaItems = await this.store.query("agenda-item", req);
 
     return agendaItems;
   }

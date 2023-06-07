@@ -37,7 +37,6 @@ export default class SearchSidebar extends Component<ArgsInterface> {
   }
 
   get cancelDatePicker() {
-    console.log(this.args);
     return this.args.cancelDatePicker;
   }
 
@@ -63,7 +62,6 @@ export default class SearchSidebar extends Component<ArgsInterface> {
       .reduce((unique, item) => {
         return unique.includes(item) ? unique : [...unique, item];
       }, []);
-    console.log(municipalities);
 
     return municipalities;
   }

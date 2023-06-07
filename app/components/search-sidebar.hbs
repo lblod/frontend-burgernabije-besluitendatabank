@@ -11,21 +11,21 @@
           <AuLabel for={{"municipality"}} style="width: 30%;">
             Gemeente
           </AuLabel>
-          <PowerSelectMultiple
+          <PowerSelect
             style="width: 100%;"
             id="municipality"
-            @placeholder={{this.municipalityPlaceholder}}
-            @selected={{this.municipalitySelected}}
-            @onChange={{this.municipalityOnChange}}
-            @options={{this.municipalityOptions}}
-            @allowClear={{this.municipalityAllowClear}}
+            @onChange={{@municipalityOnChange}}
+            @selected={{@valueMunicipality}}
+            @options={{@municipalityOptions}}
+            @allowClear={{@municipalityAllowClear}}
+            @placeholder={{@municipalityPlaceholder}}
             @noMatchesMessage={{"Geen gemeente gevonden"}}
             @searchMessage="Aan het zoeken..."
             @searchEnabled={{true}}
             as |singleSelect|
           >
             {{singleSelect}}
-          </PowerSelectMultiple>
+          </PowerSelect>
 
         </AuFormRow>
         <AuFormRow
@@ -37,9 +37,10 @@
           </AuLabel>
           <AuInput
             style="width: 100%;"
-            placeholder={{this.keywordPlaceholder}}
+            placeholder={{@keywordPlaceholder}}
             id={{"keyword"}}
-            onChange={{this.keywordOnChange}}
+            onChange={{@keywordOnChange}}
+            @value={{@valueKeyword}}
             @type={{"text"}}
           />
         </AuFormRow>
@@ -54,13 +55,13 @@
           <AuDateRangePicker
             id={{"date"}}
             @label="Optional label"
-            @start="20150101"
-            @end="20151231"
+            @start={{@valueStartDate}}
+            @end={{@valueEndDate}}
             @width="block"
             style="width: 100rem;"
-            @cancelAction={{action this.cancelDatePicker}}
-            @applyAction={{action this.applyDatePicker}}
-            @hideAction={{action this.hideDatePicker}}
+            @cancelAction={{action @cancelDatePicker}}
+            @applyAction={{action @applyDatePicker}}
+            @hideAction={{action @hideDatePicker}}
           />
         </AuFormRow>
       </section>

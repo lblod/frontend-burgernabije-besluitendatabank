@@ -57,7 +57,6 @@ export default class MunicipalityRoute extends Route {
           }
         )
         .then((response) => {
-          console.log(response.data);
           return response.data.results.bindings;
         })
         .catch((error) => {

@@ -11,6 +11,11 @@ export default class HomeListController extends Controller {
   @service declare router: RouterService;
 
   @action
+  refreshListRoute() {
+    this.router.refresh(this.router.currentRouteName);
+  }
+
+  @action
   setupInViewport() {
     const loader = document.getElementById("loader");
     const viewportTolerance = { bottom: 200 };
