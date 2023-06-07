@@ -1,7 +1,8 @@
 {{page-title "BurgerBesluitenDB"}}
 
 <AuApp style="height: 100vh;">
-  <Navbar />
+  <AppHeader />
+  <NavigationBar />
 
   <AuMainContainer tyle="height: 100%;" as |m|>
 
@@ -15,6 +16,6 @@
   </AuMainContainer>
   {{! <Footer /> }}
   {{#if this.hasExternallySourcedFooter}}
-    <footer {{vl-widget this.VO_FOOTER_WIDGET_URL}}></footer>
+    {{!-- <footer {{vl-widget this.VO_FOOTER_WIDGET_URL}}></footer> --}}
   {{/if}}
 </AuApp>
