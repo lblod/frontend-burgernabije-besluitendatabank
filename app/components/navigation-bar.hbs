@@ -1,0 +1,13 @@
+<AuToolbar @size="large">
+    <nav role="menu">
+        <ol class="au-c-list-horizontal">
+            {{#each this.links as |link|}}
+            <li class="au-c-list-horizontal__item">
+                <NavigationBar::Link @route={{link.route}}>
+                {{link.label}}
+                </NavigationBar::Link>
+            </li>
+            {{/each}}
+        </ol>
+    </nav>
+</AuToolbar>
