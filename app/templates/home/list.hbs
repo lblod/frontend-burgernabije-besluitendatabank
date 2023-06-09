@@ -17,8 +17,10 @@
   {{/if}}
 </section>
 {{#if @model}}
-  <AuLoader
-    style="height: 40px; display: flex; justify-content: center; align-items: center; margin-bottom: 30px;"
+  <div
     id="loader"
-  />
+    style="height: 80px; display: flex; justify-content: center; align-items: center;"
+  >
+    <AuLoader />
+  </div>
 {{/if}}
