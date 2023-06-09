@@ -1,11 +1,8 @@
 {{page-title this.model.title}}
+<main style="display: flex; height: 100%;">
 
-<div
-  class="au-u-flex detail-container"
-  style="display: flex; overflow: scroll;"
->
   <section
-    style="height: fit-content; width: 70%;"
+    style="height: 100%; display: flex; width: 70%;"
     id="detail-left-section"
     class="au-u-flex au-u-flex--column"
   >
@@ -31,9 +28,8 @@
 
     <AuCard
       @shadow={{true}}
-      @size="small"
-      style="border-top:solid 5px #FFE615; height: fit-content; min-height: 90%; display: flex;"
-      class="au-o-region-small au-u-margin-large au-u-margin-top-small au-u-padding"
+      style="border-top:solid 5px #FFE615; height: fit-content;  overflow-y: scroll; min-height: 90%; display: flex;"
+      class="au-c-card au-u-margin-large au-u-margin-top-small au-u-padding"
       as |c|
     >
       <c.header>
@@ -181,13 +177,13 @@
   <section
     id="detail-right-section"
     class="au-u-background-gray-100"
-    style="height:100%;min-height: 100%;align-items: stretch; width: 30%;"
+    style="height:100; width: 30%;"
   >
     <AuCard
       @flex={{true}}
       @shadow={{true}}
       @size="small"
-      style="border-left:solid 5px #FFE615; height: 35rem;"
+      style="border-left:solid 5px #FFE615; height: 35rem; align-items: stretch;"
       class="au-o-region-small au-u-margin-large au-u-margin-top-huge au-u-padding"
       as |c|
     >
@@ -219,4 +215,5 @@
       </c.content>
     </AuCard>
   </section>
-</div>
+
+</main>

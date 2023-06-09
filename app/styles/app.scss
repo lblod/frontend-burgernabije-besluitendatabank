@@ -30,9 +30,25 @@
 html {
   font-size: 50%;
 }
-// body {
-//   font-size: 1.6rem;
-// }
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #ffe615;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #a1920d;
+}
 
 #map-cursor {
   height: 100%;
@@ -40,9 +56,9 @@ html {
 }
 
 @media (max-width: 1100px) {
-  .detail-container {
-    flex-direction: column;
-  }
+  // .detail-container {
+  //   flex-direction: column;
+  // }
   div .au-c-form-row .au-c-form-row--inline {
     display: flex;
     flex-direction: column;
@@ -136,6 +152,11 @@ cursor {
   font-size: 1.2em;
   line-height: 1.2em; /* Adjust the line height as needed */
   max-height: 4.8em;
+}
+
+#detail-right-section {
+  height: 100%;
+  min-height: 100% !important;
 }
 
 @import "ember-appuniversum/p-ember-power-select";
