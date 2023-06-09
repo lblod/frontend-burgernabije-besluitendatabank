@@ -10,7 +10,7 @@ export default class HomeController extends Controller {
   @service declare store: Store;
 
   @tracked selectedMunicipality: {
-    name: string;
+    label: string;
     id: string;
   } | null = null;
 
@@ -31,7 +31,7 @@ export default class HomeController extends Controller {
     }
 
     this.selectedMunicipality = {
-      name: m.name,
+      label: m.label,
       id: m.id,
     };
 
@@ -41,7 +41,7 @@ export default class HomeController extends Controller {
         // gemeentes: this.selectedMunicipality.join("+"),
 
         // temporary query for single select
-        gemeentes: m.name,
+        gemeentes: m.label,
       },
     });
     this.send("refreshListRoute");

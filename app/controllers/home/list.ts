@@ -9,7 +9,6 @@ export default class HomeListController extends Controller {
   @service declare inViewport: any;
   @service declare store: Store;
   @service declare router: RouterService;
-
   @action
   refreshListRoute() {
     this.router.refresh(this.router.currentRouteName);
@@ -29,12 +28,11 @@ export default class HomeListController extends Controller {
   didEnterViewport() {
     this.infinityLoad();
   }
-  @tracked offset = 10;
+  @tracked offset = 100;
 
   @action async infinityLoad() {
-    this.offset += 10;
-
-    this.router.transitionTo("home.list", {
+    this.offset += 100;
+    this.router.transitionTo("home", {
       queryParams: {
         offset: this.offset,
       },

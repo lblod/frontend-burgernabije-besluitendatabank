@@ -24,14 +24,14 @@
               @selected={{@valueMunicipality}}
               @options={{@municipalityOptions}}
               @allowClear={{@municipalityAllowClear}}
-              @searchField="name"
+              @searchField="label"
               @placeholder={{@municipalityPlaceholder}}
               @noMatchesMessage={{"Geen gemeente gevonden"}}
               @searchMessage="Aan het zoeken..."
               @searchEnabled={{true}}
               as |singleSelect|
             >
-              {{singleSelect.name}}
+              {{singleSelect.label}}
             </PowerSelect>
             <AuPill
               style="width: 100%; display: inline-block;"
@@ -42,9 +42,9 @@
                 Resultaten voor
                 <AuLink
                   @route="municipality"
-                  @model={{@valueMunicipality.name}}
+                  @model={{@valueMunicipality.label}}
                 >
-                  {{@valueMunicipality.name}}
+                  {{@valueMunicipality.label}}
                 </AuLink>
               {{else}}
                 Filter op gemeente

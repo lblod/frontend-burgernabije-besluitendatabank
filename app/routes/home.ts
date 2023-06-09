@@ -11,7 +11,7 @@ interface MunicipalitiesRequestInterface {
   include?: String;
   municipality?: String;
   filter?: {
-    location?: {};
+    niveau?: {};
     session?: {
       "governing-body"?: {
         "administrative-unit": {
@@ -51,14 +51,12 @@ export default class HomeRoute extends Route {
 
   async model(params: object, transition: Transition<unknown>) {
     let req: MunicipalitiesRequestInterface = {
-      page: { size: 500 },
+      page: { size: 600 },
       filter: {
-        location: {
-          niveau: "Gemeente",
-        },
+        niveau: "Gemeente",
       },
     };
-    const municipalities = this.store.query("administrative-unit", req);
+    const municipalities = this.store.query("location", req);
     return municipalities;
   }
 }
