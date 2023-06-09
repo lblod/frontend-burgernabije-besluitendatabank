@@ -19,10 +19,10 @@ export default class MunicipalityController extends Controller {
   @tracked endDate = undefined;
 
   @action handleMunicipalityChange(m: any) {
-    this.selected = m;
+    this.selected = m.name;
     this.router.transitionTo("municipality", {
       queryParams: {
-        gemeente: m,
+        gemeente: this.selected,
       },
     });
   }
