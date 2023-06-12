@@ -2,16 +2,25 @@
   {{did-insert this.setupInViewport}}
   class="au-o-flow au-u-flex au-u-flex--column"
 >
-  {{#each @model as |item|}}
-    <DecisionCard
-      @startDate={{item.session.startedAt}}
-      @endDate={{item.session.endedAt}}
-      @item={{item}}
-    />
-  {{/each}}
+  {{#if @model}}
+    {{#each @model as |item|}}
+      <DecisionCard
+        @startDate={{item.session.startedAt}}
+        @endDate={{item.session.endedAt}}
+        @item={{item}}
+      />
+    {{/each}}
+  {{else}}
+    <AuAlert @title={{"Oeps!"}} @skin={{"warning"}} @icon={{"archive"}}>
+      <p>Deze gemeente heeft spijtig genoeg geen resultaten!</p>
+    </AuAlert>
+  {{/if}}
 </section>
-
-<AuLoader
-  style="height: 40px; display: flex; justify-content: center; align-items: center; margin-bottom: 30px;"
-  id="loader"
->Nieuwe Agendapunten aan het Laden</AuLoader>
+{{#if @model}}
+  <div
+    id="loader"
+    style="height: 80px; display: flex; justify-content: center; align-items: center;"
+  >
+    <AuLoader />
+  </div>
+{{/if}}

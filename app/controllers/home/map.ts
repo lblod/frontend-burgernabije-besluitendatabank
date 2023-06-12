@@ -57,7 +57,6 @@ export default class MapComponent extends Controller {
               const datenow = new Date(Date.now()).setHours(0, 0, 0, 0); // toDateString()
               const f = new Date(e.geplandeStart);
               const dateplan = f.getTime();
-              // console.log(name, d.geplandeStart, dateplan > datenow || dateplan == datenow)
               if (dateplan > datenow || dateplan == datenow) {
                 return d3.select("#" + name).style("fill", "#FFC515");
               }
@@ -73,8 +72,6 @@ export default class MapComponent extends Controller {
           over(name);
         })
         .on("click", (gemeenteDataItem) => {
-          //  d3.select(".indexClick").transition().style("visibility", "visible")
-          console.log(gemeenteDataItem);
           router.transitionTo("municipality", gemeenteDataItem.target.id);
         })
         .on("mouseout", (gemeenteDataItem) => {
@@ -161,8 +158,6 @@ export default class MapComponent extends Controller {
               //@ts-ignore
               .features.map((d) => [d.properties.name_nl, d])
           );
-
-          // console.log(gemeenteData);
           mandatenData = fetch_mandataris()
             .then((result: any) => {
               const datas = result.data.results["bindings"];
@@ -179,9 +174,7 @@ export default class MapComponent extends Controller {
               });
               return realdata;
             })
-            .catch(function (error) {
-              console.log("Failed!", error);
-            });
+            .catch(function (error) {});
 
           hasAgenda().then((result) => {
             agendaData = result;
@@ -422,10 +415,8 @@ export default class MapComponent extends Controller {
         });
       }
       const agendadata: any = [];
-      console.log(features["Symbol"]);
       eenheidnaam.forEach((e: any) => {
         const feature: any = features.get(e.bestuurseenheidnaam);
-        console.log(feature);
         agendadata.push({
           position: feature && path.centroid(feature),
           name: feature && feature.properties.name_nl,
@@ -434,7 +425,6 @@ export default class MapComponent extends Controller {
       });
 
       agendadata.filter((d: any) => d.position);
-      // console.log(agendadata);
       agendadata.sort(
         (a: any, b: any) =>
           d3.ascending(a.position[1], b.position[1]) ||

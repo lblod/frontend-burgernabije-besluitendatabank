@@ -1,13 +1,27 @@
 import Store from "@ember-data/store";
 import Route from "@ember/routing/route";
-import { tracked } from "@glimmer/tracking";
-import { service } from "@ember/service";
-import { getMunicipalitiesFromVlaanderen } from "frontend-burgernabije-besluitendatabank/utils/apivlaanderen";
-import { set } from "@ember/object";
-import Controller from "@ember/controller";
 import Transition from "@ember/routing/transition";
+import { service } from "@ember/service";
+import { tracked } from "@glimmer/tracking";
 
-
+interface MunicipalitiesRequestInterface {
+  page: {
+    size: Number;
+  };
+  include?: String;
+  municipality?: String;
+  filter?: {
+    niveau?: {};
+    session?: {
+      "governing-body"?: {
+        "administrative-unit": {
+          name?: {};
+          location?: {};
+        };
+      };
+    };
+  };
+}
 export default class HomeRoute extends Route {
   @service declare store: Store;
 
@@ -26,7 +40,7 @@ export default class HomeRoute extends Route {
     },
     keyword: {
       as: "trefwoord",
-    }
+    },
   };
 
   @tracked municipality: any;
@@ -35,10 +49,14 @@ export default class HomeRoute extends Route {
   @tracked plannedStartMax: any;
   @tracked keyword: any;
 
-  async model(params: any) {
-    const municipalities = await getMunicipalitiesFromVlaanderen(true);
-    
-    
+  async model(params: object, transition: Transition<unknown>) {
+    let req: MunicipalitiesRequestInterface = {
+      page: { size: 600 },
+      filter: {
+        niveau: "Gemeente",
+      },
+    };
+    const municipalities = this.store.query("location", req);
     return municipalities;
   }
 }

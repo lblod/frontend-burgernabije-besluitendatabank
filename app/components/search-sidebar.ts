@@ -24,9 +24,6 @@ export default class SearchSidebar extends Component<ArgsInterface> {
   get municipalitySelected() {
     return this.args.municipalitySelected;
   }
-  get municipalityOnChange() {
-    return this.args.municipalityOnChange;
-  }
 
   get applyDatePicker() {
     return this.args.applyDatePicker;
