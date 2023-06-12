@@ -22,16 +22,14 @@
             <ul class="au-c-list-horizontal au-c-list-horizontal--small">
               <li class="au-c-list-horizontal__item">
                 <AuLink @route="home" @icon="arrow-left">
-                  Agendapunten
+                  Alle Agendapunten
                 </AuLink>
               </li>
-              <li class="au-c-list-horizontal__item">
-                <section
-                  class="au-o-flow au-u-flex au-u-flex--column"
-                  style="height: 100%;"
-                >
-
-                </section>
+              <li
+                class="au-c-list-horizontal__item"
+                style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;"
+              >
+                {{this.model.title}}
               </li>
             </ul>
           </Group>
@@ -45,53 +43,16 @@
 
             {{#each this.model.agenda_items as |item|}}
               <DecisionCard
-                @id={{item.id}}
-                @title={{item.title_agenda.value}}
-                @body={{item.description.value}}
-                @approvedDate={{item.approveddate}}
-                @startDate={{item.geplandeStart.value}}
-                @endDate={{item.enddate}}
-                @municipality={{item.eenheid_werkingsgebied_label.value}}
+                @item={{item}}
+                @startDate={{item.session.startedAt}}
+                @endDate={{item.session.endedAt}}
               />
             {{/each}}
           {{else}}
             <p>no data</p>
           {{/if}}
         </section>
-        <AuToolbar style="margin-top: auto;" @size="large" @nowrap={{true}}>
-          <div class="au-c-pagination">
 
-            <div class="au-c-pagination__list-item">
-              <AuButton
-                @skin="link"
-                @icon="nav-left"
-                @iconAlignment="left"
-                {{on "click" this.previousPage}}
-              >Vorige pagina</AuButton>
-            </div>
-            <p>
-
-              <span class="au-u-hidden-visually">Resultaten</span>
-
-              <strong>
-                {{this.entriesStart}}
-                -
-                {{this.entriesEnd}}
-              </strong>
-              van 18
-            </p>
-
-            <div class="au-c-pagination__list-item">
-              <AuButton
-                @skin="link"
-                @icon="nav-right"
-                @iconAlignment="right"
-                {{on "click" this.nextPage}}
-              >Volgende pagina</AuButton>
-
-            </div>
-          </div>
-        </AuToolbar>
       </section>
       <section
         id="detail-left-section"
@@ -108,7 +69,7 @@
             <ParticipantCard @person={{person}} />
           {{/each}}
         {{else}}
-          <p>no data</p>
+          <p>Geen data</p>
         {{/if}}
       </section>
     </div>

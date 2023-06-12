@@ -27,9 +27,11 @@ export default class ListRoute extends Route {
   @service declare store: Store;
 
   queryParams = {
-    offset: {},
+    offset: {
+      refreshModel: true,
+    },
   };
-  @tracked offset = 10;
+  @tracked offset = 100;
 
   @action
   refreshListRoute() {
@@ -61,6 +63,7 @@ export default class ListRoute extends Route {
         "session",
         "session.governing-body",
         "session.governing-body.administrative-unit",
+        "session.governing-body.administrative-unit.location",
       ].join(","),
       filter: {},
     };

@@ -9,14 +9,31 @@ export default class HomeController extends Controller {
   @service declare router: RouterService;
   @service declare store: Store;
 
-  @tracked selectedMunicipality: Array<string> = [];
+  @tracked selectedMunicipality: {
+    label: string;
+    id: string;
+  } | null = null;
 
   get currentRoute() {
     return this.router.currentRouteName;
   }
 
   @action handleMunicipalityChange(m: any) {
-    this.selectedMunicipality = m;
+    if (!m) {
+      this.selectedMunicipality = null;
+      this.router.transitionTo("home", {
+        queryParams: {
+          gemeentes: null,
+        },
+      });
+      this.send("refreshListRoute");
+      return;
+    }
+
+    this.selectedMunicipality = {
+      label: m.label,
+      id: m.id,
+    };
 
     this.router.transitionTo("home", {
       queryParams: {
@@ -24,7 +41,7 @@ export default class HomeController extends Controller {
         // gemeentes: this.selectedMunicipality.join("+"),
 
         // temporary query for single select
-        gemeentes: m,
+        gemeentes: m.label,
       },
     });
     this.send("refreshListRoute");

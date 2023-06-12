@@ -1,67 +1,61 @@
 import Store from "@ember-data/store";
 import Route from "@ember/routing/route";
 import { service } from "@ember/service";
-import axios from "axios";
 import Ember from "ember";
-import {
-  getAllAgendaItemsQuery,
-  getGemeenteRaadsleden,
-} from "frontend-burgernabije-besluitendatabank/utils/sparqlQueries";
+
+interface AgendaItemsRequestInterface {
+  page: {
+    size: Number;
+  };
+  include: String;
+  municipality?: String;
+  filter?: {
+    ":or:"?: {};
+    session?: {
+      "governing-body"?: {
+        "administrative-unit": {
+          name?: {};
+          location?: {};
+        };
+      };
+    };
+  };
+}
 
 export default class MunicipalityRoute extends Route {
   @service declare store: Store;
 
   queryParams = {
     page: { refreshModel: true },
-    // startDate: { refreshModel: true },
-    // endDate: { refreshModel: true },
   };
 
   async model(params: any) {
     const { municipality, page } = params;
 
+    let req: AgendaItemsRequestInterface = {
+      page: {
+        size: 10,
+      },
+      municipality: municipality,
+      include: [
+        "session",
+        "session.governing-body",
+        "session.governing-body.administrative-unit",
+      ].join(","),
+      filter: {},
+    };
+
+    let sessionFilter: { [key: string]: any } = {};
+    sessionFilter["governing-body"] = {
+      "administrative-unit": { name: municipality },
+    };
+    req.filter = {};
+
+    req.filter.session = sessionFilter;
+
     const data = await Ember.RSVP.hash({
-      gemeenteraadsleden: axios
-        .get(
-          "https://qa.centrale-vindplaats.lblod.info/sparql?query=" +
-            encodeURIComponent(
-              getGemeenteRaadsleden({
-                municipality: municipality,
-              })
-            ),
-          {
-            headers: {
-              Accept: "application/sparql-results+json",
-            },
-          }
-        )
-        .then((response) => {
-          return response.data.results.bindings;
-        })
-        .catch((error) => {
-          console.error(error);
-        }),
-      agenda_items: axios
-        .get(
-          "https://qa.centrale-vindplaats.lblod.info/sparql?query=" +
-            encodeURIComponent(
-              getAllAgendaItemsQuery({
-                municipality: municipality,
-                offset: page * 3,
-              })
-            ),
-          {
-            headers: {
-              Accept: "application/sparql-results+json",
-            },
-          }
-        )
-        .then((response) => {
-          return response.data.results.bindings;
-        })
-        .catch((error) => {
-          console.error(error);
-        }),
+      gemeenteraadsleden: [],
+      agenda_items: this.store.query("agenda-item", req),
       title: municipality,
     });
     return data;
