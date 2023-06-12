@@ -16,11 +16,14 @@ export default class DetailRoute extends Route {
         // 'handled-by.has-votes.has-presents',
         // 'handled-by.has-votes.has-abstainers',
         "handled-by.has-votes.has-abstainers.alias",
+        "handled-by.has-votes.has-abstainers.has-membership.inner-group",
         // 'handled-by.has-votes.has-voters',
         // 'handled-by.has-votes.has-opponents',
         "handled-by.has-votes.has-opponents.alias",
+        "handled-by.has-votes.has-opponents.has-membership.inner-group",
         // 'handled-by.has-votes.has-proponents',
         "handled-by.has-votes.has-proponents.alias",
+        "handled-by.has-votes.has-proponents.has-membership.inner-group",
       ].join(","),
     });
 
