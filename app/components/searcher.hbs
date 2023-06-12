@@ -1,0 +1,143 @@
+<aside class="au-c-sidebar au-o-layout--large" style="width: 30%;">
+  <div class="au-c-sidebar__content au-u-padding">
+    <AuContent @skin="tiny">
+      <h1>Ik zoek...</h1>
+      <section>
+
+        {{#each this.filters as |filter|}}
+          <AuFormRow
+            @alignment="inline"
+            style="width: 100%;"
+            class="au-u-padding-top-small au-u-padding-bottom-small"
+          >
+              <AuLabel for={{filter.attribute}} style="width: 30%;max-width: 30%;">
+                {{filter.name}}
+              </AuLabel>
+              
+              <section
+                style="width: 70%;max-width: 70%; gap: 8px 0;"
+                class="au-u-flex au-u-flex--column"
+              >
+          
+              {{#if filter.select}}
+                <PowerSelect
+                  style="width: 100%;"
+                  id={{filter.attribute}}
+
+
+                  @onChange={{action this.filterChange filter}}
+                  @selected={{filter.selected}}
+                  @options={{filter.options}}
+
+                  @allowClear=true
+                  @searchField="label"
+
+                  @placeholder={{filter.placeholder}}
+                  @noMatchesMessage={{concat "Geen " filter.name " gevonden"}}
+                  @searchMessage="Aan het zoeken..."
+                  @searchEnabled={{true}}
+
+                  as |singleSelect|
+                >
+                  {{singleSelect.label}}
+                </PowerSelect>
+                <AuPill
+                  style="width: 100%; display: inline-block;"
+                  @icon="info-circle"
+                  @iconAlignment="left"
+                >
+                  {{#if filter.selected}}
+                    Resultaten voor
+                    <AuLink
+                      @route="municipality"
+                      @model={{filter.selected.label}}
+                    >
+                      {{filter.selected.label}}
+                    </AuLink>
+                  {{else}}
+                    Filter op {{filter.name}}
+                  {{/if}}
+                </AuPill>
+
+              {{else if filter.date}}
+                <AuDateRangePicker
+                  @width="block"
+                  style="width: 70%; max-width: 70%;"
+
+                  id={{filter.attribute}}
+                  @label={{filter.name}}
+                  @start={{filter.start}}
+                  @end={{filter.end}}
+                  
+                  @cancelAction={{action this.filterChange filter}}
+                  @applyAction={{action this.filterChange filter}}
+                  @hideAction={{action this.filterChange filter}}
+                />
+                <AuPill
+                  style="width: 100%; display: inline-block;"
+                  @icon="info-circle"
+                  @iconAlignment="left"
+                >
+                  Zoek op {{filter.name}}
+                </AuPill>
+
+              {{else}}
+                  <AuInput
+                    style="width: 100%;"
+                    @type={{"text"}}
+                    placeholder={{filter.placeholder}}
+                    id={{filter.attribute}}
+                    onChange={{action this.filterChange filter}}
+                    @value={{filter.value}}
+                  />
+                  <AuPill
+                    style="width: 100%; display: inline-block;"
+                    @icon="info-circle"
+                    @iconAlignment="left"
+                  >
+                    Zoek op {{filter.name}}
+                  </AuPill>
+              {{/if}}
+
+
+            </section>
+          </AuFormRow>
+          
+
+        {{/each}}
+      </section>
+    </AuContent>
+  </div>
+</aside>
+
+<section
+    class="au-u-flex au-u-flex--column"
+    style="width: 100%; height: 100%;"
+  >
+    <AuFormRow
+      @alignment="inline"
+      class="au-u-margin-bottom au-u-margin-top au-u-padding-right-large au-u-padding-left-large"
+    >
+      <section style="margin-left: auto;" class="au-u-flex">
+        <AuLabel for="sort-on" style="width: 80px; white-space: nowrap;">
+          Sorteer op
+        </AuLabel>
+        <select
+          type="select"
+          onchange={{action "handleSort"}}
+          class="au-c-input"
+          style="width: 200px;"
+        >
+          <option>Relevantie</option>
+          <option>Datum</option>
+        </select>
+      </section>
+    </AuFormRow>
+    <div
+      class="au-u-padding-left-large au-u-padding-right-large au-u-flex au-u-flex--column"
+      style="overflow-y: scroll; height: auto; padding-bottom:10vh; scroll-behavior: smooth;"
+    >
+      {{outlet}}
+    </div>
+
+</section>

@@ -1,50 +1,17 @@
 <ContentHeader />
 
 <div class="au-u-flex" style="height: 100%;">
-  <SearchSidebar
-    @municipalityPlaceholder="Selecteer een optie"
-    @municipalityOnChange={{this.handleMunicipalityChange}}
-    @municipalityOptions={{@model}}
-    @municipalityAllowClear={{true}}
-    @keywordPlaceholder={{"Terrasvergunning"}}
-    @keywordOnChange={{this.handleKeywordChange}}
-    @applyDatePicker={{this.applyDatePicker}}
-    @cancelDatePicker={{this.cancelDatePicker}}
-    @hideDatePicker={{this.hideDatePicker}}
-    @valueMunicipality={{this.selectedMunicipality}}
-    @valueKeyword={{this.keyword}}
-    @valueStartDate={{this.plannedStartMin}}
-    @valueEndDate={{this.plannedStartMax}}
-  />
 
-  <section
-    class="au-u-flex au-u-flex--column"
-    style="width: 100%; height: 100%;"
+  <Searcher
+    @queryModel="agenda-item"
+    @includes={{array
+      "session"
+      "session.governing-body"
+      "session.governing-body.administrative-unit"
+      "session.governing-body.administrative-unit.location"
+    }}
+    @filters={{@model}}
   >
-    <AuFormRow
-      @alignment="inline"
-      class="au-u-margin-bottom au-u-margin-top au-u-padding-right-large au-u-padding-left-large"
-    >
-      <section style="margin-left: auto;" class="au-u-flex">
-        <AuLabel for="sort-on" style="width: 80px; white-space: nowrap;">
-          Sorteer op
-        </AuLabel>
-        <select
-          type="select"
-          onchange={{action "handleSort"}}
-          class="au-c-input"
-          style="width: 200px;"
-        >
-          <option>Relevantie</option>
-          <option>Datum</option>
-        </select>
-      </section>
-    </AuFormRow>
-    <div
-      class="au-u-padding-left-large au-u-padding-right-large au-u-flex au-u-flex--column"
-      style="overflow-y: scroll; height: auto; padding-bottom:10vh; scroll-behavior: smooth;"
-    >
-      {{outlet}}
-    </div>
-  </section>
+  
+  </Searcher>
 </div>
