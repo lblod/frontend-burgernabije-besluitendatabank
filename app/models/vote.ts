@@ -12,4 +12,5 @@ export default class VoteModel extends Model {
     // @hasMany('mandatary') declare hasVoters: MandataryModel;
     @hasMany('mandatary') declare hasOpponents: MandataryModel;
     @hasMany('mandatary') declare hasProponents: MandataryModel;
+
 }
