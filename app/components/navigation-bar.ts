@@ -1,7 +1,6 @@
 import Component from "@glimmer/component";
 import RouterService from "@ember/routing/router-service";
 import { service } from "@ember/service";
-import { tr } from "date-fns/locale";
 
 interface Link {
     route: string;
