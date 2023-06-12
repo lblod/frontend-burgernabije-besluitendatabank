@@ -29,18 +29,6 @@
       @alignment="inline"
       class="au-u-margin-bottom au-u-margin-top au-u-padding-right-large au-u-padding-left-large"
     >
-      <section class="au-u-flex" style="align-items: center;">
-        <AuLabel class="au-u-padding-right">Weergave</AuLabel>
-        {{#if (eq this.currentRoute "home.list")}}
-          <AuLink @skin="button" @route="home.map">
-            Kaart
-          </AuLink>
-        {{else}}
-          <AuLink @skin="button" @route="home.list">
-            List
-          </AuLink>
-        {{/if}}
-      </section>
       <section style="margin-left: auto;" class="au-u-flex">
         <AuLabel for="sort-on" style="width: 80px; white-space: nowrap;">
           Sorteer op
