@@ -1,4 +1,4 @@
-import Model, { attr, hasMany, belongsTo } from '@ember-data/model';
+import Model, { attr, hasMany } from '@ember-data/model';
 import MandataryModel from './mandatary';
 
 export default class VoteModel extends Model {
