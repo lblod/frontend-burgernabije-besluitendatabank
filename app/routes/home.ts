@@ -66,39 +66,26 @@ export default class HomeRoute extends Route {
     };
     const municipalities = this.store.query("location", req);
 
-    /**
-     * 
-    if (plannedStartMin || plannedStartMax || municipality) {
-      // Expected format: YYYY-MM-DD
-      let sessionFilter: { [key: string]: any } = {};
-
-      if (municipality) {
-        //sessionFilter["governing-body"] = {"administrative-unit": { "location": {"label": municipality} }};
-        sessionFilter["governing-body"] = {
-          "administrative-unit": { name: municipality },
-        };
-      }
-
-      if (plannedStartMin) {
-        sessionFilter[":gt:started-at"] = plannedStartMin;
-      }
-      if (plannedStartMax) {
-        sessionFilter[":lt:ended-at"] = plannedStartMax;
-      }
-      req.filter.session = sessionFilter;
-    }
-     */
     this.filters = [
       {
         attribute: "municipality",
         name:"gemeente",
+        queryParam: "gemeente",
         placeholder: "Selecteer een optie",
         type:"select",
         options: municipalities,
         selected: this.municipality,
         select: true,
         filter: (value: string) => {
-          return {}
+          return {
+            "session": {
+              "governing-body": {
+                "administrative-unit": {
+                  "name": value
+                }
+              }
+            }
+          }
         }
       },
       {
@@ -106,6 +93,7 @@ export default class HomeRoute extends Route {
         name:"trefwoord",
         placeholder: "Terrasvergunning",
         value: this.keyword,
+        queryParam: "trefwoord",
         onChange: this.keywordChange,
         filter: function (value: string) {
           return {

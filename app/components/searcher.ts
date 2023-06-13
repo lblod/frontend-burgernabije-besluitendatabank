@@ -9,6 +9,7 @@ interface Filter {
   attribute: string,
   name: string,
   placeholder: string,
+  queryParam?: string,
   type: string,
   options: [],
   onChange: (value: any) => any,
@@ -74,6 +75,21 @@ export default class SearchSidebar extends Component<ArgsInterface> {
   get filters(): Array<Filter> {
     return this.args.filters;
   }
+  
+  queryParamHasFilter(queryParamName: string) : boolean {
+    let index = this.filters.findIndex((filter => filter.queryParam == queryParamName));
+    return index > -1;
+  }
+
+  getFilterFromQueryParam(queryParamName: string): Filter {
+    let filter = this.filters.find((filter => filter.queryParam == queryParamName));
+    if (!filter) {
+      throw Error("filter with attribute " + queryParamName + " not found");
+    }
+    else {
+      return filter;
+    }
+  }
 
   @action
   async filterChange(filter: Filter, e: Event) {
@@ -82,6 +98,11 @@ export default class SearchSidebar extends Component<ArgsInterface> {
 
     if (e.target) {
       filter.value = (e.target as HTMLInputElement).value;
+      this.router.transitionTo(this.router.currentRouteName, {
+        queryParams: {
+          [filter.name]: filter.value,
+        },
+      });
       //filter.onChange(filter.value);
 
     }
@@ -92,7 +113,26 @@ export default class SearchSidebar extends Component<ArgsInterface> {
 
   @action
   onLoad() {
+    // Load in queryParams
+    let queryParams = this.router.currentRoute.queryParams;
+    let queryParamKeys = Object.keys(queryParams);
+    for (let i = 0; i < queryParamKeys.length; i++) {
+      let key = queryParamKeys[i];
+      if (key) {
+        let value = queryParams[key];
+        console.log(key);
+        console.log(this.queryParamHasFilter(key))
+        if (this.queryParamHasFilter(key)) {
+          console.log(this.getFilterFromQueryParam(key))
+          this.getFilterFromQueryParam(key).value = value;
+          console.log("meow" + value);
+        }
+      }
+    }
+
+    //this.getFilter("keyword").value = "Meow";
     this.request();
+
   }
 
   async request() {
@@ -123,7 +163,6 @@ export default class SearchSidebar extends Component<ArgsInterface> {
   }
 
   @action infinityLoad() {
-    console.log("meow")
     this.offset += 10;
     
     this.router.transitionTo(this.router.currentRouteName, {
