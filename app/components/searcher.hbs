@@ -27,7 +27,7 @@
 
 
                   @onChange={{action this.filterChange filter}}
-                  @selected={{filter.selected}}
+                  {{!--@selected={{filter.selected}}--}}
                   @options={{filter.options}}
 
                   @allowClear=true
@@ -41,6 +41,7 @@
                   as |singleSelect|
                 >
                   {{singleSelect.label}}
+
                 </PowerSelect>
                 <AuPill
                   style="width: 100%; display: inline-block;"
@@ -70,9 +71,9 @@
                   @start={{filter.start}}
                   @end={{filter.end}}
                   
-                  @cancelAction={{action this.filterChange filter}}
-                  @applyAction={{action this.filterChange filter}}
-                  @hideAction={{action this.filterChange filter}}
+                  @cancelAction={{action this.dateChange filter}}
+                  @applyAction={{action this.dateChange filter}}
+                  @hideAction={{action this.dateChange filter}}
                 />
                 <AuPill
                   style="width: 100%; display: inline-block;"

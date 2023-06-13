@@ -51,12 +51,12 @@ export default class SearchSidebar extends Component<ArgsInterface> {
   }
   
   queryParamHasFilter(queryParamName: string) : boolean {
-    let index = this.filters.findIndex((filter => filter.queryParam == queryParamName));
+    let index = this.filters.findIndex((filter => filter.queryParam == queryParamName || filter.queryParams?.includes(queryParamName)));
     return index > -1;
   }
 
   getFilterFromQueryParam(queryParamName: string): Filter {
-    let filter = this.filters.find((filter => filter.queryParam == queryParamName));
+    let filter = this.filters.find((filter => filter.queryParam == queryParamName || filter.queryParams?.includes(queryParamName)));
     if (!filter) {
       throw Error("filter with attribute " + queryParamName + " not found");
     }
@@ -66,13 +66,41 @@ export default class SearchSidebar extends Component<ArgsInterface> {
   }
 
   @action
+  async selectChange() {
+
+  }
+
+  @action
+  async dateChange(filter: DateRangeFilter, e: any, start: string, end: string) {
+    filter.start = start;
+    filter.end = end;
+
+    if (filter.queryParams) {
+      let queryParams: {[key:string]: string} = {};
+      let startParam = filter.queryParams[0];
+      let endParam = filter.queryParams[1];
+
+      if (startParam) {
+        queryParams[startParam] = filter.start;
+      }
+      if (endParam) {
+        queryParams[endParam] = filter.end;
+      }
+
+      this.router.transitionTo(this.router.currentRouteName, {
+        queryParams: queryParams
+      });
+    }
+
+    this.request();
+  }
+
+  @action
   async filterChange(filter: TextFilter, e: Event) {
-    console.log(e)
-    console.log(filter);
+    console.log(...arguments)
 
     if (e.target) {
       filter.value = (e.target as HTMLInputElement).value;
-
       if (filter.queryParam) {
         this.router.transitionTo(this.router.currentRouteName, {
           queryParams: {
@@ -80,9 +108,11 @@ export default class SearchSidebar extends Component<ArgsInterface> {
           },
         });
       }
+
     }
 
     this.request();
+    //prepareRequest(this.offset, this.args.includes, this.filters);
   }
 
   @action

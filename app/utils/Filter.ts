@@ -25,6 +25,12 @@ export class Filter {
     queryParam?: string;
 
     /**
+     * (Optional) Name of the queryParameters related to the input. Currently only used in DateRangeFilter
+     */
+    queryParams?: Array<string>;
+
+
+    /**
      * Return a filter object for use in Ember's store.query("model", {filter: FILTER})
      * The generated object will be combined with any other filters and parsed to the (JSON:API) request
      * 
@@ -150,12 +156,11 @@ export class DateRangeFilter extends Filter {
 
     start?: string;
     end?: string;
-    queryParams?: Array<string>;
 
     constructor(
         id: string, 
         searchLabel: string, 
-        filter: (value: string) => { [key:string]: any },
+        filter: (start: string) => { [key:string]: any },
         start?: string,
         end?: string,
         queryParams?: Array<string>) 

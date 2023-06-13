@@ -106,7 +106,21 @@ export default class HomeRoute extends Route {
         "startdate",
         "Datum",
         (value: string) => {
-          return {}
+          let sessionFilter: { [key: string]: any } = {};
+          let split = value.split("<->");
+          let start = split[0];
+          let end = split[1];
+
+          if (start) {
+            sessionFilter[":gt:started-at"] = start;
+          }
+          if (end) {
+            sessionFilter[":lt:ended-at"] = end;
+          }
+
+          return {
+            "session": sessionFilter
+          }
         },
         this.plannedStartMin,
         this.plannedStartMax,
