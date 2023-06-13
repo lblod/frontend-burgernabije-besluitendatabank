@@ -3,6 +3,7 @@ import { action } from "@ember/object";
 import Store from "@ember-data/store";
 import { tracked } from "@glimmer/tracking";
 import { service } from "@ember/service";
+import RouterService from "@ember/routing/router-service";
 
 interface Filter {
   attribute: string,
@@ -50,8 +51,8 @@ function prepareRequest(offset: number, includes: Array<String>, filters: Array<
 
   for (let i = 0; i < filters.length; i++) {
     let filter = filters[i];
-    if (filter) {
-      //req["filter"] = {... req["filter"], ...filter.filter(filter.value)};
+    if (filter && filter.value) {
+      req["filter"] = {... req["filter"], ...filter.filter(filter.value)};
     }
   }
 
@@ -61,10 +62,13 @@ function prepareRequest(offset: number, includes: Array<String>, filters: Array<
 }
 
 export default class SearchSidebar extends Component<ArgsInterface> {
-  offset = 100;
+  offset = 10;
   @service declare store: Store;
   @service declare inViewport: any;
+  @service declare router: RouterService;
 
+
+  // Data code
   @tracked values: any;
 
   get filters(): Array<Filter> {
@@ -86,9 +90,12 @@ export default class SearchSidebar extends Component<ArgsInterface> {
     //prepareRequest(this.offset, this.args.includes, this.filters);
   }
 
+  @action
+  onLoad() {
+    this.request();
+  }
 
   async request() {
-    console.log(prepareRequest(this.offset, this.args.includes, this.filters));
     let values = await this.store.query(this.args.queryModel, prepareRequest(this.offset, this.args.includes, this.filters));
     this.values = values;
   }
@@ -98,9 +105,11 @@ export default class SearchSidebar extends Component<ArgsInterface> {
 
 
 
+  // Infinity scroll code
   @action
   setupInViewport() {
     const loader = document.getElementById("loader");
+    console.log(loader)
     const viewportTolerance = { bottom: 200 };
     const { onEnter, _onExit } = this.inViewport.watchElement(loader, {
       viewportTolerance,
@@ -114,14 +123,15 @@ export default class SearchSidebar extends Component<ArgsInterface> {
   }
 
   @action infinityLoad() {
-    this.offset += 100;
-    /*
-    this.router.transitionTo("home", {
+    console.log("meow")
+    this.offset += 10;
+    
+    this.router.transitionTo(this.router.currentRouteName, {
       queryParams: {
         offset: this.offset,
       },
     });
-    */
+    
   }
 
 }

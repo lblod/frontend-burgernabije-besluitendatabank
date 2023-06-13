@@ -107,11 +107,11 @@ export default class HomeRoute extends Route {
         placeholder: "Terrasvergunning",
         value: this.keyword,
         onChange: this.keywordChange,
-        filter: (value: string) => {
+        filter: function (value: string) {
           return {
             ":or:": {
               title: value,
-              keyword: value
+              description: value
             }
           }
         }
