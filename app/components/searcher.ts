@@ -4,35 +4,9 @@ import Store from "@ember-data/store";
 import { tracked } from "@glimmer/tracking";
 import { service } from "@ember/service";
 import RouterService from "@ember/routing/router-service";
-
-interface Filter {
-  attribute: string,
-  name: string,
-  placeholder: string,
-  queryParam?: string,
-  type: string,
-  options: [],
-  onChange: (value: any) => any,
-  value: any,
-  filter: any
-}
+import { Filter, TextFilter, SelectFilter, DateRangeFilter } from "frontend-burgernabije-besluitendatabank/utils/Filter";
 
 interface ArgsInterface {
-  municipalityPlaceholder: string;
-  municipalitySelected: string;
-  municipalityOnChange: () => void;
-  municipalityOptions: Array<any>;
-  municipalityAllowClear: boolean;
-
-  keywordPlaceholder: string;
-  keywordOnChange: string;
-
-  applyDatePicker: () => any;
-  hideDatePicker: () => any;
-  cancelDatePicker: () => any;
-  startDate: any;
-  endDate: any;
-
   includes: Array<string>;
   queryModel: string;
   filters: Array<Filter>;
@@ -92,23 +66,23 @@ export default class SearchSidebar extends Component<ArgsInterface> {
   }
 
   @action
-  async filterChange(filter: Filter, e: Event) {
+  async filterChange(filter: TextFilter, e: Event) {
     console.log(e)
     console.log(filter);
 
     if (e.target) {
       filter.value = (e.target as HTMLInputElement).value;
-      this.router.transitionTo(this.router.currentRouteName, {
-        queryParams: {
-          [filter.name]: filter.value,
-        },
-      });
-      //filter.onChange(filter.value);
 
+      if (filter.queryParam) {
+        this.router.transitionTo(this.router.currentRouteName, {
+          queryParams: {
+            [filter.queryParam]: filter.value,
+          },
+        });
+      }
     }
 
     this.request();
-    //prepareRequest(this.offset, this.args.includes, this.filters);
   }
 
   @action
@@ -122,6 +96,8 @@ export default class SearchSidebar extends Component<ArgsInterface> {
         let value = queryParams[key];
         console.log(key);
         console.log(this.queryParamHasFilter(key))
+
+        
         if (this.queryParamHasFilter(key)) {
           console.log(this.getFilterFromQueryParam(key))
           this.getFilterFromQueryParam(key).value = value;

@@ -11,8 +11,8 @@
             style="width: 100%;"
             class="au-u-padding-top-small au-u-padding-bottom-small"
           >
-            <AuLabel for={{filter.attribute}} style="width: 30%;max-width: 30%;">
-              {{filter.name}}
+            <AuLabel for={{filter.id}} style="width: 30%;max-width: 30%;">
+              {{filter.searchLabel}}
             </AuLabel>
               
             <section
@@ -20,10 +20,10 @@
               class="au-u-flex au-u-flex--column"
             >
           
-              {{#if filter.select}}
+              {{#if filter.Select}}
                 <PowerSelect
                   style="width: 100%;"
-                  id={{filter.attribute}}
+                  id={{filter.id}}
 
 
                   @onChange={{action this.filterChange filter}}
@@ -34,7 +34,7 @@
                   @searchField="label"
 
                   @placeholder={{filter.placeholder}}
-                  @noMatchesMessage={{concat "Geen " filter.name " gevonden"}}
+                  @noMatchesMessage={{concat "Geen " filter.searchLabel " gevonden"}}
                   @searchMessage="Aan het zoeken..."
                   @searchEnabled={{true}}
 
@@ -56,17 +56,17 @@
                       {{filter.selected.label}}
                     </AuLink>
                   {{else}}
-                    Filter op {{filter.name}}
+                    Filter op {{filter.searchLabel}}
                   {{/if}}
                 </AuPill>
 
-              {{else if filter.date}}
+              {{else if filter.DateRange}}
                 <AuDateRangePicker
                   @width="block"
                   style="width: 70%; max-width: 70%;"
 
-                  id={{filter.attribute}}
-                  @label={{filter.name}}
+                  id={{filter.id}}
+                  @label={{filter.searchLabel}}
                   @start={{filter.start}}
                   @end={{filter.end}}
                   
@@ -79,7 +79,7 @@
                   @icon="info-circle"
                   @iconAlignment="left"
                 >
-                  Zoek op {{filter.name}}
+                  Zoek op {{filter.searchLabel}}
                 </AuPill>
 
               {{else}}
@@ -87,7 +87,7 @@
                     style="width: 100%;"
                     @type={{"text"}}
                     placeholder={{filter.placeholder}}
-                    id={{filter.attribute}}
+                    id={{filter.id}}
                     onChange={{action this.filterChange filter}}
                     @value={{filter.value}}
                   />
@@ -96,7 +96,7 @@
                     @icon="info-circle"
                     @iconAlignment="left"
                   >
-                    Zoek op {{filter.name}}
+                    Zoek op {{filter.searchLabel}}
                   </AuPill>
               {{/if}}
 

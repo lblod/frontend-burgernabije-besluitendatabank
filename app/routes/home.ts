@@ -3,6 +3,7 @@ import Route from "@ember/routing/route";
 import Transition from "@ember/routing/transition";
 import { service } from "@ember/service";
 import { tracked } from "@glimmer/tracking";
+import { TextFilter, SelectFilter, DateRangeFilter } from "../utils/Filter";
 
 interface MunicipalitiesRequestInterface {
   page: {
@@ -64,19 +65,13 @@ export default class HomeRoute extends Route {
         niveau: "Gemeente",
       },
     };
-    const municipalities = this.store.query("location", req);
+    const municipalities = await this.store.query("location", req);
 
     this.filters = [
-      {
-        attribute: "municipality",
-        name:"gemeente",
-        queryParam: "gemeente",
-        placeholder: "Selecteer een optie",
-        type:"select",
-        options: municipalities,
-        selected: this.municipality,
-        select: true,
-        filter: (value: string) => {
+      new SelectFilter(
+        "municipality",
+        "Gemeente",
+        (value: string) => {
           return {
             "session": {
               "governing-body": {
@@ -86,35 +81,37 @@ export default class HomeRoute extends Route {
               }
             }
           }
-        }
-      },
-      {
-        attribute: "keyword",
-        name:"trefwoord",
-        placeholder: "Terrasvergunning",
-        value: this.keyword,
-        queryParam: "trefwoord",
-        onChange: this.keywordChange,
-        filter: function (value: string) {
+        },
+        municipalities,
+        this.municipality,
+        "Selecteer een optie",
+        "gemeentes"
+      ),
+      new TextFilter(
+        "keyword",
+        "Trefwoord", 
+        function (value: string) {
           return {
             ":or:": {
               title: value,
               description: value
             }
           }
-        }
-      },
-      {
-        attribute: "startdate",
-        name:"datum",
-        type: "date",
-        start: this.plannedStartMin,
-        end: this.plannedStartMax,
-        date: true,
-        filter: (value: string) => {
+        },
+        this.keyword, 
+        "Terrasvergunning", 
+        "trefwoord"
+      ),
+      new DateRangeFilter(
+        "startdate",
+        "Datum",
+        (value: string) => {
           return {}
-        }
-      }
+        },
+        this.plannedStartMin,
+        this.plannedStartMax,
+        ["begin", "eind"]
+      )
     ];
 
     return this.filters;
