@@ -55,6 +55,8 @@ export default class HomeRoute extends Route {
     console.log(value);
   }
 
+  
+
   async model(params: object, transition: Transition<unknown>) {
     let req: MunicipalitiesRequestInterface = {
       page: { size: 600 },
@@ -88,6 +90,18 @@ export default class HomeRoute extends Route {
      */
     this.filters = [
       {
+        attribute: "municipality",
+        name:"gemeente",
+        placeholder: "Selecteer een optie",
+        type:"select",
+        options: municipalities,
+        selected: this.municipality,
+        select: true,
+        filter: (value: string) => {
+          return {}
+        }
+      },
+      {
         attribute: "keyword",
         name:"trefwoord",
         placeholder: "Terrasvergunning",
@@ -109,18 +123,6 @@ export default class HomeRoute extends Route {
         start: this.plannedStartMin,
         end: this.plannedStartMax,
         date: true,
-        filter: (value: string) => {
-          return {}
-        }
-      },
-      {
-        attribute: "municipality",
-        name:"gemeente",
-        placeholder: "Selecteer een optie",
-        type:"select",
-        options: municipalities,
-        selected: this.municipality,
-        select: true,
         filter: (value: string) => {
           return {}
         }

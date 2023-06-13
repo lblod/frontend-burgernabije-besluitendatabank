@@ -10,14 +10,14 @@
             style="width: 100%;"
             class="au-u-padding-top-small au-u-padding-bottom-small"
           >
-              <AuLabel for={{filter.attribute}} style="width: 30%;max-width: 30%;">
-                {{filter.name}}
-              </AuLabel>
+            <AuLabel for={{filter.attribute}} style="width: 30%;max-width: 30%;">
+              {{filter.name}}
+            </AuLabel>
               
-              <section
-                style="width: 70%;max-width: 70%; gap: 8px 0;"
-                class="au-u-flex au-u-flex--column"
-              >
+            <section
+              style="width: 70%;max-width: 70%; gap: 8px 0;"
+              class="au-u-flex au-u-flex--column"
+            >
           
               {{#if filter.select}}
                 <PowerSelect
@@ -110,10 +110,16 @@
   </div>
 </aside>
 
-<section
+
+
+
+
+
+<main
     class="au-u-flex au-u-flex--column"
     style="width: 100%; height: 100%;"
   >
+  <h1>{{this.values.length}}</h1>
     <AuFormRow
       @alignment="inline"
       class="au-u-margin-bottom au-u-margin-top au-u-padding-right-large au-u-padding-left-large"
@@ -124,7 +130,7 @@
         </AuLabel>
         <select
           type="select"
-          onchange={{action "handleSort"}}
+          {{!--onchange={{action "handleSort"}}--}}
           class="au-c-input"
           style="width: 200px;"
         >
@@ -133,11 +139,42 @@
         </select>
       </section>
     </AuFormRow>
+    
     <div
       class="au-u-padding-left-large au-u-padding-right-large au-u-flex au-u-flex--column"
       style="overflow-y: scroll; height: auto; padding-bottom:10vh; scroll-behavior: smooth;"
     >
-      {{outlet}}
-    </div>
 
-</section>
+
+      <section
+        {{did-insert this.setupInViewport}}
+        class="au-o-flow au-u-flex au-u-flex--column"
+      >
+        {{#if this.values}}
+          {{#each this.values as |item|}}
+            <DecisionCard
+              @startDate={{item.session.startedAt}}
+              @endDate={{item.session.endedAt}}
+              @item={{item}}
+            />
+          {{/each}}
+        {{else}}
+          <AuAlert @title={{"Oeps!"}} @skin={{"warning"}} @icon={{"archive"}}>
+            <p>Deze gemeente heeft spijtig genoeg geen resultaten!</p>
+          </AuAlert>
+        {{/if}}
+
+        {{#if this.values}}
+          <div
+            id="loader"
+            style="height: 80px; display: flex; justify-content: center; align-items: center;"
+          >
+            <AuLoader />
+          </div>
+        {{/if}}
+      </section>
+  </div>
+  
+</main>
+      
+

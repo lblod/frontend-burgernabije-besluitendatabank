@@ -14,28 +14,5 @@ export default class HomeListController extends Controller {
     this.router.refresh(this.router.currentRouteName);
   }
 
-  @action
-  setupInViewport() {
-    const loader = document.getElementById("loader");
-    const viewportTolerance = { bottom: 200 };
-    const { onEnter, _onExit } = this.inViewport.watchElement(loader, {
-      viewportTolerance,
-    });
-    // pass the bound method to `onEnter` or `onExit`
-    onEnter(this.didEnterViewport.bind(this));
-  }
 
-  didEnterViewport() {
-    this.infinityLoad();
-  }
-  @tracked offset = 100;
-
-  @action async infinityLoad() {
-    this.offset += 100;
-    this.router.transitionTo("home", {
-      queryParams: {
-        offset: this.offset,
-      },
-    });
-  }
 }
