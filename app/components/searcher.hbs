@@ -6,106 +6,19 @@
       <section>
 
         {{#each this.filters as |filter|}}
-          <AuFormRow
-            @alignment="inline"
-            style="width: 100%;"
-            class="au-u-padding-top-small au-u-padding-bottom-small"
-          >
-            <AuLabel for={{filter.id}} style="width: 30%;max-width: 30%;">
-              {{filter.searchLabel}}
-            </AuLabel>
+
+          {{#if filter.Select}}
+            <Searcher::SelectFilter @filter={{filter}}/>
+
+          {{else if filter.DateRange}}
+            <Searcher::DateRangeFilter @filter={{filter}}/>
+          {{else}}
+            <Searcher::TextFilter
+              @filter={{filter}}
+              @updateFilter={{this.updateFilter}}
               
-            <section
-              style="width: 70%;max-width: 70%; gap: 8px 0;"
-              class="au-u-flex au-u-flex--column"
-            >
-          
-              {{#if filter.Select}}
-                <PowerSelect
-                  style="width: 100%;"
-                  id={{filter.id}}
-
-
-                  @onChange={{action this.filterChange filter}}
-                  {{!--@selected={{filter.selected}}--}}
-                  @options={{filter.options}}
-
-                  @allowClear=true
-                  @searchField="label"
-
-                  @placeholder={{filter.placeholder}}
-                  @noMatchesMessage={{concat "Geen " filter.searchLabel " gevonden"}}
-                  @searchMessage="Aan het zoeken..."
-                  @searchEnabled={{true}}
-
-                  as |singleSelect|
-                >
-                  {{singleSelect.label}}
-
-                </PowerSelect>
-                <AuPill
-                  style="width: 100%; display: inline-block;"
-                  @icon="info-circle"
-                  @iconAlignment="left"
-                >
-                  {{#if filter.selected}}
-                    Resultaten voor
-                    <AuLink
-                      @route="municipality"
-                      @model={{filter.selected.label}}
-                    >
-                      {{filter.selected.label}}
-                    </AuLink>
-                  {{else}}
-                    Filter op {{filter.searchLabel}}
-                  {{/if}}
-                </AuPill>
-
-              {{else if filter.DateRange}}
-                <AuDateRangePicker
-                  @width="block"
-                  style="width: 70%; max-width: 70%;"
-
-                  id={{filter.id}}
-                  @label={{filter.searchLabel}}
-                  @start={{filter.start}}
-                  @end={{filter.end}}
-                  
-                  @cancelAction={{action this.dateChange filter}}
-                  @applyAction={{action this.dateChange filter}}
-                  @hideAction={{action this.dateChange filter}}
-                />
-                <AuPill
-                  style="width: 100%; display: inline-block;"
-                  @icon="info-circle"
-                  @iconAlignment="left"
-                >
-                  Zoek op {{filter.searchLabel}}
-                </AuPill>
-
-              {{else}}
-                  <AuInput
-                    style="width: 100%;"
-                    @type={{"text"}}
-                    placeholder={{filter.placeholder}}
-                    id={{filter.id}}
-                    onChange={{action this.filterChange filter}}
-                    @value={{filter.value}}
-                  />
-                  <AuPill
-                    style="width: 100%; display: inline-block;"
-                    @icon="info-circle"
-                    @iconAlignment="left"
-                  >
-                    Zoek op {{filter.searchLabel}}
-                  </AuPill>
-              {{/if}}
-
-
-            </section>
-          </AuFormRow>
-          
-
+            />
+          {{/if}}
         {{/each}}
       </section>
     </AuContent>

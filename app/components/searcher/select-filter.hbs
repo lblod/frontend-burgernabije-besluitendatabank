@@ -1,0 +1,41 @@
+<Searcher::Filter @filter={{@filter}} @queryParam={{@queryParam}}>
+    <PowerSelect
+      style="width: 100%;"
+      id={{@filter.id}}
+
+
+      @onChange={{action this.selectChange @filter}}
+      {{!--@selected={{filter.selected}}--}}
+      @options={{@filter.options}}
+
+      @allowClear=true
+      @searchField="label"
+
+      @placeholder={{@filter.placeholder}}
+      @noMatchesMessage={{concat "Geen " @filter.searchLabel " gevonden"}}
+      @searchMessage="Aan het zoeken..."
+      @searchEnabled={{true}}
+
+      as |singleSelect|
+    >
+      {{singleSelect.label}}
+
+    </PowerSelect>
+    <AuPill
+      style="width: 100%; display: inline-block;"
+      @icon="info-circle"
+      @iconAlignment="left"
+    >
+      {{#if @filter.selected}}
+        Resultaten voor
+        <AuLink
+          @route="municipality"
+          @model={{@filter.selected.label}}
+        >
+          {{@filter.selected.label}}
+        </AuLink>
+      {{else}}
+        @filter op {{@filter.searchLabel}}
+      {{/if}}
+    </AuPill>
+</Searcher::Filter>

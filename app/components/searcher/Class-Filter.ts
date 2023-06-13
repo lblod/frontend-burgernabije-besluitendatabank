@@ -1,3 +1,5 @@
+import Component from "@ember/component";
+
 export class Filter {
     /** 
      * id to be used in HTML
@@ -87,6 +89,75 @@ export class Filter {
     }
 
 };
+
+export interface IFilter {
+    /** 
+     * id to be used in HTML
+     * Example 1: \<input id="ID"\>
+     * Example 2: \<label for="ID"\> 
+     **/
+    id?: string;
+
+    /**
+     * Text that will be diplayed above the input
+     */
+    searchLabel?: string;
+
+
+    value? :string;
+
+    /**
+     * (Optional) Name of the queryParameter related to the input
+     */
+    queryParam?: string;
+
+    /**
+     * (Optional) Name of the queryParameters related to the input. Currently only used in DateRangeFilter
+     */
+    queryParams?: Array<string>;
+
+
+    /**
+     * Return a filter object for use in Ember's store.query("model", {filter: FILTER})
+     * The generated object will be combined with any other filters and parsed to the (JSON:API) request
+     * 
+     * 
+     * @example
+     *  filter: (value: string) => {
+     *      return {
+     *          ":or:": {
+     *              title: value,
+     *              description: value
+     *          }
+     *      }
+     * 
+     * 
+     * @example
+     *  filter: (value: string) => {
+     *      "session": {
+     *          "governing-body": {
+     *              "administrative-unit": {
+     *                  "name": value
+     *              }
+     *          }
+     *       }
+     *   }
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * @param value The function should take one value, which will be used in the request 
+     * @returns A JavaScript object for use in Ember/JSON:API queries
+     */
+    filterObject?: (value: any) => { [key:string]: any };
+
+
+
+
+};
+
 
 export class TextFilter extends Filter {
     Text = true;

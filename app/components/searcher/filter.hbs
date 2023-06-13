@@ -1,0 +1,15 @@
+<AuFormRow
+      @alignment="inline"
+      style="width: 100%;"
+      class="au-u-padding-top-small au-u-padding-bottom-small"
+    >
+    <AuLabel for={{@parent.id}} style="width: 30%;max-width: 30%;">
+      {{@parent.searchLabel}}
+    </AuLabel>
+    <section
+      style="width: 70%;max-width: 70%; gap: 8px 0;"
+      class="au-u-flex au-u-flex--column"
+    >
+        {{yield}}
+    </section>
+</AuFormRow>

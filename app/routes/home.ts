@@ -3,7 +3,7 @@ import Route from "@ember/routing/route";
 import Transition from "@ember/routing/transition";
 import { service } from "@ember/service";
 import { tracked } from "@glimmer/tracking";
-import { TextFilter, SelectFilter, DateRangeFilter } from "../utils/Filter";
+import { TextFilter, SelectFilter, DateRangeFilter } from "../components/searcher/Class-Filter";
 
 interface MunicipalitiesRequestInterface {
   page: {

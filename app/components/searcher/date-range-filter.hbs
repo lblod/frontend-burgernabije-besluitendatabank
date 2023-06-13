@@ -1,0 +1,22 @@
+<Searcher::Filter @filter={{@filter}}>
+    <AuDateRangePicker
+      @width="block"
+      style="width: 70%; max-width: 70%;"
+
+      id={{@filter.id}}
+      @label={{@filter.searchLabel}}
+      @start={{@filter.start}}
+      @end={{@filter.end}}
+      
+      @cancelAction={{action this.dateChange @filter}}
+      @applyAction={{action this.dateChange @filter}}
+      @hideAction={{action this.dateChange @filter}}
+    />
+    <AuPill
+      style="width: 100%; display: inline-block;"
+      @icon="info-circle"
+      @iconAlignment="left"
+    >
+      Zoek op {{@filter.searchLabel}}
+    </AuPill>
+</Searcher::Filter> 
