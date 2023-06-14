@@ -8,7 +8,7 @@ export default class SearcherTextFilterComponent extends FilterComponent {
     @tracked placeholder?: string;
 
     @action
-    updateFilter() {
+    searchUpdateFilter() {
         if (this.args.info.filterObject) {
             this.args.searcherUpdateFilter(this.args.info.filterObject(this.value));
         }
@@ -18,17 +18,9 @@ export default class SearcherTextFilterComponent extends FilterComponent {
     async onLoad() {
         this.init(this);
 
-        console.log("---")
-        console.log(this.queryParam)
-        if (this.queryParam) {
-            console.log(this.router.currentRoute.queryParams)
-            let value = get(this.router.currentRoute.queryParams, this.queryParam);
-            console.log(value)
-            if (value) {
-                this.value = value;
-            }
-        }
-        this.updateFilter();
+        this.value = this.getQueryParamValue();
+        
+        this.searchUpdateFilter();
     }
 
     @action
@@ -38,6 +30,6 @@ export default class SearcherTextFilterComponent extends FilterComponent {
         }
 
         this.updateQueryParam(this.value);
-        this.updateFilter();
+        this.searchUpdateFilter();
     }
 }

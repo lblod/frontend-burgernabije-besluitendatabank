@@ -102,6 +102,16 @@ export default class FilterComponent extends Component<FilterArgs> implements IF
             });
         }
     }
+
+    getQueryParamValue(): any|undefined {
+        if (this.queryParam) {
+            let value = get(this.router.currentRoute.queryParams, this.queryParam);
+            if (value) {
+                return value;
+            }
+        }
+        return undefined;
+    }
     
     init(component: FilterComponent) {
         component.id = component.args.info.id;
