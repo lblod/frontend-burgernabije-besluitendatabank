@@ -5,6 +5,21 @@
 declare const config: {
   VO_HEADER_WIDGET_URL: any;
   VO_FOOTER_WIDGET_URL: any;
+  acmidm: {
+    authUrl: string;
+    clientId: string;
+    authRedirectUrl: string;
+    scope: string;
+  };
+  worshipDecisionsDatabaseUrl: string;
+  worshipOrganisationsDatabaseUrl: string;
+  "ember-plausible": {
+    enabled: boolean;
+  };
+  plausible: {
+    domain: string;
+    apiHost: string;
+  };
   environment: string;
   modulePrefix: string;
   podModulePrefix: string;
