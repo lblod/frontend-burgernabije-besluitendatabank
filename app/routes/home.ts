@@ -86,6 +86,7 @@ export default class HomeRoute extends Route {
     const municipalityFilter: IFilterInfo = {
       id: "municipality",
       searchLabel: "Gemeente",
+      isSelectFilter: true,
       filterObject: (value: string) => {
         return {
           "session": {

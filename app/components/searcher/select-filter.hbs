@@ -2,18 +2,18 @@
 <Searcher::Filter @parent={{this}}>
     <PowerSelect
       style="width: 100%;"
-      id={{@filter.id}}
+      id={{this.id}}
 
 
-      @onChange={{action this.selectChange @filter}}
-      {{!--@selected={{filter.selected}}--}}
-      @options={{@filter.options}}
+      @onChange={{action this.selectChange}}
+      @selected={{this.selected}}
+      @options={{this.options}}
 
       @allowClear=true
       @searchField="label"
 
-      @placeholder={{@filter.placeholder}}
-      @noMatchesMessage={{concat "Geen " @filter.searchLabel " gevonden"}}
+      @placeholder={{this.placeholder}}
+      @noMatchesMessage={{concat "Geen " this.searchLabel " gevonden"}}
       @searchMessage="Aan het zoeken..."
       @searchEnabled={{true}}
 
@@ -27,16 +27,16 @@
       @icon="info-circle"
       @iconAlignment="left"
     >
-      {{#if @filter.selected}}
+      {{#if this.selected}}
         Resultaten voor
         <AuLink
           @route="municipality"
-          @model={{@filter.selected.label}}
+          @model={{this.selected.label}}
         >
-          {{@filter.selected.label}}
+          {{this.selected.label}}
         </AuLink>
       {{else}}
-        @filter op {{@filter.searchLabel}}
+        @filter op {{this.searchLabel}}
       {{/if}}
     </AuPill>
 </Searcher::Filter>
