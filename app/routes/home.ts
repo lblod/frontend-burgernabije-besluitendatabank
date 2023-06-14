@@ -3,7 +3,7 @@ import Route from "@ember/routing/route";
 import Transition from "@ember/routing/transition";
 import { service } from "@ember/service";
 import { tracked } from "@glimmer/tracking";
-import { TextFilter, SelectFilter, DateRangeFilter } from "../components/searcher/Class-Filter";
+import { IFilterInfo } from "../components/searcher/filter";
 
 interface MunicipalitiesRequestInterface {
   page: {
@@ -66,67 +66,70 @@ export default class HomeRoute extends Route {
       },
     };
     const municipalities = await this.store.query("location", req);
+    
 
-    this.filters = [
-      new SelectFilter(
-        "municipality",
-        "Gemeente",
-        (value: string) => {
-          return {
-            "session": {
-              "governing-body": {
-                "administrative-unit": {
-                  "name": value
-                }
+    const keywordFilter: IFilterInfo = {
+      id: "keyword",
+      searchLabel: "Trefwoord",
+      filterObject(value: string) {
+        return {
+          ":or:": {
+            title: value,
+            description: value
+          }
+        }
+      },
+      placeholder: "Terrasvergunning",
+      queryParam: "trefwoord"
+    }
+
+    const municipalityFilter: IFilterInfo = {
+      id: "municipality",
+      searchLabel: "Gemeente",
+      filterObject: (value: string) => {
+        return {
+          "session": {
+            "governing-body": {
+              "administrative-unit": {
+                "name": value
               }
             }
           }
-        },
-        municipalities,
-        this.municipality,
-        "Selecteer een optie",
-        "gemeentes"
-      ),
-      new TextFilter(
-        "keyword",
-        "Trefwoord", 
-        function (value: string) {
-          return {
-            ":or:": {
-              title: value,
-              description: value
-            }
-          }
-        },
-        this.keyword, 
-        "Terrasvergunning", 
-        "trefwoord"
-      ),
-      new DateRangeFilter(
-        "startdate",
-        "Datum",
-        (value: string) => {
-          let sessionFilter: { [key: string]: any } = {};
-          let split = value.split("<->");
-          let start = split[0];
-          let end = split[1];
+        }
+      },
+      options: municipalities,
+      placeholder: "Selecteer een optie",
+      queryParam: "gemeentes"
+    };
 
-          if (start) {
-            sessionFilter[":gt:started-at"] = start;
-          }
-          if (end) {
-            sessionFilter[":lt:ended-at"] = end;
-          }
+    const dateRangeFilter: IFilterInfo = {
+      id: "startdate",
+      searchLabel: "Datum",
+      filterObject:  (value: string) => {
+        let sessionFilter: { [key: string]: any } = {};
+        let split = value.split("<->");
+        let start = split[0];
+        let end = split[1];
 
-          return {
-            "session": sessionFilter
-          }
-        },
-        this.plannedStartMin,
-        this.plannedStartMax,
-        ["begin", "eind"]
-      )
-    ];
+        if (start) {
+          sessionFilter[":gt:started-at"] = start;
+        }
+        if (end) {
+          sessionFilter[":lt:ended-at"] = end;
+        }
+
+        return {
+          "session": sessionFilter
+        }
+      },
+      queryParams: ["begin", "eind"]
+    }
+    
+    this.filters = [
+      municipalityFilter,
+      keywordFilter,
+      dateRangeFilter
+    ]
 
     return this.filters;
   }

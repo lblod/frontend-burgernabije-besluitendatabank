@@ -14,9 +14,8 @@
             <Searcher::DateRangeFilter @filter={{filter}}/>
           {{else}}
             <Searcher::TextFilter
-              @filter={{filter}}
-              @updateFilter={{this.updateFilter}}
-              
+              @info={{filter}}
+              @searcherUpdateFilter={{this.updateFilter}}
             />
           {{/if}}
         {{/each}}

@@ -1,40 +1,43 @@
-import Component from '@glimmer/component';
 import { action } from "@ember/object";
-import { TextFilter } from './Class-Filter';
 import { get } from '@ember/object';
 import FilterComponent from './filter';
-import { Filter } from './Class-Filter';
 import { tracked } from '@glimmer/tracking';
 
 export default class SearcherTextFilterComponent extends FilterComponent {
     @tracked value?: any;
+    @tracked placeholder?: string;
+
+    @action
+    updateFilter() {
+        if (this.args.info.filterObject) {
+            this.args.searcherUpdateFilter(this.args.info.filterObject(this.value));
+        }
+    }
 
     @action
     async onLoad() {
         this.init(this);
 
+        console.log("---")
+        console.log(this.queryParam)
         if (this.queryParam) {
+            console.log(this.router.currentRoute.queryParams)
             let value = get(this.router.currentRoute.queryParams, this.queryParam);
+            console.log(value)
             if (value) {
                 this.value = value;
             }
         }
-
-        this.args.updateFilter(this.args.filter.filter(this.value));
+        this.updateFilter();
     }
 
     @action
     async filterChange(e: Event) {
-        console.log(...arguments)
-        console.log(this.id)
-
-
         if (e.target) {
-            //this.value = (e.target as HTMLInputElement).value;
+            this.value = (e.target as HTMLInputElement).value;
         }
 
         this.updateQueryParam(this.value);
-        this.args.updateFilter(this.args.filter.filter(this.value));
-
+        this.updateFilter();
     }
 }

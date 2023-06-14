@@ -4,26 +4,12 @@ import Store from "@ember-data/store";
 import { tracked } from "@glimmer/tracking";
 import { service } from "@ember/service";
 import RouterService from "@ember/routing/router-service";
-import { Filter } from "./searcher/Class-Filter";
+
 
 interface ArgsInterface {
   includes: Array<string>;
   queryModel: string;
-  filters: Array<Filter>;
-}
-
-function prepareRequest(offset: number, includes: Array<String>, filter: {[key:string]: any}) {
-  let req: {[key: string]: any} = {
-    page: {
-      size: offset,
-    },
-    include: includes.join(","),
-    filter: filter,
-  };
-
-  console.log(req);
-
-  return req;
+  filters: Array<any>;
 }
 
 export default class SearchSidebar extends Component<ArgsInterface> {
@@ -38,7 +24,7 @@ export default class SearchSidebar extends Component<ArgsInterface> {
 
   _filter: {[key:string]: any} = {};
 
-  get filters(): Array<Filter> {
+  get filters(): Array<any> {  // TODO change to IFilter
     return this.args.filters;
   }
   
@@ -67,7 +53,7 @@ export default class SearchSidebar extends Component<ArgsInterface> {
 
     this.request();
     */
-   this.request();
+   //this.request();
 
   }
 
@@ -83,11 +69,20 @@ export default class SearchSidebar extends Component<ArgsInterface> {
     console.log(this._filter)
     this._filter = {... this._filter, ...obj};
     this.request();
-
   }
 
   async request() {
-    let values = await this.store.query(this.args.queryModel, prepareRequest(this.offset, this.args.includes, this._filter));
+    let req: {[key: string]: any} = {
+      page: {
+        size: this.offset,
+      },
+      include: this.args.includes.join(","),
+      filter: this._filter,
+    };
+  
+    console.log(req);
+
+    let values = await this.store.query(this.args.queryModel, req);
     this.values = values;
   }
 
