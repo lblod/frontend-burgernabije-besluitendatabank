@@ -21,6 +21,14 @@ npm install
 
 From there, you can use `npm run dev` in order to use the mock API, `npm run prod` in order to use a local BNB api, or `npm run --proxy=https://burgernabije-besluitendatabank-dev.s.redhost.be/` to run using the BNB API on [the external dev server](https://burgernabije-besluitendatabank-dev.s.redhost.be/).
 
+### Automated builds
+
+The project uses woodpecker to automate builds. The configuration files can be found in the `.woodpecker` folder. Builds are available [here](https://build.redpencil.io/lblod/frontend-burgernabije-besluitendatabank/).
+
+- Latest master build : `lblod/frontend-burgernabije-besluitendatabank:latest` 
+- Feature branch build : `lblod/frontend-burgernabije-besluitendatabank:feature-<branch-name>`
+- Version tag build : `lblod/frontend-burgernabije-besluitendatabank:<version-tag>` tag like v1.2.3 would be published as 1.2.3 (so the v is dropped)
+
 ## Discussions
 
 ### Data Alignment
