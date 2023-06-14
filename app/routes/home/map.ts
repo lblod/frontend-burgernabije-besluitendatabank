@@ -44,8 +44,6 @@ export default class MapRoute extends Route {
       filter: {
         ":has:session": true,
         session: {
-          // ":gt:started-at": "2023-06-07", it has to be 3 months ago calculated and formated like the string
-
           ":gt:started-at": new Date(
             new Date().setMonth(new Date().getMonth() - 3)
           )
