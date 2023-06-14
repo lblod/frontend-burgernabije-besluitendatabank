@@ -1,4 +1,5 @@
-<Searcher::Filter @filter={{@filter}} @queryParam={{@queryParam}}>
+{{did-insert this.onLoad}}
+<Searcher::Filter @parent={{this}}>
     <PowerSelect
       style="width: 100%;"
       id={{@filter.id}}

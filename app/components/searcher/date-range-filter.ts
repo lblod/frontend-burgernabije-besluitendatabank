@@ -1,33 +1,50 @@
 import Component from '@glimmer/component';
 import { action } from "@ember/object";
+import FilterComponent from './filter';
+import { tracked } from '@glimmer/tracking';
 
-export default class SearcherDateRangeFilterComponent extends Component {
+export default class SearcherDateRangeFilterComponent extends FilterComponent {
+  @tracked start?: string;
+  @tracked end?: string;
 
 
   @action
-  async dateChange(filter: any, e: any, start: string, end: string) {
-    filter.start = start;
-    filter.end = end;
+  searchUpdateFilter() {
+      if (this.args.info.filterObject) {
+          this.args.searcherUpdateFilter(this.args.info.filterObject([this.start, this.end]));
+      }
+  }
 
-    if (filter.queryParams) {
+
+  @action
+  async onLoad() {
+      this.init(this);
+
+      [this.start, this.end] = this.getQueryParamsValues()
+      
+      this.searchUpdateFilter();
+  }
+
+  @action
+  async dateChange(e: any, start: string, end: string) {
+    this.start = start;
+    this.end = end;
+ 
+    if (this.queryParams) {
       let queryParams: {[key:string]: string} = {};
-      let startParam = filter.queryParams[0];
-      let endParam = filter.queryParams[1];
+      let startParam = this.queryParams[0];
+      let endParam = this.queryParams[1];
 
       if (startParam) {
-        queryParams[startParam] = filter.start;
+        queryParams[startParam] = this.start;
       }
       if (endParam) {
-        queryParams[endParam] = filter.end;
+        queryParams[endParam] = this.end;
       }
 
-      /*
-      this.router.transitionTo(this.router.currentRouteName, {
-        queryParams: queryParams
-      });
-      */
+      this.updateQueryParams([this.start, this.end]);
     }
 
-    //this.request();
+    this.searchUpdateFilter();
   }
 }

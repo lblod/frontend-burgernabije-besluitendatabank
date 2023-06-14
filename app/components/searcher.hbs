@@ -7,11 +7,16 @@
 
         {{#each this.filters as |filter|}}
 
-          {{#if filter.Select}}
-            <Searcher::SelectFilter @filter={{filter}}/>
-
-          {{else if filter.DateRange}}
-            <Searcher::DateRangeFilter @filter={{filter}}/>
+          {{#if filter.isSelectFilter}}
+            <Searcher::SelectFilter 
+              @info={{filter}}
+              @searcherUpdateFilter={{this.updateFilter}}
+            />
+          {{else if filter.isDateRangeFilter}}
+            <Searcher::DateRangeFilter
+              @info={{filter}}
+              @searcherUpdateFilter={{this.updateFilter}}
+            />
           {{else}}
             <Searcher::TextFilter
               @info={{filter}}

@@ -105,17 +105,17 @@ export default class HomeRoute extends Route {
     const dateRangeFilter: IFilterInfo = {
       id: "startdate",
       searchLabel: "Datum",
-      filterObject:  (value: string) => {
+      isDateRangeFilter: true,
+      filterObject:  (values: Array<string>) => {
         let sessionFilter: { [key: string]: any } = {};
-        let split = value.split("<->");
-        let start = split[0];
-        let end = split[1];
+        let plannedStartMin = values[0];
+        let plannedStartMax = values[1];
 
-        if (start) {
-          sessionFilter[":gt:started-at"] = start;
+        if (plannedStartMin) {
+          sessionFilter[":gt:started-at"] = plannedStartMin;
         }
-        if (end) {
-          sessionFilter[":lt:ended-at"] = end;
+        if (plannedStartMax) {
+          sessionFilter[":lt:ended-at"] = plannedStartMax;
         }
 
         return {
