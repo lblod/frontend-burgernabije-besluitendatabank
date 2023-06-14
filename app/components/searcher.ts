@@ -18,6 +18,7 @@ export default class SearchSidebar extends Component<ArgsInterface> {
   @service declare inViewport: any;
   @service declare router: RouterService;
 
+  loaded = false;
 
   // Data code
   @tracked values: any;
@@ -27,10 +28,10 @@ export default class SearchSidebar extends Component<ArgsInterface> {
   get filters(): Array<any> {  // TODO change to IFilter
     return this.args.filters;
   }
-  
 
   @action
   onLoad() {
+    console.log("searcher onload")
     // Load in queryParams
     /*
     let queryParams = this.router.currentRoute.queryParams;
@@ -54,6 +55,8 @@ export default class SearchSidebar extends Component<ArgsInterface> {
     this.request();
     */
    //this.request();
+   this.loaded = true;
+   this.request();
 
   }
 
@@ -68,9 +71,14 @@ export default class SearchSidebar extends Component<ArgsInterface> {
     console.log(obj)
     console.log(this._filter)
     this._filter = {... this._filter, ...obj};
-    this.request();
+
+    //if (this.loaded) {
+      this.request();
+    //}
+    //this.request();
   }
 
+  @action
   async request() {
     let req: {[key: string]: any} = {
       page: {
@@ -82,8 +90,7 @@ export default class SearchSidebar extends Component<ArgsInterface> {
   
     console.log(req);
 
-    let values = await this.store.query(this.args.queryModel, req);
-    this.values = values;
+    this.values = this.store.query(this.args.queryModel, req);;
   }
 
 

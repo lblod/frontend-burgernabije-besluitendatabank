@@ -16,6 +16,7 @@ export default class SearcherTextFilterComponent extends FilterComponent {
 
     @action
     async onLoad() {
+        console.log("textfilter onload")
         this.init(this);
 
         this.value = this.getQueryParamValue();

@@ -19,12 +19,17 @@ export default class SearcherSelectFilterComponent extends FilterComponent {
         this.init(this);
 
         this.options = this.args.info.options;
-        console.log(this.getQueryParamValue())
-        this.selected = {
-            label: this.getQueryParamValue()
-        };     
         
-        this.searchUpdateFilter();
+        let value = this.getQueryParamValue();
+        if (value) {
+            this.selected = {
+                label: this.getQueryParamValue()
+            };
+            this.searchUpdateFilter();
+
+        }
+        
+        
     }
 
 
