@@ -9,7 +9,7 @@ export default class SessionRoute extends Route {
 
   async model({ session_id }: { session_id: string }) {
     // @ts-ignore
-    const sessionFromParent: undefined | SessionModel = this.modelFor('sessions.index')?.find((session: any) => session.id === session_id);
+    const sessionFromParent: undefined | SessionModel = this.modelFor('sessions.index')?.sessions?.find((session: any) => session.id === session_id);
     const session: SessionModel = sessionFromParent ?? await this.store.findRecord("session", session_id, {
       include: [
         'governing-body.administrative-unit',
