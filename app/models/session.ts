@@ -35,7 +35,7 @@ export default class SessionModel extends Model {
   }
   
   get hasMunicipality() {
-    return !!this.governingBody?.administrativeUnit.name;
+    return !!this.governingBody?.administrativeUnit;
   }
 
   get dateRange() {
