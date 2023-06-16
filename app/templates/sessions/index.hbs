@@ -1,22 +1,20 @@
 {{page-title "Zittingen"}}
 
-<div class="au-u-flex detail-container" style="overflow-y: scroll;">
-    <section style="height: fit-content; width: 100%;" class="au-u-flex au-u-flex--column">
-        {{#each @model as |session|}}
-            <LinkTo @route="sessions.session" @model={{session.id}}>
-                <AuCard @size="small" class="card-hover au-u-padding-bottom au-u-padding" as |c|>
-                    <c.header>
-                        <AuHeading @level="1" @skin="3">
-                            <AuLink style="text-overflow: ellipsis; max-height: 50%;">
-                                {{session.name}} {{session.dateRange}}
-                            </AuLink>
-                        </AuHeading>
-                    </c.header>
-                    <c.footer>
-                        {{session.municipality}} - {{session.agendaItemCount}}
-                    </c.footer>
-                </AuCard>
-            </LinkTo>
-        {{/each}}
-    </section>
-</div>
+<InfiniteList @loadMore={{action "loadMore"}} @isLoading={{this.isLoadingMore}}>
+    {{#each @model.sessions as |session|}}
+        <LinkTo @route="sessions.session" @model={{session.id}}>
+            <AuCard @size="small" class="card-hover au-u-padding" as |c|>
+                <c.header>
+                    <AuHeading @level="1" @skin="3">
+                        <AuLink>
+                            {{session.name}} {{session.dateRange}}
+                        </AuLink>
+                    </AuHeading>
+                </c.header>
+                <c.footer>
+                    {{session.municipality}} - {{session.agendaItemCount}}
+                </c.footer>
+            </AuCard>
+        </LinkTo>
+    {{/each}}
+</InfiniteList>

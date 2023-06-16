@@ -9,6 +9,8 @@ export default class DetailRoute extends Route {
     let agendaItem = await this.store.findRecord("agenda-item", params.id, {
       include: [
         "session",
+        // "session.governing-body",
+        "session.governing-body.administrative-unit",
         // 'handled-by',
         "handled-by.has-votes",
         "handled-by.resolutions",
