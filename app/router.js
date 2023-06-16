@@ -18,14 +18,4 @@ Router.map(function () {
     this.route("session", { path: "/:session_id" });
   });
   this.route("FourOhFour", { path: "/*path" });
-
-  this.route('auth', function() {
-    this.route('login');
-    this.route('logoutError');
-    this.route('logoutLoading');
-    this.route('callbackError');
-    this.route('callbackLoading');
-    this.route('switch');
-  });
-  this.route('mockLogin');
 });

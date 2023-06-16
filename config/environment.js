@@ -10,19 +10,6 @@ module.exports = function (environment) {
       "https://tni.widgets.burgerprofiel.dev-vlaanderen.be/api/v1/widget/3bcc4b26-e216-489c-8f11-cd9299f08199",
     VO_FOOTER_WIDGET_URL:
       "https://tni.widgets.burgerprofiel.dev-vlaanderen.be/api/v1/widget/7eed3599-96aa-435b-bc43-fe13d2fc0531",
-    acmidm: {
-      clientId: "{{ACMIDM_CLIENT_ID}}",
-      scope: "openid rrn vo profile abb_loketLB",
-      authUrl: "{{ACMIDM_AUTH_URL}}",
-      logoutUrl: "{{ACMIDM_LOGOUT_URL}}",
-      authRedirectUrl: "{{ACMIDM_AUTH_REDIRECT_URL}}",
-      switchRedirectUrl: "{{ACMIDM_SWITCH_REDIRECT_URL}}",
-    },
-    worshipDecisionsDatabaseUrl: "{{WORSHIP_DECISIONS_DATABASE_URL}}",
-    worshipOrganisationsDatabaseUrl: "{{WORSHIP_ORGANISATIONS_DATABASE_URL}}",
-    "ember-plausible": {
-      enabled: false,
-    },
     plausible: {
       domain: "{{ANALYTICS_APP_DOMAIN}}",
       apiHost: "{{ANALYTICS_API_HOST}}",
