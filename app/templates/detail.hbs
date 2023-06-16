@@ -64,23 +64,23 @@
           class="au-u-flex au-u-muted au-u-margin-top-tiny"
           style=" align-items: center;"
         >
-          {{#if this.model.session.governingBody.administrativeUnit.name}}
-            <AuIcon
-              class="au-u-margin-right-small"
-              @size="large"
-              @icon="message"
-            />
+
+          <AuIcon
+            class="au-u-margin-right-small"
+            @size="large"
+            @icon="message"
+          />
+          {{#if this.model.session.hasMunicipality}}
             <LinkTo
               @route="municipality"
-              @model={{this.model.session.governingBody.administrativeUnit.name}}
+              @model={{this.model.session.municipality}}
             >
               <p>Gemeente
-                {{#if this.model.session.governingBody.administrativeUnit}}
-                  {{this.model.session.governingBody.administrativeUnit.name}}
-                {{else}}
-                  Geen Gemeente
-                {{/if}}</p>
+                {{this.model.session.municipality}}
+              </p>
             </LinkTo>
+          {{else}}
+            <p>{{this.model.session.municipality}}</p>
           {{/if}}
         </section>
 
