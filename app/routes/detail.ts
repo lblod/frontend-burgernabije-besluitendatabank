@@ -8,8 +8,8 @@ export default class DetailRoute extends Route {
   async model(params: any) {
     let agendaItems = await this.store.findRecord("agenda-item", params.id, {
       include: [
-        "session",
-        "session.governing-body",
+        // "session",
+        // "session.governing-body",
         "session.governing-body.administrative-unit",
         // 'handled-by',
         "handled-by.has-votes",
