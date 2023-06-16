@@ -1,36 +1,52 @@
-import Model, { attr, belongsTo, hasMany, type AsyncHasMany } from '@ember-data/model';
-import AgendaItemModel from './agenda-item';
-import GoverningBodyModel from './governing-body';
-import { getFormattedDateRange } from 'frontend-burgernabije-besluitendatabank/utils/get-formatted-date-range';
+import Model, {
+  attr,
+  belongsTo,
+  hasMany,
+  type AsyncHasMany,
+} from "@ember-data/model";
+import { getFormattedDateRange } from "frontend-burgernabije-besluitendatabank/utils/get-formatted-date-range";
+import AgendaItemModel from "./agenda-item";
+import GoverningBodyModel from "./governing-body";
 
 export default class SessionModel extends Model {
-    @attr("date") declare startedAt?: Date;
-    @attr("date") declare endedAt?: Date;
+  @attr("date") declare startedAt?: Date;
+  @attr("date") declare endedAt?: Date;
 
-    @hasMany("agenda-item") declare agendaItems: AsyncHasMany<AgendaItemModel>;
-    @belongsTo("governing-body", { async: false }) declare governingBody: GoverningBodyModel;
+  @hasMany("agenda-item") declare agendaItems: AsyncHasMany<AgendaItemModel>;
+  @belongsTo("governing-body", { async: false })
+  declare governingBody: GoverningBodyModel;
 
-    get name() {
-        return this.governingBody?.name ?? "Ontbrekende bestuursorgaan";
-    }
+  get name() {
+    return this.governingBody?.name ?? "Ontbrekende bestuursorgaan";
+  }
 
-    get municipality() {
-        return this.governingBody?.administrativeUnit?.name ?? "Ontbrekende bestuurseenheid";
-    }
+  get municipality() {
+    return (
+      this.governingBody?.administrativeUnit?.name ??
+      "Ontbrekende bestuurseenheid"
+    );
+  }
 
-    get dateRange() {
-        return getFormattedDateRange(this.startedAt, this.endedAt);
-    }
+  get location() {
+    return (
+      this.governingBody?.administrativeUnit?.location?.label ??
+      "Ontbrekende locatie"
+    );
+  }
 
-    get agendaItemCount() {
-        const count = this.agendaItems?.length ?? 0;
+  get dateRange() {
+    return getFormattedDateRange(this.startedAt, this.endedAt);
+  }
 
-        return `${count} ${+count <= 1 ? "agendapunt" : "agendapunten"}`;
-    }
+  get agendaItemCount() {
+    const count = this.agendaItems?.length ?? 0;
+
+    return `${count} ${+count <= 1 ? "agendapunt" : "agendapunten"}`;
+  }
 }
 
-declare module 'ember-data/types/registries/model' {
-    export default interface ModelRegistry {
-        session: SessionModel;
-    }
+declare module "ember-data/types/registries/model" {
+  export default interface ModelRegistry {
+    session: SessionModel;
+  }
 }
