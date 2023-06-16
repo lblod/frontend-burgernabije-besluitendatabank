@@ -1,0 +1,12 @@
+<div class="au-u-flex au-u-flex--column" style="overflow-y: scroll;" {{on "scroll" this.scroll}}>
+    <section class="au-u-flex au-u-flex--column">
+        {{ yield }}
+    </section>
+    <div class="au-u-flex au-u-flex--center au-u-padding">
+        {{#if @isLoading}}
+            <AuLoader />
+        {{else}}
+            <AuButton {{action "loadMore"}}>Laad meer</AuButton>
+        {{/if}}
+    </div>
+</div>
