@@ -14,6 +14,11 @@
 .daterangepicker {
   font: var(--au-font);
 }
+#detail-left-section {
+  width: 100%;
+  height: 100%;
+}
+
 .daterangepicker td.active,
 .daterangepicker td.start-date.end-date {
   background-color: var(--au-blue-700) !important;

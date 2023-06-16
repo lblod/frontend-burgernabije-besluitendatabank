@@ -17,7 +17,7 @@ export default class SessionModel extends Model {
   declare governingBody: GoverningBodyModel;
 
   get name() {
-    return this.governingBody?.name ?? "Ontbrekende bestuursorgaan";
+    return this.governingBody?.name ?? "Ontbrekend bestuursorgaan";
   }
 
   get municipality() {
@@ -32,6 +32,10 @@ export default class SessionModel extends Model {
       this.governingBody?.administrativeUnit?.location?.label ??
       "Ontbrekende locatie"
     );
+  }
+  
+  get hasMunicipality() {
+    return !!this.governingBody?.administrativeUnit.name;
   }
 
   get dateRange() {
