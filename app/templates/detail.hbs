@@ -46,7 +46,7 @@
           </section>
         {{/if}}
 
-        {{#if this.model.agendaItem.municipality}}
+        {{#if this.model.agendaItem.session.municipality}}
           <section
             class="au-u-flex au-u-muted au-u-margin-top-tiny"
             style=" align-items: center;"
@@ -58,7 +58,7 @@
             />
             <p>{{this.model.agendaItem.title_agenda.value}}
               -
-              {{#if this.model.agendaItem.geplandeStart.value}}
+              {{#if this.model.agendaItem.session.geplandeStart.value}}
                 {{iso-formatter this.model.agendaItem.geplandeStart.value}}
               {{else}}
                 Geen Datum
@@ -73,17 +73,17 @@
               @size="large"
               @icon="message"
             />
-            <LinkTo
+            <AuLink
               @route="municipality"
-              @model={{this.model.agendaItem.eenheid_werkingsgebied_label.value}}
+              @model={{this.model.agendaItem.session.municipality}}
             >
               <p>Gemeente
-                {{#if this.model.agendaItem.eenheid_werkingsgebied_label.value}}
-                  {{this.model.agendaItem.eenheid_werkingsgebied_label.value}}
+                {{#if this.model.agendaItem.session.municipality}}
+                  {{this.model.agendaItem.session.municipality}}
                 {{else}}
                   Geen Gemeente
                 {{/if}}</p>
-            </LinkTo>
+            </AuLink>
           </section>
         {{/if}}
         {{#if this.model.agendaItem.alternateLink}}
@@ -97,8 +97,9 @@
               @icon="calendar"
             />
             <p>
-              <a href="{{this.model.agendaItem.alternateLink}}">Bekijk
-                agendapunt op de website van de gemeente</a>
+              <AuLinkExternal href="{{this.model.agendaItem.alternateLink}}">
+                Bekijk agendapunt op de website van de gemeente
+              </AuLinkExternal>
             </p>
           </section>
         {{/if}}
@@ -203,10 +204,9 @@
               {{#if (eq agendaItem.id this.model.agendaItem.id)}}
                 <p class="au-u-medium">Huidige agendapunt</p>
               {{else}}
-                <LinkTo
-                  @route="detail"
-                  @model={{agendaItem.id}}
-                >{{agendaItem.title}}</LinkTo>
+                <AuLink @route="detail" @model={{agendaItem.id}}>
+                  {{agendaItem.title}}
+                </AuLink>
               {{/if}}
 
             {{/each}}
