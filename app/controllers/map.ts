@@ -5,9 +5,9 @@ import { service } from "@ember/service";
 import { tracked } from "@glimmer/tracking";
 import d3 from "d3";
 import { geoMercator, geoPath } from "d3-geo";
-import MapRoute from "frontend-burgernabije-besluitendatabank/routes/home/map";
+import MapRoute from "frontend-burgernabije-besluitendatabank/routes/map";
 import topojson from "topojson";
-import { ModelFrom } from "../../lib/type-utils";
+import { ModelFrom } from "../lib/type-utils";
 
 export default class MapComponent extends Controller {
   @service declare router: RouterService;
@@ -75,7 +75,6 @@ export default class MapComponent extends Controller {
             .get("session")
             ?.get("governingBody")
             ?.get("administrativeUnit")?.name;
-          console.log(agendaItemLocation);
           if (name === agendaItemLocation) {
             const datenow = new Date(Date.now()).setHours(0, 0, 0, 0);
             const f = new Date(agendaItem.geplandeStart);
