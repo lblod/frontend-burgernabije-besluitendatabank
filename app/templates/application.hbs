@@ -1,21 +1,14 @@
 {{page-title "BurgerBesluitenDB"}}
 
-<AuApp style="height: 100vh; display: flex;">
+<AuApp>
   <AppHeader />
   <NavigationBar />
 
-  <AuMainContainer style="height: 100%;" as |m|>
+  <AuMainContainer as |m|>
 
     <m.content>
-
-      <div class="au-u-flex au-u-flex--column" style="height: 100%;">
-        {{outlet}}
-      </div>
+      {{outlet}}
 
     </m.content>
   </AuMainContainer>
-  {{! <Footer /> }}
-  {{#if this.hasExternallySourcedFooter}}
-    {{!-- <footer {{vl-widget this.VO_FOOTER_WIDGET_URL}}></footer> --}}
-  {{/if}}
 </AuApp>

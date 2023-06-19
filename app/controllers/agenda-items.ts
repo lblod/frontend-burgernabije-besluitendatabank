@@ -7,15 +7,14 @@ import { tracked } from "@glimmer/tracking";
 import { ModelFrom } from "frontend-burgernabije-besluitendatabank/lib/type-utils";
 import AgendaItemsRoute from "frontend-burgernabije-besluitendatabank/routes/agenda-items";
 
-export default class HomeController extends Controller {
+export default class AgendaItemsController extends Controller {
   @service declare router: RouterService;
   @service declare store: Store;
-
-  @tracked loading = false;
 
   declare model: ModelFrom<AgendaItemsRoute>;
   @tracked isLoadingMore = false;
 
+  @tracked loading = false;
   @tracked errorMsg = "";
 
   @action
@@ -48,25 +47,33 @@ export default class HomeController extends Controller {
   }
 
   @action handleMunicipalityChange(m: any) {
+    if (!m) {
+      this.selectedMunicipality = null;
+      this.router.transitionTo("agenda-items", {
+        queryParams: {
+          gemeentes: null,
+        },
+      });
+      return;
+    }
+
     this.selectedMunicipality = {
       label: m.label,
       id: m.id,
     };
-  }
 
-  @action handleMunicipalitySelect() {
-    this.loading = true;
     this.router.transitionTo("agenda-items", {
       queryParams: {
-        gemeentes: this.selectedMunicipality?.label || "",
+        // query for multiselect
+        // gemeentes: this.selectedMunicipality.join("+"),
+
+        // temporary query for single select
+        gemeentes: m.label,
       },
     });
-    this.send("refreshListRoute");
   }
 
-  @action handleSort(e: any) {
-    //this.sort = e.target.value.toLowerCase();
-  }
+  @action handleSort(e: any) {}
 
   @action handleKeywordChange(e: any) {
     this.router.transitionTo("agenda-items", {
@@ -74,7 +81,6 @@ export default class HomeController extends Controller {
         trefwoord: e.target.value,
       },
     });
-    this.send("refreshListRoute");
   }
 
   @action applyDatePicker(picker: any, start: any, end: any) {
@@ -84,7 +90,6 @@ export default class HomeController extends Controller {
         eind: end,
       },
     });
-    this.send("refreshListRoute");
   }
 
   @action hideDatePicker(picker: any, start: any, end: any) {}

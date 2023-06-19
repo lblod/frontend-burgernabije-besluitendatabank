@@ -10,12 +10,11 @@ Router.map(function () {
   this.route("detail", { path: "/agendapunt/:id" });
   this.route("municipality", { path: "/gemeente/:municipality" });
   this.route("help", { path: "/help" });
-  this.route("home", { path: "/" }, function (req, res) {
-    this.route("list", { path: "/" });
-    this.route("map", { path: "/kaart" });
-  });
-  this.route("sessions", { path: "/zittingen" }, function () {
+  this.route("agenda-items", { path: "/agendapunten" });
+  this.route("home", { path: "/" });
+  this.route("map", { path: "/kaart" });
+  this.route("sessions", { path: "/zittingen" }, () => {
     this.route("session", { path: "/:session_id" });
   });
-  this.route("FourOhFour", { path: "/*path" });
+  this.route("four-oh-four", { path: "/*path" });
 });

@@ -57,6 +57,6 @@ export default class HomeRoute extends Route {
       },
     };
     const municipalities = this.store.query("location", req);
-    return municipalities;
+    return { municipalities: municipalities };
   }
 }
