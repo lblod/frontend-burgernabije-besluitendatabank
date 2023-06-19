@@ -4,10 +4,38 @@ import { action } from "@ember/object";
 import RouterService from "@ember/routing/router-service";
 import { service } from "@ember/service";
 import { tracked } from "@glimmer/tracking";
+import { ModelFrom } from "frontend-burgernabije-besluitendatabank/lib/type-utils";
+import HomeRoute from "frontend-burgernabije-besluitendatabank/routes/home";
 
 export default class HomeController extends Controller {
   @service declare router: RouterService;
   @service declare store: Store;
+
+  declare model: ModelFrom<HomeRoute>;
+  @tracked isLoadingMore = false;
+
+  @tracked loading = false;
+  @tracked errorMsg = "";
+
+  @action
+  async loadMore() {
+    if (this.model && !this.isLoadingMore) {
+      this.isLoadingMore = true;
+      const nextPage = this.model.currentPage + 1;
+      const agendaItems = await this.store.query(
+        "agenda-item",
+        this.model.getQuery({ page: nextPage })
+      );
+      const concatenateAgendaItems = this.model.agendaItems.concat(
+        agendaItems.toArray()
+      );
+
+      this.model.agendaItems.setObjects(concatenateAgendaItems);
+
+      this.model.currentPage = nextPage;
+      this.isLoadingMore = false;
+    }
+  }
 
   @tracked selectedMunicipality: {
     label: string;
@@ -26,7 +54,6 @@ export default class HomeController extends Controller {
           gemeentes: null,
         },
       });
-      this.send("refreshListRoute");
       return;
     }
 
@@ -44,30 +71,25 @@ export default class HomeController extends Controller {
         gemeentes: m.label,
       },
     });
-    this.send("refreshListRoute");
   }
 
-  @action handleSort(e: any) {
-    //this.sort = e.target.value.toLowerCase();
-  }
+  @action handleSort(e: any) {}
 
   @action handleKeywordChange(e: any) {
-    this.router.transitionTo("home.list", {
+    this.router.transitionTo("home", {
       queryParams: {
         trefwoord: e.target.value,
       },
     });
-    this.send("refreshListRoute");
   }
 
   @action applyDatePicker(picker: any, start: any, end: any) {
-    this.router.transitionTo("home.list", {
+    this.router.transitionTo("home", {
       queryParams: {
         begin: start,
         eind: end,
       },
     });
-    this.send("refreshListRoute");
   }
 
   @action hideDatePicker(picker: any, start: any, end: any) {}
