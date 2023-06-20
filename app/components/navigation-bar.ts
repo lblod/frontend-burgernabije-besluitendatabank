@@ -13,6 +13,10 @@ export default class NavigationBar extends Component {
   links: Array<Link> = [
     {
       route: "home",
+      label: "Home",
+    },
+    {
+      route: "agenda-items",
       label: "Agendapunten",
     },
     {
