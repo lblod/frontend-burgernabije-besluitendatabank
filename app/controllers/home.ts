@@ -18,26 +18,6 @@ export default class HomeController extends Controller {
 
   @tracked errorMsg = "";
 
-  @action
-  async loadMore() {
-    if (this.model && !this.isLoadingMore) {
-      this.isLoadingMore = true;
-      const nextPage = this.model.currentPage + 1;
-      const agendaItems = await this.store.query(
-        "agenda-item",
-        this.model.getQuery({ page: nextPage })
-      );
-      const concatenateAgendaItems = this.model.agendaItems.concat(
-        agendaItems.toArray()
-      );
-
-      this.model.agendaItems.setObjects(concatenateAgendaItems);
-
-      this.model.currentPage = nextPage;
-      this.isLoadingMore = false;
-    }
-  }
-
   @tracked selectedMunicipality: {
     label: string;
     id: string;
@@ -61,33 +41,5 @@ export default class HomeController extends Controller {
         gemeentes: this.selectedMunicipality?.label || "",
       },
     });
-    this.send("refreshListRoute");
   }
-
-  @action handleSort(e: any) {
-    //this.sort = e.target.value.toLowerCase();
-  }
-
-  @action handleKeywordChange(e: any) {
-    this.router.transitionTo("agenda-items", {
-      queryParams: {
-        trefwoord: e.target.value,
-      },
-    });
-    this.send("refreshListRoute");
-  }
-
-  @action applyDatePicker(picker: any, start: any, end: any) {
-    this.router.transitionTo("agenda-items", {
-      queryParams: {
-        begin: start,
-        eind: end,
-      },
-    });
-    this.send("refreshListRoute");
-  }
-
-  @action hideDatePicker(picker: any, start: any, end: any) {}
-
-  @action cancelDatePicker(picker: any, start: any, end: any) {}
 }
