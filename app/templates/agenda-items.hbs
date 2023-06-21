@@ -1,5 +1,3 @@
-<ContentHeader />
-
 <div class="au-u-flex" style="height: 100%;">
   <SearchSidebar
     @municipalityPlaceholder="Selecteer een optie"
@@ -23,7 +21,7 @@
   >
     <AuFormRow
       @alignment="inline"
-      class="au-u-margin-bottom au-u-margin-top au-u-padding-right-large au-u-padding-left-large"
+      class="au-u-margin-bottom au-u-padding-right-large au-u-padding-left-large"
     >
       <section style="margin-left: auto;" class="au-u-flex">
         <AuLabel for="sort-on" style="width: 80px; white-space: nowrap;">
@@ -42,7 +40,7 @@
     </AuFormRow>
     <div
       class="au-u-flex au-u-flex--column"
-      style="height: 75%; scroll-behavior: smooth;"
+      style="height: 90%; scroll-behavior: smooth;"
     >
       {{#if this.errorMsg}}
         <AuContent
@@ -74,7 +72,7 @@
               @skin="warning"
               @icon="three-dots"
             >
-              Deze gemeente heeft nog geen agendapunten.
+              Geen agendapunten gevonden
             </AuAlert>
           {{else}}
             <InfiniteList
