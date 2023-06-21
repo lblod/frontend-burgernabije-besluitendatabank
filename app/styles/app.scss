@@ -19,6 +19,17 @@
   height: 100%;
 }
 
+ol {
+  list-style-type: decimal;
+}
+
+ol li {
+  // display: inline;
+  // float: left;
+  margin: 0 12px;
+  padding: 0 12px;
+}
+
 .au-c-main-footer {
   margin-top: auto;
 }
