@@ -5,6 +5,7 @@ import Route from "@ember/routing/route";
 import Transition from "@ember/routing/transition";
 import { service } from "@ember/service";
 import { tracked } from "@glimmer/tracking";
+import KeywordStoreService from "frontend-burgernabije-besluitendatabank/services/keyword-store";
 
 interface MunicipalitiesRequestInterface {
   page: {
@@ -97,6 +98,7 @@ interface AgendaItemsRequestInterface {
 }
 export default class AgendaItemsRoute extends Route {
   @service declare store: Store;
+  @service declare keywordStore: KeywordStoreService;
 
   queryParams = {
     municipality: {
@@ -151,6 +153,8 @@ export default class AgendaItemsRoute extends Route {
     // ) {
     //   return model;
     // }
+
+    if (params.keyword) this.keywordStore.keyword = params.keyword;
 
     const currentPage = 0;
     const agendaItems = await this.store.query(

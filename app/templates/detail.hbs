@@ -218,27 +218,42 @@
   </section>
   <section
     id="detail-right-section"
+    class="au-u-padding-right-large"
     style="height:100; width: 30%; position: relative;"
   >
-    {{#if this.model.agendaItem.handledBy.resolutions}}
-      <AuAlert
-        class="au-u-medium"
-        style=" position: sticky; top: 0;"
-        @skin="success"
-        @icon="sign"
-      >
-        Dit is beslist
-      </AuAlert>
-    {{else}}
-      <AuAlert
-        class="au-u-medium"
-        style=" position: sticky; top: 0;"
-        @skin="warning"
-        @icon="three-dots"
-      >
-        Dit is nog niet beslist
-      </AuAlert>
-    {{/if}}
+    <div style=" position: sticky; top: 0;">
+
+      {{#if this.model.agendaItem.handledBy.resolutions}}
+        <AuAlert class="au-u-medium" @skin="success" @icon="sign">
+          Dit is beslist
+        </AuAlert>
+      {{else}}
+        <AuAlert class="au-u-medium" @skin="warning" @icon="three-dots">
+          Dit is nog niet beslist
+        </AuAlert>
+      {{/if}}
+      <AuContent class="au-u-margin-top">
+        <h4>{{#if this.keywordStore.keyword}}Meer relevante info over
+          {{else}}
+            Meer agendapunten
+          {{/if}}
+          <AuLink>{{this.keywordStore.keyword}}</AuLink>
+          in
+          <AuLink>{{this.model.agendaItem.session.municipality}}</AuLink></h4>
+        <ol type="1">
+          {{#each this.model.similiarAgendaItems as |agendaItem|}}
+            <li class="au-u-margin-top-small au-u-medium">
+              <AuLink
+                class="au-u-regular"
+                @model={{agendaItem.id}}
+                @route="detail"
+              >
+                {{agendaItem.title}}
+              </AuLink></li>
+          {{/each}}
+        </ol>
+      </AuContent>
+    </div>
   </section>
 
 </main>
