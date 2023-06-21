@@ -1,7 +1,7 @@
 <div class="au-c-sidebar au-o-layout--large" style="width: 30%;">
   <div class="au-c-sidebar__content au-u-padding">
     <AuContent @skin="tiny">
-      <h1>Ik zoek...</h1>
+      <h3>Verfijn de zoekresultaten</h3>
       <section>
         <AuFormRow
           @alignment="inline"
@@ -38,7 +38,7 @@
               @icon="info-circle"
               @iconAlignment="left"
             >
-              {{#if @valueMunicipality}}
+              {{#if @valueMunicipality.label}}
                 Resultaten voor
                 <AuLink
                   @route="municipality"
