@@ -165,11 +165,19 @@ export default class AgendaItemsRoute extends Route {
     this.plannedStartMin = params.plannedStartMin || "";
     this.plannedStartMax = params.plannedStartMax || "";
 
+    controller.set("sort", params.sort || "");
+    controller.set("plannedStartMin", params.plannedStartMin || "");
+    controller.set("plannedStartMax", params.plannedStartMax || "");
     controller.set("keyword", params.keyword || "");
-    controller.set(
-      "selectedMunicipality",
-      { id: params.municipality, label: params.municipality } || null
-    );
+    controller.set("municipality", params.municipality || "");
+
+    params.municipality
+      ? controller.set("selectedMunicipality", {
+          id: params.municipality,
+          label: params.municipality,
+        })
+      : controller.set("selectedMunicipality", null);
+
     // Check if the parameters have changed compared to the last time
 
     const currentPage = 0;
