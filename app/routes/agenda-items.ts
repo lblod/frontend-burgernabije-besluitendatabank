@@ -127,18 +127,17 @@ export default class AgendaItemsRoute extends Route {
   @tracked sort: any;
   @tracked plannedStartMin: any;
   @tracked plannedStartMax: any;
-  @tracked keyword: any;
 
   @action
   error(error: Error) {
-    let controller: any = this.controllerFor("home");
+    let controller: any = this.controllerFor("agenda-items");
     controller.set("errorMsg", error.message);
     return true;
   }
 
   @action
   loading(transition: any, originRoute: any) {
-    let controller: any = this.controllerFor("home");
+    let controller: any = this.controllerFor("agenda-items");
 
     controller.set("loading", true);
     transition.promise.finally(() => {
@@ -147,14 +146,31 @@ export default class AgendaItemsRoute extends Route {
   }
 
   async model(params: any, transition: Transition<unknown>) {
-    // const model: any = this.modelFor("home");
-    // if (
-    //   model?.agendaItems?.toArray().length > 0 &&
-    // ) {
-    //   return model;
-    // }
+    const controller: any = this.controllerFor("agenda-items");
+    const model: any = this.modelFor("agenda-items");
 
-    if (params.keyword) this.keywordStore.keyword = params.keyword;
+    if (
+      model?.agendaItems?.toArray().length > 0 &&
+      params.keyword === this.keywordStore.keyword &&
+      params.municipality === this.municipality &&
+      params.sort === this.sort &&
+      params.plannedStartMin === this.plannedStartMin &&
+      params.plannedStartMax === this.plannedStartMax
+    ) {
+      return model;
+    }
+    this.keywordStore.keyword = params.keyword || "";
+    this.municipality = params.municipality || "";
+    this.sort = params.sort || "";
+    this.plannedStartMin = params.plannedStartMin || "";
+    this.plannedStartMax = params.plannedStartMax || "";
+
+    controller.set("keyword", params.keyword || "");
+    controller.set(
+      "selectedMunicipality",
+      { id: params.municipality, label: params.municipality } || null
+    );
+    // Check if the parameters have changed compared to the last time
 
     const currentPage = 0;
     const agendaItems = await this.store.query(
