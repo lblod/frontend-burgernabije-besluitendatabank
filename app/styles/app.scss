@@ -19,6 +19,15 @@
   height: 100%;
 }
 
+.au-c-main-footer {
+  margin-top: auto;
+}
+.au-c-main-container__content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .daterangepicker td.active,
 .daterangepicker td.start-date.end-date {
   background-color: var(--au-blue-700) !important;
