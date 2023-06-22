@@ -7,25 +7,6 @@ import { service } from "@ember/service";
 import { tracked } from "@glimmer/tracking";
 import KeywordStoreService from "frontend-burgernabije-besluitendatabank/services/keyword-store";
 
-interface MunicipalitiesRequestInterface {
-  page: {
-    size: Number;
-  };
-  include?: String;
-  municipality?: String;
-  filter?: {
-    niveau?: {};
-    session?: {
-      "governing-body"?: {
-        "administrative-unit": {
-          name?: {};
-          location?: {};
-        };
-      };
-    };
-  };
-}
-
 const getQuery = ({
   page,
   keyword,
@@ -196,18 +177,10 @@ export default class AgendaItemsRoute extends Route {
       })
     );
 
-    let req: MunicipalitiesRequestInterface = {
-      page: { size: 600 },
-      filter: {
-        niveau: "Gemeente",
-      },
-    };
-    const municipalities = this.store.query("location", req);
     return {
       agendaItems: agendaItems.toArray(),
       currentPage: currentPage,
       getQuery,
-      municipalities: municipalities,
     };
   }
 }

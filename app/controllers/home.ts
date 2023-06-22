@@ -5,9 +5,11 @@ import { service } from "@ember/service";
 import { tracked } from "@glimmer/tracking";
 import { ModelFrom } from "frontend-burgernabije-besluitendatabank/lib/type-utils";
 import AgendaItemsRoute from "frontend-burgernabije-besluitendatabank/routes/agenda-items";
+import MunicipalityListService from "frontend-burgernabije-besluitendatabank/services/municipality-list";
 
 export default class HomeController extends Controller {
   @service declare router: RouterService;
+  @service declare municipalityList: MunicipalityListService;
 
   @tracked loading = false;
   @tracked errorMsg = "";
@@ -19,6 +21,10 @@ export default class HomeController extends Controller {
     label: string;
     id: string;
   } | null = null;
+
+  get municipalities() {
+    return this.municipalityList.municipalities();
+  }
 
   @action handleMunicipalityChange(m: any) {
     this.selectedMunicipality = {

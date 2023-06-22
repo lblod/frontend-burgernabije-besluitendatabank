@@ -26,7 +26,7 @@
         id="municipality"
         @onChange={{this.handleMunicipalityChange}}
         @selected={{this.selectedMunicipality}}
-        @options={{@model.municipalities}}
+        @options={{this.municipalities}}
         @allowClear={{true}}
         @searchField="label"
         @placeholder={{"Alle gemeentes"}}

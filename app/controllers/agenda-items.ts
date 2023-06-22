@@ -7,11 +7,13 @@ import { tracked } from "@glimmer/tracking";
 import { ModelFrom } from "frontend-burgernabije-besluitendatabank/lib/type-utils";
 import AgendaItemsRoute from "frontend-burgernabije-besluitendatabank/routes/agenda-items";
 import KeywordStoreService from "frontend-burgernabije-besluitendatabank/services/keyword-store";
+import MunicipalityListService from "frontend-burgernabije-besluitendatabank/services/municipality-list";
 
 export default class AgendaItemsController extends Controller {
   @service declare router: RouterService;
   @service declare store: Store;
   @service declare keywordStore: KeywordStoreService;
+  @service declare municipalityList: MunicipalityListService;
   @tracked municipality: string = "";
   @tracked sort: string = "";
   @tracked plannedStartMin: string = "";
@@ -56,6 +58,10 @@ export default class AgendaItemsController extends Controller {
 
   get currentRoute() {
     return this.router.currentRouteName;
+  }
+
+  get municipalities() {
+    return this.municipalityList.municipalities();
   }
 
   @action handleMunicipalityChange(m: any) {
