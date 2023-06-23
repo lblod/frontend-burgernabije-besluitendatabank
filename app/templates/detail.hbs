@@ -1,23 +1,20 @@
 {{page-title this.model.agendaItem.title}}
-<main style="display: flex; height: 100%; overflow-y: scroll;">
+<main id="detail">
 
   <section
-    style="height: 100%; display: flex; width: 70%;"
     id="detail-left-section"
     class="au-u-flex au-u-flex--column"
   >
     <AuCard
       @shadow={{true}}
-      style="border-top:solid 5px #FFE615; display: flex; height: fit-content;"
-      class="au-c-card au-u-margin-left-large au-u-margin-right-large au-u-padding"
+      class="detail-card au-c-card au-u-margin-left-large au-u-margin-right-large au-u-padding detail-card"
       as |c|
     >
       <c.header>
 
         <AuLink
           @route="detail"
-          class="au-u-h3 au-u-medium"
-          style=" text-decoration: none; "
+          class="header au-u-h3 au-u-medium"
         >
           {{#if this.model.agendaItem.title}}
             {{this.model.agendaItem.title}}
@@ -26,11 +23,10 @@
         </AuLink>
 
       </c.header>
-      <c.content style="height: fit-content; min-height: 80rem;">
+      <c.content class="content">
 
         <section
           class="au-u-flex au-u-muted au-u-margin-top-tiny"
-          style=" align-items: center;"
         >
           <AuIcon class="au-u-margin-right-small" @size="large" @icon="check" />
           <p>
@@ -42,7 +38,6 @@
         </section>
         <section
           class="au-u-flex au-u-muted au-u-margin-top-tiny"
-          style=" align-items: center;"
         >
 
           <AuIcon
@@ -67,7 +62,6 @@
         {{#if this.model.agendaItem.alternateLink}}
           <section
             class="au-u-flex au-u-muted au-u-margin-top-tiny"
-            style=" align-items: center;"
           >
             <AuIcon
               class="au-u-margin-right-small"
@@ -94,8 +88,7 @@
         <section class="au-u-flex">
           <AuBadge @icon="archive" @skin="brand" />
           <AuAccordion
-            style="width: 100%;"
-            class="au-u-margin-top-small"
+            class="accordion au-u-margin-top-small"
             @reverse={{true}}
             @iconOpen={{"nav-down"}}
             @iconClosed={{"nav-right"}}
@@ -110,11 +103,10 @@
             </AuAlert>
           </AuAccordion>
         </section>
-        <section class="au-u-flex" style="width: 100%;">
+        <section class="au-u-flex" class="full-width">
           <AuBadge @icon="message" @skin="brand" />
           <AuAccordion
-            style="width: 100%;"
-            class="au-u-margin-top-small"
+            class="accordion au-u-margin-top-small"
             @reverse={{true}}
             @iconOpen={{"nav-down"}}
             @iconClosed={{"nav-right"}}
@@ -143,7 +135,7 @@
               {{/each}}
 
               <AuAccordion
-                style="width: 100%;"
+                class="accordion"
                 @reverse={{true}}
                 @iconOpen={{"nav-down"}}
                 @iconClosed={{"nav-right"}}
@@ -195,8 +187,7 @@
     {{#if this.model.agendaItemOnSameSession}}
       <AuCard
         @shadow={{true}}
-        style="height: fit-content; display: flex;"
-        class="au-c-card au-u-margin-large"
+        class="au-c-card au-u-margin-large agenda-items-on-same-session"
         as |c|
       >
         <c.header>
@@ -230,9 +221,8 @@
   <section
     id="detail-right-section"
     class="au-u-padding-right-large"
-    style="height:100; width: 30%; position: relative;"
   >
-    <div style=" position: sticky; top: 0;">
+    <div>
 
       {{#if this.model.agendaItem.handledBy.resolutions}}
         <AuAlert class="au-u-medium" @skin="success" @icon="sign">

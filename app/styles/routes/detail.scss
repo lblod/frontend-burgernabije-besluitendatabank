@@ -1,5 +1,60 @@
-#detail-right-section {
+
+
+#detail {
+  height: 100%;
+  display: flex;
+  overflow-y: scroll;
+
+
+  #detail-left-section {
+    width: 70%;
     height: 100%;
-    min-height: 100% !important;
+
+    display: flex;
   }
   
+  #detail-right-section {
+    /* Imported from app.scss */
+      height: 100%;
+      min-height: 100% !important;
+
+    /* Imported from detail.hbs */
+    /*height:100;*/ 
+    width: 30%; 
+    position: relative;
+    
+    > div {
+      position: sticky;
+      top: 0;
+    }
+  }
+
+  .detail-card {
+    height: fit-content;
+    display: flex;
+
+    border-top:solid 5px #FFE615;
+
+    .header {
+      text-decoration: none;
+    }
+
+    .content {
+      height: fit-content;
+      min-height: 80rem;
+
+      > section {
+        align-items: center;
+      }
+
+      .accordion, .full-width {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.agenda-items-on-same-session {
+  height: fit-content;
+  display: flex;
+}

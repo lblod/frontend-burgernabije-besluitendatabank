@@ -1,19 +1,18 @@
 <LinkTo
-  style="text-decoration: none;"
-  class="au-u-margin-bottom-small"
+  
+  class="au-u-margin-bottom-small component-decision-card"
   @route="detail"
   @model={{this.item.id}}
 >
   <AuCard
     @size="small"
-    class="card-hover au-u-padding-bottom au-u-padding"
-    style="height: 30vh;"
+    class="card-hover au-u-padding-bottom au-u-padding component-decision-card-card"
     as |c|
   >
 
     <c.header>
       <AuHeading @level="1" @skin="3">
-        <AuLink style="text-overflow: ellipsis; max-height: 50%;">
+        <AuLink class="component-decision-card-header-link">
           {{this.item.title}}
         </AuLink>
       </AuHeading>

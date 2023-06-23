@@ -1,4 +1,4 @@
-<div class="au-u-flex" style="height: 100%;">
+<div id="agenda-items" class="au-u-flex">
   <SearchSidebar
     @municipalityPlaceholder="Selecteer een optie"
     @municipalityOnChange={{this.handleMunicipalityChange}}
@@ -16,28 +16,25 @@
   />
 
   <section
+    id="results"
     class="au-u-flex au-u-flex--column"
-    style="width: 100%; height: 100%;"
   >
     <div
       class="au-u-flex au-u-flex--column"
-      style="height: 90%; scroll-behavior: smooth;"
     >
       {{#if this.errorMsg}}
         <AuContent
-          style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; gap: 8rem;"
+          class="content error"
         >
           <section>
             <h3>Oeps!</h3>
-            <p style="margin: 2rem 0;">Er is iets fout gelopen!</p>
+            <p>Er is iets fout gelopen!</p>
             <AuLink @skin="button" @route="home">Terug naar de startpagina</AuLink>
           </section>
         </AuContent>
       {{else}}
         {{#if this.loading}}
-          <main
-            style="justify-content: center; align-items: center; display: flex; flex-direction: column; height: 100%;"
-          >
+          <main class="content no-error">
             <AuLoader />
             <AuContent>
               <h3>Agendapunt aan het laden</h3>
@@ -48,8 +45,7 @@
           {{! if @model.agendaItems length is equal to 0 }}
           {{#if (eq @model.agendaItems.length 0)}}
             <AuAlert
-              class="au-u-medium au-u-margin"
-              style=" position: sticky; top: 0;"
+              class="no-results au-u-medium au-u-margin"
               @skin="warning"
               @icon="three-dots"
             >
