@@ -9,8 +9,9 @@ export default class SearcherSelectFilterComponent extends FilterComponent {
 
     @action
     async selectChange(m: any) {
+        let value = m ? m.label : ""
         this.updateQueryParams({
-            [this.args.queryParam]: m.label
+            [this.args.queryParam]: value
         });
     }
 }
