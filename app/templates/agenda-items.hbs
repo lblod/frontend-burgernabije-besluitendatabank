@@ -16,7 +16,7 @@
     --}}
   >
     <FilterSidebar::TextFilter @id="keyword" @label="Trefwoord" @placeholder="Terrasvergunning" @queryParam="trefwoord" @value={{this.keyword}}/>
-
+    <FilterSidebar::DateRangeFilter @id="startDate" @label="Datum" @queryParamsA="begin" @queryParamsB="eind" @valueA={{this.start}} @valueB={{this.end}}/>
     
   </FilterSidebar>
 

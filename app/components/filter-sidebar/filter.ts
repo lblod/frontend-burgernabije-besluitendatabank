@@ -8,16 +8,12 @@ import { tracked } from '@glimmer/tracking';
 interface ArgsInterface {
     id: string;
     queryParam: string;
+    queryParamsA: string;
+    queryParamsB: string;
 }
 
 export default class FilterComponent extends Component<ArgsInterface> {
     @service declare router: RouterService;
-
-    @tracked id?: string;
-    @tracked searchLabel?: string;
-    @tracked queryParam?: string;
-    @tracked queryParams?: Array<string>;
-
 
     updateQueryParams(params: object) {
         this.router.transitionTo(this.router.currentRouteName, {
