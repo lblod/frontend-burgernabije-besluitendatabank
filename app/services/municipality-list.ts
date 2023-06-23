@@ -21,7 +21,7 @@ export default class MunicipalityListService extends Service {
             filter: {
                 niveau: "Gemeente",
             },
-            sort: "label",
+            sort: ":no-case:label",
         });
 
         return municipalities
