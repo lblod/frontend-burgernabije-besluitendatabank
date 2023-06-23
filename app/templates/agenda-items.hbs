@@ -11,25 +11,6 @@
     class="au-u-flex au-u-flex--column"
     style="width: 100%; height: 100%;"
   >
-    <AuFormRow
-      @alignment="inline"
-      class="au-u-margin-bottom au-u-padding-right-large au-u-padding-left-large"
-    >
-      <section style="margin-left: auto;" class="au-u-flex">
-        <AuLabel for="sort-on" style="width: 80px; white-space: nowrap;">
-          Sorteer op
-        </AuLabel>
-        <select
-          type="select"
-          onchange={{action "handleSort"}}
-          class="au-c-input"
-          style="width: 200px;"
-        >
-          <option>Relevantie</option>
-          <option>Datum</option>
-        </select>
-      </section>
-    </AuFormRow>
     <div
       class="au-u-flex au-u-flex--column"
       style="height: 90%; scroll-behavior: smooth;"
