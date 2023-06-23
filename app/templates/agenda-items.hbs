@@ -1,18 +1,10 @@
 <ContentHeader />
 
 <div class="au-u-flex" style="height: 100%;">
-  <FilterSidebar
-   {{!--
-    @municipalityPlaceholder="Selecteer een optie"
-    @municipalityOnChange={{this.handleMunicipalityChange}}
-    @municipalityOptions={{@model.municipalities}}
-    @municipalityAllowClear={{true}}
-    @valueMunicipality={{this.selectedMunicipality}}
-    --}}
-  >
+  <FilterSidebar>
     <FilterSidebar::SelectFilter @id="municipality" @label="Gemeente" @options={{@model.municipalities}} @queryParam="gemeentes" @placeholder="Selecteer een optie" @value={{this.municipality}} />
     <FilterSidebar::TextFilter @id="keyword" @label="Trefwoord" @placeholder="Terrasvergunning" @queryParam="trefwoord" @value={{this.keyword}}/>
-    <FilterSidebar::DateRangeFilter @id="startDate" @label="Datum" @queryParamsA="begin" @queryParamsB="eind" @valueA={{this.start}} @valueB={{this.end}}/>
+    <FilterSidebar::DateRangeFilter @id="startDate" @label="Datum" @queryParamsA="begin" @queryParamsB="eind" @valueA={{this.plannedStartMin}} @valueB={{this.plannedStartMax}}/>
     
   </FilterSidebar>
 

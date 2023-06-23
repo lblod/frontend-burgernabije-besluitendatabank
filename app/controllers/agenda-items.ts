@@ -36,41 +36,8 @@ export default class AgendaItemsController extends Controller {
       this.isLoadingMore = false;
     }
   }
-
-  @tracked selectedMunicipality: {
-    label: string;
-    id: string;
-  } | null = null;
-
   get currentRoute() {
     return this.router.currentRouteName;
-  }
-
-  @action handleMunicipalityChange(m: any) {
-    if (!m) {
-      this.selectedMunicipality = null;
-      this.router.transitionTo("agenda-items", {
-        queryParams: {
-          gemeentes: null,
-        },
-      });
-      return;
-    }
-
-    this.selectedMunicipality = {
-      label: m.label,
-      id: m.id,
-    };
-
-    this.router.transitionTo("agenda-items", {
-      queryParams: {
-        // query for multiselect
-        // gemeentes: this.selectedMunicipality.join("+"),
-
-        // temporary query for single select
-        gemeentes: m.label,
-      },
-    });
   }
 
   @action handleSort(e: any) {}
