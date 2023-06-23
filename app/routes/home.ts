@@ -4,7 +4,6 @@ import { action } from "@ember/object";
 import Route from "@ember/routing/route";
 import Transition from "@ember/routing/transition";
 import { service } from "@ember/service";
-import { tracked } from "@glimmer/tracking";
 
 interface MunicipalitiesRequestInterface {
   page: {
