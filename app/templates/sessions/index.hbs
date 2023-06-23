@@ -1,20 +1,28 @@
 {{page-title "Zittingen"}}
 
-<InfiniteList @loadMore={{action "loadMore"}} @isLoading={{this.isLoadingMore}}>
-    {{#each @model.sessions as |session|}}
-        <LinkTo @route="sessions.session" @model={{session.id}}>
-            <AuCard @size="small" class="card-hover au-u-padding" as |c|>
-                <c.header>
-                    <AuHeading @level="1" @skin="3">
-                        <AuLink>
-                            {{session.name}} {{session.dateRange}}
-                        </AuLink>
-                    </AuHeading>
-                </c.header>
-                <c.footer>
-                    {{session.municipality}} - {{session.agendaItemCount}}
-                </c.footer>
-            </AuCard>
-        </LinkTo>
-    {{/each}}
-</InfiniteList>
+<div class="au-u-flex" style="overflow-y: scroll;">
+    <FilterSidebar class="au-u-flex au-u-flex--column">
+        <FilterSidebar::SelectFilter @id="municipality" @label="Gemeente" @options={{this.municipalities}} @queryParam="gemeentes" @placeholder="Selecteer een optie" @value={{this.municipality}} />
+        <FilterSidebar::DateRangeFilter @id="startDate" @label="Datum" @queryParamsA="begin" @queryParamsB="eind" @valueA={{this.plannedStartMin}} @valueB={{this.plannedStartMax}}/>
+
+    </FilterSidebar>
+
+    <InfiniteList @loadMore={{action "loadMore"}} @isLoading={{this.isLoadingMore}}>
+        {{#each @model.sessions as |session|}}
+            <LinkTo @route="sessions.session" @model={{session.id}}>
+                <AuCard @size="small" class="card-hover au-u-padding" as |c|>
+                    <c.header>
+                        <AuHeading @level="1" @skin="3">
+                            <AuLink>
+                                {{session.name}} {{session.dateRange}}
+                            </AuLink>
+                        </AuHeading>
+                    </c.header>
+                    <c.footer>
+                        {{session.municipality}} - {{session.agendaItemCount}}
+                    </c.footer>
+                </AuCard>
+            </LinkTo>
+        {{/each}}
+    </InfiniteList>
+</div>

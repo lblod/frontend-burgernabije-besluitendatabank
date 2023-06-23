@@ -5,11 +5,17 @@ import { ModelFrom } from '../../lib/type-utils';
 import SessionIndexRoute from '../../routes/sessions/index';
 import { tracked } from "@glimmer/tracking";
 import { service } from "@ember/service";
+import MunicipalityListService from "frontend-burgernabije-besluitendatabank/services/municipality-list";
 
 export default class SessionsIndexController extends Controller {
     declare model: ModelFrom<SessionIndexRoute>;
     @service declare store: Store;
     @tracked isLoadingMore = false;
+    @service declare municipalityList: MunicipalityListService;
+
+    get municipalities() {
+        return this.municipalityList.municipalities();
+    }
 
     @action
     async loadMore() {
