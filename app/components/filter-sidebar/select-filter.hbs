@@ -4,7 +4,10 @@
       id={{@id}}
 
       @onChange={{action this.selectChange}}
-      @selected={{@selected}}
+
+      
+      @selected= {{if @value (hash label=@value) "" }}
+
       @options={{@options}}
 
       @allowClear=true

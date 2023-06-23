@@ -75,16 +75,4 @@ export default class AgendaItemsController extends Controller {
 
   @action handleSort(e: any) {}
 
-  @action applyDatePicker(picker: any, start: any, end: any) {
-    this.router.transitionTo("agenda-items", {
-      queryParams: {
-        begin: start,
-        eind: end,
-      },
-    });
-  }
-
-  @action hideDatePicker(picker: any, start: any, end: any) {}
-
-  @action cancelDatePicker(picker: any, start: any, end: any) {}
 }
