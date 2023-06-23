@@ -1,8 +1,7 @@
-<ContentHeader />
-
 <div class="au-u-flex" style="height: 100%;">
+  
   <FilterSidebar>
-    <FilterSidebar::SelectFilter @id="municipality" @label="Gemeente" @options={{@model.municipalities}} @queryParam="gemeentes" @placeholder="Selecteer een optie" @value={{this.municipality}} />
+    <FilterSidebar::SelectFilter @id="municipality" @label="Gemeente" @options={{this.municipalities}} @queryParam="gemeentes" @placeholder="Selecteer een optie" @value={{this.municipality}} />
     <FilterSidebar::TextFilter @id="keyword" @label="Trefwoord" @placeholder="Terrasvergunning" @queryParam="trefwoord" @value={{this.keyword}}/>
     <FilterSidebar::DateRangeFilter @id="startDate" @label="Datum" @queryParamsA="begin" @queryParamsB="eind" @valueA={{this.plannedStartMin}} @valueB={{this.plannedStartMax}}/>
     
@@ -14,7 +13,7 @@
   >
     <AuFormRow
       @alignment="inline"
-      class="au-u-margin-bottom au-u-margin-top au-u-padding-right-large au-u-padding-left-large"
+      class="au-u-margin-bottom au-u-padding-right-large au-u-padding-left-large"
     >
       <section style="margin-left: auto;" class="au-u-flex">
         <AuLabel for="sort-on" style="width: 80px; white-space: nowrap;">
@@ -33,7 +32,7 @@
     </AuFormRow>
     <div
       class="au-u-flex au-u-flex--column"
-      style="height: 75%; scroll-behavior: smooth;"
+      style="height: 90%; scroll-behavior: smooth;"
     >
       {{#if this.errorMsg}}
         <AuContent
@@ -65,7 +64,7 @@
               @skin="warning"
               @icon="three-dots"
             >
-              Deze gemeente heeft nog geen agendapunten.
+              Geen agendapunten gevonden
             </AuAlert>
           {{else}}
             <InfiniteList

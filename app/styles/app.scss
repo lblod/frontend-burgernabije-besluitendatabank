@@ -19,6 +19,17 @@
   height: 100%;
 }
 
+ol {
+  list-style-type: decimal;
+}
+
+ol li {
+  // display: inline;
+  // float: left;
+  margin: 0 12px;
+  padding: 0 12px;
+}
+
 .au-c-main-footer {
   margin-top: auto;
 }
@@ -37,31 +48,16 @@
   }
 }
 
+.au-c-card--fill {
+  height: fit-content;
+}
+
 .daterangepicker td.in-range {
   background-color: var(--au-blue-200);
 }
 
 html {
   font-size: 50%;
-}
-
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #ffe615;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #a1920d;
 }
 
 #map-cursor {

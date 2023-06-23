@@ -9,7 +9,6 @@ interface ArgsInterface {
 }
 
 export default class VoteOverview extends Component<ArgsInterface> {
-
   get numberOfAbstentions() {
     return this.args.numberOfAbstentions || 0;
   }
@@ -50,12 +49,13 @@ export default class VoteOverview extends Component<ArgsInterface> {
   };
   // the three color levels for the percentage values
   color = {
-    pattern: ["#B2CCEF", "#F1AEAE", "#b1dcbb"],
+    pattern: ["#007A37", "#AA2729", "#687483"],
     // threshold: {
     //   values: [30, 60, 90, 100],
     // },
   };
 
-  // chart title
-  title = { text: "Openbare stemming" };
+  legend = {
+    position: "right",
+  };
 }

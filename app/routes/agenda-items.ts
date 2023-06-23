@@ -5,25 +5,7 @@ import Route from "@ember/routing/route";
 import Transition from "@ember/routing/transition";
 import { service } from "@ember/service";
 import { tracked } from "@glimmer/tracking";
-
-interface MunicipalitiesRequestInterface {
-  page: {
-    size: Number;
-  };
-  include?: String;
-  municipality?: String;
-  filter?: {
-    niveau?: {};
-    session?: {
-      "governing-body"?: {
-        "administrative-unit": {
-          name?: {};
-          location?: {};
-        };
-      };
-    };
-  };
-}
+import KeywordStoreService from "frontend-burgernabije-besluitendatabank/services/keyword-store";
 
 const getQuery = ({
   page,
@@ -97,6 +79,7 @@ interface AgendaItemsRequestInterface {
 }
 export default class AgendaItemsRoute extends Route {
   @service declare store: Store;
+  @service declare keywordStore: KeywordStoreService;
 
   queryParams = {
     municipality: {
@@ -125,18 +108,17 @@ export default class AgendaItemsRoute extends Route {
   @tracked sort: any;
   @tracked plannedStartMin: any;
   @tracked plannedStartMax: any;
-  @tracked keyword: any;
 
   @action
   error(error: Error) {
-    let controller: any = this.controllerFor("home");
+    let controller: any = this.controllerFor("agenda-items");
     controller.set("errorMsg", error.message);
     return true;
   }
 
   @action
   loading(transition: any, originRoute: any) {
-    let controller: any = this.controllerFor("home");
+    let controller: any = this.controllerFor("agenda-items");
 
     controller.set("loading", true);
     transition.promise.finally(() => {
@@ -145,12 +127,39 @@ export default class AgendaItemsRoute extends Route {
   }
 
   async model(params: any, transition: Transition<unknown>) {
-    // const model: any = this.modelFor("home");
-    // if (
-    //   model?.agendaItems?.toArray().length > 0 &&
-    // ) {
-    //   return model;
-    // }
+    const controller: any = this.controllerFor("agenda-items");
+    const model: any = this.modelFor("agenda-items");
+
+    if (
+      model?.agendaItems?.toArray().length > 0 &&
+      params.keyword === this.keywordStore.keyword &&
+      params.municipality === this.municipality &&
+      params.sort === this.sort &&
+      params.plannedStartMin === this.plannedStartMin &&
+      params.plannedStartMax === this.plannedStartMax
+    ) {
+      return model;
+    }
+    this.keywordStore.keyword = params.keyword || "";
+    this.municipality = params.municipality || "";
+    this.sort = params.sort || "";
+    this.plannedStartMin = params.plannedStartMin || "";
+    this.plannedStartMax = params.plannedStartMax || "";
+
+    controller.set("sort", params.sort || "");
+    controller.set("plannedStartMin", params.plannedStartMin || "");
+    controller.set("plannedStartMax", params.plannedStartMax || "");
+    controller.set("keyword", params.keyword || "");
+    controller.set("municipality", params.municipality || "");
+
+    params.municipality
+      ? controller.set("selectedMunicipality", {
+          id: params.municipality,
+          label: params.municipality,
+        })
+      : controller.set("selectedMunicipality", null);
+
+    // Check if the parameters have changed compared to the last time
 
     const currentPage = 0;
     const agendaItems = await this.store.query(
@@ -168,18 +177,10 @@ export default class AgendaItemsRoute extends Route {
       })
     );
 
-    let req: MunicipalitiesRequestInterface = {
-      page: { size: 600 },
-      filter: {
-        niveau: "Gemeente",
-      },
-    };
-    const municipalities = this.store.query("location", req);
     return {
       agendaItems: agendaItems.toArray(),
       currentPage: currentPage,
       getQuery,
-      municipalities: municipalities,
     };
   }
 }
