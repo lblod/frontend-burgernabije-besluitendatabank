@@ -1,0 +1,18 @@
+{{did-insert this.onLoad}}
+<Searcher::Filter @parent={{this}}>
+    <AuInput
+        style="width: 100%;"
+        @type={{"text"}}
+        placeholder={{this.placeholder}}
+        id={{this.id}}
+        onChange={{action this.filterChange}}
+        @value={{this.value}}
+    />
+    <AuPill
+        style="width: 100%; display: inline-block;"
+        @icon="info-circle"
+        @iconAlignment="left"
+    >
+        Zoek op {{this.searchLabel}}
+    </AuPill>
+</Searcher::Filter>

@@ -2,6 +2,7 @@ import Store from "@ember-data/store";
 import Route from "@ember/routing/route";
 import Transition from "@ember/routing/transition";
 import { service } from "@ember/service";
+import { IFilterInfo } from "../components/searcher/filter";
 
 interface MunicipalitiesRequestInterface {
   page: {
@@ -23,6 +24,38 @@ interface MunicipalitiesRequestInterface {
 }
 export default class HomeRoute extends Route {
   @service declare store: Store;
+
+  queryParams = {
+    municipality: {
+      as: "gemeentes",
+    },
+    sort: {
+      as: "sorteren",
+    },
+    plannedStartMin: {
+      as: "begin",
+    },
+    plannedStartMax: {
+      as: "eind",
+    },
+    keyword: {
+      as: "trefwoord",
+    },
+  };
+
+  @tracked municipality: any;
+  @tracked sort: any;
+  @tracked plannedStartMin: any;
+  @tracked plannedStartMax: any;
+  @tracked keyword: any;
+  @tracked filters: any = [];
+
+
+  keywordChange(value: any) {
+    console.log(value);
+  }
+
+  
 
   async model(params: object, transition: Transition<unknown>) {
     let req: MunicipalitiesRequestInterface = {
