@@ -28,51 +28,29 @@
       </c.header>
       <c.content style="height: fit-content; min-height: 80rem;">
 
-        {{#if this.model.agendaItem.session.approvedDate}}
-          <section
-            class="au-u-flex au-u-muted au-u-margin-top-tiny"
-            style=" align-items: center;"
-          >
-            <AuIcon
-              class="au-u-margin-right-small"
-              @size="large"
-              @icon="check"
-            />
-            <p>
-              Goedgekeurd -
-              {{iso-formatter this.model.agendaItem.session.approvedDate}}
+        <section
+          class="au-u-flex au-u-muted au-u-margin-top-tiny"
+          style=" align-items: center;"
+        >
+          <AuIcon class="au-u-margin-right-small" @size="large" @icon="check" />
+          <p>
+            {{#if this.model.agendaItem.session.startedAt}}
+              {{iso-formatter this.model.agendaItem.session.startedAt}}
+            {{else}}
+              Geen Datum
+            {{/if}}</p>
+        </section>
+        <section
+          class="au-u-flex au-u-muted au-u-margin-top-tiny"
+          style=" align-items: center;"
+        >
 
-            </p>
-          </section>
-        {{/if}}
-
-        {{#if this.model.agendaItem.session.municipality}}
-          <section
-            class="au-u-flex au-u-muted au-u-margin-top-tiny"
-            style=" align-items: center;"
-          >
-            <AuIcon
-              class="au-u-margin-right-small"
-              @size="large"
-              @icon="check"
-            />
-            <p>{{this.model.agendaItem.title_agenda.value}}
-              -
-              {{#if this.model.agendaItem.session.geplandeStart.value}}
-                {{iso-formatter this.model.agendaItem.geplandeStart.value}}
-              {{else}}
-                Geen Datum
-              {{/if}}</p>
-          </section>
-          <section
-            class="au-u-flex au-u-muted au-u-margin-top-tiny"
-            style=" align-items: center;"
-          >
-            <AuIcon
-              class="au-u-margin-right-small"
-              @size="large"
-              @icon="message"
-            />
+          <AuIcon
+            class="au-u-margin-right-small"
+            @size="large"
+            @icon="message"
+          />
+          {{#if this.model.agendaItem.session.hasMunicipality}}
             <AuLink
               @route="municipality"
               @model={{this.model.agendaItem.session.municipality}}
@@ -84,8 +62,8 @@
                   Geen Gemeente
                 {{/if}}</p>
             </AuLink>
-          </section>
-        {{/if}}
+          {{/if}}
+        </section>
         {{#if this.model.agendaItem.alternateLink}}
           <section
             class="au-u-flex au-u-muted au-u-margin-top-tiny"
@@ -116,16 +94,26 @@
         <section class="au-u-flex">
           <AuBadge @icon="archive" @skin="brand" />
           <AuAccordion
+            style="width: 100%;"
             class="au-u-margin-top-small"
             @reverse={{true}}
             @iconOpen={{"nav-down"}}
             @iconClosed={{"nav-right"}}
             @buttonLabel={{"Verslag"}}
-          />
+          >
+            <AuAlert
+              @skin="warning"
+              @title="Geen stemming"
+              class="au-u-margin-top au-u-margin-bottom"
+            >
+              <p>Dit agendapunt heeft geen verslag.</p>
+            </AuAlert>
+          </AuAccordion>
         </section>
-        <section class="au-u-flex">
+        <section class="au-u-flex" style="width: 100%;">
           <AuBadge @icon="message" @skin="brand" />
           <AuAccordion
+            style="width: 100%;"
             class="au-u-margin-top-small"
             @reverse={{true}}
             @iconOpen={{"nav-down"}}
@@ -133,78 +121,73 @@
             @buttonLabel={{"Stemming"}}
           >
 
-            {{#if (eq this.model.handledBy.hasVotes null)}}
+            {{#if (eq this.model.agendaItem.handledBy.hasVotes undefined)}}
 
-              <AuAlert @skin="warning" @title="Geen stemming">
+              <AuAlert
+                @skin="warning"
+                @title="Geen stemming"
+                class="au-u-margin-top au-u-margin-bottom"
+              >
                 <p>Dit agendapunt heeft nog geen stemming gehad.</p>
               </AuAlert>
-            {{/if}}
-            <section>
-              {{#each this.model.handledBy.hasVotes as |vote|}}
+            {{else}}
+
+              {{#each this.model.agendaItem.handledBy.hasVotes as |vote|}}
+
                 <VoteOverview
                   @numberOfAbstentions={{vote.numberOfAbstentions}}
                   @numberOfOpponents={{vote.numberOfOpponents}}
                   @numberOfProponents={{vote.numberOfProponents}}
                 />
-                <div class="au-o-grid au-u-margin">
-                  <div
-                    class="au-u-1-3 au-u-flex au-u-flex--column au-u-flex--spaced-tiny"
-                  >
-                    <h2>Voorstander</h2>
-                    {{#each vote.hasProponents as |mandatary|}}
-                      {{#if mandatary.alias}}
-                        <span class="au-u-flex au-u-flex--column">
-                          <p class="au-u-bold">
-                            {{mandatary.alias.familyName}}
-                            {{mandatary.alias.firstNameUsed}}
-                          </p>
-                          <p class="au-u-para">
-                            {{mandatary.hasMembership.innerGroup.name}}
-                          </p>
-                        </span>
-                      {{/if}}
-                    {{/each}}
-                  </div>
-                  <div
-                    class="au-u-1-3 au-u-flex au-u-flex--column au-u-flex--spaced-tiny"
-                  >
-                    <h2>Tegenstander</h2>
-                    {{#each vote.hasOpponents as |mandatary|}}
-                      {{#if mandatary.alias}}
-                        <span class="au-u-flex au-u-flex--column">
-                          <p class="au-u-bold">
-                            {{mandatary.alias.familyName}}
-                            {{mandatary.alias.firstNameUsed}}
-                          </p>
-                          <p class="au-u-para">
-                            {{mandatary.hasMembership.innerGroup.name}}
-                          </p>
-                        </span>
 
-                      {{/if}}
-                    {{/each}}
-                  </div>
-                  <div
-                    class="au-u-1-3 au-u-flex au-u-flex--column au-u-flex--spaced-tiny"
-                  >
-                    <h2>Onthouder</h2>
-                    {{#each vote.hasAbstainers as |mandatary|}}
-                      {{#if mandatary.alias}}
-                        <span class="au-u-flex au-u-flex--column">
-                          <p class="au-u-bold">
-                            {{mandatary.alias.familyName}}
-                            {{mandatary.alias.firstNameUsed}}
-                          </p>
-                          <p class="au-u-para">
-                            {{mandatary.hasMembership.innerGroup.name}}
-                          </p>
-                        </span>
-                      {{/if}}
-                    {{/each}}
-                  </div>
-                </div>
               {{/each}}
-            </section>
+
+              <AuAccordion
+                style="width: 100%;"
+                @reverse={{true}}
+                @iconOpen={{"nav-down"}}
+                @iconClosed={{"nav-right"}}
+                @buttonLabel={{"Wie stemde?"}}
+                @subtitle="Meer informatie over stemmers en hun partijen"
+              >
+                <AuTable>
+                  <:header>
+                    <tr>
+                      <th class="au-u-success au-u-bold">Voortstanders</th>
+                      <th class="au-u-error au-u-bold">Tegenstanders</th>
+                      <th class="au-u-bold">Onthouders</th>
+                    </tr>
+                  </:header>
+                  <:body>
+                    {{#each this.model.formattedTableVote as |mandatary|}}
+                      <tr>
+
+                        <td><VoteTableEntry
+                            @familyName={{mandatary.proponent.alias.familyName}}
+                            @firstName={{mandatary.proponent.alias.firstNameUsed}}
+                            @fraction={{mandatary.proponent.hasMembership.innerGroup.name}}
+                          /></td>
+                        <td>
+                          <VoteTableEntry
+                            @familyName={{mandatary.opponent.alias.familyName}}
+                            @firstName={{mandatary.opponent.alias.firstNameUsed}}
+                            @fraction={{mandatary.opponent.hasMembership.innerGroup.name}}
+                          />
+                        </td>
+                        <td>
+                          <VoteTableEntry
+                            @familyName={{mandatary.abstainer.alias.familyName}}
+                            @firstName={{mandatary.abstainer.alias.firstNameUsed}}
+                            @fraction={{mandatary.abstainer.hasMembership.innerGroup.name}}
+                          />
+                        </td>
+                      </tr>
+                    {{/each}}
+                  </:body>
+                </AuTable>
+              </AuAccordion>
+            {{/if}}
+
           </AuAccordion>
         </section>
       </c.content>
@@ -260,27 +243,29 @@
           Dit is nog niet beslist
         </AuAlert>
       {{/if}}
-      <AuContent class="au-u-margin-top">
-        <h4>{{#if this.keywordStore.keyword}}Meer relevante info over
-          {{else}}
-            Meer agendapunten
-          {{/if}}
-          <AuLink>{{this.keywordStore.keyword}}</AuLink>
-          in
-          <AuLink>{{this.model.agendaItem.session.municipality}}</AuLink></h4>
-        <ol type="1">
-          {{#each this.model.similiarAgendaItems as |agendaItem|}}
-            <li class="au-u-margin-top-small au-u-medium">
-              <AuLink
-                class="au-u-regular"
-                @model={{agendaItem.id}}
-                @route="detail"
-              >
-                {{agendaItem.title}}
-              </AuLink></li>
-          {{/each}}
-        </ol>
-      </AuContent>
+      {{#if this.model.agendaItem.session.hasMunicipality}}
+        <AuContent class="au-u-margin-top">
+          <h4>{{#if this.keywordStore.keyword}}Meer relevante info over
+            {{else}}
+              Meer agendapunten
+            {{/if}}
+            <AuLink>{{this.keywordStore.keyword}}</AuLink>
+            in
+            <AuLink>{{this.model.agendaItem.session.municipality}}</AuLink></h4>
+          <ol type="1">
+            {{#each this.model.similiarAgendaItems as |agendaItem|}}
+              <li class="au-u-margin-top-small au-u-medium">
+                <AuLink
+                  class="au-u-regular"
+                  @model={{agendaItem.id}}
+                  @route="detail"
+                >
+                  {{agendaItem.title}}
+                </AuLink></li>
+            {{/each}}
+          </ol>
+        </AuContent>
+      {{/if}}
     </div>
   </section>
 

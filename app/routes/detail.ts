@@ -47,7 +47,48 @@ export default class DetailRoute extends Route {
       },
     });
 
-    console.log(agendaItem.session?.get("municipality"));
+    let formattedTableVote: any[] = [];
+
+    // add the votes to formattedTableVote in the form of [{proponent: {proponent1}, opponent: {oponent1}, abstainer: {abstainer1}},{proponent: {proponent2}, opponent: {oponent2}, abstainer: {abstainer2}},... ]
+    // iterate over all 3 arrays (proponent, opponent, abstainer) and push only one voter to the formattedTableVote array each iteration
+    // this means that the length of the formattedTableVote array will be the length of the longest array (proponent, opponent, abstainer)
+    // if there is no voter, push an empty object
+
+    // get the length of the longest array (not the accumaleted length of all 3 arrays)
+    let longestArrayLength = Math.max(
+      agendaItem.handledBy
+        .get("hasVotes")
+        ?.toArray()[0]
+        ?.hasProponents.toArray().length || 0,
+      agendaItem.handledBy.get("hasVotes")?.toArray()[0]?.hasOpponents.toArray()
+        .length || 0,
+      agendaItem.handledBy
+        .get("hasVotes")
+        ?.toArray()[0]
+        ?.hasAbstainers.toArray().length || 0
+    );
+
+    // iterate over the longest array
+    for (let i = 0; i < longestArrayLength; i++) {
+      // push the proponent, opponent and abstainer of the current iteration to the formattedTableVote array
+      formattedTableVote.push({
+        proponent:
+          agendaItem.handledBy
+            .get("hasVotes")
+            .toArray()[0]
+            ?.hasProponents?.toArray()[i] || undefined,
+        opponent:
+          agendaItem.handledBy
+            .get("hasVotes")
+            .toArray()[0]
+            ?.hasOpponents?.toArray()[i] || undefined,
+        abstainer:
+          agendaItem.handledBy
+            .get("hasVotes")
+            .toArray()[0]
+            ?.hasAbstainers?.toArray()[i] || undefined,
+      });
+    }
 
     let similiarAgendaItems = await this.store.query("agenda-item", {
       page: {
@@ -76,6 +117,7 @@ export default class DetailRoute extends Route {
     return {
       agendaItem: agendaItem,
       agendaItemOnSameSession: agendaItemOnSameSession,
+      formattedTableVote: formattedTableVote,
       similiarAgendaItems: similiarAgendaItems,
     };
   }
