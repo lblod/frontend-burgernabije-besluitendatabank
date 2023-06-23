@@ -12,12 +12,8 @@ export default class HomeController extends Controller {
   @tracked loading = false;
   @tracked errorMsg = "";
 
-  @tracked loading = false;
-
   declare model: ModelFrom<AgendaItemsRoute>;
   @tracked isLoadingMore = false;
-
-  @tracked errorMsg = "";
 
   @tracked selectedMunicipality: {
     label: string;
