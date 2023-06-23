@@ -1,4 +1,3 @@
-import Store from "@ember-data/store";
 import Controller from "@ember/controller";
 import { action } from "@ember/object";
 import RouterService from "@ember/routing/router-service";
@@ -9,23 +8,17 @@ import AgendaItemsRoute from "frontend-burgernabije-besluitendatabank/routes/age
 
 export default class HomeController extends Controller {
   @service declare router: RouterService;
-  @service declare store: Store;
 
   @tracked loading = false;
+  @tracked errorMsg = "";
 
   declare model: ModelFrom<AgendaItemsRoute>;
   @tracked isLoadingMore = false;
-
-  @tracked errorMsg = "";
 
   @tracked selectedMunicipality: {
     label: string;
     id: string;
   } | null = null;
-
-  get currentRoute() {
-    return this.router.currentRouteName;
-  }
 
   @action handleMunicipalityChange(m: any) {
     this.selectedMunicipality = {
