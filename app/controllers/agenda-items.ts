@@ -91,8 +91,6 @@ export default class AgendaItemsController extends Controller {
     });
   }
 
-  @action handleSort(e: any) {}
-
   @action handleKeywordChange(e: any) {
     this.router.transitionTo("agenda-items", {
       queryParams: {
