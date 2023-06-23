@@ -1,4 +1,8 @@
-<div id="tooltip"><AuLoader /></div>
-{{! template-lint-disable no-invalid-interactive }}
-<div class="bp-map" {{did-insert this.initMap}}>
+<div class="au-u-flex" style="height: 100%; width: 100%;">
+  <FilterSidebar />
+
+  <div id="tooltip"><AuLoader /></div>
+  {{! template-lint-disable no-invalid-interactive }}
+  <div class="bp-map au-u-padding-huge" {{did-insert this.initMap}} />
+
 </div>
