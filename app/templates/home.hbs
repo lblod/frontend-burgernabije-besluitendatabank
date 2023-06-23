@@ -49,16 +49,3 @@
 </AuBodyContainer>
 
 <Footer />
-<div class="au-u-flex" style="height: 100%;">
-
-  <Searcher
-    @queryModel="agenda-item"
-    @includes={{array
-      "session"
-      "session.governing-body"
-      "session.governing-body.administrative-unit"
-      "session.governing-body.administrative-unit.location"
-    }}
-    @filters={{@model}}
-    />
-</div>

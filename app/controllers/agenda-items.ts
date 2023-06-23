@@ -75,14 +75,6 @@ export default class AgendaItemsController extends Controller {
 
   @action handleSort(e: any) {}
 
-  @action handleKeywordChange(e: any) {
-    this.router.transitionTo("agenda-items", {
-      queryParams: {
-        trefwoord: e.target.value,
-      },
-    });
-  }
-
   @action applyDatePicker(picker: any, start: any, end: any) {
     this.router.transitionTo("agenda-items", {
       queryParams: {

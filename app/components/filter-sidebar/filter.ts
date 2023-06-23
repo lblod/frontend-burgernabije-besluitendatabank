@@ -5,87 +5,12 @@ import { get } from '@ember/object';
 import { service } from "@ember/service";
 import { tracked } from '@glimmer/tracking';
 
-export interface IFilterInfo {
-
-    /** 
-     * id to be used in HTML
-     * Example 1: \<input id="ID"\>
-     * Example 2: \<label for="ID"\> 
-     **/
-    id?: string;
-
-    /**
-     * Text that will be diplayed above the input
-     */
-    searchLabel?: string;
-
-
-    value? :string;
-
-    /**
-     * (Optional) Name of the queryParameter related to the input
-     */
-    queryParam?: string;
-
-    /**
-     * (Optional) Name of the queryParameters related to the input. Currently only used in DateRangeFilter
-     */
-    queryParams?: Array<string>;
-
-
-    /**
-     * Return a filter object for use in Ember's store.query("model", {filter: FILTER})
-     * The generated object will be combined with any other filters and parsed to the (JSON:API) request
-     * 
-     * 
-     * @example
-     *  filter: (value: string) => {
-     *      return {
-     *          ":or:": {
-     *              title: value,
-     *              description: value
-     *          }
-     *      }
-     * 
-     * 
-     * @example
-     *  filter: (value: string) => {
-     *      "session": {
-     *          "governing-body": {
-     *              "administrative-unit": {
-     *                  "name": value
-     *              }
-     *          }
-     *       }
-     *   }
-     * 
-     * 
-     * 
-     * @param value The function should take one value, which will be used in the request 
-     * @returns A JavaScript object for use in Ember/JSON:API queries
-     */
-    filterObject?: (value: any) => { [key:string]: any };
-
-
-    placeholder?: any;
-    options?: any;
-    start?: string;
-    end?: string;
-
-
-    isTextFilter?: Boolean;
-    isDateRangeFilter?: boolean;
-    isSelectFilter?: boolean;
-};
-
-
-
-interface FilterArgs {
-    info: IFilterInfo;
-    searcherUpdateFilter: (object: any) => {};
+interface ArgsInterface {
+    id: string;
+    queryParam: string;
 }
 
-export default class FilterComponent extends Component<FilterArgs> implements IFilterInfo {
+export default class FilterComponent extends Component<ArgsInterface> {
     @service declare router: RouterService;
 
     @tracked id?: string;
@@ -93,6 +18,14 @@ export default class FilterComponent extends Component<FilterArgs> implements IF
     @tracked queryParam?: string;
     @tracked queryParams?: Array<string>;
 
+
+    updateQueryParams(params: object) {
+        this.router.transitionTo(this.router.currentRouteName, {
+            queryParams: params,
+        });
+    }
+
+    /*
     
     @action
     updateQueryParam(value: any, key?: any) {
@@ -109,6 +42,7 @@ export default class FilterComponent extends Component<FilterArgs> implements IF
         }
     }
 
+    /*
     @action
     updateQueryParams(values: Array<string>, keys?: Array<string>) {
         if (keys == null && this.queryParams) {
@@ -130,6 +64,7 @@ export default class FilterComponent extends Component<FilterArgs> implements IF
             });
         }
     }
+    
     
 
     getQueryParamValue(): any|undefined {
@@ -171,4 +106,5 @@ export default class FilterComponent extends Component<FilterArgs> implements IF
         component.queryParam = component.args.info.queryParam;
         component.queryParams = component.args.info.queryParams;
     }
+    */
 }

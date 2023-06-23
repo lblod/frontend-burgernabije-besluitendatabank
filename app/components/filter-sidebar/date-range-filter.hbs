@@ -1,0 +1,15 @@
+<FilterSidebar::Filter @id={{@id}} @label={{@label}}>
+    <AuDateRangePicker
+      @width="block"
+      style="width: 70%; max-width: 70%;"
+
+      id={{@id}}
+      @label={{@label}}
+      @start={{@start}}
+      @end={{@end}}
+      
+      @cancelAction={{action this.dateChange}}
+      @applyAction={{action this.dateChange}}
+      @hideAction={{action this.dateChange}}
+    />
+</FilterSidebar::Filter> 
