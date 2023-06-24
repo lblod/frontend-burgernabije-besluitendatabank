@@ -10,6 +10,7 @@ interface ArgsInterface {
     queryParam: string;
     queryParamsA: string;
     queryParamsB: string;
+    searchField: string;
 }
 
 export default class FilterComponent extends Component<ArgsInterface> {
