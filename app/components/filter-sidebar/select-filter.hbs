@@ -11,16 +11,16 @@
       @options={{@options}}
 
       @allowClear=true
-      @searchField="label"
+      @searchField={{@searchField}}
 
       @placeholder={{@placeholder}}
       @noMatchesMessage={{concat "Geen " @label " gevonden"}}
       @searchMessage="Aan het zoeken..."
       @searchEnabled={{true}}
 
-      as |singleSelect|
+      as |value|
     >
-      {{singleSelect.label}}
+      {{get value @searchField}}
 
     </PowerSelect>
 </FilterSidebar::Filter>
