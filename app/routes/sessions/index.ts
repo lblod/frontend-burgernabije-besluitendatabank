@@ -31,6 +31,7 @@ const getQuery = (page: number, plannedStartMin?: string, plannedStartMax?: stri
 
 export default class SessionsIndexRoute extends Route {
   @service declare store: Store;
+  @service declare municipalityList: MunicipalityListService;
 
   queryParams = {
     municipalityLabels: {
@@ -51,7 +52,6 @@ export default class SessionsIndexRoute extends Route {
   @tracked plannedStartMin: any;
   @tracked plannedStartMax: any;
 
-  @service declare municipalityList: MunicipalityListService;
 
   async model(params: any) {
     /*
@@ -64,38 +64,20 @@ export default class SessionsIndexRoute extends Route {
 
     this.plannedStartMin = params.plannedStartMin || null;
     this.plannedStartMax = params.plannedStartMax || null;
-    this.municipalityLabels = params.municipalityLabels || null;
+    this.municipalityLabels = params.municipalityLabels || "";
 
     /**
      * Municipalities transform
      * 
      */
-    let locationIds = "";
+    let locationIds = await this.municipalityList.getLocationIdsFromLabels(this.municipalityLabels.split(seperator));
+    
 
-    if (this.municipalityLabels) {
-      const municipalities = await this.municipalityList.municipalities();
-      const labels = this.municipalityLabels.split(seperator);
-      
-      for (let i = 0; i < labels.length; i++) {
-        let label = labels[i];
-        let municipality = municipalities.find((municipality) => municipality.label == label)
-        if (municipality) {
-          locationIds += municipality.id + ",";
-        }
-      }
-  
-      console.log(locationIds)
-  
-      locationIds = locationIds.substring(0, locationIds.length -1);
-  
-      console.log(locationIds)  
-    }
-
-
+    console.log(locationIds)
 
 
     const currentPage = 0;
-    const sessions = await this.store.query("session", getQuery(currentPage, this.plannedStartMin, this.plannedStartMax, locationIds));
+    const sessions = await this.store.query("session", getQuery(currentPage, this.plannedStartMin, this.plannedStartMax, locationIds.join(",")));
 
     return {
       sessions: sessions.toArray(),

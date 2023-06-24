@@ -28,4 +28,20 @@ export default class MunicipalityListService extends Service {
             .toArray()
             .map((location: LocationModel) => ({id: location.id, label: location.label}));
     }
+
+
+    async getLocationIdsFromLabels(labels: Array<string>): Promise<Array<string>> {
+        const locationIds : Array<string> = [];
+        const municipalities = await this.municipalities();
+        
+        for (let i = 0; i < labels.length; i++) {
+          let label = labels[i];
+          let municipality = municipalities.find((municipality) => municipality.label == label)
+          if (municipality) {
+            locationIds.push(municipality.id);
+          }
+        }
+    
+        return locationIds;
+    }
 }
