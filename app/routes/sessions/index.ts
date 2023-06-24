@@ -2,8 +2,10 @@ import Store from "@ember-data/store";
 import Route from "@ember/routing/route";
 import { service } from "@ember/service";
 import { tracked } from "@glimmer/tracking";
+import MunicipalityListService from "frontend-burgernabije-besluitendatabank/services/municipality-list";
+import { seperator } from "frontend-burgernabije-besluitendatabank/components/filter-sidebar/select-multiple-filter";
 
-const getQuery = (page: number, plannedStartMin?: string, plannedStartMax?: string, municipality?: string) => ({
+const getQuery = (page: number, plannedStartMin?: string, plannedStartMax?: string, locationIds?: string) => ({
   // exclude sessions without governing body and administrative unit
   //todo investigate why filtering is not working
   filter: {
@@ -11,8 +13,10 @@ const getQuery = (page: number, plannedStartMin?: string, plannedStartMax?: stri
     "governing-body": {
       ":has:administrative-unit": true,
       "administrative-unit": {
-        ":has:name": municipality ? true : undefined,
-        name: municipality ? municipality : undefined,
+        ":has:name": locationIds ? true : undefined,
+        "location": {
+          ":id:": locationIds ? locationIds : undefined,
+        }
       },
     },
     
@@ -29,7 +33,7 @@ export default class SessionsIndexRoute extends Route {
   @service declare store: Store;
 
   queryParams = {
-    municipality: {
+    municipalityLabels: {
       as: "gemeentes",
       refreshModel: true,
     },
@@ -43,10 +47,11 @@ export default class SessionsIndexRoute extends Route {
     }
   };
 
-  @tracked municipality: any;
+  @tracked municipalityLabels: any;
   @tracked plannedStartMin: any;
   @tracked plannedStartMax: any;
 
+  @service declare municipalityList: MunicipalityListService;
 
   async model(params: any) {
     /*
@@ -59,11 +64,38 @@ export default class SessionsIndexRoute extends Route {
 
     this.plannedStartMin = params.plannedStartMin || null;
     this.plannedStartMax = params.plannedStartMax || null;
-    this.municipality = params.municipality || null;
+    this.municipalityLabels = params.municipalityLabels || null;
+
+    /**
+     * Municipalities transform
+     * 
+     */
+    let locationIds = "";
+
+    if (this.municipalityLabels) {
+      const municipalities = await this.municipalityList.municipalities();
+      const labels = this.municipalityLabels.split(seperator);
+      
+      for (let i = 0; i < labels.length; i++) {
+        let label = labels[i];
+        let municipality = municipalities.find((municipality) => municipality.label == label)
+        if (municipality) {
+          locationIds += municipality.id + ",";
+        }
+      }
+  
+      console.log(locationIds)
+  
+      locationIds = locationIds.substring(0, locationIds.length -1);
+  
+      console.log(locationIds)  
+    }
+
+
 
 
     const currentPage = 0;
-    const sessions = await this.store.query("session", getQuery(currentPage, this.plannedStartMin, this.plannedStartMax, this.municipality));
+    const sessions = await this.store.query("session", getQuery(currentPage, this.plannedStartMin, this.plannedStartMax, locationIds));
 
     return {
       sessions: sessions.toArray(),

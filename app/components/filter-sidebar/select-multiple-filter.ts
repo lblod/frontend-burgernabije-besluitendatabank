@@ -5,7 +5,7 @@ import { tracked } from "@glimmer/tracking";
 import { service } from "@ember/service";
 import Store from "@ember-data/store";
 
-const seperator = '+';
+export const seperator = '+';
 const regex = new RegExp("\\" + seperator + "$", "m");
 
 export default class SelectMultipleFilterComponent extends FilterComponent {
