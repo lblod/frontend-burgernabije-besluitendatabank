@@ -29,6 +29,7 @@ const getQuery = ({
     "session.governing-body.administrative-unit.location",
   ].join(","),
   municipality: municipality ? municipality : undefined,
+  sort: "-session.started-at",
   filter: {
     session: {
       ":gt:started-at": plannedStartMin ? plannedStartMin : undefined,
@@ -60,6 +61,7 @@ interface AgendaItemsRequestInterface {
   };
   include: String;
   municipality?: String | undefined;
+  sort?: string;
   filter?: {
     ":or:"?: {};
     session?: {
