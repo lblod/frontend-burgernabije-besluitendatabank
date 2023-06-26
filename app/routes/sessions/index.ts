@@ -12,6 +12,7 @@ const getQuery = (page: number) => ({
     },
   },
   include: ["governing-body.administrative-unit", "agenda-items"].join(","),
+  sort: "-started-at",
   page: {
     number: page,
   },
