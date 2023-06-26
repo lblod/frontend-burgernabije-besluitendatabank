@@ -58,6 +58,5 @@ export default class AgendaItemsController extends Controller {
     return this.municipalityList.municipalities();
   }
 
-  @action handleSort(e: any) {}
 
 }

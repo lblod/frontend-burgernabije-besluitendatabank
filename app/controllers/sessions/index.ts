@@ -19,8 +19,6 @@ export default class SessionsIndexController extends Controller {
 
     @action
     async loadMore() {
-        console.log(get(this.model, "municipality"));
-        console.log(get(this, "municipality"));
         //todo add max page guard
         if (this.model && !this.isLoadingMore) {
             this.isLoadingMore = true;
@@ -29,9 +27,14 @@ export default class SessionsIndexController extends Controller {
             let plannedStartMin = String(get(this, "plannedStartMin")) || undefined;
             let plannedStartMax = String(get(this, "plannedStartMax")) || undefined;
             let municipalities = String(get(this, "municipality")) || undefined;
-            console.log(plannedStartMax, plannedStartMax, municipalities)
 
-            const sessions = await this.store.query("session", this.model.getQuery(nextPage, plannedStartMin, plannedStartMax, municipalities));
+            const sessions = await this.store.query(
+                "session", 
+                this.model.getQuery(
+                    nextPage, 
+                    plannedStartMin=plannedStartMin, 
+                    plannedStartMax=plannedStartMax, 
+                    municipalities=municipalities));
             const concatenateSessions = this.model.sessions.concat(sessions.toArray());
             this.model.sessions.setObjects(concatenateSessions);
 
