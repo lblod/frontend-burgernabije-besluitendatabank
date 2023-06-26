@@ -110,28 +110,18 @@
             </AuAlert>
           </AuAccordion>
         </section>
-        <section class="au-u-flex" style="width: 100%;">
-          <AuBadge @icon="message" @skin="brand" />
-          <AuAccordion
-            style="width: 100%;"
-            class="au-u-margin-top-small"
-            @reverse={{true}}
-            @iconOpen={{"nav-down"}}
-            @iconClosed={{"nav-right"}}
-            @buttonLabel={{"Stemming"}}
-          >
 
-            {{#if (eq this.model.agendaItem.handledBy.hasVotes undefined)}}
-
-              <AuAlert
-                @skin="warning"
-                @title="Geen stemming"
-                class="au-u-margin-top au-u-margin-bottom"
-              >
-                <p>Dit agendapunt heeft nog geen stemming gehad.</p>
-              </AuAlert>
-            {{else}}
-
+        {{#if this.hasVotes}}
+          <section class="au-u-flex" style="width: 100%;">
+            <AuBadge @icon="message" @skin="brand" />
+            <AuAccordion
+              style="width: 100%;"
+              class="au-u-margin-top-small"
+              @reverse={{true}}
+              @iconOpen={{"nav-down"}}
+              @iconClosed={{"nav-right"}}
+              @buttonLabel={{"Stemming"}}
+            >
               {{#each this.model.agendaItem.handledBy.hasVotes as |vote|}}
 
                 <VoteOverview
@@ -186,10 +176,9 @@
                   </:body>
                 </AuTable>
               </AuAccordion>
-            {{/if}}
-
-          </AuAccordion>
-        </section>
+            </AuAccordion>
+          </section>
+        {{/if}}
       </c.content>
     </AuCard>
     {{#if this.model.agendaItemOnSameSession}}
