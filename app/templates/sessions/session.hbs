@@ -16,7 +16,11 @@
         <AuCard @size="small" class="card-hover au-u-padding" as |c|>
           <c.header>
             <AuHeading @level="1" @skin="3">
-              <AuLink style="text-overflow: ellipsis; max-height: 50%;">
+              <AuLink 
+                style="text-overflow: ellipsis; max-height: 50%;"
+                @route="detail"
+                @model={{ item.id }}
+              >
                 {{ item.title }}
               </AuLink>
             </AuHeading>
