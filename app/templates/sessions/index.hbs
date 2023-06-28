@@ -6,7 +6,7 @@
             <AuCard @size="small" class="card-hover au-u-padding" as |c|>
                 <c.header>
                     <AuHeading @level="1" @skin="3">
-                        <AuLink>
+                        <AuLink @route="sessions.session" @model={{session.id}}>
                             {{session.name}} {{session.dateRange}}
                         </AuLink>
                     </AuHeading>
