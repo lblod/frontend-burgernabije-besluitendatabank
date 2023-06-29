@@ -42,4 +42,9 @@ export default class SessionsIndexController extends Controller {
             this.isLoadingMore = false;
         }
     }
+
+    get isEmpty() {
+        console.log("isEmpty", this.model.sessions.length);
+        return this.model.sessions.length === 0;
+    }
 }
