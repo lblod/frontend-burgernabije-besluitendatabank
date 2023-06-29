@@ -20,6 +20,7 @@ const getQuery = (page: number, plannedStartMin?: string, plannedStartMax?: stri
     ":lt:ended-at": plannedStartMax ? plannedStartMax : undefined,
   },
   include: ["governing-body.administrative-unit", "agenda-items"].join(","),
+  sort: "-started-at",
   page: {
     number: page,
   },
