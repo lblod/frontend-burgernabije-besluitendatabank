@@ -2,17 +2,17 @@
 
 <div class="au-u-flex" style="overflow-y: scroll;">
   <section class="au-o-box">
-    <AuHeading @level="1" >
-        {{this.model.name}} {{this.model.dateRange}}
+    <AuHeading @level="1">
+      {{this.model.name}}
+      {{this.model.dateRange}}
     </AuHeading>
   </section>
-  <section style="height: fit-content; width: 100%;" class="au-u-flex au-u-flex--column">
+  <section
+    style="height: fit-content; width: 100%;"
+    class="au-u-flex au-u-flex--column"
+  >
     {{#each this.agendaItemsSorted as |item|}}
-      <LinkTo 
-        style="text-decoration: none;" 
-        @route="detail"
-        @model={{ item.id }} 
-        >
+      <LinkTo style="text-decoration: none;" @route="detail" @model={{item.id}}>
         <AuCard @size="small" class="card-hover au-u-padding" as |c|>
           <c.header>
             <AuHeading @level="1" @skin="3">
@@ -26,7 +26,7 @@
             </AuHeading>
           </c.header>
           <c.content>
-            <p class="truncate">{{ item.description }}</p>
+            <p class="truncate">{{item.description}}</p>
           </c.content>
         </AuCard>
       </LinkTo>

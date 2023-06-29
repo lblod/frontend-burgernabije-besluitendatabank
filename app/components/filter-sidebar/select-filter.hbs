@@ -1,0 +1,25 @@
+<FilterSidebar::Filter @id={{@id}} @label={{@label}}>
+    <PowerSelect
+      id={{@id}}
+
+      @onChange={{action this.selectChange}}
+
+      
+      @selected= {{if @value (hash label=@value) "" }}
+
+      @options={{@options}}
+
+      @allowClear=true
+      @searchField={{@searchField}}
+
+      @placeholder={{@placeholder}}
+      @noMatchesMessage={{concat "Geen " @label " gevonden"}}
+      @searchMessage="Aan het zoeken..."
+      @searchEnabled={{true}}
+
+      as |value|
+    >
+      {{get value @searchField}}
+
+    </PowerSelect>
+</FilterSidebar::Filter>
