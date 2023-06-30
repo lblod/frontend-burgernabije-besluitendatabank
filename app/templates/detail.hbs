@@ -1,14 +1,17 @@
 {{page-title this.model.agendaItem.title}}
-<main style="display: flex; height: 100%; overflow-y: scroll;">
+<main 
+  style="overflow-y: scroll;"
+  class="au-u-flex"
+>
 
   <section
-    style="height: 100%; display: flex; width: 70%;"
+    style="flex-basis: 70%; height: fit-content;"
     id="detail-left-section"
     class="au-u-flex au-u-flex--column"
   >
     <AuCard
       @shadow={{true}}
-      style="border-top:solid 5px #FFE615; display: flex; height: fit-content;"
+      style="border-top:solid 5px #FFE615;"
       class="au-c-card au-u-margin-left-large au-u-margin-right-large au-u-padding"
       as |c|
     >
@@ -26,7 +29,7 @@
         </AuLink>
 
       </c.header>
-      <c.content style="height: fit-content; min-height: 80rem;">
+      <c.content style="min-height: 80rem;">
 
         <section
           class="au-u-flex au-u-muted au-u-margin-top-tiny"
@@ -103,35 +106,25 @@
           >
             <AuAlert
               @skin="warning"
-              @title="Geen stemming"
+              @title="Geen verslag"
               class="au-u-margin-top au-u-margin-bottom"
             >
               <p>Dit agendapunt heeft geen verslag.</p>
             </AuAlert>
           </AuAccordion>
         </section>
-        <section class="au-u-flex" style="width: 100%;">
-          <AuBadge @icon="message" @skin="brand" />
-          <AuAccordion
-            style="width: 100%;"
-            class="au-u-margin-top-small"
-            @reverse={{true}}
-            @iconOpen={{"nav-down"}}
-            @iconClosed={{"nav-right"}}
-            @buttonLabel={{"Stemming"}}
-          >
 
-            {{#if (eq this.model.agendaItem.handledBy.hasVotes undefined)}}
-
-              <AuAlert
-                @skin="warning"
-                @title="Geen stemming"
-                class="au-u-margin-top au-u-margin-bottom"
-              >
-                <p>Dit agendapunt heeft nog geen stemming gehad.</p>
-              </AuAlert>
-            {{else}}
-
+        {{#if this.hasVotes}}
+          <section class="au-u-flex" style="width: 100%;">
+            <AuBadge @icon="message" @skin="brand" />
+            <AuAccordion
+              style="width: 100%;"
+              class="au-u-margin-top-small"
+              @reverse={{true}}
+              @iconOpen={{"nav-down"}}
+              @iconClosed={{"nav-right"}}
+              @buttonLabel={{"Stemming"}}
+            >
               {{#each this.model.agendaItem.handledBy.hasVotes as |vote|}}
 
                 <VoteOverview
@@ -186,16 +179,14 @@
                   </:body>
                 </AuTable>
               </AuAccordion>
-            {{/if}}
-
-          </AuAccordion>
-        </section>
+            </AuAccordion>
+          </section>
+        {{/if}}
       </c.content>
     </AuCard>
     {{#if this.model.agendaItemOnSameSession}}
       <AuCard
         @shadow={{true}}
-        style="height: fit-content; display: flex;"
         class="au-c-card au-u-margin-large"
         as |c|
       >
@@ -230,9 +221,9 @@
   <section
     id="detail-right-section"
     class="au-u-padding-right-large"
-    style="height:100; width: 30%; position: relative;"
+    style="flex-basis: 30%;"
   >
-    <div style=" position: sticky; top: 0;">
+    <div style="position: sticky; top: 0;">
 
       {{#if this.model.agendaItem.handledBy.resolutions}}
         <AuAlert class="au-u-medium" @skin="success" @icon="sign">

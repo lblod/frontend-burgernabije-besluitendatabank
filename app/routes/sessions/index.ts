@@ -19,11 +19,11 @@ const getQuery = (page: number, plannedStartMin?: string, plannedStartMax?: stri
         }
       },
     },
-    
-    ":gt:started-at": plannedStartMin ? plannedStartMin : undefined,
-    ":lt:ended-at": plannedStartMax ? plannedStartMax : undefined,
+    ":gt:planned-start": plannedStartMin ? plannedStartMin : undefined,
+    ":lt:planned-start": plannedStartMax ? plannedStartMax : undefined,
   },
   include: ["governing-body.administrative-unit", "agenda-items"].join(","),
+  sort: "-started-at",
   page: {
     number: page,
   },
