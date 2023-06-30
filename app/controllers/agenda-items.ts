@@ -50,12 +50,6 @@ export default class AgendaItemsController extends Controller {
       this.isLoadingMore = false;
     }
   }
-
-  @tracked selectedMunicipality: {
-    label: string;
-    id: string;
-  } | null = null;
-
   get currentRoute() {
     return this.router.currentRouteName;
   }
@@ -64,51 +58,5 @@ export default class AgendaItemsController extends Controller {
     return this.municipalityList.municipalities();
   }
 
-  @action handleMunicipalityChange(m: any) {
-    if (!m) {
-      this.selectedMunicipality = null;
-      this.router.transitionTo("agenda-items", {
-        queryParams: {
-          gemeentes: null,
-        },
-      });
-      return;
-    }
 
-    this.selectedMunicipality = {
-      label: m.label,
-      id: m.id,
-    };
-
-    this.router.transitionTo("agenda-items", {
-      queryParams: {
-        // query for multiselect
-        // gemeentes: this.selectedMunicipality.join("+"),
-
-        // temporary query for single select
-        gemeentes: m.label,
-      },
-    });
-  }
-
-  @action handleKeywordChange(e: any) {
-    this.router.transitionTo("agenda-items", {
-      queryParams: {
-        trefwoord: e.target.value,
-      },
-    });
-  }
-
-  @action applyDatePicker(picker: any, start: any, end: any) {
-    this.router.transitionTo("agenda-items", {
-      queryParams: {
-        begin: start,
-        eind: end,
-      },
-    });
-  }
-
-  @action hideDatePicker(picker: any, start: any, end: any) {}
-
-  @action cancelDatePicker(picker: any, start: any, end: any) {}
 }

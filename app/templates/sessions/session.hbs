@@ -2,27 +2,31 @@
 
 <div id="route-session" class="au-u-flex">
   <section class="au-o-box">
-    <AuHeading @level="1" >
-        {{this.model.name}} {{this.model.dateRange}}
+    <AuHeading @level="1">
+      {{this.model.name}}
+      {{this.model.dateRange}}
     </AuHeading>
   </section>
-  <section id="agenda-items" class="au-u-flex au-u-flex--column">
+  <section
+    id="agenda-items"
+    class="au-u-flex au-u-flex--column"
+  >
     {{#each this.agendaItemsSorted as |item|}}
-      <LinkTo
-        class="agenda-link"
-        @route="detail"
-        @model={{ item.id }} 
-        >
+      <LinkTo class="agenda-link" @route="detail" @model={{item.id}}>
         <AuCard @size="small" class="card-hover au-u-padding" as |c|>
           <c.header>
             <AuHeading @level="1" @skin="3">
-              <AuLink class="header-link">
+              <AuLink 
+                class="header-link"
+                @route="detail"
+                @model={{ item.id }}
+              >
                 {{ item.title }}
               </AuLink>
             </AuHeading>
           </c.header>
           <c.content>
-            <p class="truncate">{{ item.description }}</p>
+            <p class="truncate">{{item.description}}</p>
           </c.content>
         </AuCard>
       </LinkTo>

@@ -1,19 +1,32 @@
-<div id="route-agenda-items" class="au-u-flex">
-  <SearchSidebar
-    @municipalityPlaceholder="Selecteer een optie"
-    @municipalityOnChange={{this.handleMunicipalityChange}}
-    @municipalityOptions={{this.municipalities}}
-    @municipalityAllowClear={{true}}
-    @keywordPlaceholder={{"Terrasvergunning"}}
-    @keywordOnChange={{this.handleKeywordChange}}
-    @applyDatePicker={{this.applyDatePicker}}
-    @cancelDatePicker={{this.cancelDatePicker}}
-    @hideDatePicker={{this.hideDatePicker}}
-    @valueMunicipality={{this.selectedMunicipality}}
-    @valueKeyword={{this.keyword}}
-    @valueStartDate={{this.plannedStartMin}}
-    @valueEndDate={{this.plannedStartMax}}
-  />
+<div class="au-u-flex" style="height: 100%; width: 100%;">
+
+  <FilterSidebar @class="au-u-2-5">
+    <FilterSidebar::SelectFilter
+      @id="municipality"
+      @label="Gemeente"
+      @options={{this.municipalities}}
+      @searchField="label"
+      @queryParam="gemeentes"
+      @placeholder="Selecteer een optie"
+      @value={{this.municipality}}
+    />
+    <FilterSidebar::TextFilter
+      @id="keyword"
+      @label="Trefwoord"
+      @placeholder="Terrasvergunning"
+      @queryParam="trefwoord"
+      @value={{this.keyword}}
+    />
+    <FilterSidebar::DateRangeFilter
+      @id="startDate"
+      @label="Datum"
+      @queryParamsA="begin"
+      @queryParamsB="eind"
+      @valueA={{this.plannedStartMin}}
+      @valueB={{this.plannedStartMax}}
+    />
+
+  </FilterSidebar>
 
   <section
     id="results"
