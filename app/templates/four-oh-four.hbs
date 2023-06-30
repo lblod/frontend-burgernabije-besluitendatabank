@@ -1,10 +1,7 @@
 {{page-title "404"}}
-<AuContent class="redirect">
-  <section>
-    <h1>Oeps, die pagina vonden we niet terug</h1>
-    <p>De pagina die u zoekt, vonden we niet terug.</p>
-    <AuLink @skin="button" @route="home">Terug naar de startpagina</AuLink>
-  </section>
-  <img src="/assets/page-not-found.svg" />
-</AuContent>
+<Oops
+  @title="Oeps, die pagina vonden we niet terug"
+  @content="De pagina die u zoekt, vonden we niet terug."
+  @image="/assets/page-not-found.svg"
+ />
 {{outlet}}

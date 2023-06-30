@@ -1,9 +1,6 @@
 {{page-title "Er is iets fout gelopen!"}}
-<AuContent class="redirect">
-  <section>
-    <h3>Oeps!</h3>
-    <p>Er is iets fout gelopen!</p>
-    <AuLink @skin="button" @route="home">Terug naar de startpagina</AuLink>
-  </section>
-</AuContent>
+<Oops 
+  @title="Oeps!"
+  @content="Er is iets fout gelopen!" 
+  />
 {{outlet}}

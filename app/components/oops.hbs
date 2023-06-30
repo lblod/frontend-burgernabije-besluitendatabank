@@ -1,0 +1,11 @@
+<AuBodyContainer class="au-u-flex--center au-u-flex--vertical-center au-u-flex--row au-u-flex--spaced-large">
+  <section>
+    <h1 class="au-u-h1 au-u-medium">{{@title}}</h1>
+    <p class="au-u-margin-bottom au-u-margin-top">{{@content}}</p>
+    {{yield}}
+    <AuLink @skin="button" @route="home">Terug naar de startpagina</AuLink>
+  </section>
+  {{#if @image}}
+    <img src={{@image}} />
+  {{/if}}
+</AuBodyContainer>
