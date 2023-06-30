@@ -1,6 +1,6 @@
-<div class="au-u-flex" style="height: 100%; width: 100%;">
+<AuBodyContainer class="au-u-flex--row">
 
-  <FilterSidebar @class="au-u-2-5">
+  <FilterSidebar @class="au-u-2-5 au-u-max-width-xsmall">
     <FilterSidebar::SelectFilter
       @id="municipality"
       @label="Gemeente"
@@ -30,57 +30,43 @@
 
   <section
     id="results"
-    class="au-u-flex au-u-flex--column"
+    class="au-u-flex au-u-flex--column au-u-3-5"
   >
-    <div
-      class="au-u-flex au-u-flex--column"
-    >
-      {{#if this.errorMsg}}
-        <AuContent
-          class="content error"
-        >
-          <section>
-            <h3>Oeps!</h3>
-            <p>Er is iets fout gelopen!</p>
-            <AuLink @skin="button" @route="home">Terug naar de startpagina</AuLink>
-          </section>
-        </AuContent>
-      {{else}}
-        {{#if this.loading}}
-          <main class="content no-error">
-            <AuLoader />
-            <AuContent>
-              <h3>Agendapunt aan het laden</h3>
-            </AuContent>
-          </main>
+    {{#if this.errorMsg}}
+      <Oops
+        @title="Oeps!"
+        @content="Er is iets fout gelopen!" 
+      />
+    {{else}}
+      {{#if this.loading}}
+        <Loader @content="Agendapunt aan het laden"/>
 
+      {{else}}
+        {{! if @model.agendaItems length is equal to 0 }}
+        {{#if (eq @model.agendaItems.length 0)}}
+          <AuAlert
+            class="no-results au-u-medium au-u-margin"
+            @skin="warning"
+            @icon="three-dots"
+          >
+            Geen agendapunten gevonden
+          </AuAlert>
         {{else}}
-          {{! if @model.agendaItems length is equal to 0 }}
-          {{#if (eq @model.agendaItems.length 0)}}
-            <AuAlert
-              class="no-results au-u-medium au-u-margin"
-              @skin="warning"
-              @icon="three-dots"
-            >
-              Geen agendapunten gevonden
-            </AuAlert>
-          {{else}}
-            <InfiniteList
-              @loadMore={{action "loadMore"}}
-              @isLoading={{this.isLoadingMore}}
-            >
-              {{#each @model.agendaItems as |item|}}
-                <DecisionCard
-                  @startDate={{item.session.startedAt}}
-                  @endDate={{item.session.endedAt}}
-                  @item={{item}}
-                />
-              {{/each}}
-            </InfiniteList>
-          {{/if}}
+          <InfiniteList
+            @loadMore={{action "loadMore"}}
+            @isLoading={{this.isLoadingMore}}
+          >
+            {{#each @model.agendaItems as |item|}}
+              <DecisionCard
+                @startDate={{item.session.startedAt}}
+                @endDate={{item.session.endedAt}}
+                @item={{item}}
+              />
+            {{/each}}
+          </InfiniteList>
         {{/if}}
       {{/if}}
+    {{/if}}
 
-    </div>
   </section>
-</div>
+</AuBodyContainer>
