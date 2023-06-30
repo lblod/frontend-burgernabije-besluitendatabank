@@ -1,6 +1,4 @@
-import Component from '@glimmer/component';
 import { action } from "@ember/object";
-import { tracked } from '@glimmer/tracking';
 import FilterComponent from './filter';
 
 export default class SearcherDateRangeFilterComponent extends FilterComponent {

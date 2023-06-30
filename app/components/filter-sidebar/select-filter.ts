@@ -1,15 +1,12 @@
-import Component from '@glimmer/component';
 import { action } from "@ember/object";
-import { tracked } from '@glimmer/tracking';
 import FilterComponent from './filter';
+import { get } from '@ember/object';
 
 export default class SearcherSelectFilterComponent extends FilterComponent {
-    @tracked options?: any;
-    @tracked selected?: any;
-
+    
     @action
     async selectChange(m: any) {
-        let value = m ? m.label : ""
+        let value = m ? get(m, this.args.searchField) : null
         this.updateQueryParams({
             [this.args.queryParam]: value
         });

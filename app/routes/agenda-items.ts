@@ -29,6 +29,7 @@ const getQuery = ({
     "session.governing-body.administrative-unit.location",
   ].join(","),
   municipality: municipality ? municipality : undefined,
+  sort: "-session.started-at",
   filter: {
     session: {
       ":gt:started-at": plannedStartMin ? plannedStartMin : undefined,
@@ -60,6 +61,7 @@ interface AgendaItemsRequestInterface {
   };
   include: String;
   municipality?: String | undefined;
+  sort?: string;
   filter?: {
     ":or:"?: {};
     session?: {
@@ -145,12 +147,6 @@ export default class AgendaItemsRoute extends Route {
     this.sort = params.sort || "";
     this.plannedStartMin = params.plannedStartMin || "";
     this.plannedStartMax = params.plannedStartMax || "";
-
-    controller.set("sort", params.sort || "");
-    controller.set("plannedStartMin", params.plannedStartMin || "");
-    controller.set("plannedStartMax", params.plannedStartMax || "");
-    controller.set("keyword", params.keyword || "");
-    controller.set("municipality", params.municipality || "");
 
     params.municipality
       ? controller.set("selectedMunicipality", {
