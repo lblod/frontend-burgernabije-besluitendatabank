@@ -4,7 +4,7 @@ import { action } from "@ember/object";
 import RouterService from "@ember/routing/router-service";
 import { service } from "@ember/service";
 import { tracked } from "@glimmer/tracking";
-import { seperator } from "frontend-burgernabije-besluitendatabank/components/filter-sidebar/select-multiple-filter";
+import { seperator } from "frontend-burgernabije-besluitendatabank/helpers/constants";
 import { ModelFrom } from "frontend-burgernabije-besluitendatabank/lib/type-utils";
 import AgendaItemsRoute from "frontend-burgernabije-besluitendatabank/routes/agenda-items";
 import KeywordStoreService from "frontend-burgernabije-besluitendatabank/services/keyword-store";
