@@ -38,7 +38,7 @@ const getQuery = ({
       "governing-body": {
         ":has:administrative-unit": true,
         "administrative-unit": {
-          ":has:name": true,
+          ":has:name": municipality ? true : false,  // If this is true whilst name is undefined, it bugs out
           name: municipality ? municipality : undefined,
         },
       },
@@ -148,13 +148,6 @@ export default class AgendaItemsRoute extends Route {
     this.plannedStartMin = params.plannedStartMin || "";
     this.plannedStartMax = params.plannedStartMax || "";
 
-    params.municipality
-      ? controller.set("selectedMunicipality", {
-          id: params.municipality,
-          label: params.municipality,
-        })
-      : controller.set("selectedMunicipality", null);
-
     // Check if the parameters have changed compared to the last time
 
     const currentPage = 0;
@@ -162,13 +155,13 @@ export default class AgendaItemsRoute extends Route {
       "agenda-item",
       getQuery({
         page: currentPage,
-        keyword: params.keyword ? params.keyword : undefined,
-        municipality: params.municipality ? params.municipality : undefined,
-        plannedStartMin: params.plannedStartMin
-          ? params.plannedStartMin
+        keyword: this.keywordStore.keyword != "" ? this.keywordStore.keyword : undefined,
+        municipality: this.municipality != "" ? this.municipality : undefined,
+        plannedStartMin: this.plannedStartMin != ""
+          ? this.plannedStartMin
           : undefined,
-        plannedStartMax: params.plannedStartMax
-          ? params.plannedStartMax
+        plannedStartMax: this.plannedStartMax != ""
+          ? this.plannedStartMax
           : undefined,
       })
     );
