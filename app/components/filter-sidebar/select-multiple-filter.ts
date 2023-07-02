@@ -2,10 +2,8 @@ import { action } from "@ember/object";
 import FilterComponent from './filter';
 import { get } from '@ember/object';
 import { tracked } from "@glimmer/tracking";
-import { service } from "@ember/service";
-import Store from "@ember-data/store";
+import { seperator } from "frontend-burgernabije-besluitendatabank/helpers/constants";
 
-export const seperator = '+';
 const regex = new RegExp("\\" + seperator + "$", "m");
 
 export default class SelectMultipleFilterComponent extends FilterComponent {
@@ -21,22 +19,19 @@ export default class SelectMultipleFilterComponent extends FilterComponent {
             const needles = queryParam.split(seperator);
             const searchField = this.args.searchField;
 
-            this.args.options.then((haystack: [{[key:string]: any}]) => {
-                if (!queryParam) return;  // TypeScript was being wacky
+            const haystack: [{[key:string]: any}] = await this.args.options;
+            
+            let results: Array<{[key:string]: any}> = [];
 
-                let results: Array<{[key:string]: any}> = [];
-
-                for (let i = 0; i < needles.length; i++) {
-                    let needle = needles[i];
-                    console.log("Search for: " + needle)
-                    let found = haystack.find((value) => get(value, searchField) == needle);
-                    if (found) {
-                        results.push(found);
-                    }
+            for (let i = 0; i < needles.length; i++) {
+                let needle = needles[i];
+                let found = haystack.find((value) => get(value, searchField) === needle);
+                if (found) {
+                    results.push(found);
                 }
+            }
                 
-                this.selected = results;
-            });
+            this.selected = results;
         }
     }
 

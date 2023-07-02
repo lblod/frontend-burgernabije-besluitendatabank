@@ -5,7 +5,7 @@ import Route from "@ember/routing/route";
 import Transition from "@ember/routing/transition";
 import { service } from "@ember/service";
 import { tracked } from "@glimmer/tracking";
-import { seperator } from "frontend-burgernabije-besluitendatabank/components/filter-sidebar/select-multiple-filter";
+import { seperator } from "frontend-burgernabije-besluitendatabank/helpers/constants";
 import KeywordStoreService from "frontend-burgernabije-besluitendatabank/services/keyword-store";
 import MunicipalityListService from "frontend-burgernabije-besluitendatabank/services/municipality-list";
 
@@ -30,7 +30,6 @@ const getQuery = ({
     "session.governing-body.administrative-unit",
     "session.governing-body.administrative-unit.location",
   ].join(","),
-  //municipality: locationIds ? locationIds : undefined,
   sort: "-session.started-at",
   filter: {
     session: {
@@ -64,7 +63,6 @@ interface AgendaItemsRequestInterface {
     size: Number;
   };
   include: String;
-  municipality?: String | undefined;
   sort?: string;
   filter?: {
     ":or:"?: {};
@@ -152,21 +150,6 @@ export default class AgendaItemsRoute extends Route {
     this.sort = params.sort || "";
     this.plannedStartMin = params.plannedStartMin || "";
     this.plannedStartMax = params.plannedStartMax || "";
-
-    /*
-    controller.set("sort", params.sort || "");
-    controller.set("plannedStartMin", params.plannedStartMin || "");
-    controller.set("plannedStartMax", params.plannedStartMax || "");
-    controller.set("keyword", params.keyword || "");
-    controller.set("municipality", params.municipality || "");
-    
-    params.municipality
-      ? controller.set("selectedMunicipality", {
-          id: params.municipality,
-          label: params.municipality,
-        })
-      : controller.set("selectedMunicipality", null);
-    */
 
     // Check if the parameters have changed compared to the last time
 

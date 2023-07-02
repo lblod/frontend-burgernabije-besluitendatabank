@@ -32,7 +32,6 @@ export default class AgendaItemsController extends Controller {
       this.isLoadingMore = true;
 
       let locationIds = await this.municipalityList.getLocationIdsFromLabels(this.municipalityLabels.split(seperator));
-      console.log(locationIds)
 
       const nextPage = this.model.currentPage + 1;
       const agendaItems = await this.store.query(

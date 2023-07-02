@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import RouterService from "@ember/routing/router-service";
 import { service } from "@ember/service";
+import { get } from '@ember/object';
 
 interface ArgsInterface {
     id: string;

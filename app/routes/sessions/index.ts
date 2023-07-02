@@ -3,7 +3,7 @@ import Route from "@ember/routing/route";
 import { service } from "@ember/service";
 import { tracked } from "@glimmer/tracking";
 import MunicipalityListService from "frontend-burgernabije-besluitendatabank/services/municipality-list";
-import { seperator } from "frontend-burgernabije-besluitendatabank/components/filter-sidebar/select-multiple-filter";
+import { seperator } from "frontend-burgernabije-besluitendatabank/helpers/constants";
 
 const getQuery = (page: number, plannedStartMin?: string, plannedStartMax?: string, locationIds?: string) => ({
   // exclude sessions without governing body and administrative unit

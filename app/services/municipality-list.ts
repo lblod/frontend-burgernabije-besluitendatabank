@@ -36,7 +36,7 @@ export default class MunicipalityListService extends Service {
         
         for (let i = 0; i < labels.length; i++) {
           let label = labels[i];
-          let municipality = municipalities.find((municipality) => municipality.label == label)
+          let municipality = municipalities.find((municipality) => municipality.label === label)
           if (municipality) {
             locationIds.push(municipality.id);
           }
