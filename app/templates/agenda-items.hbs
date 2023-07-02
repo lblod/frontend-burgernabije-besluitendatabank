@@ -28,10 +28,7 @@
 
   </FilterSidebar>
 
-  <section
-    id="results"
-    class="au-u-flex au-u-flex--column au-u-3-5"
-  >
+  <section class="smooth-scroll-children au-u-flex au-u-flex--column au-u-3-5">
     {{#if this.errorMsg}}
       <Oops
         @title="Oeps!"
@@ -45,7 +42,7 @@
         {{! if @model.agendaItems length is equal to 0 }}
         {{#if (eq @model.agendaItems.length 0)}}
           <AuAlert
-            class="no-results au-u-medium au-u-margin"
+            class="top-sticky au-u-medium au-u-margin"
             @skin="warning"
             @icon="three-dots"
           >

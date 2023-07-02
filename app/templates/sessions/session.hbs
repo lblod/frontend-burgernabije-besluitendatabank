@@ -1,6 +1,6 @@
 {{page-title "Zitting"}}
 
-<div id="route-session" class="au-u-flex">
+<div id="route-session" class="overflow-y-scroll au-u-flex">
   <section class="au-o-box">
     <AuHeading @level="1">
       {{this.model.name}}
@@ -8,11 +8,10 @@
     </AuHeading>
   </section>
   <section
-    id="agenda-items"
-    class="au-u-flex au-u-flex--column"
+    class="au-u-1-1 au-u-flex au-u-flex--column"
   >
     {{#each this.agendaItemsSorted as |item|}}
-      <LinkTo class="agenda-link" @route="detail" @model={{item.id}}>
+      <LinkTo class="no-text-decoration" @route="detail" @model={{item.id}}>
         <AuCard @size="small" class="card-hover au-u-padding" as |c|>
           <c.header>
             <AuHeading @level="1" @skin="3">

@@ -1,5 +1,5 @@
 {{page-title this.model.agendaItem.title}}
-<main id="route-detail" class="au-u-flex au-u-margin-bottom-large">
+<main id="route-detail" class="overflow-y-scroll au-u-flex au-u-margin-bottom-large">
 
   <article
     id="detail-left-section"
@@ -7,14 +7,14 @@
   >
     <AuCard
       @shadow={{true}}
-      class="detail-card au-u-flex au-c-card au-u-margin-left-large au-u-margin-right-large au-u-padding"
+      class="color-top-border au-u-flex au-c-card au-u-margin-left-large au-u-margin-right-large au-u-padding"
       as |c|
     >
       <c.header>
 
         <AuLink
           @route="detail"
-          class="header au-u-h3 au-u-medium"
+          class="no-text-decoration au-u-h3 au-u-medium"
         >
           {{#if this.model.agendaItem.title}}
             {{this.model.agendaItem.title}}
@@ -207,11 +207,8 @@
       </AuCard>
     {{/if}}
   </article>
-  <aside
-    id="detail-right-section"
-    class="au-u-2-6 au-u-padding-right-large"
-  >
-    <div>
+  <aside class="au-u-2-6 au-u-padding-right-large">
+    <div class="top-sticky">
 
       {{#if this.model.agendaItem.handledBy.resolutions}}
         <AuAlert class="au-u-medium" @skin="success" @icon="sign">
