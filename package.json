@@ -64,7 +64,7 @@
     "@types/qunit": "^2.19.4",
     "@types/rsvp": "^4.0.4",
     "@types/topojson": "^3.2.3",
-    "au-date-range-picker": "^0.1.1",
+    "au-date-range-picker": "^0.2.0",
     "babel-eslint": "^10.1.0",
     "broccoli-asset-rev": "^3.0.0",
     "concurrently": "^7.6.0",

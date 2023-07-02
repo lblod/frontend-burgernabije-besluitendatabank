@@ -160,13 +160,13 @@ export default class AgendaItemsRoute extends Route {
       "agenda-item",
       getQuery({
         page: currentPage,
-        keyword: params.keyword ? params.keyword : undefined,
         locationIds: locationIds.join(","),
-        plannedStartMin: params.plannedStartMin
-          ? params.plannedStartMin
+        keyword: this.keywordStore.keyword != "" ? this.keywordStore.keyword : undefined,
+        plannedStartMin: this.plannedStartMin != ""
+          ? this.plannedStartMin
           : undefined,
-        plannedStartMax: params.plannedStartMax
-          ? params.plannedStartMax
+        plannedStartMax: this.plannedStartMax != ""
+          ? this.plannedStartMax
           : undefined,
       })
     );
