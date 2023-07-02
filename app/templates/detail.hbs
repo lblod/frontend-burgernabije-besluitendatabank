@@ -1,13 +1,13 @@
 {{page-title this.model.agendaItem.title}}
-<main id="route-detail">
+<main id="route-detail" class="au-u-flex au-u-margin-bottom-large">
 
-  <section
+  <article
     id="detail-left-section"
-    class="au-u-flex au-u-flex--column"
+    class="au-u-flex au-u-flex--column au-u-4-6"
   >
     <AuCard
       @shadow={{true}}
-      class="detail-card au-c-card au-u-margin-left-large au-u-margin-right-large au-u-padding detail-card"
+      class="detail-card au-u-flex au-c-card au-u-margin-left-large au-u-margin-right-large au-u-padding"
       as |c|
     >
       <c.header>
@@ -26,7 +26,7 @@
       <c.content class="content" style="min-height: 80rem;">
 
         <section
-          class="au-u-flex au-u-muted au-u-margin-top-tiny"
+          class="au-u-flex au-u-muted au-u-margin-top-tiny au-u-u-flex--vertical-center"
         >
           <AuIcon class="au-u-margin-right-small" @size="large" @icon="check" />
           <p>
@@ -37,7 +37,7 @@
             {{/if}}</p>
         </section>
         <section
-          class="au-u-flex au-u-muted au-u-margin-top-tiny"
+          class="au-u-flex au-u-muted au-u-margin-top-tiny au-u-u-flex--vertical-center"
         >
 
           <AuIcon
@@ -61,7 +61,7 @@
         </section>
         {{#if this.model.agendaItem.alternateLink}}
           <section
-            class="au-u-flex au-u-muted au-u-margin-top-tiny"
+            class="au-u-flex au-u-muted au-u-margin-top-tiny au-u-u-flex--vertical-center"
           >
             <AuIcon
               class="au-u-margin-right-small"
@@ -85,10 +85,10 @@
             {{/if}}
           </p>
         </section>
-        <section class="au-u-flex">
+        <section class="au-u-flex au-u-u-flex--vertical-center">
           <AuBadge @icon="archive" @skin="brand" />
           <AuAccordion
-            class="accordion au-u-margin-top-small"
+            class="accordion au-u-1-1 au-u-margin-top-small"
             @reverse={{true}}
             @iconOpen={{"nav-down"}}
             @iconClosed={{"nav-right"}}
@@ -105,11 +105,10 @@
         </section>
 
         {{#if this.hasVotes}}
-          <section class="au-u-flex" style="width: 100%;">
+          <section class="au-u-flex au-u-1-1">
             <AuBadge @icon="message" @skin="brand" />
             <AuAccordion
-              style="width: 100%;"
-              class="au-u-margin-top-small"
+              class="au-u-1-1 au-u-margin-top-small"
               @reverse={{true}}
               @iconOpen={{"nav-down"}}
               @iconClosed={{"nav-right"}}
@@ -126,7 +125,7 @@
               {{/each}}
 
               <AuAccordion
-                class="accordion"
+                class="au-u-1-1"
                 @reverse={{true}}
                 @iconOpen={{"nav-down"}}
                 @iconClosed={{"nav-right"}}
@@ -177,7 +176,7 @@
     {{#if this.model.agendaItemOnSameSession}}
       <AuCard
         @shadow={{true}}
-        class="au-c-card au-u-margin-large agenda-items-on-same-session"
+        class="au-c-card au-u-margin-large au-u-flex"
         as |c|
       >
         <c.header>
@@ -207,10 +206,10 @@
 
       </AuCard>
     {{/if}}
-  </section>
-  <section
+  </article>
+  <aside
     id="detail-right-section"
-    class="au-u-padding-right-large"
+    class="au-u-2-6 au-u-padding-right-large"
   >
     <div>
 
@@ -247,6 +246,6 @@
         </AuContent>
       {{/if}}
     </div>
-  </section>
+  </aside>
 
 </main>
