@@ -16,24 +16,16 @@ export default class MunicipalityListService extends Service {
     }
 
     private async _loadMunicipalities() {
-        /**
-         * Our endpoint (using my-cl-resources) allows sorting!
-         * However, this goes a bit wacky when different casing is involved
-         * However however, the :no-case: helper is built-in to help with this
-         * However however however, Ember's serialisation of the request turns it into %3Ano-case%3A, which doesn't work
-         * So instead, use a basic sort in the request, and then sort later in JavaScript
-         */
         const municipalities = await this.store.query("location", {
             page: { size: 600 },
             filter: {
                 niveau: "Gemeente",
             },
-            sort: "label",
+            sort: ":no-case:label",
         });
 
         return municipalities
             .toArray()
-            .sortBy("label")
             .map((location: LocationModel) => ({id: location.id, label: location.label}));
     }
 }
