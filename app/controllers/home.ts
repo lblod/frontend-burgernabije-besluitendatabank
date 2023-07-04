@@ -26,6 +26,10 @@ export default class HomeController extends Controller {
     return this.municipalityList.municipalities();
   }
 
+  @action resetLoading() {
+    this.loading = false;
+  }
+
   @action handleMunicipalityChange(m: any) {
     this.selectedMunicipality = {
       label: m.label,
