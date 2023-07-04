@@ -18,7 +18,9 @@
     >
       In welke gemeente(s) wil je zoeken?
     </AuLabel>
-    <section class="au-u-flex au-u-1-1">
+    <section class="au-u-flex au-u-1-1"
+      {{did-insert this.resetLoading}}
+      >
       <PowerSelect
         
         @onChange={{this.handleMunicipalityChange}}
