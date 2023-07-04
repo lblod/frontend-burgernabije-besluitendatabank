@@ -31,10 +31,10 @@ export default class HomeController extends Controller {
   }
 
   @action handleMunicipalityChange(m: any) {
-    this.selectedMunicipality = {
+    this.selectedMunicipality = m ? {
       label: m.label,
       id: m.id,
-    };
+    } : null;
   }
 
   @action handleMunicipalitySelect() {
