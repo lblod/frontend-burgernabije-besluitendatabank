@@ -30,8 +30,8 @@
         >
           <AuIcon class="au-u-margin-right-small" @size="large" @icon="check" />
           <p>
-            {{#if this.model.agendaItem.session.startedAt}}
-              {{iso-formatter this.model.agendaItem.session.startedAt}}
+            {{#if this.model.agendaItem.session.dateRange}}
+              {{ this.model.agendaItem.session.dateRange}}
             {{else}}
               Geen Datum
             {{/if}}</p>
@@ -179,14 +179,13 @@
         class="au-c-card au-u-margin-large au-u-flex"
         as |c|
       >
+      {{#if this.model.agendaItem.session.dateRange}}
         <c.header>
           <h2 class="au-u-h3">
-            {{#if this.model.agendaItem.session.startedAt}}
-              Volledige agenda van
-              {{iso-formatter this.model.agendaItem.session.startedAt}}
-            {{/if}}
+              Volledige agenda van {{this.model.agendaItem.session.dateRange}}
           </h2>
         </c.header>
+      {{/if}}
         <c.content class="au-u-flex au-u-flex--column">
 
           {{#if this.model.agendaItemOnSameSession}}
