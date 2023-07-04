@@ -8,9 +8,7 @@
     alt="Foto van een laptop met daarop het vlaanderen logo."
   /> --}}
 </AuContentHeader>
-<AuBodyContainer
-  style="display: flex; justify-content: center; align-items: center;"
->
+<AuBodyContainer class="au-u-flex au-u-flex--center au-u-flex--vertical-center">
 
   <AuFormRow class="au-u-2-5">
     <AuLabel
@@ -20,10 +18,9 @@
     >
       In welke gemeente(s) wil je zoeken?
     </AuLabel>
-    <section class="au-u-flex" style="width: 100%;">
+    <section class="au-u-flex au-u-1-1">
       <PowerSelect
-        style="width: 80%;"
-        id="municipality"
+        
         @onChange={{this.handleMunicipalityChange}}
         @selected={{this.selectedMunicipality}}
         @options={{this.municipalities}}
@@ -33,16 +30,16 @@
         @noMatchesMessage={{"Geen gemeente gevonden"}}
         @searchMessage="Aan het zoeken..."
         @searchEnabled={{true}}
-        class="au-u-margin-right-small"
+        class="au-u-margin-right-small au-u-4-5"
         as |singleSelect|
       >
         {{singleSelect.label}}
       </PowerSelect>
       <AuButton
+        class="au-u-1-5"
         @loading={{this.loading}}
         {{action "handleMunicipalitySelect"}}
         @width="block"
-        style="width: 20%; min-width: fit-content;"
       >Locatie(s) Opslaan</AuButton>
     </section>
   </AuFormRow>

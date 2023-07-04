@@ -1,0 +1,64 @@
+.bp-map {
+  position: relative;
+  width: 100%;
+  // margin-top: -1rem;
+  align-items: center;
+  // background-color: palevioletred;
+  z-index: 0;
+}
+
+.legend,
+.legend_besluit {
+  stroke: black;
+  stroke-width: 0.1rem;
+}
+.text_legend {
+  font-size: 1.1rem;
+  color: black;
+}
+
+
+.provinces {
+  fill: none;
+  stroke: black;
+  stroke-width: 0.1rem;
+}
+
+.municipalities {
+  stroke: black;
+  &:hover {
+    fill: white;
+  }
+}
+
+#tooltip {
+  position: absolute;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 100;
+  display: block;
+  transition: 0.1s;
+  transform: translate(2%, -50%);
+  height: auto;
+  width: auto;
+  background-color: white;
+  color: black;
+  font: 1.5rem;
+  text-align: left;
+  padding: 0.8rem 1.1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0.5rem 0.5rem 1rem -0.6rem gray;
+  .fractie {
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+  .gemeente {
+    font-size: 1.7rem;
+    font-weight: 500;
+  }
+}
+
+#map-cursor {
+  height: 100%;
+  width: 100%;
+}

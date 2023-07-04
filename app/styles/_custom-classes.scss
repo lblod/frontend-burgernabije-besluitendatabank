@@ -1,0 +1,49 @@
+.truncate {
+    display: -webkit-box;
+    -webkit-line-clamp: 7; /* Number of lines to show */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1.2em;
+    line-height: 1.2em; /* Adjust the line height as needed */
+    max-height: 4.8em;
+}
+  
+.card-hover:hover {
+    // border-top: solid 5px #ffe615;
+    box-shadow: 0 -5px 0 #ffe615;
+    transition: all 10ms;
+    cursor: pointer;
+}
+
+.smooth-scroll {
+    scroll-behavior: smooth;
+
+}
+
+.smooth-scroll-children {
+    > div {
+        scroll-behavior: smooth;
+    }
+}
+
+.overflow-y-scroll {
+    overflow-y: scroll;
+}
+
+.top-sticky {
+    top: 0;
+    position: sticky;
+}
+
+.color-top-border {
+    border-top: solid 5px #FFE615;
+}
+
+.no-text-decoration {
+    text-decoration: none;
+}
+
+.height-fit-content {
+    height: fit-content
+}

@@ -1,0 +1,51 @@
+.au-c-main-footer {
+    margin-top: auto;
+}
+.au-c-main-container__content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.au-c-card--fill {
+    height: fit-content;
+  }
+  
+
+.daterangepicker .ranges li.active {
+    background-color: var(--au-blue-700);
+    color: #fff;
+}
+.daterangepicker {
+    font: var(--au-font);
+}
+  
+.daterangepicker td.active,
+.daterangepicker td.start-date.end-date {
+  background-color: var(--au-blue-700) !important;
+  border-radius: 0px;
+  &:hover {
+    background-color: var(--au-blue-900);
+  }
+}
+
+.daterangepicker td.in-range {
+    background-color: var(--au-blue-200);
+}
+
+@media (max-width: 1100px) {
+    div .au-c-form-row .au-c-form-row--inline {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      gap: 0;
+    }
+  
+    .au-c-form-row--inline {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      gap: 0;
+    }
+  }
+  

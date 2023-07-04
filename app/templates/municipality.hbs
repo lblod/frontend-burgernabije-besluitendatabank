@@ -1,58 +1,32 @@
 {{page-title this.model.name}}
 
-<div class="au-u-flex" style="height: 100%;width: 100%;">
-  <section
-    id="detail-left-section"
-    class="au-u-flex au-u-flex--column"
-    style="height: 100%; width: 100%"
-  >
+  <section id="route-municipality" class="au-u-flex au-u-flex--column au-o-flow au-u-padding au-u-padding-left-large au-u-padding-right-large">
 
-    <div
-      class="au-u-padding-left-large au-u-padding-right-large au-u-flex"
-      style="height: 100%;"
-    >
-      <section
-        id="detail-left-section"
-        class="au-o-flow au-u-flex au-u-flex--column au-u-padding"
-      >
-        <AuToolbar @size="medium" class="au-u-margin-small" as |Group|>
+    <AuToolbar @size="medium" class="au-u-margin-small" as |Group|>
 
-          <Group>
-            <ul class="au-c-list-horizontal au-c-list-horizontal--small">
-              <li class="au-c-list-horizontal__item">
-                <AuLink @route="home" @icon="arrow-left">
-                  Alle Agendapunten
-                </AuLink>
-              </li>
-              <li
-                class="au-c-list-horizontal__item"
-                style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;"
-              >
-                {{this.model.title}}
-              </li>
-            </ul>
-          </Group>
-        </AuToolbar>
+      <Group>
+        <ul class="au-c-list-horizontal au-c-list-horizontal--small">
+          <li class="au-c-list-horizontal__item">
+            <AuLink @route="home" @icon="arrow-left">
+              Alle Agendapunten
+            </AuLink>
+          </li>
+          <li class="municipality-title au-c-list-horizontal__item">
+            {{this.model.title}}
+          </li>
+        </ul>
+      </Group>
+    </AuToolbar>
 
-        <section
-          class="au-o-flow au-u-flex au-u-flex--column"
-          style="height: 100%; overflow-y: scroll;"
-        >
-          {{#if this.model.agenda_items}}
+    <section class="overflow-y-scroll au-o-flow au-u-flex au-u-flex--column">
+      {{#if this.model.agenda_items}}
 
-            {{#each this.model.agenda_items as |item|}}
-              <DecisionCard
-                @item={{item}}
-                @startDate={{item.session.startedAt}}
-                @endDate={{item.session.endedAt}}
-              />
-            {{/each}}
-          {{else}}
-            <p>Geen Data</p>
-          {{/if}}
-        </section>
+      {{#each this.model.agenda_items as |item|}}
+        <DecisionCard @item={{item}} @startDate={{item.session.startedAt}} @endDate={{item.session.endedAt}} />
+      {{/each}}
+      {{else}}
+        <p>Geen Data</p>
+      {{/if}}
+    </section>
 
-      </section>
-    </div>
   </section>
-</div>

@@ -1,0 +1,13 @@
+.component-decision-card {
+    text-decoration: none;
+
+    .component-decision-card-card {
+        height: 30vh;
+    }
+
+    .component-decision-card-header-link {
+        text-overflow: ellipsis;
+        max-height: 50%;
+    }
+}
+
