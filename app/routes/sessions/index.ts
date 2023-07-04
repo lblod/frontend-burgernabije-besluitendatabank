@@ -2,8 +2,10 @@ import Store from "@ember-data/store";
 import Route from "@ember/routing/route";
 import { service } from "@ember/service";
 import { tracked } from "@glimmer/tracking";
+import MunicipalityListService from "frontend-burgernabije-besluitendatabank/services/municipality-list";
+import { seperator } from "frontend-burgernabije-besluitendatabank/helpers/constants";
 
-const getQuery = (page: number, plannedStartMin?: string, plannedStartMax?: string, municipality?: string) => ({
+const getQuery = (page: number, plannedStartMin?: string, plannedStartMax?: string, locationIds?: string) => ({
   // exclude sessions without governing body and administrative unit
   //todo investigate why filtering is not working
   filter: {
@@ -11,8 +13,10 @@ const getQuery = (page: number, plannedStartMin?: string, plannedStartMax?: stri
     "governing-body": {
       ":has:administrative-unit": true,
       "administrative-unit": {
-        ":has:name": municipality ? true : undefined,
-        name: municipality ? municipality : undefined,
+        ":has:name": locationIds ? true : undefined,
+        "location": {
+          ":id:": locationIds ? locationIds : undefined,
+        }
       },
     },
     ":gt:planned-start": plannedStartMin ? plannedStartMin : undefined,
@@ -27,9 +31,10 @@ const getQuery = (page: number, plannedStartMin?: string, plannedStartMax?: stri
 
 export default class SessionsIndexRoute extends Route {
   @service declare store: Store;
+  @service declare municipalityList: MunicipalityListService;
 
   queryParams = {
-    municipality: {
+    municipalityLabels: {
       as: "gemeentes",
       refreshModel: true,
     },
@@ -43,7 +48,7 @@ export default class SessionsIndexRoute extends Route {
     }
   };
 
-  @tracked municipality: any;
+  @tracked municipalityLabels: any;
   @tracked plannedStartMin: any;
   @tracked plannedStartMax: any;
 
@@ -59,11 +64,20 @@ export default class SessionsIndexRoute extends Route {
 
     this.plannedStartMin = params.plannedStartMin || null;
     this.plannedStartMax = params.plannedStartMax || null;
-    this.municipality = params.municipality || null;
+    this.municipalityLabels = params.municipalityLabels || "";
+
+    /**
+     * Municipalities transform
+     * 
+     */
+    let locationIds = await this.municipalityList.getLocationIdsFromLabels(this.municipalityLabels.split(seperator));
+    
+
+    console.log(locationIds)
 
 
     const currentPage = 0;
-    const sessions = await this.store.query("session", getQuery(currentPage, this.plannedStartMin, this.plannedStartMax, this.municipality));
+    const sessions = await this.store.query("session", getQuery(currentPage, this.plannedStartMin, this.plannedStartMax, locationIds.join(",")));
 
     return {
       sessions: sessions.toArray(),

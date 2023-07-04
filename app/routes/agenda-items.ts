@@ -5,18 +5,20 @@ import Route from "@ember/routing/route";
 import Transition from "@ember/routing/transition";
 import { service } from "@ember/service";
 import { tracked } from "@glimmer/tracking";
+import { seperator } from "frontend-burgernabije-besluitendatabank/helpers/constants";
 import KeywordStoreService from "frontend-burgernabije-besluitendatabank/services/keyword-store";
+import MunicipalityListService from "frontend-burgernabije-besluitendatabank/services/municipality-list";
 
 const getQuery = ({
   page,
   keyword,
-  municipality,
+  locationIds,
   plannedStartMin,
   plannedStartMax,
 }: {
   page: number;
   keyword?: string;
-  municipality?: string;
+  locationIds?: string;
   plannedStartMin?: string;
   plannedStartMax?: string;
 }): AgendaItemsRequestInterface => ({
@@ -28,7 +30,6 @@ const getQuery = ({
     "session.governing-body.administrative-unit",
     "session.governing-body.administrative-unit.location",
   ].join(","),
-  municipality: municipality ? municipality : undefined,
   sort: "-session.started-at",
   filter: {
     session: {
@@ -39,7 +40,9 @@ const getQuery = ({
         ":has:administrative-unit": true,
         "administrative-unit": {
           ":has:name": true,
-          name: municipality ? municipality : undefined,
+          "location": {
+            ":id:": locationIds ? locationIds : undefined,
+          }
         },
       },
     },
@@ -60,7 +63,6 @@ interface AgendaItemsRequestInterface {
     size: Number;
   };
   include: String;
-  municipality?: String | undefined;
   sort?: string;
   filter?: {
     ":or:"?: {};
@@ -82,9 +84,10 @@ interface AgendaItemsRequestInterface {
 export default class AgendaItemsRoute extends Route {
   @service declare store: Store;
   @service declare keywordStore: KeywordStoreService;
+  @service declare municipalityList: MunicipalityListService;
 
   queryParams = {
-    municipality: {
+    municipalityLabels: {
       as: "gemeentes",
       refreshModel: true,
     },
@@ -106,7 +109,7 @@ export default class AgendaItemsRoute extends Route {
     },
   };
 
-  @tracked municipality: any;
+  @tracked municipalityLabels: any;
   @tracked sort: any;
   @tracked plannedStartMin: any;
   @tracked plannedStartMax: any;
@@ -135,7 +138,7 @@ export default class AgendaItemsRoute extends Route {
     if (
       model?.agendaItems?.toArray().length > 0 &&
       params.keyword === this.keywordStore.keyword &&
-      params.municipality === this.municipality &&
+      params.municipalityLabels === this.municipalityLabels &&
       params.sort === this.sort &&
       params.plannedStartMin === this.plannedStartMin &&
       params.plannedStartMax === this.plannedStartMax
@@ -143,7 +146,7 @@ export default class AgendaItemsRoute extends Route {
       return model;
     }
     this.keywordStore.keyword = params.keyword || "";
-    this.municipality = params.municipality || "";
+    this.municipalityLabels = params.municipalityLabels || "";
     this.sort = params.sort || "";
     this.plannedStartMin = params.plannedStartMin || "";
     this.plannedStartMax = params.plannedStartMax || "";
@@ -157,11 +160,16 @@ export default class AgendaItemsRoute extends Route {
 
     // Check if the parameters have changed compared to the last time
 
+    let locationIds = await this.municipalityList.getLocationIdsFromLabels(this.municipalityLabels.split(seperator));
+
     const currentPage = 0;
     const agendaItems = await this.store.query(
       "agenda-item",
       getQuery({
         page: currentPage,
+        
+        locationIds: locationIds.join(","),
+
         keyword: params.keyword ? params.keyword : undefined,
         municipality: params.municipality ? params.municipality : undefined,
         plannedStartMin: params.plannedStartMin

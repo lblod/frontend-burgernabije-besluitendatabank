@@ -4,6 +4,7 @@ import { action } from "@ember/object";
 import RouterService from "@ember/routing/router-service";
 import { service } from "@ember/service";
 import { tracked } from "@glimmer/tracking";
+import { seperator } from "frontend-burgernabije-besluitendatabank/helpers/constants";
 import { ModelFrom } from "frontend-burgernabije-besluitendatabank/lib/type-utils";
 import AgendaItemsRoute from "frontend-burgernabije-besluitendatabank/routes/agenda-items";
 import KeywordStoreService from "frontend-burgernabije-besluitendatabank/services/keyword-store";
@@ -14,7 +15,7 @@ export default class AgendaItemsController extends Controller {
   @service declare store: Store;
   @service declare keywordStore: KeywordStoreService;
   @service declare municipalityList: MunicipalityListService;
-  @tracked municipality: string = "";
+  @tracked municipalityLabels: string = "";
   @tracked sort: string = "";
   @tracked plannedStartMin: string = "";
   @tracked plannedStartMax: string = "";
@@ -29,15 +30,18 @@ export default class AgendaItemsController extends Controller {
   async loadMore() {
     if (this.model && !this.isLoadingMore) {
       this.isLoadingMore = true;
+
+      let locationIds = await this.municipalityList.getLocationIdsFromLabels(this.municipalityLabels.split(seperator));
+
       const nextPage = this.model.currentPage + 1;
       const agendaItems = await this.store.query(
         "agenda-item",
         this.model.getQuery({
           page: nextPage,
-          municipality: this.municipality,
+          keyword: this.keywordStore.keyword,
+          locationIds: locationIds.join(","),
           plannedStartMin: this.plannedStartMin,
           plannedStartMax: this.plannedStartMax,
-          keyword: this.keywordStore.keyword,
         })
       );
       const concatenateAgendaItems = this.model.agendaItems.concat(
