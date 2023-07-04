@@ -171,7 +171,6 @@ export default class AgendaItemsRoute extends Route {
         locationIds: locationIds.join(","),
 
         keyword: params.keyword ? params.keyword : undefined,
-        municipality: params.municipality ? params.municipality : undefined,
         plannedStartMin: params.plannedStartMin
           ? params.plannedStartMin
           : undefined,
