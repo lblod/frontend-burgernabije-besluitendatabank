@@ -16,14 +16,6 @@ export default class NavigationBar extends Component {
       label: "Home",
     },
     {
-      route: "agenda-items",
-      label: "Agendapunten",
-    },
-    {
-      route: "map",
-      label: "Kaart",
-    },
-    {
       route: "sessions",
       label: "Zittingen",
     },
