@@ -1,6 +1,6 @@
-<div class="au-u-flex" style="height: 100%; width: 100%;">
+<AuBodyContainer class="au-u-flex--row">
 
-  <FilterSidebar @class="au-u-2-5">
+  <FilterSidebar @class="au-u-2-5 au-u-max-width-xsmall">
     <FilterSidebar::SelectMultipleFilter
       @id="municipality"
       @label="Gemeente"
@@ -28,63 +28,42 @@
 
   </FilterSidebar>
 
-  <section
-    class="au-u-flex au-u-flex--column"
-    style="width: 100%; height: 100%;"
-  >
-    <div
-      class="au-u-flex au-u-flex--column au-u-padding-top-large"
-      style="height: 90%; scroll-behavior: smooth;"
-    >
-      {{#if this.errorMsg}}
-        <AuContent
-          style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; gap: 8rem;"
-        >
-          <section>
-            <h3>Oeps!</h3>
-            <p style="margin: 2rem 0;">Er is iets fout gelopen!</p>
-            <AuLink @skin="button" @route="home">Terug naar de startpagina</AuLink>
-          </section>
-        </AuContent>
-      {{else}}
-        {{#if this.loading}}
-          <main
-            style="justify-content: center; align-items: center; display: flex; flex-direction: column; height: 100%;"
-          >
-            <AuLoader />
-            <AuContent>
-              <h3>Agendapunt aan het laden</h3>
-            </AuContent>
-          </main>
+  <section class="smooth-scroll-children au-u-flex au-u-flex--column au-u-3-5">
+    {{#if this.errorMsg}}
+      <Oops
+        @title="Oeps!"
+        @content="Er is iets fout gelopen!" 
+      />
+    {{else}}
+      {{#if this.loading}}
+        <LoaderFullPage @content="Agendapunt aan het laden"/>
 
+      {{else}}
+        {{! if @model.agendaItems length is equal to 0 }}
+        {{#if (eq @model.agendaItems.length 0)}}
+          <AuAlert
+            class="top-sticky au-u-medium au-u-margin"
+            @skin="warning"
+            @icon="three-dots"
+          >
+            Geen agendapunten gevonden
+          </AuAlert>
         {{else}}
-          {{! if @model.agendaItems length is equal to 0 }}
-          {{#if (eq @model.agendaItems.length 0)}}
-            <AuAlert
-              class="au-u-medium au-u-margin"
-              style=" position: sticky; top: 0;"
-              @skin="warning"
-              @icon="three-dots"
-            >
-              Geen agendapunten gevonden
-            </AuAlert>
-          {{else}}
-            <InfiniteList
-              @loadMore={{action "loadMore"}}
-              @isLoading={{this.isLoadingMore}}
-            >
-              {{#each @model.agendaItems as |item|}}
-                <DecisionCard
-                  @startDate={{item.session.startedAt}}
-                  @endDate={{item.session.endedAt}}
-                  @item={{item}}
-                />
-              {{/each}}
-            </InfiniteList>
-          {{/if}}
+          <InfiniteList
+            @loadMore={{action "loadMore"}}
+            @isLoading={{this.isLoadingMore}}
+          >
+            {{#each @model.agendaItems as |item|}}
+              <DecisionCard
+                @startDate={{item.session.startedAt}}
+                @endDate={{item.session.endedAt}}
+                @item={{item}}
+              />
+            {{/each}}
+          </InfiniteList>
         {{/if}}
       {{/if}}
+    {{/if}}
 
-    </div>
   </section>
-</div>
+</AuBodyContainer>

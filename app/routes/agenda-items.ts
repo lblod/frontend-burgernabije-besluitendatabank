@@ -151,6 +151,13 @@ export default class AgendaItemsRoute extends Route {
     this.plannedStartMin = params.plannedStartMin || "";
     this.plannedStartMax = params.plannedStartMax || "";
 
+    params.municipality
+      ? controller.set("selectedMunicipality", {
+          id: params.municipality,
+          label: params.municipality,
+        })
+      : controller.set("selectedMunicipality", null);
+
     // Check if the parameters have changed compared to the last time
 
     let locationIds = await this.municipalityList.getLocationIdsFromLabels(this.municipalityLabels.split(seperator));
@@ -160,13 +167,16 @@ export default class AgendaItemsRoute extends Route {
       "agenda-item",
       getQuery({
         page: currentPage,
+        
         locationIds: locationIds.join(","),
-        keyword: this.keywordStore.keyword != "" ? this.keywordStore.keyword : undefined,
-        plannedStartMin: this.plannedStartMin != ""
-          ? this.plannedStartMin
+
+        keyword: params.keyword ? params.keyword : undefined,
+        municipality: params.municipality ? params.municipality : undefined,
+        plannedStartMin: params.plannedStartMin
+          ? params.plannedStartMin
           : undefined,
-        plannedStartMax: this.plannedStartMax != ""
-          ? this.plannedStartMax
+        plannedStartMax: params.plannedStartMax
+          ? params.plannedStartMax
           : undefined,
       })
     );

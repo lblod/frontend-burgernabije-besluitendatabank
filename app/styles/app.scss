@@ -7,163 +7,41 @@
 @import "ember-appuniversum/a-plugins";
 @import "ember-appuniversum/a-utilities";
 
-.daterangepicker .ranges li.active {
-  background-color: var(--au-blue-700);
-  color: #fff;
-}
-.daterangepicker {
-  font: var(--au-font);
-}
-#detail-left-section {
-  width: 100%;
-  height: 100%;
-}
+@import "au-overrides";
+@import "custom-classes";
 
-ol {
-  list-style-type: decimal;
-}
+@import "routes/map";
+@import "routes/municipality";
+@import "routes/session";
 
-ol li {
-  // display: inline;
-  // float: left;
-  margin: 0 12px;
-  padding: 0 12px;
-}
+@import "components/content-header";
+@import "components/decision-card";
+@import "components/participant-card";
+@import "components/vote-table-entry";
 
-.au-c-main-footer {
-  margin-top: auto;
-}
-.au-c-main-container__content {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.daterangepicker td.active,
-.daterangepicker td.start-date.end-date {
-  background-color: var(--au-blue-700) !important;
-  border-radius: 0px;
-  &:hover {
-    background-color: var(--au-blue-900);
-  }
-}
-
-.au-c-card--fill {
-  height: fit-content;
-}
-
-.daterangepicker td.in-range {
-  background-color: var(--au-blue-200);
-}
 
 html {
   font-size: 50%;
 }
 
-#map-cursor {
-  height: 100%;
-  width: 100%;
-}
-
-@media (max-width: 1100px) {
-  div .au-c-form-row .au-c-form-row--inline {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    gap: 0;
-  }
-
-  .au-c-form-row--inline {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    gap: 0;
+ol {
+  list-style-type: decimal;
+  li {
+    // display: inline;
+    // float: left;
+    margin: 0 12px;
+    padding: 0 12px;
   }
 }
 
-.card-hover:hover {
-  // border-top: solid 5px #ffe615;
-  box-shadow: 0 -5px 0 #ffe615;
-  transition: all 10ms;
-  cursor: pointer;
-}
-
-.bp-map {
-  position: relative;
-  width: 100%;
-  // margin-top: -1rem;
-  align-items: center;
-  // background-color: palevioletred;
-  z-index: 0;
-}
-.provinces {
-  fill: none;
-  stroke: black;
-  stroke-width: 0.1rem;
-}
-.municipalities {
-  stroke: black;
-  &:hover {
-    fill: white;
-  }
-}
 path {
   stroke: white;
   stroke-width: 0.08rem;
 }
-.legend,
-.legend_besluit {
-  stroke: black;
-  stroke-width: 0.1rem;
-}
-.text_legend {
-  font-size: 1.1rem;
-  color: black;
-}
-#tooltip {
-  position: absolute;
-  visibility: hidden;
-  pointer-events: none;
-  z-index: 100;
-  display: block;
-  transition: 0.1s;
-  transform: translate(2%, -50%);
-  height: auto;
-  width: auto;
-  background-color: white;
-  color: black;
-  font: 1.5rem;
-  text-align: left;
-  padding: 0.8rem 1.1rem;
-  border-radius: 0.5rem;
-  box-shadow: 0.5rem 0.5rem 1rem -0.6rem gray;
-  .fractie {
-    font-size: 1.5rem;
-    font-weight: 500;
-  }
-  .gemeente {
-    font-size: 1.7rem;
-    font-weight: 500;
-  }
-}
+
 cursor {
   cursor: pointer;
 }
 
-.truncate {
-  display: -webkit-box;
-  -webkit-line-clamp: 7; /* Number of lines to show */
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 1.2em;
-  line-height: 1.2em; /* Adjust the line height as needed */
-  max-height: 4.8em;
-}
-
-#detail-right-section {
-  height: 100%;
-  min-height: 100% !important;
-}
 
 @import "ember-appuniversum/p-ember-power-select";
