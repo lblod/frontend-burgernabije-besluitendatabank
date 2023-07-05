@@ -5,10 +5,12 @@ import Model, {
   type AsyncHasMany,
 } from '@ember-data/model';
 import { getFormattedDateRange } from 'frontend-burgernabije-besluitendatabank/utils/get-formatted-date-range';
+import { getFormattedDate } from 'frontend-burgernabije-besluitendatabank/utils/get-formatted-date';
 import AgendaItemModel from './agenda-item';
 import GoverningBodyModel from './governing-body';
 
 export default class SessionModel extends Model {
+  @attr('date') declare plannedStart?: Date;
   @attr('date') declare startedAt?: Date;
   @attr('date') declare endedAt?: Date;
 
@@ -38,8 +40,15 @@ export default class SessionModel extends Model {
     return !!this.governingBody?.administrativeUnit;
   }
 
-  get dateRange() {
-    return getFormattedDateRange(this.startedAt, this.endedAt);
+  get dateFormatted() {
+    if(!!this.startedAt || !!this.endedAt) {
+      return getFormattedDateRange(this.startedAt, this.endedAt);
+    }
+    if(!!this.plannedStart) {
+      return getFormattedDate(this.plannedStart);
+    }
+
+    return "Geen Datum";
   }
 
   get agendaItemCount() {

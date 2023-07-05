@@ -29,12 +29,7 @@
           class="au-u-flex au-u-muted au-u-margin-top-tiny au-u-u-flex--vertical-center"
         >
           <AuIcon class="au-u-margin-right-small" @size="large" @icon="check" />
-          <p>
-            {{#if this.model.agendaItem.session.dateRange}}
-              {{ this.model.agendaItem.session.dateRange}}
-            {{else}}
-              Geen Datum
-            {{/if}}</p>
+          <p>{{ this.model.agendaItem.session.dateFormatted}}</p>
         </section>
         <section
           class="au-u-flex au-u-muted au-u-margin-top-tiny au-u-u-flex--vertical-center"
