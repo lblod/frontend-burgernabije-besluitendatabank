@@ -115,10 +115,32 @@ This is a very simple one! This uses mu-cl-resources' `:or:` helper to check if 
 
 #### Date
 This uses the mu-cl-resources' `:gt:` and `:lt:` helpers (greater than and less than respectively). An agenda-item or session is returned if...
+
+**Agenda-items:**
+- The first selected date is *after* (gt) `agenda-item.session.started-at`
+- The second selected date is *before* (lt) `agenda-item.session.ended-at`
+
+This will return agenda-items with sessions that have been finished.
+
+**Sessions:**
+- The first selected date is *after* (gt) `session.planned-start`
+- The second selected date is *before* (lt) `session.planned-start`
+
+This will return sessions that started between those two dates, whether they have been finished or not. 
+
+
+<details>
+    <summary>Note: the information in this spoiler is for a possible future filter change</summary>
+
 - The first selected date is *after* (gt) `(agenda-item.) session.planned-start`
 - The second selected date is *before* (lt) `(agenda-item.) session.planned-start`
 
 There is additionally a `session.started-at` and `session.ended-at` property, but these are only present when the session is in the past, which would give incomplete results.
+
+
+</details>
+
+
 
 ### Ember-Data@3
 
