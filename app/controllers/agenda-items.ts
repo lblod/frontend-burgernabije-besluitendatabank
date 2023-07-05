@@ -28,6 +28,8 @@ export default class AgendaItemsController extends Controller {
 
   @action
   async loadMore() {
+    let moreDataToLoad = true;
+
     if (this.model && !this.isLoadingMore) {
       this.isLoadingMore = true;
 
@@ -48,11 +50,16 @@ export default class AgendaItemsController extends Controller {
         agendaItems.toArray()
       );
 
+      const previousAmount = this.model.agendaItems.length;
       this.model.agendaItems.setObjects(concatenateAgendaItems);
+      if (this.model.agendaItems.length === previousAmount) {
+        moreDataToLoad = false;
+      }
 
       this.model.currentPage = nextPage;
       this.isLoadingMore = false;
     }
+    return moreDataToLoad;
   }
   get currentRoute() {
     return this.router.currentRouteName;

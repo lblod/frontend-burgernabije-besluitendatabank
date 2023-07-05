@@ -9,7 +9,9 @@
     {{#if @isLoading}}
       <AuLoader />
     {{else}}
-      <AuButton {{action "loadMore"}}>Laad meer</AuButton>
+      {{#if @moreData}}
+        <AuButton {{action "loadMore"}}>Laad meer</AuButton>
+      {{/if}}
     {{/if}}
   </div>
 </div>

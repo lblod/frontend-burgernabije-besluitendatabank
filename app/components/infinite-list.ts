@@ -1,13 +1,16 @@
 import Component from "@glimmer/component";
 import { action } from "@ember/object";
 import { throttle } from '@ember/runloop';
+import { tracked } from "@glimmer/tracking";
 
 interface ArgsInterface {
-    loadMore: () => void;
+    loadMore: () => boolean;
     isLoading: boolean;
 }
 
 export default class InfiniteList extends Component<ArgsInterface> {
+    @tracked moreDataToLoad = true;
+
     @action
     scroll(event: any) {
         throttle(this, this._onScroll, event, 500, false);
@@ -26,6 +29,6 @@ export default class InfiniteList extends Component<ArgsInterface> {
 
     @action
     loadMore() {
-        this.args.loadMore();
+        this.moreDataToLoad = this.args.loadMore();
     }
 }

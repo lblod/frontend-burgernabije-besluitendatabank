@@ -20,6 +20,8 @@ export default class SessionsIndexController extends Controller {
     @action
     async loadMore() {
         //todo add max page guard
+        let moreDataToLoad = true;
+
         if (this.model && !this.isLoadingMore) {
             this.isLoadingMore = true;
             const nextPage = this.model.currentPage + 1;
@@ -36,11 +38,18 @@ export default class SessionsIndexController extends Controller {
                     plannedStartMax=plannedStartMax, 
                     municipalities=municipalities));
             const concatenateSessions = this.model.sessions.concat(sessions.toArray());
+
+            const previousAmount = this.model.sessions.length; 
             this.model.sessions.setObjects(concatenateSessions);
+            if (this.model.sessions.length === previousAmount) {
+                moreDataToLoad = false;
+            }
 
             this.model.currentPage = nextPage;
             this.isLoadingMore = false;
         }
+
+        return moreDataToLoad;
     }
 
     get isEmpty() {
