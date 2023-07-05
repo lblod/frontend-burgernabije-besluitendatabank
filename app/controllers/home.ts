@@ -11,11 +11,14 @@ export default class HomeController extends Controller {
   @service declare router: RouterService;
   @service declare municipalityList: MunicipalityListService;
 
-  @tracked loading = false;
+  declare model: ModelFrom<AgendaItemsRoute>;
+
+  // Currently unused
+  @tracked isLoadingMore = false;
   @tracked errorMsg = "";
 
-  declare model: ModelFrom<AgendaItemsRoute>;
-  @tracked isLoadingMore = false;
+  /** Controls the loading animation of the "locatie's opslaan" button */
+  @tracked loading = false;
 
   @tracked selectedMunicipality: {
     label: string;
@@ -26,6 +29,7 @@ export default class HomeController extends Controller {
     return this.municipalityList.municipalities();
   }
 
+  /** Resets the button loading animation */
   @action resetLoading() {
     this.loading = false;
   }

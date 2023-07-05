@@ -4,6 +4,7 @@ import { ModelFrom } from '../../lib/type-utils';
 import SessionSessionRoute from '../../routes/sessions/session';
 
 export default class SessionsSessionController extends Controller {
+    /** Used to fetch agenda items from the model */
     declare model: ModelFrom<SessionSessionRoute>;
 
     @computed('model.agendaItems')

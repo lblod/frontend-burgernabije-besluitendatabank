@@ -7,11 +7,17 @@ import { tracked } from "@glimmer/tracking";
 import { service } from "@ember/service";
 import MunicipalityListService from "frontend-burgernabije-besluitendatabank/services/municipality-list";
 import { get } from "@ember/object";
+
+
 export default class SessionsIndexController extends Controller {
-    declare model: ModelFrom<SessionIndexRoute>;
     @service declare store: Store;
-    @tracked isLoadingMore = false;
     @service declare municipalityList: MunicipalityListService;
+
+    /** Used to request more data */
+    declare model: ModelFrom<SessionIndexRoute>;
+    
+    /** Controls the loading animation of the "load more" button */
+    @tracked isLoadingMore = false;
 
     get municipalities() {
         return this.municipalityList.municipalities();

@@ -10,6 +10,7 @@ export default class SelectMultipleFilterComponent extends FilterComponent {
     @tracked selected: any;
 
 
+    /** Action to parse the queryParameter value(s) & select them in the select input */
     @action
     async inserted() {
         // The queryParam is an array of searchField values, joined by seperator

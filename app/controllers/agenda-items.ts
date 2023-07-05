@@ -14,17 +14,22 @@ export default class AgendaItemsController extends Controller {
   @service declare router: RouterService;
   @service declare store: Store;
   @service declare keywordStore: KeywordStoreService;
-  @service declare municipalityList: MunicipalityListService;
+  @service declare municipalityList: MunicipalityListService;  
+
+  // QueryParameters
   @tracked municipalityLabels: string = "";
   @tracked sort: string = "";
   @tracked plannedStartMin: string = "";
   @tracked plannedStartMax: string = "";
 
+  /** Used for requesting more data */
   declare model: ModelFrom<AgendaItemsRoute>;
-  @tracked isLoadingMore = false;
 
-  @tracked loading = false;
-  @tracked errorMsg = "";
+  /** Controls the loading animation of the "load more" button */
+  @tracked isLoadingMore = false;  
+
+  @tracked loading = false;  // Controls the loading animation that replaces the main view
+  @tracked errorMsg = "";  // Controls whether an Oops is shown
 
   @action
   async loadMore() {

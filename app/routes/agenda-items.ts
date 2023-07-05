@@ -109,6 +109,7 @@ export default class AgendaItemsRoute extends Route {
     },
   };
 
+  // QueryParams
   @tracked municipalityLabels: any;
   @tracked sort: any;
   @tracked plannedStartMin: any;

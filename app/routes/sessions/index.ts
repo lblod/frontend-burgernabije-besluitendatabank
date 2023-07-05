@@ -5,6 +5,7 @@ import { tracked } from "@glimmer/tracking";
 import MunicipalityListService from "frontend-burgernabije-besluitendatabank/services/municipality-list";
 import { seperator } from "frontend-burgernabije-besluitendatabank/helpers/constants";
 
+/** Generate Ember Data options to fetch more sessions based on the passed filters */
 const getQuery = (page: number, plannedStartMin?: string, plannedStartMax?: string, locationIds?: string) => ({
   // exclude sessions without governing body and administrative unit
   //todo investigate why filtering is not working
@@ -48,6 +49,7 @@ export default class SessionsIndexRoute extends Route {
     }
   };
 
+  // QueryParams
   @tracked municipalityLabels: any;
   @tracked plannedStartMin: any;
   @tracked plannedStartMax: any;
