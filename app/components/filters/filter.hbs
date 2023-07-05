@@ -1,12 +1,14 @@
 <AuFormRow
       @alignment="inline"
-      class="au-u-1-1 au-u-padding-top-small au-u-padding-bottom-small"
+      class="{{@class}} au-u-1-1 au-u-padding-top-small au-u-padding-bottom-small"
     >
-    <AuLabel for={{@id}} class="au-u-2-6">
-      {{@label}}
-    </AuLabel>
+    {{#if @label}}
+      <AuLabel for={{@id}} class="au-u-2-6">
+        {{@label}}
+      </AuLabel>
+    {{/if}}
     <section
-      class="au-u-4-6 au-u-flex au-u-flex--column au-u-flex--spaced"
+      class="{{if @label "au-u-4-6" "au-u-1-1"}} au-u-flex au-u-flex--column au-u-flex--spaced"
     >
         {{yield}}
     </section>

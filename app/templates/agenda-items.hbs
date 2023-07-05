@@ -3,23 +3,16 @@
   <FilterSidebar @class="au-u-2-5 au-u-max-width-xsmall">
     <Filters::SelectMultipleFilter
       @id="municipality"
-      @label="Gemeente"
+      @label="Waar woon je?"
       @options={{this.municipalities}}
       @searchField="label"
       @queryParam="gemeentes"
       @placeholder="Selecteer een optie"
       @value={{this.municipality}}
     />
-    <Filters::TextFilter
-      @id="keyword"
-      @label="Trefwoord"
-      @placeholder="Terrasvergunning"
-      @queryParam="trefwoord"
-      @value={{this.keyword}}
-    />
     <Filters::DateRangeFilter
       @id="startDate"
-      @label="Datum"
+      @label="Wanneer?"
       @queryParamsA="begin"
       @queryParamsB="eind"
       @valueA={{this.plannedStartMin}}
@@ -39,6 +32,18 @@
         <LoaderFullPage @content="Agendapunt aan het laden"/>
 
       {{else}}
+        <div class="au-u-padding-left-large au-u-padding-right-large au-u-margin-bottom-large">
+          <h2 class="au-u-h2 au-u-medium">Wat zoek je?</h2>
+          <Filters::TextFilter
+            @class
+            @id="keyword"
+            @placeholder="Zoek in alle lokale agendas en besluiten"
+            @queryParam="trefwoord"
+            @value={{this.keyword}}
+          />
+        </div>
+        
+
         {{! if @model.agendaItems length is equal to 0 }}
         {{#if (eq @model.agendaItems.length 0)}}
           <AuAlert
