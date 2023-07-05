@@ -1,12 +1,29 @@
 <Filters::Filter @id={{@id}} @label={{@label}}>
     <AuInput
         id={{@id}}
-
         @type={{"text"}}
+        
+        @width="block"
+
         @value={{@value}}
         placeholder={{@placeholder}}
         onChange={{action this.onChange}}
+
+        class={{@inputClass}}
+        
+
+        @icon={{@icon}}
+        @iconAlignment="right"
     />
     {{yield}}
+    {{#if @buttonText}}
+        <AuButton
+            {{!-- au-u-flex--center centers the text --}}
+            class="{{@inputClass}} au-u-1-5 au-u-padding-left au-u-padding-right au-u-flex--center" 
+            {{action this.onChange}}
+        >
+            {{@buttonText}}
+        </AuButton>
+    {{/if}}
 
 </Filters::Filter>

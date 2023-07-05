@@ -37,6 +37,7 @@
       </AuAlert>
     {{else}}
       <InfiniteList
+        @class="au-u-padding-left-large au-u-padding-right-large"
         @loadMore={{action "loadMore"}}
         @isLoading={{this.isLoadingMore}}
       >
