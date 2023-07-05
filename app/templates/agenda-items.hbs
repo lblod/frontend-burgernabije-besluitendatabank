@@ -1,7 +1,7 @@
 <AuBodyContainer class="au-u-flex--row">
 
   <FilterSidebar @class="au-u-2-5 au-u-max-width-xsmall">
-    <FilterSidebar::SelectMultipleFilter
+    <Filters::SelectMultipleFilter
       @id="municipality"
       @label="Gemeente"
       @options={{this.municipalities}}
@@ -10,14 +10,14 @@
       @placeholder="Selecteer een optie"
       @value={{this.municipality}}
     />
-    <FilterSidebar::TextFilter
+    <Filters::TextFilter
       @id="keyword"
       @label="Trefwoord"
       @placeholder="Terrasvergunning"
       @queryParam="trefwoord"
       @value={{this.keyword}}
     />
-    <FilterSidebar::DateRangeFilter
+    <Filters::DateRangeFilter
       @id="startDate"
       @label="Datum"
       @queryParamsA="begin"

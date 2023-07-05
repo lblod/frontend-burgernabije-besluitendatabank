@@ -2,7 +2,7 @@ import { action } from "@ember/object";
 import FilterComponent from './filter';
 import { get } from '@ember/object';
 
-export default class SearcherSelectFilterComponent extends FilterComponent {
+export default class SelectFilterComponent extends FilterComponent {
     
     @action
     async selectChange(m: any) {
