@@ -11,6 +11,10 @@ interface ArgsInterface {
 
     searchField: string;
     options: any;
+
+    value?: any;
+    valueA?: any;
+    valueB?: any;
 }
 
 export default class FilterComponent extends Component<ArgsInterface> {

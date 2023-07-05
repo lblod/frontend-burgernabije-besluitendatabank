@@ -4,12 +4,13 @@
 
       id={{@id}}
       @label={{@label}}
-      @start={{@valueA}}
-      @end={{@valueB}}
+      
+      @start={{this.start}}
+      @end={{this.end}}
       
       @cancelAction={{action this.resetDate}}
       @applyAction={{action this.dateChange}}
-      @hideAction={{action this.dateChange}}
+      @hideAction={{action this.hideDate}}
 
       @cancelLabel="Reset"
     />
