@@ -1,15 +1,15 @@
-"use strict";
+'use strict';
 
-const EmberApp = require("ember-cli/lib/broccoli/ember-app");
+const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
 const environment = process.env.EMBER_ENV;
-const IS_PROD = environment === "production";
-const IS_TEST = environment === "test";
+const IS_PROD = environment === 'production';
+const IS_TEST = environment === 'test';
 
 module.exports = function (defaults) {
   let app = new EmberApp(defaults, {
     autoImport: {
-      exclude: ["flandersMunicipalities.ts"],
+      exclude: ['flandersMunicipalities.ts'],
       webpack: {
         node: {
           global: true,
@@ -17,12 +17,12 @@ module.exports = function (defaults) {
       },
       useSwcParser: true,
       resolve: {
-        extensions: [".js", ".json"],
+        extensions: ['.js', '.json'],
       },
     },
     hinting: IS_TEST,
     tests: IS_TEST,
-    "ember-cli-babel": {
+    'ember-cli-babel': {
       includePolyfill: IS_PROD,
     },
     autoprefixer: {
@@ -34,17 +34,17 @@ module.exports = function (defaults) {
     fingerprint: {
       enabled: true,
     },
-    "@appuniversum/ember-appuniversum": {
+    '@appuniversum/ember-appuniversum': {
       disableWormholeElement: true,
     },
-    "ember-cli-babel": {
+    'ember-cli-babel': {
       includePolyfill: true,
     },
-    "ember-cli-terser": {
+    'ember-cli-terser': {
       enabled: true,
-      exclude: ["assets/vendor.js", "flandersMunicipalities.ts"],
+      exclude: ['assets/vendor.js', 'flandersMunicipalities.ts'],
     },
-    "ember-cli-htmlbars-inline-precompile": {
+    'ember-cli-htmlbars-inline-precompile': {
       enabled: true,
     },
   });

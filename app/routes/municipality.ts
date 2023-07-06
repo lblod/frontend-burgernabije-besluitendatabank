@@ -1,19 +1,19 @@
-import Store from "@ember-data/store";
-import Route from "@ember/routing/route";
-import { service } from "@ember/service";
-import Ember from "ember";
+import Store from '@ember-data/store';
+import Route from '@ember/routing/route';
+import { service } from '@ember/service';
+import Ember from 'ember';
 
 interface AgendaItemsRequestInterface {
   page: {
-    size: Number;
+    size: number;
   };
-  include: String;
-  municipality?: String;
+  include: string;
+  municipality?: string;
   filter?: {
-    ":or:"?: {};
+    ':or:'?: {};
     session?: {
-      "governing-body"?: {
-        "administrative-unit": {
+      'governing-body'?: {
+        'administrative-unit': {
           name?: {};
           location?: {};
         };
@@ -32,22 +32,22 @@ export default class MunicipalityRoute extends Route {
   async model(params: any) {
     const { municipality, page } = params;
 
-    let req: AgendaItemsRequestInterface = {
+    const req: AgendaItemsRequestInterface = {
       page: {
         size: 10,
       },
       municipality: municipality,
       include: [
-        "session",
-        "session.governing-body",
-        "session.governing-body.administrative-unit",
-      ].join(","),
+        'session',
+        'session.governing-body',
+        'session.governing-body.administrative-unit',
+      ].join(','),
       filter: {},
     };
 
-    let sessionFilter: { [key: string]: any } = {};
-    sessionFilter["governing-body"] = {
-      "administrative-unit": { name: municipality },
+    const sessionFilter: { [key: string]: any } = {};
+    sessionFilter['governing-body'] = {
+      'administrative-unit': { name: municipality },
     };
     req.filter = {};
 
@@ -55,7 +55,7 @@ export default class MunicipalityRoute extends Route {
 
     const data = await Ember.RSVP.hash({
       gemeenteraadsleden: [],
-      agenda_items: this.store.query("agenda-item", req),
+      agenda_items: this.store.query('agenda-item', req),
       title: municipality,
     });
     return data;

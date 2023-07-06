@@ -1,13 +1,12 @@
-import { action } from "@ember/object";
+import { action } from '@ember/object';
 import FilterComponent from './filter';
 
 export default class DateRangeFilterComponent extends FilterComponent {
-
   @action
   resetDate() {
     this.updateQueryParams({
       [this.args.queryParamsA]: undefined,
-      [this.args.queryParamsB]: undefined
+      [this.args.queryParamsB]: undefined,
     });
   }
 
@@ -15,7 +14,7 @@ export default class DateRangeFilterComponent extends FilterComponent {
   async dateChange(e: any, start: string, end: string) {
     this.updateQueryParams({
       [this.args.queryParamsA]: start,
-      [this.args.queryParamsB]: end
+      [this.args.queryParamsB]: end,
     });
   }
 }

@@ -1,5 +1,5 @@
-import Component from "@glimmer/component";
-import { format } from "date-fns";
+import Component from '@glimmer/component';
+import { format } from 'date-fns';
 
 interface ArgsInterface {
   item: any;
@@ -14,12 +14,12 @@ export default class DecisionCard extends Component<ArgsInterface> {
 
   get startDate() {
     return this.args.startDate
-      ? format(this.args.startDate, "dd/MM/yyyy")
+      ? format(this.args.startDate, 'dd/MM/yyyy')
       : null;
   }
 
   get endDate() {
-    return this.args.endDate ? format(this.args.endDate, "dd/MM/yyyy") : null;
+    return this.args.endDate ? format(this.args.endDate, 'dd/MM/yyyy') : null;
   }
 
   get dateRange() {
@@ -28,7 +28,7 @@ export default class DecisionCard extends Component<ArgsInterface> {
     if (!this.startDate) return this.endDate;
 
     if (this.startDate != this.endDate) {
-      return this.startDate + " tot " + this.endDate;
+      return this.startDate + ' tot ' + this.endDate;
     } else {
       return this.endDate;
     }
