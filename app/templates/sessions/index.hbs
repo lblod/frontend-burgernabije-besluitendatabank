@@ -1,7 +1,7 @@
 {{page-title "Zittingen"}}
 
-<div class="au-u-flex" style="overflow-y: scroll; width: 100%; height: 100%;">
-    
+<div class="au-u-flex" style="overflow-y: scroll; width: 100%; height: 100%;" {{!template-lint-disable no-inline-styles}}>
+
   <FilterSidebar @class="au-u-2-5">
     <Filters::SelectMultipleFilter
       @id="municipality"
@@ -24,11 +24,13 @@
   </FilterSidebar>
   <section
     class="au-u-flex au-u-flex--column au-u-padding-top-large"
+    {{!template-lint-disable no-inline-styles}}
     style="width: 100%; height: 100%;"
   >
     {{#if this.isEmpty}}
       <AuAlert
         class="au-u-medium au-u-margin"
+        {{!template-lint-disable no-inline-styles}}
         style=" position: sticky; top: 0;"
         @skin="warning"
         @icon="three-dots"
@@ -38,7 +40,7 @@
     {{else}}
       <InfiniteList
         @class="au-u-padding-left-large au-u-padding-right-large"
-        @loadMore={{action "loadMore"}}
+        @loadMore={{this.loadMore}}
         @isLoading={{this.isLoadingMore}}
       >
         {{#each @model.sessions as |session|}}

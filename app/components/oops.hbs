@@ -6,6 +6,6 @@
     <AuLink @skin="button" @route="home">Terug naar de startpagina</AuLink>
   </section>
   {{#if @image}}
-    <img src={{@image}} />
+    <img src={{@image}} alt="" {{!template-lint-disable require-valid-alt-text}}/>
   {{/if}}
 </AuBodyContainer>

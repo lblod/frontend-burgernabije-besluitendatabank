@@ -25,7 +25,7 @@
     {{#if this.errorMsg}}
       <Oops
         @title="Oeps!"
-        @content="Er is iets fout gelopen!" 
+        @content="Er is iets fout gelopen!"
       />
     {{else}}
       {{#if this.loading}}
@@ -47,7 +47,7 @@
             @icon="search"
           />
         </div>
-        
+
 
         {{! if @model.agendaItems length is equal to 0 }}
         {{#if (eq @model.agendaItems.length 0)}}
@@ -60,7 +60,7 @@
           </AuAlert>
         {{else}}
           <InfiniteList
-            @loadMore={{action "loadMore"}}
+            @loadMore={{this.loadMore}}
             @isLoading={{this.isLoadingMore}}
           >
             {{#each @model.agendaItems as |item|}}
