@@ -6,12 +6,15 @@ import SessionIndexRoute from '../../routes/sessions/index';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
-import { get } from '@ember/object';
+
 export default class SessionsIndexController extends Controller {
   declare model: ModelFrom<SessionIndexRoute>;
   @service declare store: Store;
   @tracked isLoadingMore = false;
   @service declare municipalityList: MunicipalityListService;
+  plannedStartMin?: string;
+  plannedStartMax?: string;
+  municipality?: string;
 
   get municipalities() {
     return this.municipalityList.municipalities();

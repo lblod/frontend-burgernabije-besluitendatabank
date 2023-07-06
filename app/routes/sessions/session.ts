@@ -7,9 +7,9 @@ export default class SessionRoute extends Route {
   @service declare store: Store;
 
   async model({ session_id }: { session_id: string }) {
-    // @ts-ignore
     const sessionFromParent: undefined | SessionModel = this.modelFor(
       'sessions.index'
+      // @ts-ignore
     )?.sessions?.find((session: any) => session.id === session_id);
     const session: SessionModel =
       sessionFromParent ??
