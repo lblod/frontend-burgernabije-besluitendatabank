@@ -182,12 +182,11 @@
       {{#if this.model.agendaItem.session.dateRange}}
         <c.header>
           <h2 class="au-u-h3">
-              Volledige agenda van {{this.model.agendaItem.session.dateRange}}
+              Meer agenda op {{this.model.agendaItem.session.dateRange}}
           </h2>
         </c.header>
       {{/if}}
         <c.content class="au-u-flex au-u-flex--column">
-
           {{#if this.model.agendaItemOnSameSession}}
             {{#each this.model.agendaItemOnSameSession as |agendaItem|}}
               {{! if the agendaItem.id is equal to the current agendaItem then display "Huidige agendapunt" }}
@@ -202,7 +201,11 @@
             {{/each}}
           {{/if}}
         </c.content>
-
+        <c.footer>
+          <AuLink @route="sessions.session" @model={{this.model.agendaItem.session.id}}>
+            Bekijk de volledige agenda
+          </AuLink>
+        </c.footer>
       </AuCard>
     {{/if}}
   </article>

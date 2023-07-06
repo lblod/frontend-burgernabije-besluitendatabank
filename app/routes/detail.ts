@@ -2,6 +2,29 @@ import Store from "@ember-data/store";
 import Route from "@ember/routing/route";
 import { service } from "@ember/service";
 import KeywordStoreService from "frontend-burgernabije-besluitendatabank/services/keyword-store";
+import { sortObjectsByTitle } from "frontend-burgernabije-besluitendatabank/utils/array-utils";
+
+const agendaItemIncludes = [
+  "session",
+  // "session.governing-body",
+  "session.governing-body.administrative-unit",
+  // 'handled-by',
+  "handled-by.has-votes",
+  "handled-by.resolutions",
+  // 'session.governing-body',
+  "session.governing-body.administrative-unit",
+  // 'handled-by.has-votes.has-presents',
+  // 'handled-by.has-votes.has-abstainers',
+  "handled-by.has-votes.has-abstainers.alias",
+  "handled-by.has-votes.has-abstainers.has-membership.inner-group",
+  // 'handled-by.has-votes.has-voters',
+  // 'handled-by.has-votes.has-opponents',
+  "handled-by.has-votes.has-opponents.alias",
+  "handled-by.has-votes.has-opponents.has-membership.inner-group",
+  // 'handled-by.has-votes.has-proponents',
+  "handled-by.has-votes.has-proponents.alias",
+  "handled-by.has-votes.has-proponents.has-membership.inner-group",
+].join(",");
 
 export default class DetailRoute extends Route {
   @service declare store: Store;
@@ -9,43 +32,23 @@ export default class DetailRoute extends Route {
 
   async model(params: any) {
     let agendaItem = await this.store.findRecord("agenda-item", params.id, {
-      include: [
-        "session",
-        // "session.governing-body",
-        "session.governing-body.administrative-unit",
-        // 'handled-by',
-        "handled-by.has-votes",
-        "handled-by.resolutions",
-        // 'session.governing-body',
-        "session.governing-body.administrative-unit",
-        // 'handled-by.has-votes.has-presents',
-        // 'handled-by.has-votes.has-abstainers',
-        "handled-by.has-votes.has-abstainers.alias",
-        "handled-by.has-votes.has-abstainers.has-membership.inner-group",
-        // 'handled-by.has-votes.has-voters',
-        // 'handled-by.has-votes.has-opponents',
-        "handled-by.has-votes.has-opponents.alias",
-        "handled-by.has-votes.has-opponents.has-membership.inner-group",
-        // 'handled-by.has-votes.has-proponents',
-        "handled-by.has-votes.has-proponents.alias",
-        "handled-by.has-votes.has-proponents.has-membership.inner-group",
-      ].join(","),
+      include: agendaItemIncludes,
     });
 
-    let agendaItemOnSameSession = await this.store.query("agenda-item", {
-      page: {
-        size: 4,
-      },
-      include: ["session"].join(","),
+    const sessionId = agendaItem.session?.get("id");
+    const agendaItemOnSameSessionRaw = !!sessionId ? (await this.store.query("agenda-item", {
+      include: agendaItemIncludes,
       filter: {
         session: {
-          "started-at": agendaItem?.session
-            ?.get("startedAt")
-            ?.toISOString()
-            ?.split("T")[0],
-        },
+          [':id:']: sessionId,
+        }
       },
-    });
+    })).toArray() : [];
+
+    const agendaItemOnSameSession = agendaItemOnSameSessionRaw
+      .filter((item) => item.id !== agendaItem.id)
+      .sort(sortObjectsByTitle)
+      .slice(0, 4);
 
     let formattedTableVote: any[] = [];
 
@@ -115,10 +118,10 @@ export default class DetailRoute extends Route {
     });
 
     return {
-      agendaItem: agendaItem,
-      agendaItemOnSameSession: agendaItemOnSameSession,
-      formattedTableVote: formattedTableVote,
-      similiarAgendaItems: similiarAgendaItems,
+      agendaItem,
+      agendaItemOnSameSession,
+      formattedTableVote,
+      similiarAgendaItems,
     };
   }
 }
