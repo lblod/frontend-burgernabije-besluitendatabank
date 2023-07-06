@@ -1,15 +1,16 @@
 <Filters::Filter @id={{@id}} @label={{@label}}>
     <PowerSelect
+      {{!template-lint-disable no-duplicate-id}}
       id={{@id}}
 
-      @onChange={{action this.selectChange}}
+      @onChange={{this.selectChange}}
 
-      
+
       @selected= {{if @value (hash label=@value) "" }}
 
       @options={{@options}}
 
-      @allowClear=true
+      @allowClear={{true}}
       @searchField={{@searchField}}
 
       @placeholder={{@placeholder}}

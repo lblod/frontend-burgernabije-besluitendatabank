@@ -1,6 +1,6 @@
-import RouterService from "@ember/routing/router-service";
-import { service } from "@ember/service";
-import Component from "@glimmer/component";
+import RouterService from '@ember/routing/router-service';
+import { service } from '@ember/service';
+import Component from '@glimmer/component';
 
 interface Link {
   route: string;
@@ -12,20 +12,20 @@ export default class NavigationBar extends Component {
 
   links: Array<Link> = [
     {
-      route: "home",
-      label: "Home",
+      route: 'home',
+      label: 'Home',
     },
     {
-      route: "agenda-items",
-      label: "Agendapunten",
+      route: 'agenda-items',
+      label: 'Agendapunten',
     },
     {
-      route: "map",
-      label: "Kaart",
+      route: 'map',
+      label: 'Kaart',
     },
     {
-      route: "sessions",
-      label: "Zittingen",
+      route: 'sessions',
+      label: 'Zittingen',
     },
   ];
 }

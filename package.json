@@ -15,10 +15,18 @@
   },
   "scripts": {
     "build": "ember build --environment=production",
+    "lint": "concurrently \"npm:lint:*(!fix)\" --names \"lint:\"",
+    "lint:fix": "concurrently \"npm:lint:*:fix\" --names \"fix:\"",
+    "lint:hbs": "ember-template-lint .",
+    "lint:hbs:fix": "ember-template-lint . --fix",
+    "lint:js": "eslint . --cache",
+    "lint:js:fix": "eslint . --fix",
     "dev": "ember serve --environment=development",
     "dev:proxy": "ember serve --environment=development --proxy=https://burgernabije-besluitendatabank-dev.s.redhost.be/",
     "start": "ember serve --environment=development",
-    "prod": "ember serve --environment=production"
+    "prod": "ember serve --environment=production",
+    "test": "concurrently \"npm:lint\" \"npm:test:*\" --names \"lint,test:\"",
+    "test:ember": "ember test"
   },
   "devDependencies": {
     "@appuniversum/ember-appuniversum": "^2.2.0",
@@ -64,8 +72,9 @@
     "@types/qunit": "^2.19.4",
     "@types/rsvp": "^4.0.4",
     "@types/topojson": "^3.2.3",
+    "@typescript-eslint/eslint-plugin": "^5.61.0",
+    "@typescript-eslint/parser": "^5.61.0",
     "au-date-range-picker": "^0.2.0",
-    "babel-eslint": "^10.1.0",
     "broccoli-asset-rev": "^3.0.0",
     "concurrently": "^7.6.0",
     "ember-auto-import": "^2.6.3",
