@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import { action, computed } from '@ember/object';
+import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
@@ -35,15 +35,6 @@ export default class MapComponent extends Controller {
 
   @tracked path: any = geoPath().projection(this.projection);
 
-  @computed(
-    'model.locationData',
-    'model.agendaData',
-    'model.agendaData.session',
-    'model.agendaData.session.governingBody',
-    'model.agendaData.session.governingBody.administrativeUnit',
-    'model.agendaData.session.governingBody.administrativeUnit.location',
-    'model.mandatenData.[]'
-  )
   @action
   initMap() {
     document.addEventListener('mousemove', (e) => {

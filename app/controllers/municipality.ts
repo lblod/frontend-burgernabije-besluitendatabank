@@ -10,7 +10,6 @@ export default class MunicipalityController extends Controller {
 
   //@tracked options = ["antwerpen"];
   @tracked selected = '';
-  @action handleKeywordChange() {}
 
   @tracked queryParams = ['page'];
   @tracked page = 0;

@@ -1,7 +1,7 @@
 import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
-import Ember from 'ember';
+import { hash } from 'rsvp';
 
 interface AgendaItemsRequestInterface {
   page: {
@@ -53,7 +53,7 @@ export default class MunicipalityRoute extends Route {
 
     req.filter.session = sessionFilter;
 
-    const data = await Ember.RSVP.hash({
+    const data = await hash({
       gemeenteraadsleden: [],
       agenda_items: this.store.query('agenda-item', req),
       title: municipality,

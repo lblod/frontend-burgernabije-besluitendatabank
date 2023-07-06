@@ -27,17 +27,17 @@ export default class SessionsIndexController extends Controller {
       this.isLoadingMore = true;
       const nextPage = this.model.currentPage + 1;
 
-      let plannedStartMin = String(this.plannedStartMin) || undefined;
-      let plannedStartMax = String(this.plannedStartMax) || undefined;
-      let municipalities = String(this.municipality) || undefined;
+      const plannedStartMin = String(this.plannedStartMin) || undefined;
+      const plannedStartMax = String(this.plannedStartMax) || undefined;
+      const municipalities = String(this.municipality) || undefined;
 
       const sessions = await this.store.query(
         'session',
         this.model.getQuery(
           nextPage,
-          (plannedStartMin = plannedStartMin),
-          (plannedStartMax = plannedStartMax),
-          (municipalities = municipalities)
+          plannedStartMin,
+          plannedStartMax,
+          municipalities
         )
       );
       const concatenateSessions = this.model.sessions.concat(

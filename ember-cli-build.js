@@ -37,9 +37,6 @@ module.exports = function (defaults) {
     '@appuniversum/ember-appuniversum': {
       disableWormholeElement: true,
     },
-    'ember-cli-babel': {
-      includePolyfill: true,
-    },
     'ember-cli-terser': {
       enabled: true,
       exclude: ['assets/vendor.js', 'flandersMunicipalities.ts'],

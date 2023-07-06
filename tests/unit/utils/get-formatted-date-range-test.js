@@ -5,7 +5,7 @@ module('Unit | Utility | get-formatted-date-range', function () {
   test('returns empty string when date are missing', function (assert) {
     const result = getFormattedDateRange();
 
-    assert.equal(result, '');
+    assert.strictEqual(result, '');
   });
 
   test('returns simple date when start and end are equals', function (assert) {
@@ -14,7 +14,7 @@ module('Unit | Utility | get-formatted-date-range', function () {
       new Date('2020-12-21')
     );
 
-    assert.equal(result, '21/12/2020');
+    assert.strictEqual(result, '21/12/2020');
   });
 
   test('returns formatted date range when start and end are different', function (assert) {
@@ -23,6 +23,6 @@ module('Unit | Utility | get-formatted-date-range', function () {
       new Date('2020-12-22')
     );
 
-    assert.equal(result, '21/12/2020 tot 22/12/2020');
+    assert.strictEqual(result, '21/12/2020 tot 22/12/2020');
   });
 });

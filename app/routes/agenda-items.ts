@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-controller-access-in-routes */
 import Store from '@ember-data/store';
 import Error from '@ember/error';
 import { action } from '@ember/object';
