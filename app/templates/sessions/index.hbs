@@ -3,7 +3,7 @@
 <div class="au-u-flex" style="overflow-y: scroll; width: 100%; height: 100%;">
     
   <FilterSidebar @class="au-u-2-5">
-    <FilterSidebar::SelectMultipleFilter
+    <Filters::SelectMultipleFilter
       @id="municipality"
       @label="Gemeente"
       @options={{this.municipalities}}
@@ -12,7 +12,7 @@
       @placeholder="Selecteer een optie"
       @value={{this.municipality}}
     />
-    <FilterSidebar::DateRangeFilter
+    <Filters::DateRangeFilter
       @id="startDate"
       @label="Datum"
       @queryParamsA="begin"
@@ -37,6 +37,7 @@
       </AuAlert>
     {{else}}
       <InfiniteList
+        @class="au-u-padding-left-large au-u-padding-right-large"
         @loadMore={{action "loadMore"}}
         @isLoading={{this.isLoadingMore}}
       >

@@ -1,11 +1,11 @@
-<FilterSidebar::Filter @id={{@id}} @label={{@label}}>
-    <PowerSelectMultiple
+<Filters::Filter @id={{@id}} @label={{@label}}>
+    <PowerSelect
       id={{@id}}
 
       @onChange={{action this.selectChange}}
 
       
-      @selected= {{this.selected}}
+      @selected= {{if @value (hash label=@value) "" }}
 
       @options={{@options}}
 
@@ -17,12 +17,9 @@
       @searchMessage="Aan het zoeken..."
       @searchEnabled={{true}}
 
-      {{did-insert this.inserted}}
-
       as |value|
     >
       {{get value @searchField}}
 
-    </PowerSelectMultiple>
-    
-</FilterSidebar::Filter>
+    </PowerSelect>
+</Filters::Filter>

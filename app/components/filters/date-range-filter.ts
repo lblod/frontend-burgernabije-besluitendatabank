@@ -1,7 +1,7 @@
 import { action } from "@ember/object";
 import FilterComponent from './filter';
 
-export default class SearcherDateRangeFilterComponent extends FilterComponent {
+export default class DateRangeFilterComponent extends FilterComponent {
 
   @action
   resetDate() {
