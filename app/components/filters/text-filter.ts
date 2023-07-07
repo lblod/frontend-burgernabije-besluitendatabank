@@ -1,14 +1,17 @@
 import FilterComponent from './filter';
-import { action } from '@ember/object';
+import { task, timeout } from 'ember-concurrency';
+
+const DEBOUNCE_TIME = 300;
 
 export default class TextFilterComponent extends FilterComponent {
-  @action
-  async onChange(e: Event) {
-    if (e.target) {
-      const value = (e.target as HTMLInputElement).value;
+  onChange = task({ restartable: true }, async (event: Event) => {
+    await timeout(DEBOUNCE_TIME);
+
+    if (event.target) {
+      const value = (event.target as HTMLInputElement).value;
       this.updateQueryParams({
         [this.args.queryParam]: value,
       });
     }
-  }
+  });
 }

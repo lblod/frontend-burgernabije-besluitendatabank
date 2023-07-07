@@ -15,6 +15,7 @@ export default class AgendaItemsController extends Controller {
   @service declare store: Store;
   @service declare keywordStore: KeywordStoreService;
   @service declare municipalityList: MunicipalityListService;
+  @tracked keyword = '';
   @tracked municipalityLabels = '';
   @tracked sort = '';
   @tracked plannedStartMin = '';
