@@ -12,8 +12,10 @@ export default class SessionModel extends Model {
   @attr('date') declare startedAt?: Date;
   @attr('date') declare endedAt?: Date;
 
-  @hasMany('agenda-item') declare agendaItems: AsyncHasMany<AgendaItemModel>;
-  @belongsTo('governing-body', { async: false })
+  @hasMany('agenda-item', { async: true, inverse: 'session' })
+  declare agendaItems: AsyncHasMany<AgendaItemModel>;
+
+  @belongsTo('governing-body', { async: false, inverse: 'session' })
   declare governingBody: GoverningBodyModel;
 
   get name() {

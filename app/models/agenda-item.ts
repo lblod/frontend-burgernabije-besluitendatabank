@@ -8,7 +8,9 @@ export default class AgendaItemModel extends Model {
   @attr('string') declare alternateLink: string;
   @attr('boolean') declare plannedPublic: boolean;
 
-  @belongsTo('session') declare session?: SessionModel;
-  @belongsTo('agenda-item-handling')
+  @belongsTo('session', { async: true, inverse: 'agendaItems' })
+  declare session?: SessionModel;
+
+  @belongsTo('agenda-item-handling', { async: true, inverse: null })
   declare handledBy?: AgendaItemHandlingModel;
 }
