@@ -45,7 +45,7 @@ export default class SessionModel extends Model {
       return getFormattedDateRange(this.startedAt, this.endedAt);
     }
     if(!!this.plannedStart) {
-      return getFormattedDate(this.plannedStart);
+      return "Gepland op " + getFormattedDate(this.plannedStart);
     }
 
     return "Geen Datum";
