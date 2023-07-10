@@ -1,3 +1,6 @@
+// Settings
+$au-flex-utilities-responsive: true;
+
 @import "ember-appuniversum/a-settings";
 @import "ember-appuniversum/a-tools";
 @import "ember-appuniversum/a-generic";
@@ -9,39 +12,39 @@
 
 @import "au-overrides";
 @import "custom-classes";
+@import "shame";
 
-@import "routes/map";
-@import "routes/municipality";
-@import "routes/session";
+// @import "routes/map";
+// @import "routes/municipality";
+// @import "routes/session";
 
-@import "components/content-header";
-@import "components/decision-card";
-@import "components/participant-card";
-@import "components/vote-table-entry";
-
-
-html {
-  font-size: 50%;
-}
-
-ol {
-  list-style-type: decimal;
-  li {
-    // display: inline;
-    // float: left;
-    margin: 0 12px;
-    padding: 0 12px;
-  }
-}
-
-path {
-  stroke: white;
-  stroke-width: 0.08rem;
-}
-
-cursor {
-  cursor: pointer;
-}
+// @import "components/content-header";
+// @import "components/decision-card";
+// @import "components/participant-card";
+// @import "components/vote-table-entry";
 
 
-@import "ember-appuniversum/p-ember-power-select";
+// html {
+//   font-size: 50%;
+// }
+
+// ol {
+//   list-style-type: decimal;
+//   li {
+//     // display: inline;
+//     // float: left;
+//     margin: 0 12px;
+//     padding: 0 12px;
+//   }
+// }
+
+// path {
+//   stroke: white;
+//   stroke-width: 0.08rem;
+// }
+
+// cursor {
+//   cursor: pointer;
+// }
+
+

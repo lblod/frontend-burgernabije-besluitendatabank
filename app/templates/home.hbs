@@ -1,50 +1,46 @@
-<AuContentHeader
-  @titlePartOne="We geven je alle beslissingen"
-  @titlePartTwo="uit JOUW gemeente"
->
-  {{!-- <img
-    sizes="50vw"
-    src={{"/assets/loket-header-1600.jpg"}}
-    alt="Foto van een laptop met daarop het vlaanderen logo."
-  /> --}}
-</AuContentHeader>
-<AuBodyContainer class="au-u-flex au-u-flex--center au-u-flex--vertical-center">
 
-  <AuFormRow class="au-u-2-5">
-    <AuLabel
-      for={{"municipality"}}
-      class="au-u-h4 au-u-margin-bottom-small"
-      @inline={{true}}
-    >
-      In welke gemeente(s) wil je zoeken?
-    </AuLabel>
-    <section class="au-u-flex au-u-1-1"
-      {{did-insert this.resetLoading}}
+<AuBodyContainer @scroll={{true}}>
+  <section class="au-o-region-huge">
+    <div class="au-o-layout au-o-layout--small">
+      <AuLabel
+        for={{"municipality"}}
+        class="au-u-h5 au-u-margin-bottom-tiny"
+        @inline={{true}}
       >
-      <PowerSelect
-
-        @onChange={{this.handleMunicipalityChange}}
-        @selected={{this.selectedMunicipality}}
-        @options={{this.municipalities}}
-        @allowClear={{true}}
-        @searchField="label"
-        @placeholder={{"Alle gemeentes"}}
-        @noMatchesMessage={{"Geen gemeente gevonden"}}
-        @searchMessage="Aan het zoeken..."
-        @searchEnabled={{true}}
-        class="au-u-margin-right-small au-u-4-5"
-        as |singleSelect|
-      >
-        {{singleSelect.label}}
-      </PowerSelect>
-      <AuButton
-        class="au-u-1-5"
-        @loading={{this.loading}}
-        @width="block"
-        {{on "click" this.handleMunicipalitySelect}}
-      >Locatie(s) Opslaan</AuButton>
-    </section>
-  </AuFormRow>
+        In welke gemeente(s) wil je zoeken?
+      </AuLabel>
+      <div class="au-u-1-1 au-o-grid au-o-grid--tiny"
+        {{did-insert this.resetLoading}}
+        >
+        <div class="au-o-grid__item au-u-3-4@small">
+          <PowerSelect
+            @onChange={{this.handleMunicipalityChange}}
+            @selected={{this.selectedMunicipality}}
+            @options={{this.municipalities}}
+            @allowClear={{true}}
+            @searchField="label"
+            @placeholder={{"Alle gemeentes"}}
+            @noMatchesMessage={{"Geen gemeente gevonden"}}
+            @searchMessage="Aan het zoeken..."
+            @searchEnabled={{true}}
+            as |singleSelect|
+          >
+            {{singleSelect.label}}
+          </PowerSelect>
+        </div>
+        <div class="au-o-grid__item au-u-1-4@small">
+          <AuButton
+            @loading={{this.loading}}
+            @width="block"
+            {{on "click" this.handleMunicipalitySelect}}
+          >Locatie(s) Opslaan</AuButton>
+        </div>
+        <div class="au-o-grid__item au-u-text-center">
+          <AuHelpText @skin="secondary">Hu, gemeentes? <AuLink>Laat mij gewoon zoeken</AuLink></AuHelpText>
+        </div>
+      </div>
+    </div>
+  </section>
 </AuBodyContainer>
 
-<Footer />
+

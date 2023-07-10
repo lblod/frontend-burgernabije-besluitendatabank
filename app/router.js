@@ -17,4 +17,10 @@ Router.map(function () {
     this.route('session', { path: '/:session_id' });
   });
   this.route('four-oh-four', { path: '/*path' });
+
+  this.route('legal', function () {
+    this.route('disclaimer');
+    this.route('cookie-notice', { path: '/cookieverklaring' });
+    this.route('accessibility-statement', { path: '/toegankelijkheidsverklaring' });
+  });
 });
