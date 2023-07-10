@@ -41,14 +41,14 @@ export default class SessionModel extends Model {
   }
 
   get dateFormatted() {
-    if(!!this.startedAt || !!this.endedAt) {
+    if (this.startedAt || this.endedAt) {
       return getFormattedDateRange(this.startedAt, this.endedAt);
     }
-    if(!!this.plannedStart) {
-      return "Gepland op " + getFormattedDate(this.plannedStart);
+    if (this.plannedStart) {
+      return 'Gepland op ' + getFormattedDate(this.plannedStart);
     }
 
-    return "Geen Datum";
+    return 'Geen Datum';
   }
 
   get agendaItemCount() {
