@@ -31,11 +31,11 @@ const getQuery = ({
     'session.governing-body.administrative-unit',
     'session.governing-body.administrative-unit.location',
   ].join(','),
-  sort: '-session.started-at',
+  sort: '-session.planned-start',
   filter: {
     session: {
-      ':gt:started-at': plannedStartMin ? plannedStartMin : undefined,
-      ':lt:ended-at': plannedStartMax ? plannedStartMax : undefined,
+      ':gt:planned-start': plannedStartMin ? plannedStartMin : undefined,
+      ':lt:planned-start': plannedStartMax ? plannedStartMax : undefined,
       ':has:governing-body': true,
       'governing-body': {
         ':has:administrative-unit': true,
@@ -68,8 +68,8 @@ interface AgendaItemsRequestInterface {
   filter?: {
     ':or:'?: {};
     session?: {
-      ':gt:started-at'?: string | undefined;
-      ':lt:ended-at'?: string | undefined;
+      ':gt:planned-start'?: string | undefined;
+      ':lt:planned-start'?: string | undefined;
       ':has:governing-body'?: boolean;
       'governing-body'?: {
         ':has:administrative-unit'?: boolean;
