@@ -5,6 +5,7 @@ import { ModelFrom } from '../../lib/type-utils';
 import SessionIndexRoute from '../../routes/sessions/index';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
+import Session from 'frontend-burgernabije-besluitendatabank/models/session';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 
 export default class SessionsIndexController extends Controller {
@@ -12,12 +13,17 @@ export default class SessionsIndexController extends Controller {
   @service declare store: Store;
   @tracked isLoadingMore = false;
   @service declare municipalityList: MunicipalityListService;
+  @tracked sessions: Session[] = [];
   plannedStartMin?: string;
   plannedStartMax?: string;
   municipality?: string;
 
   get municipalities() {
     return this.municipalityList.municipalities();
+  }
+
+  setup() {
+    this.sessions = [...this.model.sessions];
   }
 
   @action
@@ -31,7 +37,7 @@ export default class SessionsIndexController extends Controller {
       const plannedStartMax = String(this.plannedStartMax) || undefined;
       const municipalities = String(this.municipality) || undefined;
 
-      const sessions = await this.store.query(
+      const sessions = (await this.store.query(
         'session',
         this.model.getQuery(
           nextPage,
@@ -39,11 +45,9 @@ export default class SessionsIndexController extends Controller {
           plannedStartMax,
           municipalities
         )
-      );
-      const concatenateSessions = this.model.sessions.concat(
-        sessions.toArray()
-      );
-      this.model.sessions.setObjects(concatenateSessions);
+      )) as unknown as Session[];
+
+      this.sessions = [...this.sessions, ...sessions];
 
       this.model.currentPage = nextPage;
       this.isLoadingMore = false;

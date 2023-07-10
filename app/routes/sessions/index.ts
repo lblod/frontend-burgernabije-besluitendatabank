@@ -97,4 +97,13 @@ export default class SessionsIndexRoute extends Route {
       getQuery,
     };
   }
+
+  setupController(
+    controller: SessionsIndexController,
+    model: unknown,
+    transition: Transition<unknown>
+  ): void {
+    super.setupController(controller, model, transition);
+    controller.setup();
+  }
 }

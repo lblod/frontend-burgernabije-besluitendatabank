@@ -9,12 +9,15 @@ import { ModelFrom } from 'frontend-burgernabije-besluitendatabank/lib/type-util
 import AgendaItemsRoute from 'frontend-burgernabije-besluitendatabank/routes/agenda-items';
 import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
+import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
 
 export default class AgendaItemsController extends Controller {
   @service declare router: RouterService;
   @service declare store: Store;
   @service declare keywordStore: KeywordStoreService;
   @service declare municipalityList: MunicipalityListService;
+
+  @tracked agendaItems: AgendaItem[] = [];
   @tracked municipalityLabels = '';
   @tracked sort = '';
   @tracked plannedStartMin = '';
@@ -26,6 +29,10 @@ export default class AgendaItemsController extends Controller {
   @tracked loading = false;
   @tracked errorMsg = '';
 
+  setup() {
+    this.agendaItems = [...this.model.agendaItems];
+  }
+
   @action
   async loadMore() {
     if (this.model && !this.isLoadingMore) {
@@ -36,7 +43,7 @@ export default class AgendaItemsController extends Controller {
       );
 
       const nextPage = this.model.currentPage + 1;
-      const agendaItems = await this.store.query(
+      const agendaItems = (await this.store.query(
         'agenda-item',
         this.model.getQuery({
           page: nextPage,
@@ -45,12 +52,9 @@ export default class AgendaItemsController extends Controller {
           plannedStartMin: this.plannedStartMin,
           plannedStartMax: this.plannedStartMax,
         })
-      );
-      const concatenateAgendaItems = this.model.agendaItems.concat(
-        agendaItems.toArray()
-      );
+      )) as unknown as AgendaItem[];
 
-      this.model.agendaItems.setObjects(concatenateAgendaItems);
+      this.agendaItems = [...this.agendaItems, ...agendaItems];
 
       this.model.currentPage = nextPage;
       this.isLoadingMore = false;

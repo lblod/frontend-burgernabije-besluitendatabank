@@ -189,4 +189,13 @@ export default class AgendaItemsRoute extends Route {
       getQuery,
     };
   }
+
+  setupController(
+    controller: AgendaItemsController,
+    model: unknown,
+    transition: Transition<unknown>
+  ): void {
+    super.setupController(controller, model, transition);
+    controller.setup();
+  }
 }

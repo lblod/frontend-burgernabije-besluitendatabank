@@ -43,7 +43,7 @@
         @loadMore={{this.loadMore}}
         @isLoading={{this.isLoadingMore}}
       >
-        {{#each @model.sessions as |session|}}
+        {{#each this.sessions as |session|}}
           <LinkTo
             @route="sessions.session"
             class="au-u-margin-bottom-small"
