@@ -31,6 +31,25 @@
   }
 }
 
+.c-interface__sidebar--dialog {
+  @include mq($until: small) {
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: calc(100% - 42px);
+    z-index: 3;
+    top: 42px;
+    left: 0;
+    border-top: .1rem solid var(--au-gray-200);
+    background-color: var(--au-white);
+    flex-direction: column;
+  
+    &.is-visible {
+      display: flex;
+    }
+  }
+}
+
 .c-interface__content {
   --main: 100%;
 
@@ -51,5 +70,36 @@
 
   @include mq(medium) {
     --main: calc(100% - 356px);
+  }
+}
+
+.c-interface__sidebar-main {
+  display: flex;
+  flex-direction: column;
+  gap: $au-unit;
+  flex-grow: 1;
+}
+
+.c-interface__filter-button {
+  @include mq(small) {
+    display: none;
+  }
+}
+
+.c-interface__sidebar-submit-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: $au-unit-tiny;
+  @include mq(small) {
+    display: none;
+  }
+}
+
+.c-interface__sidebar-close-button {
+  display: flex;
+  justify-content: flex-end;
+
+  @include mq(small) {
+    display: none;
   }
 }
