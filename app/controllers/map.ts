@@ -13,8 +13,8 @@ export default class MapComponent extends Controller {
   @service declare router: RouterService;
   declare model: ModelFrom<MapRoute>;
 
-  @tracked locationData: any = this.model.locationData.toArray();
-  @tracked agendaData: any = this.model.agendaData.toArray();
+  @tracked locationData: any = [];
+  @tracked agendaData: any = [];
 
   @tracked provincesData: any;
   @tracked features: any;
@@ -171,32 +171,17 @@ export default class MapComponent extends Controller {
             //@ts-ignore
             .features.map((d) => [d.properties.name_nl, d])
         );
-        // const realdata: any = [];
-        // this.mandatenData = this.model.mandatenData.toArray().map((e: any) => {
-        //   realdata.push({
-        //     start: e.startDate,
-        //     end: e.endDate,
-        //     firstName: e.alias.get("firstNameUsed"),
-        //     familyName: e.alias.get("familyName"),
-        //     fraction: e.hasMembership.get("innerGroup")
-        //       ? e.hasMembership.get("innerGroup").get("name")
-        //       : "Geen Fractie",
-        //   });
-        //   return realdata;
-        // });
 
         this.drawMap();
       }
     });
   }
   @action async over(nameFromHover: any) {
-    const munName = this.model.locationData
-      .toArray()
-      .find((locationDataEntry: any) => {
-        return locationDataEntry.label === nameFromHover;
-      });
+    const munName = this.model.locationData.find((locationDataEntry: any) => {
+      return locationDataEntry.label === nameFromHover;
+    });
 
-    return munName.label
+    return munName?.label
       ? (document.querySelector(
           '#tooltip'
         )!.innerHTML = `<span class="gemeente">${munName.label}</span>`)

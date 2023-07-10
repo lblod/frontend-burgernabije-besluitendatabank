@@ -6,6 +6,7 @@ import Route from '@ember/routing/route';
 import Transition from '@ember/routing/transition';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import AgendaItemsController from 'frontend-burgernabije-besluitendatabank/controllers/agenda-items';
 import { seperator } from 'frontend-burgernabije-besluitendatabank/helpers/constants';
 import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
@@ -137,7 +138,7 @@ export default class AgendaItemsRoute extends Route {
     const model: any = this.modelFor('agenda-items');
 
     if (
-      model?.agendaItems?.toArray().length > 0 &&
+      model?.agendaItems?.length > 0 &&
       params.keyword === this.keywordStore.keyword &&
       params.municipalityLabels === this.municipalityLabels &&
       params.sort === this.sort &&
@@ -184,8 +185,8 @@ export default class AgendaItemsRoute extends Route {
     );
 
     return {
-      agendaItems: agendaItems.toArray(),
-      currentPage: currentPage,
+      agendaItems,
+      currentPage,
       getQuery,
     };
   }

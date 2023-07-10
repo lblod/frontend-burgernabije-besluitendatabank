@@ -4,6 +4,8 @@ import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 import { seperator } from 'frontend-burgernabije-besluitendatabank/helpers/constants';
+import Transition from '@ember/routing/transition';
+import SessionsIndexController from 'frontend-burgernabije-besluitendatabank/controllers/sessions';
 
 const getQuery = (
   page: number,
@@ -92,7 +94,7 @@ export default class SessionsIndexRoute extends Route {
     );
 
     return {
-      sessions: sessions.toArray(),
+      sessions,
       currentPage: currentPage,
       getQuery,
     };

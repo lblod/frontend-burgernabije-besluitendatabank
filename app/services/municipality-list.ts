@@ -24,7 +24,7 @@ export default class MunicipalityListService extends Service {
       sort: ':no-case:label',
     });
 
-    return municipalities.toArray().map((location: LocationModel) => ({
+    return municipalities.map((location: LocationModel) => ({
       id: location.id,
       label: location.label,
     }));
