@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import d3 from 'd3';
+import * as d3 from 'd3';
 
 interface ArgsInterface {
   numberOfAbstentions: number;
