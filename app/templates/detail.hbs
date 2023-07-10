@@ -174,13 +174,11 @@
         class="au-c-card au-u-margin-large au-u-flex"
         as |c|
       >
-      {{#if this.model.agendaItem.session.dateRange}}
         <c.header>
           <h2 class="au-u-h3">
-              Meer agenda op {{this.model.agendaItem.session.dateRange}}
+              Meer agenda op {{this.model.agendaItem.session.dateFormatted}}
           </h2>
         </c.header>
-      {{/if}}
         <c.content class="au-u-flex au-u-flex--column">
           {{#if this.model.agendaItemOnSameSession}}
             {{#each this.model.agendaItemOnSameSession as |agendaItem|}}
