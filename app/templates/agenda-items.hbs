@@ -1,79 +1,78 @@
-<AuBodyContainer class="au-u-flex--row">
-
-  <FilterSidebar @class="au-u-2-5 au-u-max-width-xsmall">
-    <Filters::SelectMultipleFilter
-      @id="municipality"
-      @label="Waar woon je?"
-      @options={{this.municipalities}}
-      @searchField="label"
-      @queryParam="gemeentes"
-      @placeholder="Selecteer een optie"
-      @value={{this.municipality}}
-    />
-    <Filters::DateRangeFilter
-      @id="startDate"
-      @label="Wanneer?"
-      @queryParamsA="begin"
-      @queryParamsB="eind"
-      @valueA={{this.plannedStartMin}}
-      @valueB={{this.plannedStartMax}}
-    />
-
-  </FilterSidebar>
-
-  <section class="smooth-scroll-children au-u-flex au-u-flex--column au-u-3-5 au-u-padding-left-large au-u-padding-right-large">
-    {{#if this.errorMsg}}
-      <Oops
-        @title="Oeps!"
-        @content="Er is iets fout gelopen!"
+<AuBodyContainer>
+  <div class="c-interface">
+    <FilterSidebar @class="c-interface__sidebar">
+      <Filters::SelectMultipleFilter
+        @id="municipality"
+        @label="Waar woon je?"
+        @options={{this.municipalities}}
+        @searchField="label"
+        @queryParam="gemeentes"
+        @placeholder="Selecteer een optie"
+        @value={{this.municipality}}
       />
-    {{else}}
-      {{#if this.loading}}
-        <LoaderFullPage @content="Agendapunt aan het laden"/>
-
+      <Filters::DateRangeFilter
+        @id="startDate"
+        @label="Wanneer?"
+        @queryParamsA="begin"
+        @queryParamsB="eind"
+        @valueA={{this.plannedStartMin}}
+        @valueB={{this.plannedStartMax}}
+      />
+    </FilterSidebar>
+    <section class="c-interface__content">
+      {{#if this.errorMsg}}
+        <Oops
+          @title="Oeps!"
+          @content="Er is iets fout gelopen!"
+        />
       {{else}}
-        <div class="au-u-margin-bottom-large">
-          <h2 class="au-u-h2 au-u-medium">Wat zoek je?</h2>
-          <Filters::TextFilter
-            @id="keyword"
-            @queryParam="trefwoord"
-            @value={{this.keyword}}
-
-            @placeholder="Zoek in alle lokale agendas en besluiten"
-            @buttonText="Zoeken"
-
-            @inputClass="au-u-padding"
-
-            @icon="search"
-          />
-        </div>
-
-
-        {{! if @model.agendaItems length is equal to 0 }}
-        {{#if (eq @model.agendaItems.length 0)}}
-          <AuAlert
-            class="top-sticky au-u-medium au-u-margin"
-            @skin="warning"
-            @icon="three-dots"
-          >
-            Geen agendapunten gevonden
-          </AuAlert>
+        {{#if this.loading}}
+          <LoaderFullPage @content="Agendapunt aan het laden"/>
         {{else}}
-          <InfiniteList
-            @loadMore={{this.loadMore}}
-            @isLoading={{this.isLoadingMore}}
-          >
-            {{#each @model.agendaItems as |item|}}
-              <DecisionCard
-                @startDate={{item.session.startedAt}}
-                @endDate={{item.session.endedAt}}
-                @item={{item}}
-              />
-            {{/each}}
-          </InfiniteList>
+          <div class="au-o-flow au-o-flow--small au-u-margin-bottom-large">
+            <h2 class="au-u-h2 au-u-medium">Wat zoek je?</h2>
+            <Filters::TextFilter
+              @id="keyword"
+              @queryParam="trefwoord"
+              @value={{this.keyword}}
+
+              @label="Zoeken"
+              @labelHidden={{true}}
+              
+              @placeholder="Zoek in alle lokale agendas en besluiten"
+              @buttonText="Zoeken"
+
+              @icon="search"
+
+              @rowClass="au-c-form-row--button"
+            />
+          </div>
+
+          {{! if @model.agendaItems length is equal to 0 }}
+          {{#if (eq @model.agendaItems.length 0)}}
+            <AuAlert
+              @size="small"
+              @skin="warning"
+              @icon="info-circle"
+              @title="Er werden geen zoekresultaten gevonden."
+            >
+            </AuAlert>
+          {{else}}
+            <InfiniteList
+              @loadMore={{this.loadMore}}
+              @isLoading={{this.isLoadingMore}}
+            >
+              {{#each @model.agendaItems as |item|}}
+                <DecisionCard
+                  @startDate={{item.session.startedAt}}
+                  @endDate={{item.session.endedAt}}
+                  @item={{item}}
+                />
+              {{/each}}
+            </InfiniteList>
+          {{/if}}
         {{/if}}
       {{/if}}
-    {{/if}}
-
-  </section>
+    </section>
+  </div>
 </AuBodyContainer>

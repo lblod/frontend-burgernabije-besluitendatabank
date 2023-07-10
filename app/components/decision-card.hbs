@@ -1,51 +1,35 @@
-<LinkTo
-
-  class="au-u-margin-bottom-small component-decision-card"
-  @route="detail"
-  @model={{this.item.id}}
+<article
+  class="c-decision-card au-o-flow au-o-flow--small"
 >
-  <AuCard
-    @size="small"
-    class="card-hover au-u-padding-bottom au-u-padding component-decision-card-card"
-    as |c|
-  >
-
-    <c.header>
-      <AuHeading @level="1" @skin="3">
-        <AuLink
-          class="component-decision-card-header-link"
-          {{! template-lint-disable no-inline-styles}}
-          style="text-overflow: ellipsis; max-height: 50%;"
-          @route="detail"
-          @model={{this.item.id}}
-        >
-          {{this.item.title}}
-        </AuLink>
-      </AuHeading>
-    </c.header>
-    <c.content>
-      {{#if this.item.description}}
-        <p class="truncate">{{this.item.description}}</p>
-      {{/if}}
-    </c.content>
-    <c.footer>
-      {{#if this.dateRange}}
-        {{this.dateRange}}
-      {{else}}
-        Geen Datum
-      {{/if}}
-      -
-      {{#if this.item.session.governingBody.name}}
-        {{this.item.session.governingBody.name}}
-      {{else}}
-        Geen Bestuurorgaan
-      {{/if}}
-      -
-      {{#if this.item.session.governingBody.administrativeUnit.name}}
-        {{this.item.session.governingBody.administrativeUnit.name}}
-      {{else}}
-        Geen Bestuurseenheid
-      {{/if}}
-    </c.footer>
-  </AuCard>
-</LinkTo>
+  <AuHeading @level="1" @skin="5">
+    <AuLink
+      class="c-decision-card__link"
+      @route="detail"
+      @model={{this.item.id}}
+    >
+      {{this.item.title}}
+    </AuLink>
+  </AuHeading>
+  {{#if this.item.description}}
+    <p class="au-u-base c-decision-card__content">{{this.item.description}}</p>
+  {{/if}}
+  <div class="c-decision-card__footer">
+    {{#if this.dateRange}}
+      {{this.dateRange}}
+    {{else}}
+      Geen Datum
+    {{/if}}
+    -
+    {{#if this.item.session.governingBody.name}}
+      {{this.item.session.governingBody.name}}
+    {{else}}
+      Geen Bestuurorgaan
+    {{/if}}
+    -
+    {{#if this.item.session.governingBody.administrativeUnit.name}}
+      {{this.item.session.governingBody.administrativeUnit.name}}
+    {{else}}
+      Geen Bestuurseenheid
+    {{/if}}
+  </div>
+</article>

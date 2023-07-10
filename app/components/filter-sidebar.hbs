@@ -1,10 +1,6 @@
-<aside class="au-c-sidebar au-o-layout--large {{ @class }}">
-  <div class="au-c-sidebar__content au-u-padding">
-    <AuContent @skin="tiny">
-      <h3>Verfijn de zoekresultaten</h3>
-      <section>
-        {{yield}}
-      </section>
-    </AuContent>
-  </div>
+<aside class="{{ @class }}">
+  <h3 class="au-u-h4 au-u-medium au-u-margin-bottom-small">Verfijn de zoekresultaten</h3>
+  <section class="au-o-flow au-o-flow--small">
+    {{yield}}
+  </section>
 </aside>

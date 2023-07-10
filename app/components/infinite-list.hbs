@@ -1,15 +1,15 @@
 <div
-  class="{{@class}} overflow-y-scroll au-u-flex au-u-flex--column"
+  class="{{@class}}"
   {{on "scroll" this.scroll}}
 >
-  <section class="au-u-flex au-u-flex--column">
+  <section class="au-c-entry-list">
     {{yield}}
   </section>
-  <div class="au-u-flex au-u-flex--center au-u-padding">
+  <div class="au-u-flex au-u-flex--center au-u-padding-top">
     {{#if @isLoading}}
       <AuLoader />
     {{else}}
-      <AuButton {{on "click" this.loadMore}}>Laad meer</AuButton>
+      <AuButton @icon="add" @skin="secondary" @width="block" {{on "click" this.loadMore}}>Laad meer</AuButton>
     {{/if}}
   </div>
 </div>

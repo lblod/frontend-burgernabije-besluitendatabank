@@ -1,0 +1,55 @@
+.c-interface {
+  display: flex;
+  flex-wrap: wrap;
+  
+
+  @include mq(small) {
+    align-items: stretch;
+    height: 100%;
+  }
+}
+
+.c-interface__sidebar {
+  --sidebar: 100%;
+
+  flex-basis: var(--sidebar);
+  padding: $au-unit-small;
+  background-color: var(--au-gray-100);
+  border-bottom: .1rem solid var(--au-gray-200);
+  
+  @include mq(small) {
+    --sidebar: 250px;
+
+    padding: $au-unit;
+    border-bottom: 0;
+    border-right: .1rem solid var(--au-gray-200);
+    height: 100%;
+  }
+
+  @include mq(medium) {
+    --sidebar: 356px;
+  }
+}
+
+.c-interface__content {
+  --main: 100%;
+
+  flex-basis: var(--main);
+  padding: $au-unit-small;
+  overflow: auto;
+
+  & > div {
+    scroll-behavior: smooth;
+  }
+
+  @include mq(small) {
+    --main: calc(100% - 250px);
+
+    height: 100%;
+    padding: $au-unit;
+  }
+
+  @include mq(medium) {
+    --main: calc(100% - 356px);
+  }
+}

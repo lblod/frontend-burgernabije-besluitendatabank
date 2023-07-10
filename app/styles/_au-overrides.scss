@@ -8,6 +8,40 @@
   }
 }
 
+.au-c-form-row--button {
+  --gap: #{$au-unit-small};
+  --button: 100%;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--gap);
+
+  & > .au-c-input-wrapper {
+    flex-basis: 100%;
+  }
+
+  & > .au-c-button {
+    flex-basis: var(--button);
+  }
+
+  @include mq(small) {
+    --button: 100px;
+
+    & > .au-c-input-wrapper {
+      flex-basis: calc(100% - var(--gap) - var(--button));
+    }
+  }
+}
+
+.au-c-entry-list {
+  > * + * {
+    margin-top: $au-unit;
+    padding-top: $au-unit;
+    border-top: .1rem solid var(--au-gray-200);
+  }
+}
+
 
 // .au-c-main-container__content {
 //   display: flex;

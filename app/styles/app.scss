@@ -1,5 +1,3 @@
-// Settings
-$au-flex-utilities-responsive: true;
 
 @import "ember-appuniversum/a-settings";
 @import "ember-appuniversum/a-tools";
@@ -10,7 +8,13 @@ $au-flex-utilities-responsive: true;
 @import "ember-appuniversum/a-plugins";
 @import "ember-appuniversum/a-utilities";
 
+// Components
+@import "components/decision-card";
+
+
 @import "au-overrides";
+
+@import "c-interface";
 @import "custom-classes";
 @import "shame";
 
@@ -19,7 +23,6 @@ $au-flex-utilities-responsive: true;
 // @import "routes/session";
 
 // @import "components/content-header";
-// @import "components/decision-card";
 // @import "components/participant-card";
 // @import "components/vote-table-entry";
 
