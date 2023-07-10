@@ -12,12 +12,11 @@ module.exports = function (defaults) {
   const { Webpack } = require('@embroider/webpack');
 
   return require('@embroider/compat').compatBuild(app, Webpack, {
-    //
-    // staticAddonTestSupportTrees: true,
-    // staticAddonTrees: true,
-    // staticHelpers: true,
-    // staticModifiers: true,
-    // staticComponents: true,
+    staticAddonTestSupportTrees: true,
+    staticAddonTrees: true,
+    staticHelpers: true,
+    staticModifiers: true,
+    staticComponents: true,
     // splitAtRoutes: ['route.name'], // can also be a RegExp
     // packagerOptions: {
     //    webpackConfig: { }
