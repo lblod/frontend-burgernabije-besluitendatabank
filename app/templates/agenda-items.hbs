@@ -50,7 +50,7 @@
 
 
         {{! if @model.agendaItems length is equal to 0 }}
-        {{#if (eq @model.agendaItems.length 0)}}
+        {{#if (eq this.agendaItems.length 0)}}
           <AuAlert
             class="top-sticky au-u-medium au-u-margin"
             @skin="warning"
@@ -63,7 +63,7 @@
             @loadMore={{this.loadMore}}
             @isLoading={{this.isLoadingMore}}
           >
-            {{#each @model.agendaItems as |item|}}
+            {{#each this.agendaItems as |item|}}
               <DecisionCard
                 @startDate={{item.session.startedAt}}
                 @endDate={{item.session.endedAt}}

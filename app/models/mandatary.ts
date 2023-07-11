@@ -6,7 +6,9 @@ export default class MandataryModel extends Model {
   @attr('date') declare startDate: Date;
   @attr('date') declare endDate: Date;
 
-  @belongsTo('person', { inverse: null }) declare alias: PersonModel;
-  @belongsTo('membership', { inverse: null })
+  @belongsTo('person', { async: true, inverse: null })
+  declare alias: PersonModel;
+
+  @belongsTo('membership', { async: true, inverse: null })
   declare hasMembership: MembershipModel;
 }

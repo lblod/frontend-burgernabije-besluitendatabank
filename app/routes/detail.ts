@@ -37,16 +37,14 @@ export default class DetailRoute extends Route {
 
     const sessionId = agendaItem.session?.get('id');
     const agendaItemOnSameSessionRaw = sessionId
-      ? (
-          await this.store.query('agenda-item', {
-            include: agendaItemIncludes,
-            filter: {
-              session: {
-                [':id:']: sessionId,
-              },
+      ? await this.store.query('agenda-item', {
+          include: agendaItemIncludes,
+          filter: {
+            session: {
+              [':id:']: sessionId,
             },
-          })
-        ).toArray()
+          },
+        })
       : [];
 
     const agendaItemOnSameSession = agendaItemOnSameSessionRaw
