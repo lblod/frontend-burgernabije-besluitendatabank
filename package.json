@@ -76,6 +76,7 @@
     "@types/qunit": "^2.19.4",
     "@types/rsvp": "^4.0.4",
     "@types/topojson": "^3.2.3",
+    "@types/topojson-specification": "^1.0.2",
     "@typescript-eslint/eslint-plugin": "^5.61.0",
     "@typescript-eslint/parser": "^5.61.0",
     "au-date-range-picker": "^0.2.0",
@@ -111,11 +112,13 @@
     "eslint-plugin-n": "^15.6.1",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-qunit": "^7.3.4",
+    "geojson": "^0.5.0",
     "loader.js": "^4.7.0",
     "prettier": "^2.8.8",
     "qunit": "^2.19.3",
     "qunit-dom": "^2.0.0",
     "sass": "^1.57.1",
+    "topojson-client": "^3.1.0",
     "tracked-built-ins": "^3.1.0",
     "typescript": "^5.0.4",
     "url-polyfill": "^1.1.9",
@@ -132,7 +135,6 @@
     "d3": "6.6.0",
     "d3-geo": "^3.1.0",
     "date-fns": "^2.29.3",
-    "postscribe": "^2.0.8",
-    "topojson": "^3.0.2"
+    "postscribe": "^2.0.8"
   }
 }
