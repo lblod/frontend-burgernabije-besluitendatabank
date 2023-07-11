@@ -11,4 +11,8 @@ export default class DetailController extends Controller {
   get hasVotes() {
     return this.model.agendaItem?.handledBy?.get('hasVotes')?.length > 0;
   }
+
+  get municipalityQuery() {
+    return { gemeentes: this.model.agendaItem.session.municipality };
+  }
 }
