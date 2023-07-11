@@ -4,8 +4,8 @@
  */
 declare const config: {
   ENV: {
-    VO_HEADER_WIDGET_URL: any;
-    VO_FOOTER_WIDGET_URL: any;
+    VO_HEADER_WIDGET_URL: string;
+    VO_FOOTER_WIDGET_URL: string;
     environment: string;
     modulePrefix: string;
     podModulePrefix: string;

@@ -7,7 +7,7 @@ import { seperator } from 'frontend-burgernabije-besluitendatabank/helpers/const
 const regex = new RegExp('\\' + seperator + '$', 'm');
 
 export default class SelectMultipleFilterComponent extends FilterComponent {
-  @tracked selected: any;
+  @tracked selected?: object;
 
   @action
   async inserted() {

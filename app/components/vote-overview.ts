@@ -21,7 +21,7 @@ export default class VoteOverview extends Component<ArgsInterface> {
 
   @tracked pie = {
     label: {
-      format: function (value: any, ratio: any, id: any) {
+      format: function (value: string) {
         return value;
       },
     },
@@ -29,10 +29,10 @@ export default class VoteOverview extends Component<ArgsInterface> {
 
   @tracked tooltip = {
     format: {
-      title: (d: any) => {
+      title: (d: string) => {
         return 'Data ' + d;
       },
-      value: (value: any, ratio: any, id: any) => {
+      value: (value: number, id: string) => {
         const format = id === 'data1' ? d3.format(',') : d3.format('$');
         return format(value);
       },

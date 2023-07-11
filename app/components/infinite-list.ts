@@ -9,7 +9,7 @@ interface ArgsInterface {
 
 export default class InfiniteList extends Component<ArgsInterface> {
   @action
-  scroll(event: any) {
+  scroll(event: Event) {
     throttle(this, this._onScroll, event, 500, false);
   }
 

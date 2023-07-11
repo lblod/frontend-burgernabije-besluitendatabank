@@ -4,7 +4,7 @@ import { get } from '@ember/object';
 
 export default class SelectFilterComponent extends FilterComponent {
   @action
-  async selectChange(m: any) {
+  async selectChange(m: object) {
     const value = m ? get(m, this.args.searchField) : null;
     this.updateQueryParams({
       [this.args.queryParam]: value,
