@@ -2,7 +2,42 @@
 
 <AuBodyContainer>
   <div class="c-interface">
-    <FilterSidebar @class="c-interface__sidebar">
+    <div class="c-interface__content">
+      {{#if this.isEmpty}}
+        <AuAlert
+          @size="small"
+          @skin="warning"
+          @icon="info-circle"
+          @title="Er werden geen zoekresultaten gevonden."
+        >
+        </AuAlert>
+      {{else}}
+        <InfiniteList
+          @loadMore={{this.loadMore}}
+          @isLoading={{this.isLoadingMore}}
+        >
+          {{#each @model.sessions as |session|}}
+          <li>
+            <article class="c-decision-card">
+              <AuHeading @level="1" @skin="5">
+                <AuLink @route="sessions.session" @model={{session.id}} class="c-decision-card__link">
+                  {{session.name}}
+                  {{session.dateRange}}
+                </AuLink>
+              </AuHeading>
+              <div class="c-decision-card__footer">
+                {{session.municipality}}
+                -
+                {{session.agendaItemCount}}
+              </div>
+            </article>
+          </li>
+          {{/each}}
+        </InfiniteList>
+      {{/if}}
+    </div>
+    <FilterSidebar @class="c-interface__sidebar au-o-flow">
+      <h3 class="au-u-h4 au-u-medium">Verfijn de zoekresultaten</h3>
       <Filters::SelectMultipleFilter
         @id="municipality"
         @label="Gemeente"
@@ -22,39 +57,5 @@
       />
 
     </FilterSidebar>
-    <section
-      class="c-interface__content"
-    >
-      {{#if this.isEmpty}}
-        <AuAlert
-          @size="small"
-          @skin="warning"
-          @icon="info-circle"
-          @title="Er werden geen zoekresultaten gevonden."
-        >
-        </AuAlert>
-      {{else}}
-        <InfiniteList
-          @loadMore={{this.loadMore}}
-          @isLoading={{this.isLoadingMore}}
-        >
-          {{#each @model.sessions as |session|}}
-            <article class="c-decision-card">
-              <AuHeading @level="1" @skin="5">
-                <AuLink @route="sessions.session" @model={{session.id}} class="c-decision-card__link">
-                  {{session.name}}
-                  {{session.dateRange}}
-                </AuLink>
-              </AuHeading>
-              <div class="c-decision-card__footer">
-                {{session.municipality}}
-                -
-                {{session.agendaItemCount}}
-              </div>
-            </article>
-          {{/each}}
-        </InfiniteList>
-      {{/if}}
-    </section>
   </div>
 </AuBodyContainer>

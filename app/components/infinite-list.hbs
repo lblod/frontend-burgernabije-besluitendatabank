@@ -2,9 +2,9 @@
   class="{{@class}}"
   {{on "scroll" this.scroll}}
 >
-  <section class="au-c-entry-list">
+  <ul class="au-c-infinite-list">
     {{yield}}
-  </section>
+  </ul>
   <div class="au-u-flex au-u-flex--center au-u-padding-top">
     {{#if @isLoading}}
       <AuLoader />

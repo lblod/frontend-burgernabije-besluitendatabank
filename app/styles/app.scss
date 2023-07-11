@@ -1,4 +1,4 @@
-
+// Ember appuniversum
 @import "ember-appuniversum/a-settings";
 @import "ember-appuniversum/a-tools";
 @import "ember-appuniversum/a-generic";
@@ -9,12 +9,12 @@
 @import "ember-appuniversum/a-utilities";
 
 // Components
-@import "components/decision-card";
+@import "components/c-interface";
+@import "components/c-decision-card";
+@import "components/c-infinite-list";
 
-
+// Overrides
 @import "au-overrides";
-
-@import "c-interface";
 @import "custom-classes";
 @import "shame";
 

@@ -10,6 +10,7 @@
   overflow: hidden;
   text-decoration: none;
   font-weight: var(--au-medium);
+  max-width: 120ch;
 
   &:after {
     content: '';
@@ -30,6 +31,7 @@
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
   overflow: hidden;
+  max-width: 100ch;
 }
 
 .c-decision-card__footer {

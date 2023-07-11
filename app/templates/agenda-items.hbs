@@ -1,41 +1,6 @@
 <AuBodyContainer>
   <div class="c-interface">
-    <FilterSidebar @class="c-interface__sidebar c-interface__sidebar--dialog {{if (eq this.showFilter true) 'is-visible'}}">
-      <div class="c-interface__sidebar-close-button">
-        <AuButton @skin="naked" {{on "click" (fn (mut this.showFilter) false)}}>
-          Terug
-        </AuButton>
-      </div>
-      <div class="c-interface__sidebar-main">
-        <h3 class="au-u-h4 au-u-medium">Verfijn de zoekresultaten</h3>
-        <Filters::SelectMultipleFilter
-          @id="municipality"
-          @label="Waar woon je?"
-          @options={{this.municipalities}}
-          @searchField="label"
-          @queryParam="gemeentes"
-          @placeholder="Selecteer een optie"
-          @value={{this.municipality}}
-        />
-        <Filters::DateRangeFilter
-          @id="startDate"
-          @label="Wanneer?"
-          @queryParamsA="begin"
-          @queryParamsB="eind"
-          @valueA={{this.plannedStartMin}}
-          @valueB={{this.plannedStartMax}}
-        />
-      </div>
-      <div class="c-interface__sidebar-submit-buttons">
-        <AuButton @skin="primary" @width="block" {{on "click" (fn (mut this.showFilter) false)}}>
-          Zoeken
-        </AuButton>
-        <AuButton @skin="naked" @width="block" {{on "click" (fn (mut this.showFilter) false)}}>
-          Annuleer
-        </AuButton>
-      </div>
-    </FilterSidebar>
-    <section class="c-interface__content">
+    <div id="filtercontent" class="c-interface__content">
       {{#if this.errorMsg}}
         <Oops
           @title="Oeps!"
@@ -62,9 +27,10 @@
 
               @rowClass="au-c-form-row--button"
             />
-            <AuButton @icon="filter" @width="block" @skin="secondary" class="c-interface__filter-button" {{on "click" (fn (mut this.showFilter) true)}}>
+            <a href="#filtersidebar" class="au-c-button au-c-button--secondary au-c-button--block c-interface__filter-button" {{on "click" (fn (mut this.showFilter) true)}}>
+              <AuIcon @icon="filter" />
               Toon filters
-            </AuButton>
+            </a>
           </div>
 
           {{! if @model.agendaItems length is equal to 0 }}
@@ -82,16 +48,53 @@
               @isLoading={{this.isLoadingMore}}
             >
               {{#each @model.agendaItems as |item|}}
+              <li>
                 <DecisionCard
                   @startDate={{item.session.startedAt}}
                   @endDate={{item.session.endedAt}}
                   @item={{item}}
                 />
+              </li>
               {{/each}}
             </InfiniteList>
           {{/if}}
         {{/if}}
       {{/if}}
-    </section>
+    </div>
+    <FilterSidebar @id="filtersidebar" @class="c-interface__sidebar c-interface__sidebar--dialog {{if (eq this.showFilter true) 'is-visible'}}">
+      <div class="c-interface__sidebar-close-button">
+        <a href="#filtercontent" class="au-c-button au-c-button--naked" {{on "click" (fn (mut this.showFilter) false)}}>
+          Terug
+        </a>
+      </div>
+      <div class="c-interface__sidebar-main">
+        <h3 class="au-u-h4 au-u-medium">Verfijn de zoekresultaten</h3>
+        <Filters::SelectMultipleFilter
+          @id="municipality"
+          @label="Waar woon je?"
+          @options={{this.municipalities}}
+          @searchField="label"
+          @queryParam="gemeentes"
+          @placeholder="Selecteer een optie"
+          @value={{this.municipality}}
+        />
+        <Filters::DateRangeFilter
+          @id="startDate"
+          @label="Wanneer?"
+          @queryParamsA="begin"
+          @queryParamsB="eind"
+          @valueA={{this.plannedStartMin}}
+          @valueB={{this.plannedStartMax}}
+        />
+      </div>
+      <div class="c-interface__sidebar-submit-buttons">
+        <AuButton @skin="primary" @width="block" {{on "click" (fn (mut this.showFilter) false)}}>
+          Zoeken
+        </AuButton>
+        <a href="#filtercontent" class="au-c-button au-c-button--naked au-c-button--block" {{on "click" (fn (mut this.showFilter) false)}}>
+          Annuleer
+        </a>
+      </div>
+    </FilterSidebar>
   </div>
 </AuBodyContainer>

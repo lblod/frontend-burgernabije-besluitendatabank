@@ -1,9 +1,9 @@
 .c-interface {
   display: flex;
   flex-wrap: wrap;
-  
 
   @include mq(small) {
+    flex-direction: row-reverse;
     align-items: stretch;
     height: 100%;
   }
@@ -36,11 +36,10 @@
     display: none;
     position: fixed;
     width: 100%;
-    height: calc(100% - 42px);
+    height: 100%;
     z-index: 3;
-    top: 42px;
+    top: 0;
     left: 0;
-    border-top: .1rem solid var(--au-gray-200);
     background-color: var(--au-white);
     flex-direction: column;
   

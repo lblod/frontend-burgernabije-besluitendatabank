@@ -1,13 +1,3 @@
-.au-o-region-huge {
-  padding-top: $au-unit;
-  padding-bottom: $au-unit;
-
-  @include mq($au-region-breakpoint) {
-    padding-top: $au-unit-huge;
-    padding-bottom: $au-unit-huge;
-  }
-}
-
 .au-c-form-row--button {
   --gap: #{$au-unit-small};
   --button: 100%;
@@ -34,15 +24,6 @@
   }
 }
 
-.au-c-entry-list {
-  > * + * {
-    margin-top: $au-unit;
-    padding-top: $au-unit;
-    border-top: .1rem solid var(--au-gray-200);
-  }
-}
-
-
 // .au-c-main-container__content {
 //   display: flex;
 //   flex-direction: column;
@@ -59,26 +40,6 @@
 //   }
   
 
-// .daterangepicker .ranges li.active {
-//     background-color: var(--au-blue-700);
-//     color: #fff;
-// }
-// .daterangepicker {
-//     font: var(--au-font);
-// }
-  
-// .daterangepicker td.active,
-// .daterangepicker td.start-date.end-date {
-//   background-color: var(--au-blue-700) !important;
-//   border-radius: 0px;
-//   &:hover {
-//     background-color: var(--au-blue-900);
-//   }
-// }
-
-// .daterangepicker td.in-range {
-//     background-color: var(--au-blue-200);
-// }
 
 // @media (max-width: 1100px) {
 //     div .au-c-form-row .au-c-form-row--inline {

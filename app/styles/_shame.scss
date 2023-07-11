@@ -20,3 +20,38 @@
 // cursor {
 //   cursor: pointer;
 // }
+
+// Extend region classe
+.au-o-region-huge {
+  padding-top: $au-unit;
+  padding-bottom: $au-unit;
+
+  @include mq($au-region-breakpoint) {
+    padding-top: $au-unit-huge;
+    padding-bottom: $au-unit-huge;
+  }
+}
+
+// Daterangepicker tweaks
+.daterangepicker .ranges li.active {
+  background-color: var(--au-blue-700);
+  color: #fff;
+}
+
+.daterangepicker {
+  font: var(--au-font);
+}
+  
+.daterangepicker td.active,
+.daterangepicker td.start-date.end-date {
+  background-color: var(--au-blue-700) !important;
+  border-radius: 0;
+
+  &:hover {
+    background-color: var(--au-blue-900);
+  }
+}
+
+.daterangepicker td.in-range {
+  background-color: var(--au-blue-200);
+}
