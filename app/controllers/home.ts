@@ -8,7 +8,7 @@ import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/ser
 export default class HomeController extends Controller {
   @service declare router: RouterService;
   @service declare municipalityList: MunicipalityListService;
-  
+
   /** Controls the loading animation of the "locatie's opslaan" button */
   @tracked loading = false;
 

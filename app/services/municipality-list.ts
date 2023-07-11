@@ -7,12 +7,12 @@ export default class MunicipalityListService extends Service {
 
   private _municipalities?: Array<{ label: string; id: string }>;
 
-  /** 
+  /**
    * Get all municipalities
-   * 
+   *
    * - If possible, return it from local variable/cache
-   * - If that is empty, populate it with & return from 
-   * 
+   * - If that is empty, populate it with & return from
+   *
    * @returns A promise for an array of municipalities
    **/
   async municipalities() {
@@ -23,10 +23,9 @@ export default class MunicipalityListService extends Service {
     return this._municipalities;
   }
 
-
   /**
    * Requests & parses municipalities from Ember-Data
-   * 
+   *
    * @returns An promise for an array of municipalities, parsed into objects with an id & label property
    */
 
@@ -46,10 +45,10 @@ export default class MunicipalityListService extends Service {
   }
 
   /**
- * 
- * @param labels an array of location labels
- * @returns a Promise for an array of those locations' id's
- */
+   *
+   * @param labels an array of location labels
+   * @returns a Promise for an array of those locations' id's
+   */
   async getLocationIdsFromLabels(
     labels: Array<string>
   ): Promise<Array<string>> {
@@ -57,7 +56,6 @@ export default class MunicipalityListService extends Service {
     const municipalities = await this.municipalities();
 
     if (municipalities) {
-
       for (let i = 0; i < labels.length; i++) {
         const label = labels[i];
         const municipality = municipalities.find(
