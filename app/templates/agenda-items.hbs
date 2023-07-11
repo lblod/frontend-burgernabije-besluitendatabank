@@ -34,7 +34,7 @@
           </div>
 
           {{! if @model.agendaItems length is equal to 0 }}
-          {{#if (eq @model.agendaItems.length 0)}}
+          {{#if (eq this.agendaItems.length 0)}}
             <AuAlert
               @size="small"
               @skin="warning"
