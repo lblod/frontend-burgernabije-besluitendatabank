@@ -12,7 +12,7 @@ interface AgendaItemsRequestInterface {
   filter?: {
     ':has:session'?: boolean;
     session?: {
-      ':gt:started-at'?: string;
+      ':gt:planned-start'?: string;
 
       ':has:governing-body'?: boolean;
       'governing-body'?: {
@@ -44,7 +44,7 @@ export default class MapRoute extends Route {
       filter: {
         ':has:session': true,
         session: {
-          ':gt:started-at': new Date(
+          ':gt:planned-start': new Date(
             new Date().setMonth(new Date().getMonth() - 3)
           )
             .toISOString()

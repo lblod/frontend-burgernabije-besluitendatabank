@@ -5,29 +5,25 @@
     <AuLink
       class="c-decision-card__link"
       @route="detail"
-      @model={{this.item.id}}
+      @model={{@item.id}}
     >
-      {{this.item.title}}
+      {{@item.title}}
     </AuLink>
   </AuHeading>
-  {{#if this.item.description}}
-    <p class="au-u-base c-decision-card__content">{{this.item.description}}</p>
+  {{#if @item.description}}
+    <p class="au-u-base c-decision-card__content">{{@item.description}}</p>
   {{/if}}
   <div class="c-decision-card__footer">
-    {{#if this.dateRange}}
-      {{this.dateRange}}
-    {{else}}
-      Geen Datum
-    {{/if}}
+    {{@item.session.dateFormatted}}
     -
-    {{#if this.item.session.governingBody.name}}
-      {{this.item.session.governingBody.name}}
+    {{#if @item.session.governingBody.name}}
+      {{@item.session.governingBody.name}}
     {{else}}
       Geen Bestuurorgaan
     {{/if}}
     -
-    {{#if this.item.session.governingBody.administrativeUnit.name}}
-      {{this.item.session.governingBody.administrativeUnit.name}}
+    {{#if @item.session.governingBody.administrativeUnit.name}}
+      {{@item.session.governingBody.administrativeUnit.name}}
     {{else}}
       Geen Bestuurseenheid
     {{/if}}

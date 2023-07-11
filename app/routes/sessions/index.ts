@@ -28,7 +28,7 @@ const getQuery = (
     ':lt:planned-start': plannedStartMax ? plannedStartMax : undefined,
   },
   include: ['governing-body.administrative-unit', 'agenda-items'].join(','),
-  sort: '-started-at',
+  sort: '-planned-start',
   page: {
     number: page,
   },

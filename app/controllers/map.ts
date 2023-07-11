@@ -3,10 +3,10 @@ import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import d3 from 'd3';
+import * as d3 from 'd3';
 import { geoMercator, geoPath } from 'd3-geo';
 import MapRoute from 'frontend-burgernabije-besluitendatabank/routes/map';
-import topojson from 'topojson';
+import * as topojson from 'topojson';
 import { ModelFrom } from '../lib/type-utils';
 
 export default class MapComponent extends Controller {

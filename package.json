@@ -34,6 +34,10 @@
     "@ember/optional-features": "^2.0.0",
     "@ember/string": "^3.0.1",
     "@ember/test-helpers": "^2.9.3",
+    "@embroider/compat": "^3.1.4",
+    "@embroider/core": "^3.1.2",
+    "@embroider/router": "^2.1.2",
+    "@embroider/webpack": "^3.1.2",
     "@glimmer/component": "^1.1.2",
     "@glimmer/tracking": "^1.1.2",
     "@govflanders/vl-widget-client": "^1.4.1",
@@ -116,7 +120,7 @@
     "tracked-built-ins": "^3.1.0",
     "typescript": "^5.0.4",
     "url-polyfill": "^1.1.9",
-    "webpack": "^5.75.0"
+    "webpack": "^5.67.0"
   },
   "engines": {
     "node": "14.* || 16.* || >= 18"
