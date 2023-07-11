@@ -18,9 +18,8 @@ export default class SelectMultipleFilterComponent extends FilterComponent {
       const needles = queryParam.split(seperator);
       const searchField = this.args.searchField;
 
-      const haystack: [{ [key: string]: any }] = await this.args.options;
-
-      const results: Array<{ [key: string]: any }> = [];
+      const haystack: Array<object> = await this.args.options;
+      const results: Array<object> = [];
 
       for (let i = 0; i < needles.length; i++) {
         const needle = needles[i];
