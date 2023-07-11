@@ -5,25 +5,15 @@ import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/service
 import { sortObjectsByTitle } from 'frontend-burgernabije-besluitendatabank/utils/array-utils';
 
 const agendaItemIncludes = [
-  'session',
-  // "session.governing-body",
-  'session.governing-body.administrative-unit',
-  // 'handled-by',
   'handled-by.has-votes',
   'handled-by.resolutions',
-  // 'session.governing-body',
-  'session.governing-body.administrative-unit',
-  // 'handled-by.has-votes.has-presents',
-  // 'handled-by.has-votes.has-abstainers',
   'handled-by.has-votes.has-abstainers.alias',
   'handled-by.has-votes.has-abstainers.has-membership.inner-group',
-  // 'handled-by.has-votes.has-voters',
-  // 'handled-by.has-votes.has-opponents',
   'handled-by.has-votes.has-opponents.alias',
   'handled-by.has-votes.has-opponents.has-membership.inner-group',
-  // 'handled-by.has-votes.has-proponents',
   'handled-by.has-votes.has-proponents.alias',
   'handled-by.has-votes.has-proponents.has-membership.inner-group',
+  'sessions.governing-body.is-time-specialization-of.administrative-unit.location',
 ].join(',');
 
 export default class DetailRoute extends Route {
@@ -40,7 +30,7 @@ export default class DetailRoute extends Route {
       ? await this.store.query('agenda-item', {
           include: agendaItemIncludes,
           filter: {
-            session: {
+            sessions: {
               [':id:']: sessionId,
             },
           },
@@ -101,10 +91,14 @@ export default class DetailRoute extends Route {
       },
       municipality: agendaItem.session?.get('municipality') || undefined,
       filter: {
-        session: {
+        sessions: {
           'governing-body': {
-            'administrative-unit': {
-              name: agendaItem.session?.get('municipality') || undefined,
+            'is-time-specialization-of': {
+              'administrative-unit': {
+                location: {
+                  label: agendaItem.session?.get('municipality') || undefined,
+                },
+              },
             },
           },
         },

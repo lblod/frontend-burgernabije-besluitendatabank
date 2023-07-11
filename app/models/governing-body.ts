@@ -1,4 +1,9 @@
-import Model, { attr, belongsTo, type AsyncBelongsTo } from '@ember-data/model';
+import Model, {
+  attr,
+  belongsTo,
+  hasMany,
+  AsyncHasMany,
+} from '@ember-data/model';
 import SessionModel from './session';
 import AdministrativeUnitModel from './administrative-unit';
 
@@ -11,6 +16,18 @@ export default class GoverningBodyModel extends Model {
   })
   declare administrativeUnit: AdministrativeUnitModel;
 
-  @belongsTo('session', { async: true, inverse: 'governingBody' })
-  declare session: AsyncBelongsTo<SessionModel>;
+  @hasMany('session', { async: true, inverse: 'governingBody' })
+  declare sessions: AsyncHasMany<SessionModel>;
+
+  @belongsTo('governing-body', {
+    async: false,
+    inverse: 'hasTimeSpecializations',
+  })
+  declare isTimeSpecializationOf: GoverningBodyModel;
+
+  @hasMany('governing-body', {
+    async: true,
+    inverse: 'isTimeSpecializationOf',
+  })
+  declare hasTimeSpecializations: AsyncHasMany<GoverningBodyModel>;
 }

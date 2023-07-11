@@ -26,24 +26,22 @@ const getQuery = ({
 }): AgendaItemsRequestInterface => ({
   // exclude sessions without governing body and administrative unit
   //todo investigate why filtering is not working
-  include: [
-    'session',
-    'session.governing-body',
-    'session.governing-body.administrative-unit',
-    'session.governing-body.administrative-unit.location',
-  ].join(','),
-  sort: '-session.planned-start',
+  include:
+    'sessions.governing-body.is-time-specialization-of.administrative-unit.location',
+  sort: '-sessions.planned-start',
   filter: {
-    session: {
+    sessions: {
       ':gt:planned-start': plannedStartMin ? plannedStartMin : undefined,
       ':lt:planned-start': plannedStartMax ? plannedStartMax : undefined,
       ':has:governing-body': true,
       'governing-body': {
-        ':has:administrative-unit': true,
-        'administrative-unit': {
-          ':has:name': true,
-          location: {
-            ':id:': locationIds ? locationIds : undefined,
+        ':has:is-time-specialization-of': true,
+        'is-time-specialization-of': {
+          ':has:administrative-unit': true,
+          'administrative-unit': {
+            location: {
+              ':id:': locationIds ? locationIds : undefined,
+            },
           },
         },
       },
@@ -67,17 +65,18 @@ interface AgendaItemsRequestInterface {
   include: string;
   sort?: string;
   filter?: {
-    ':or:'?: {};
-    session?: {
-      ':gt:planned-start'?: string | undefined;
-      ':lt:planned-start'?: string | undefined;
+    ':or:'?: unknown;
+    sessions?: {
+      ':gt:planned-start'?: string;
+      ':lt:planned-start'?: string;
       ':has:governing-body'?: boolean;
       'governing-body'?: {
-        ':has:administrative-unit'?: boolean;
-        'administrative-unit': {
-          ':has:name'?: boolean;
-          name?: any;
-          location?: {};
+        ':has:is-time-specialization-of'?: boolean;
+        'is-time-specialization-of'?: {
+          ':has:administrative-unit'?: boolean;
+          'administrative-unit': {
+            location?: unknown;
+          };
         };
       };
     };

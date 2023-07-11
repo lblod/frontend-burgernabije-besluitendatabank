@@ -10,12 +10,13 @@ interface AgendaItemsRequestInterface {
   include: string;
   municipality?: string;
   filter?: {
-    ':or:'?: {};
-    session?: {
+    ':or:'?: unknown;
+    sessions?: {
       'governing-body'?: {
-        'administrative-unit': {
-          name?: {};
-          location?: {};
+        'is-time-specialization-of'?: {
+          'administrative-unit': {
+            location?: unknown;
+          };
         };
       };
     };
@@ -30,28 +31,31 @@ export default class MunicipalityRoute extends Route {
   };
 
   async model(params: any) {
-    const { municipality, page } = params;
+    const { municipality } = params;
 
     const req: AgendaItemsRequestInterface = {
       page: {
         size: 10,
       },
       municipality: municipality,
-      include: [
-        'session',
-        'session.governing-body',
-        'session.governing-body.administrative-unit',
-      ].join(','),
+      include:
+        'sessions.governing-body.is-time-specialization-of.administrative-unit.location',
       filter: {},
     };
 
     const sessionFilter: { [key: string]: any } = {};
     sessionFilter['governing-body'] = {
-      'administrative-unit': { name: municipality },
+      'is-time-specialization-of': {
+        'administrative-unit': {
+          location: {
+            label: municipality,
+          },
+        },
+      },
     };
     req.filter = {};
 
-    req.filter.session = sessionFilter;
+    req.filter.sessions = sessionFilter;
 
     const data = await hash({
       gemeenteraadsleden: [],

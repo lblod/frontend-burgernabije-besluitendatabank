@@ -14,32 +14,28 @@ export default class SessionModel extends Model {
   @attr('date') declare startedAt?: Date;
   @attr('date') declare endedAt?: Date;
 
-  @hasMany('agenda-item', { async: true, inverse: 'session' })
+  @hasMany('agenda-item', { async: true, inverse: 'sessions' })
   declare agendaItems: AsyncHasMany<AgendaItemModel>;
 
-  @belongsTo('governing-body', { async: false, inverse: 'session' })
+  @belongsTo('governing-body', { async: false, inverse: 'sessions' })
   declare governingBody: GoverningBodyModel;
 
   get name() {
-    return this.governingBody?.name ?? 'Ontbrekend bestuursorgaan';
+    return (
+      this.governingBody?.isTimeSpecializationOf?.name ??
+      'Ontbrekend bestuursorgaan'
+    );
   }
 
   get municipality() {
     return (
-      this.governingBody?.administrativeUnit?.name ??
-      'Ontbrekende bestuurseenheid'
-    );
-  }
-
-  get location() {
-    return (
-      this.governingBody?.administrativeUnit?.location?.label ??
-      'Ontbrekende locatie'
+      this.governingBody?.isTimeSpecializationOf?.administrativeUnit?.location
+        ?.label ?? 'Ontbrekende bestuurseenheid'
     );
   }
 
   get hasMunicipality() {
-    return !!this.governingBody?.administrativeUnit;
+    return !!this.governingBody?.isTimeSpecializationOf?.administrativeUnit;
   }
 
   get dateFormatted() {

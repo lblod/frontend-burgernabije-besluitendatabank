@@ -14,9 +14,10 @@ export default class SessionRoute extends Route {
     const session: SessionModel =
       sessionFromParent ??
       (await this.store.findRecord('session', session_id, {
-        include: ['governing-body.administrative-unit', 'agenda-items'].join(
-          ','
-        ),
+        include: [
+          'governing-body.is-time-specialization-of.administrative-unit.location',
+          'agenda-items',
+        ].join(','),
       }));
 
     return session;

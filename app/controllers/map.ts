@@ -64,8 +64,7 @@ export default class MapComponent extends Controller {
         this.agendaData.forEach((agendaItem: any) => {
           const agendaItemLocation = agendaItem
             .get('session')
-            ?.get('governingBody')
-            ?.get('administrativeUnit')?.name;
+            ?.get('municipality');
           if (name === agendaItemLocation) {
             const datenow = new Date(Date.now()).setHours(0, 0, 0, 0);
             const f = new Date(agendaItem.geplandeStart);

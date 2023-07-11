@@ -1,4 +1,10 @@
-import Model, { attr, belongsTo } from '@ember-data/model';
+import Model, {
+  attr,
+  belongsTo,
+  hasMany,
+  AsyncHasMany,
+  AsyncBelongsTo,
+} from '@ember-data/model';
 import AgendaItemHandlingModel from './agenda-item-handling';
 import SessionModel from './session';
 
@@ -8,9 +14,15 @@ export default class AgendaItemModel extends Model {
   @attr('string') declare alternateLink: string;
   @attr('boolean') declare plannedPublic: boolean;
 
-  @belongsTo('session', { async: true, inverse: 'agendaItems' })
-  declare session?: SessionModel;
+  @hasMany('session', { async: true, inverse: 'agendaItems' })
+  declare sessions?: AsyncHasMany<SessionModel>;
 
   @belongsTo('agenda-item-handling', { async: true, inverse: null })
-  declare handledBy?: AgendaItemHandlingModel;
+  declare handledBy?: AsyncBelongsTo<AgendaItemHandlingModel>;
+
+  get session() {
+    return this.sessions?.slice().find((session) => {
+      return session.hasMunicipality;
+    });
+  }
 }
