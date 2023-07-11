@@ -1,13 +1,13 @@
-import Controller from "@ember/controller";
-import { action, computed } from "@ember/object";
-import RouterService from "@ember/routing/router-service";
-import { service } from "@ember/service";
-import { tracked } from "@glimmer/tracking";
-import d3 from "d3";
-import { geoMercator, geoPath } from "d3-geo";
-import MapRoute from "frontend-burgernabije-besluitendatabank/routes/map";
-import topojson from "topojson";
-import { ModelFrom } from "../lib/type-utils";
+import Controller from '@ember/controller';
+import { action } from '@ember/object';
+import RouterService from '@ember/routing/router-service';
+import { service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
+import * as d3 from 'd3';
+import { geoMercator, geoPath } from 'd3-geo';
+import MapRoute from 'frontend-burgernabije-besluitendatabank/routes/map';
+import * as topojson from 'topojson';
+import { ModelFrom } from '../lib/type-utils';
 
 export default class MapComponent extends Controller {
   @service declare router: RouterService;
@@ -20,37 +20,28 @@ export default class MapComponent extends Controller {
   @tracked features: any;
   @tracked width = 800;
   @tracked height = 400;
-  @tracked container = d3.select(".bp-map");
+  @tracked container = d3.select('.bp-map');
 
-  @tracked tooltip = d3.select("#tooltip");
-  @tracked cursor: any = document.querySelector("#tooltip");
+  @tracked tooltip = d3.select('#tooltip');
+  @tracked cursor: any = document.querySelector('#tooltip');
 
   @tracked svg = this.container
-    .append("svg")
-    .attr("viewBox", [0, 0, this.width, this.height]);
+    .append('svg')
+    .attr('viewBox', [0, 0, this.width, this.height]);
 
-  @tracked g = this.svg.append("g");
+  @tracked g = this.svg.append('g');
 
   @tracked projection = geoMercator().scale(13400).translate([-590, 14120]);
 
   @tracked path: any = geoPath().projection(this.projection);
 
-  @computed(
-    "model.locationData",
-    "model.agendaData",
-    "model.agendaData.session",
-    "model.agendaData.session.governingBody",
-    "model.agendaData.session.governingBody.administrativeUnit",
-    "model.agendaData.session.governingBody.administrativeUnit.location",
-    "model.mandatenData.[]"
-  )
   @action
   initMap() {
-    document.addEventListener("mousemove", (e) => {
-      var x = e.clientX;
-      var y = e.clientY;
-      this.cursor.style.left = x + "px";
-      this.cursor.style.top = y + "px";
+    document.addEventListener('mousemove', (e) => {
+      const x = e.clientX;
+      const y = e.clientY;
+      this.cursor.style.left = x + 'px';
+      this.cursor.style.top = y + 'px';
     });
 
     this.map();
@@ -58,107 +49,107 @@ export default class MapComponent extends Controller {
 
   @action async drawMap() {
     this.g
-      .selectAll("path")
+      .selectAll('path')
       .data(this.locationData)
       .enter()
-      .append("path")
-      .attr("class", "municipalities")
-      .attr("id", (locationDataItem: any) => {
-        let name = locationDataItem.properties["name_nl"];
+      .append('path')
+      .attr('class', 'municipalities')
+      .attr('id', (locationDataItem: any) => {
+        const name = locationDataItem.properties['name_nl'];
         return name;
       })
-      .attr("d", this.path)
-      .attr("fill", (locationDataItem: any) => {
-        let name = locationDataItem.properties["name_nl"];
+      .attr('d', this.path)
+      .attr('fill', (locationDataItem: any) => {
+        const name = locationDataItem.properties['name_nl'];
         this.agendaData.forEach((agendaItem: any) => {
-          let agendaItemLocation = agendaItem
-            .get("session")
-            ?.get("governingBody")
-            ?.get("administrativeUnit")?.name;
+          const agendaItemLocation = agendaItem
+            .get('session')
+            ?.get('governingBody')
+            ?.get('administrativeUnit')?.name;
           if (name === agendaItemLocation) {
             const datenow = new Date(Date.now()).setHours(0, 0, 0, 0);
             const f = new Date(agendaItem.geplandeStart);
             const dateplan = f.getTime();
             if (dateplan > datenow || dateplan == datenow) {
-              return d3.select("#" + name).style("fill", "#FFC515");
+              return d3.select('#' + name).style('fill', '#FFC515');
             }
-            return d3.select("#" + name).style("fill", "#5990DE");
+            return d3.select('#' + name).style('fill', '#5990DE');
           }
         });
-        return "#e1e5e8";
+        return '#e1e5e8';
       })
-      .on("mouseover", (locationDataItem) => {
-        this.tooltip.transition().style("visibility", "visible");
-        let name = locationDataItem.target.id;
+      .on('mouseover', (locationDataItem) => {
+        this.tooltip.transition().style('visibility', 'visible');
+        const name = locationDataItem.target.id;
         this.over(name);
       })
-      .on("click", (locationDataItem) => {
-        this.router.transitionTo("municipality", locationDataItem.target.id);
+      .on('click', (locationDataItem) => {
+        this.router.transitionTo('municipality', locationDataItem.target.id);
       })
-      .on("mouseout", (locationDataItem) => {
-        this.tooltip.transition().style("visibility", "hidden");
+      .on('mouseout', (locationDataItem) => {
+        this.tooltip.transition().style('visibility', 'hidden');
       });
 
     this.g
-      .append("g")
-      .selectAll("path")
+      .append('g')
+      .selectAll('path')
       .data(this.provincesData)
       .enter()
-      .append("path")
-      .attr("stroke-linejoin", "round")
-      .attr("class", "provinces")
-      .attr("d", this.path);
+      .append('path')
+      .attr('stroke-linejoin', 'round')
+      .attr('class', 'provinces')
+      .attr('d', this.path);
 
     this.g
-      .append("g")
-      .selectAll("path")
+      .append('g')
+      .selectAll('path')
       .data(this.provincesData)
       .enter()
-      .append("path")
-      .attr("stroke-linejoin", "round")
-      .attr("class", "provinces")
-      .attr("d", this.path);
+      .append('path')
+      .attr('stroke-linejoin', 'round')
+      .attr('class', 'provinces')
+      .attr('d', this.path);
 
-    const legend = this.g.append("g");
-
-    legend
-      .append("rect")
-      .attr("x", 635)
-      .attr("y", 15)
-      .attr("width", 8)
-      .attr("height", 8)
-      .attr("class", "legend")
-      .attr("fill", "#FFC515");
+    const legend = this.g.append('g');
 
     legend
-      .append("text")
-      .attr("x", 650)
-      .attr("y", 22)
-      .attr("class", "text_legend")
-      .attr("fill", "#000")
-      .text("Agenda komende zittingen");
+      .append('rect')
+      .attr('x', 635)
+      .attr('y', 15)
+      .attr('width', 8)
+      .attr('height', 8)
+      .attr('class', 'legend')
+      .attr('fill', '#FFC515');
 
     legend
-      .append("rect")
-      .attr("x", 635)
-      .attr("y", 30)
-      .attr("width", 8)
-      .attr("height", 8)
-      .attr("class", "legend")
-      .attr("fill", "#5990DE");
+      .append('text')
+      .attr('x', 650)
+      .attr('y', 22)
+      .attr('class', 'text_legend')
+      .attr('fill', '#000')
+      .text('Agenda komende zittingen');
 
     legend
-      .append("text")
-      .attr("x", 650)
-      .attr("y", 37)
-      .attr("class", "text_legend")
-      .attr("fill", "#000")
-      .text("Agenda recente 3 maanden");
+      .append('rect')
+      .attr('x', 635)
+      .attr('y', 30)
+      .attr('width', 8)
+      .attr('height', 8)
+      .attr('class', 'legend')
+      .attr('fill', '#5990DE');
+
+    legend
+      .append('text')
+      .attr('x', 650)
+      .attr('y', 37)
+      .attr('class', 'text_legend')
+      .attr('fill', '#000')
+      .text('Agenda recente 3 maanden');
   }
 
   @action async map() {
     //@ts-ignore
-    d3.json("assets/api/vlaanderen.json").then((data: any, error: any) => {
+    d3.json('assets/api/vlaanderen.json').then((data: any, error: any) => {
       if (error) {
         console.error(error);
       } else {
@@ -207,7 +198,7 @@ export default class MapComponent extends Controller {
 
     return munName.label
       ? (document.querySelector(
-          "#tooltip"
+          '#tooltip'
         )!.innerHTML = `<span class="gemeente">${munName.label}</span>`)
       : null;
   }

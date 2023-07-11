@@ -15,10 +15,18 @@
   },
   "scripts": {
     "build": "ember build --environment=production",
+    "lint": "concurrently \"npm:lint:*(!fix)\" --names \"lint:\"",
+    "lint:fix": "concurrently \"npm:lint:*:fix\" --names \"fix:\"",
+    "lint:hbs": "ember-template-lint .",
+    "lint:hbs:fix": "ember-template-lint . --fix",
+    "lint:js": "eslint . --cache",
+    "lint:js:fix": "eslint . --fix",
     "dev": "ember serve --environment=development",
     "dev:proxy": "ember serve --environment=development --proxy=https://burgernabije-besluitendatabank-dev.s.redhost.be/",
     "start": "ember serve --environment=development",
-    "prod": "ember serve --environment=production"
+    "prod": "ember serve --environment=production",
+    "test": "concurrently \"npm:lint\" \"npm:test:*\" --names \"lint,test:\"",
+    "test:ember": "ember test"
   },
   "devDependencies": {
     "@appuniversum/ember-appuniversum": "^2.2.0",
@@ -26,6 +34,10 @@
     "@ember/optional-features": "^2.0.0",
     "@ember/string": "^3.0.1",
     "@ember/test-helpers": "^2.9.3",
+    "@embroider/compat": "^3.1.4",
+    "@embroider/core": "^3.1.2",
+    "@embroider/router": "^2.1.2",
+    "@embroider/webpack": "^3.1.2",
     "@glimmer/component": "^1.1.2",
     "@glimmer/tracking": "^1.1.2",
     "@govflanders/vl-widget-client": "^1.4.1",
@@ -64,8 +76,9 @@
     "@types/qunit": "^2.19.4",
     "@types/rsvp": "^4.0.4",
     "@types/topojson": "^3.2.3",
+    "@typescript-eslint/eslint-plugin": "^5.61.0",
+    "@typescript-eslint/parser": "^5.61.0",
     "au-date-range-picker": "^0.2.0",
-    "babel-eslint": "^10.1.0",
     "broccoli-asset-rev": "^3.0.0",
     "concurrently": "^7.6.0",
     "ember-auto-import": "^2.6.3",
@@ -107,7 +120,7 @@
     "tracked-built-ins": "^3.1.0",
     "typescript": "^5.0.4",
     "url-polyfill": "^1.1.9",
-    "webpack": "^5.75.0"
+    "webpack": "^5.67.0"
   },
   "engines": {
     "node": "14.* || 16.* || >= 18"
