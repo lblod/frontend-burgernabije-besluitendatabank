@@ -23,18 +23,13 @@
         </AuLink>
 
       </c.header>
-      <c.content class="content" style="min-height: 80rem;">
+      <c.content class="content" style="min-height: 80rem;" {{!template-lint-disable no-inline-styles}}>
 
         <section
           class="au-u-flex au-u-muted au-u-margin-top-tiny au-u-u-flex--vertical-center"
         >
           <AuIcon class="au-u-margin-right-small" @size="large" @icon="check" />
-          <p>
-            {{#if this.model.agendaItem.session.startedAt}}
-              {{iso-formatter this.model.agendaItem.session.startedAt}}
-            {{else}}
-              Geen Datum
-            {{/if}}</p>
+          <p>{{this.model.agendaItem.session.dateFormatted}}</p>
         </section>
         <section
           class="au-u-flex au-u-muted au-u-margin-top-tiny au-u-u-flex--vertical-center"
@@ -181,14 +176,10 @@
       >
         <c.header>
           <h2 class="au-u-h3">
-            {{#if this.model.agendaItem.session.startedAt}}
-              Volledige agenda van
-              {{iso-formatter this.model.agendaItem.session.startedAt}}
-            {{/if}}
+              Meer agenda op {{this.model.agendaItem.session.dateFormatted}}
           </h2>
         </c.header>
         <c.content class="au-u-flex au-u-flex--column">
-
           {{#if this.model.agendaItemOnSameSession}}
             {{#each this.model.agendaItemOnSameSession as |agendaItem|}}
               {{! if the agendaItem.id is equal to the current agendaItem then display "Huidige agendapunt" }}
@@ -203,7 +194,11 @@
             {{/each}}
           {{/if}}
         </c.content>
-
+        <c.footer>
+          <AuLink @route="sessions.session" @model={{this.model.agendaItem.session.id}}>
+            Bekijk de volledige agenda
+          </AuLink>
+        </c.footer>
       </AuCard>
     {{/if}}
   </article>

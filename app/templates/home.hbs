@@ -18,9 +18,11 @@
     >
       In welke gemeente(s) wil je zoeken?
     </AuLabel>
-    <section class="au-u-flex au-u-1-1">
+    <section class="au-u-flex au-u-1-1"
+      {{did-insert this.resetLoading}}
+      >
       <PowerSelect
-        
+
         @onChange={{this.handleMunicipalityChange}}
         @selected={{this.selectedMunicipality}}
         @options={{this.municipalities}}
@@ -38,8 +40,8 @@
       <AuButton
         class="au-u-1-5"
         @loading={{this.loading}}
-        {{action "handleMunicipalitySelect"}}
         @width="block"
+        {{on "click" this.handleMunicipalitySelect}}
       >Locatie(s) Opslaan</AuButton>
     </section>
   </AuFormRow>

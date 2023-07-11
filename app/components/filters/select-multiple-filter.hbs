@@ -1,15 +1,17 @@
-<FilterSidebar::Filter @id={{@id}} @label={{@label}}>
+<Filters::Filter @id={{@id}} @label={{@label}}>
     <PowerSelectMultiple
+      {{!template-lint-disable no-duplicate-id}}
       id={{@id}}
 
-      @onChange={{action this.selectChange}}
+      @onChange={{this.selectChange}}
 
-      
+      class="au-u-1-1"
+
       @selected= {{this.selected}}
 
       @options={{@options}}
 
-      @allowClear=true
+      @allowClear={{true}}
       @searchField={{@searchField}}
 
       @placeholder={{@placeholder}}
@@ -24,5 +26,4 @@
       {{get value @searchField}}
 
     </PowerSelectMultiple>
-    
-</FilterSidebar::Filter>
+</Filters::Filter>

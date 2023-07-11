@@ -1,4 +1,4 @@
-import { action } from "@ember/object";
+import { action } from '@ember/object';
 import FilterComponent from './filter';
 import { tracked } from "@glimmer/tracking";
 

@@ -1,6 +1,6 @@
-import Component from "@glimmer/component";
-import { tracked } from "@glimmer/tracking";
-import d3 from "d3";
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
+import * as d3 from 'd3';
 
 interface ArgsInterface {
   numberOfAbstentions: number;
@@ -30,10 +30,10 @@ export default class VoteOverview extends Component<ArgsInterface> {
   @tracked tooltip = {
     format: {
       title: (d: any) => {
-        return "Data " + d;
+        return 'Data ' + d;
       },
       value: (value: any, ratio: any, id: any) => {
-        var format = id === "data1" ? d3.format(",") : d3.format("$");
+        const format = id === 'data1' ? d3.format(',') : d3.format('$');
         return format(value);
       },
     },
@@ -41,21 +41,21 @@ export default class VoteOverview extends Component<ArgsInterface> {
 
   @tracked data = {
     columns: [
-      ["Voor", this.numberOfProponents],
-      ["Tegen", this.numberOfOpponents],
-      ["Onthouden", this.numberOfAbstentions],
+      ['Voor', this.numberOfProponents],
+      ['Tegen', this.numberOfOpponents],
+      ['Onthouden', this.numberOfAbstentions],
     ],
-    type: "pie",
+    type: 'pie',
   };
   // the three color levels for the percentage values
   color = {
-    pattern: ["#007A37", "#AA2729", "#687483"],
+    pattern: ['#007A37', '#AA2729', '#687483'],
     // threshold: {
     //   values: [30, 60, 90, 100],
     // },
   };
 
   legend = {
-    position: "right",
+    position: 'right',
   };
 }

@@ -1,4 +1,4 @@
-<FilterSidebar::Filter @id={{@id}} @label={{@label}}>
+<Filters::Filter @label={{@label}}>
     <AuDateRangePicker
       @width="block"
 
@@ -8,13 +8,13 @@
       @start={{this.start}}
       @end={{this.end}}
       
-      @cancelAction={{action this.resetDate}}
-      @applyAction={{action this.dateChange}}
-      @hideAction={{action this.hideDate}}
+      @cancelAction={{this.resetDate}}
+      @applyAction={{this.dateChange}}
+      @hideAction={{this.hideDate}}
 
       @cancelLabel="Reset"
     />
     {{!-- did-insert didn't work on the custom components --}}
     <span {{did-insert this.hideDate}}></span>
 
-</FilterSidebar::Filter> 
+</Filters::Filter>
