@@ -16,8 +16,8 @@ export default class NavigationBar extends Component {
       label: 'Home',
     },
     {
-      route: "sessions",
-      label: "Zittingen",
+      route: 'sessions',
+      label: 'Zittingen',
     },
   ];
 }
