@@ -21,19 +21,17 @@ npm install
 
 From there, you can use `npm run dev:proxy`, or any of the following npm scripts:
 
-
-|  npm run...  |  Description |
-| ------------ | ------------ |
-| build        | Creates a production-ready static build |
-| lint         | Runs the linter and returns any errors/warnings. *Is run automatically before committing, cancelling the commit on error* |
-| lint:fix     | Runs the linter, attempting to automatically fix any errors |
-| dev          | Run a development server with the mock api |
-| dev:proxy    | Run a development server with a proxy to [the external dev server](https://burgernabije-besluitendatabank-dev.s.redhost.be/) |
-| start        | Run a development server with the mock api |
-| prod         | Run a production server |
-| test         | Run the linter and then ember tests |
-
-
+| npm run...           | Description                                                                                                                                                                      |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| build                | Creates a production-ready static build                                                                                                                                          |
+| build:analyze-bundle | Creates a production-ready static build and outputs some [extra bundle information](https://github.com/embroider-build/embroider/blob/main/docs/analyzing.md#analyzing-bundles). |
+| lint                 | Runs the linter and returns any errors/warnings. _Is run automatically before committing, cancelling the commit on error_                                                        |
+| lint:fix             | Runs the linter, attempting to automatically fix any errors                                                                                                                      |
+| dev                  | Run a development server with the mock api                                                                                                                                       |
+| dev:proxy            | Run a development server with a proxy to [the external dev server](https://burgernabije-besluitendatabank-dev.s.redhost.be/)                                                     |
+| start                | Run a development server with the mock api                                                                                                                                       |
+| prod                 | Run a production server                                                                                                                                                          |
+| test                 | Run the linter and then ember tests                                                                                                                                              |
 
 ### Automated builds
 
