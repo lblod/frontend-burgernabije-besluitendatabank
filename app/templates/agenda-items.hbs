@@ -22,6 +22,20 @@
   </FilterSidebar>
 
   <section class="smooth-scroll-children au-u-flex au-u-flex--column au-u-3-5 au-u-padding-left-large au-u-padding-right-large">
+    <h2 class="au-u-h2 au-u-medium">Wat zoek je?</h2>
+    <Filters::TextFilter
+      @id="keyword"
+      @queryParam="trefwoord"
+      @value={{this.keyword}}
+
+      @placeholder="Zoek in alle lokale agendas en besluiten"
+      @buttonText="Zoeken"
+
+      @inputClass="au-u-padding au-u-margin-bottom-large"
+
+      @icon="search"
+    />
+
     {{#if this.errorMsg}}
       <Oops
         @title="Oeps!"
@@ -32,23 +46,6 @@
         <LoaderFullPage @content="Agendapunt aan het laden"/>
 
       {{else}}
-        <div class="au-u-margin-bottom-large">
-          <h2 class="au-u-h2 au-u-medium">Wat zoek je?</h2>
-          <Filters::TextFilter
-            @id="keyword"
-            @queryParam="trefwoord"
-            @value={{this.keyword}}
-
-            @placeholder="Zoek in alle lokale agendas en besluiten"
-            @buttonText="Zoeken"
-
-            @inputClass="au-u-padding"
-
-            @icon="search"
-          />
-        </div>
-
-
         {{! if @model.agendaItems length is equal to 0 }}
         {{#if (eq this.agendaItems.length 0)}}
           <AuAlert
