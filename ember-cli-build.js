@@ -1,6 +1,7 @@
 'use strict';
 
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = function (defaults) {
   let app = new EmberApp(defaults, {
@@ -18,5 +19,10 @@ module.exports = function (defaults) {
     staticModifiers: true,
     staticComponents: true,
     splitAtRoutes: ['map'],
+    packagerOptions: {
+      webpackConfig: {
+        plugins: [new BundleAnalyzerPlugin()],
+      },
+    },
   });
 };
