@@ -1,5 +1,5 @@
 /*global vl*/
-import { modifier } from "ember-modifier";
+import { modifier } from 'ember-modifier';
 
 export default modifier((element, [url]) => {
   // From https://vlaamseoverheid.atlassian.net/wiki/spaces/IKPubliek/pages/2327449182/Technische+documentatie+Widget-platform#Een-widget-toevoegen-aan-een-webpagina-via-Javascript

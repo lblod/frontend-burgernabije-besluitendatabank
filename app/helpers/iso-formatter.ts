@@ -1,5 +1,5 @@
-import { helper } from "@ember/component/helper";
-import { format, parseISO } from "date-fns";
+import { helper } from '@ember/component/helper';
+import { format, parseISO } from 'date-fns';
 
 /**
  * Date formatter, allows consistent formatting across the application
@@ -7,9 +7,9 @@ import { format, parseISO } from "date-fns";
  * @param date a date to be formatted. Can either be a string or a Date object 
  * @returns a formatted date string
  */
-export default function isoFormatter(date: string|Date) {
-  if (typeof(date) == 'string') {
-    date = parseISO(date)
+export default function isoFormatter(date: string | Date) {
+  if (typeof date == 'string') {
+    date = parseISO(date);
   }
-  return format(date, "MM/dd/yyyy");
+  return format(date, 'MM/dd/yyyy');
 }

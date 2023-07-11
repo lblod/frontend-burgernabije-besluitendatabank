@@ -1,7 +1,7 @@
-import { getFormattedDate } from "./get-formatted-date";
+import { getFormattedDate } from './get-formatted-date';
 
 export const getFormattedDateRange = (startDate?: Date, endDate?: Date) => {
-  let formatted:Array<String> = [];
+  let formatted: Array<string> = [];
 
   // format date when available
   if (startDate) formatted.push(getFormattedDate(startDate));
@@ -10,5 +10,5 @@ export const getFormattedDateRange = (startDate?: Date, endDate?: Date) => {
   // deduplicate
   formatted = [...new Set(formatted)];
 
-  return formatted.join(" tot ");
-}
+  return formatted.join(' tot ');
+};

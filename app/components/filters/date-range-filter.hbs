@@ -1,0 +1,16 @@
+<Filters::Filter @id={{@id}} @label={{@label}}>
+    <AuDateRangePicker
+      @width="block"
+      {{!template-lint-disable no-duplicate-id}}
+      id={{@id}}
+      @label={{@label}}
+      @start={{@valueA}}
+      @end={{@valueB}}
+
+      @cancelAction={{this.resetDate}}
+      @applyAction={{this.dateChange}}
+      @hideAction={{this.dateChange}}
+
+      @cancelLabel="Reset"
+    />
+</Filters::Filter>

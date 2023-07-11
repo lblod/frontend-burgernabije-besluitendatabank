@@ -1,14 +1,15 @@
-import Store from "@ember-data/store";
-import Controller from "@ember/controller";
-import { action } from "@ember/object";
-import RouterService from "@ember/routing/router-service";
-import { service } from "@ember/service";
-import { tracked } from "@glimmer/tracking";
-import { seperator } from "frontend-burgernabije-besluitendatabank/helpers/constants";
-import { ModelFrom } from "frontend-burgernabije-besluitendatabank/lib/type-utils";
-import AgendaItemsRoute from "frontend-burgernabije-besluitendatabank/routes/agenda-items";
-import KeywordStoreService from "frontend-burgernabije-besluitendatabank/services/keyword-store";
-import MunicipalityListService from "frontend-burgernabije-besluitendatabank/services/municipality-list";
+import Store from '@ember-data/store';
+import Controller from '@ember/controller';
+import { action } from '@ember/object';
+import RouterService from '@ember/routing/router-service';
+import { service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
+import { seperator } from 'frontend-burgernabije-besluitendatabank/helpers/constants';
+import { ModelFrom } from 'frontend-burgernabije-besluitendatabank/lib/type-utils';
+import AgendaItemsRoute from 'frontend-burgernabije-besluitendatabank/routes/agenda-items';
+import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
+import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
+import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
 
 export default class AgendaItemsController extends Controller {
   @service declare router: RouterService;
@@ -17,10 +18,11 @@ export default class AgendaItemsController extends Controller {
   @service declare municipalityList: MunicipalityListService;  
 
   // QueryParameters
-  @tracked municipalityLabels: string = "";
-  @tracked sort: string = "";
-  @tracked plannedStartMin: string = "";
-  @tracked plannedStartMax: string = "";
+  @tracked agendaItems: AgendaItem[] = [];
+  @tracked municipalityLabels = '';
+  @tracked sort = '';
+  @tracked plannedStartMin = '';
+  @tracked plannedStartMax = '';
 
   /** Used for requesting more data */
   declare model: ModelFrom<AgendaItemsRoute>;
@@ -31,29 +33,32 @@ export default class AgendaItemsController extends Controller {
   @tracked loading = false;  // Controls the loading animation that replaces the main view
   @tracked errorMsg = "";  // Controls whether an Oops is shown
 
+  setup() {
+    this.agendaItems = this.model.agendaItems.slice();
+  }
+
   @action
   async loadMore() {
     if (this.model && !this.isLoadingMore) {
       this.isLoadingMore = true;
 
-      let locationIds = await this.municipalityList.getLocationIdsFromLabels(this.municipalityLabels.split(seperator));
+      const locationIds = await this.municipalityList.getLocationIdsFromLabels(
+        this.municipalityLabels.split(seperator)
+      );
 
       const nextPage = this.model.currentPage + 1;
-      const agendaItems = await this.store.query(
-        "agenda-item",
+      const agendaItems = (await this.store.query(
+        'agenda-item',
         this.model.getQuery({
           page: nextPage,
           keyword: this.keywordStore.keyword,
-          locationIds: locationIds.join(","),
+          locationIds: locationIds.join(','),
           plannedStartMin: this.plannedStartMin,
           plannedStartMax: this.plannedStartMax,
         })
-      );
-      const concatenateAgendaItems = this.model.agendaItems.concat(
-        agendaItems.toArray()
-      );
+      )) as unknown as AgendaItem[];
 
-      this.model.agendaItems.setObjects(concatenateAgendaItems);
+      this.agendaItems = [...this.agendaItems, ...agendaItems];
 
       this.model.currentPage = nextPage;
       this.isLoadingMore = false;
@@ -66,6 +71,4 @@ export default class AgendaItemsController extends Controller {
   get municipalities() {
     return this.municipalityList.municipalities();
   }
-
-
 }
