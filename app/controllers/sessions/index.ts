@@ -23,7 +23,7 @@ export default class SessionsIndexController extends Controller {
   }
 
   setup() {
-    this.sessions = [...this.model.sessions];
+    this.sessions = this.model.sessions.slice();
   }
 
   @action
