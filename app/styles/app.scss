@@ -12,42 +12,11 @@
 @import "components/c-interface";
 @import "components/c-decision-card";
 @import "components/c-infinite-list";
+@import "components/c-description-list";
+
+// Scoped styles
+@import "routes/map";
 
 // Overrides
-@import "au-overrides";
-@import "custom-classes";
 @import "shame";
-
-// @import "routes/map";
-// @import "routes/municipality";
-// @import "routes/session";
-
-// @import "components/content-header";
-// @import "components/participant-card";
-// @import "components/vote-table-entry";
-
-
-// html {
-//   font-size: 50%;
-// }
-
-// ol {
-//   list-style-type: decimal;
-//   li {
-//     // display: inline;
-//     // float: left;
-//     margin: 0 12px;
-//     padding: 0 12px;
-//   }
-// }
-
-// path {
-//   stroke: white;
-//   stroke-width: 0.08rem;
-// }
-
-// cursor {
-//   cursor: pointer;
-// }
-
 

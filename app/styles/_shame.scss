@@ -1,27 +1,36 @@
-// html {
-//   font-size: 50%;
-// }
+// Add ol styles
+ol {
+  counter-reset: item;
 
-// ol {
-//   list-style-type: decimal;
-//   li {
-//     // display: inline;
-//     // float: left;
-//     margin: 0 12px;
-//     padding: 0 12px;
-//   }
-// }
+  > li {
+    display: flex;
+    gap: $au-unit-small;
+    flex-wrap: nowrap;
+    padding-inline-start: $au-unit-tiny;
+    list-style-type: none;
+    counter-increment: item;
+  }
 
-// path {
-//   stroke: white;
-//   stroke-width: 0.08rem;
-// }
+  > li + li {
+    margin-top: $au-unit-small;
+  }
 
-// cursor {
-//   cursor: pointer;
-// }
+  > li::before {
+    display: block;
+    font-weight: var(--au-medium);
+    content: counter(item) ".";
+    text-align: right;
+    width: $au-unit;
+    flex-shrink: 0;
+  }
+}
 
-// Extend region classe
+// Some cursor override?
+cursor {
+  cursor: pointer;
+}
+
+// Extend region class
 .au-o-region-huge {
   padding-top: $au-unit;
   padding-bottom: $au-unit;
@@ -54,4 +63,96 @@
 
 .daterangepicker td.in-range {
   background-color: var(--au-blue-200);
+}
+
+// Sticky utility
+.u-top-sticky {
+  @include mq(small) {
+    top: $au-unit;
+    position: sticky;
+  }
+}
+
+// Header link
+.u-header-link {
+  text-decoration: none;
+  font-weight: var(--au-medium);
+}
+
+// Yellow top border
+.u-color-top-border {
+  border-top: solid .5rem var(--au-yellow-300);
+}
+
+// Card fill override
+.au-c-card--fill {
+  height: initial !important;
+}
+
+// Accordion override
+.c-accordion-holder {
+  display: flex;
+
+  > .au-c-accordion {
+    margin-top: .6rem;
+    width: 100%;
+    padding-bottom: 0;
+  }
+
+  & + & {
+    margin-top: $au-unit;
+  }
+}
+
+.au-c-accordion {
+  .au-c-toolbar {
+    align-items: center;
+  }
+
+  .au-c-icon {
+    margin-top: 0 !important;
+  }
+
+  .au-c-button--link {
+    text-decoration: none;
+    font-weight: var(--au-medium);
+    @include au-font-size(var(--au-h4));
+  }
+}
+
+// Truncate
+.u-truncate {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 50ch;
+}
+
+// Custom form row
+.au-c-form-row--button {
+  --gap: #{$au-unit-small};
+  --button: 100%;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--gap);
+
+  & > .au-c-input-wrapper {
+    flex-basis: 100%;
+  }
+
+  & > .au-c-button {
+    flex-basis: var(--button);
+  }
+
+  @include mq(small) {
+    --button: 100px;
+
+    & > .au-c-input-wrapper {
+      flex-basis: calc(100% - var(--gap) - var(--button));
+    }
+  }
 }
