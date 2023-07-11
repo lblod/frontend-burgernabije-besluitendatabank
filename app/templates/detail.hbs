@@ -94,13 +94,21 @@
             @iconClosed={{"nav-right"}}
             @buttonLabel={{"Verslag"}}
           >
-            <AuAlert
-              @skin="warning"
-              @title="Geen verslag"
-              class="au-u-margin-top au-u-margin-bottom"
-            >
-              <p>Dit agendapunt heeft geen verslag.</p>
-            </AuAlert>
+
+            {{#if (this.model.agendaItem.handledBy.resolution.value)}}
+              <AuAlert class="au-u-medium" @skin="success" @icon="sign">
+                {{this.model.agendaItem.handledBy.resolution.value}}
+              </AuAlert>
+            {{else}}
+              <AuAlert
+                @skin="warning"
+                @title="Geen verslag"
+                class="au-u-margin-top au-u-margin-bottom"
+              >
+                <p>Dit agendapunt heeft geen verslag.</p>
+              </AuAlert>
+            {{/if}}
+
           </AuAccordion>
         </section>
 
@@ -209,7 +217,7 @@
   <aside class="au-u-2-6 au-u-padding-right-large">
     <div class="top-sticky">
 
-      {{#if this.model.agendaItem.handledBy.resolutions}}
+      {{#if this.model.agendaItem.handledBy.resolution}}
         <AuAlert class="au-u-medium" @skin="success" @icon="sign">
           Dit is beslist
         </AuAlert>
