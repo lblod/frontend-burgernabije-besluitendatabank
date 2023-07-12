@@ -1,6 +1,5 @@
 import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
-import Transition from '@ember/routing/transition';
 import { service } from '@ember/service';
 
 interface AgendaItemsRequestInterface {
@@ -19,7 +18,7 @@ interface AgendaItemsRequestInterface {
         ':has:administrative-unit'?: boolean;
         'administrative-unit': {
           ':has:name'?: boolean;
-          name?: {};
+          name?: object;
         };
       };
     };
@@ -28,7 +27,8 @@ interface AgendaItemsRequestInterface {
 
 export default class MapRoute extends Route {
   @service declare store: Store;
-  async model(params: object, transition: Transition<unknown>) {
+
+  async model() {
     const locationData = await this.store.findAll('location', {});
 
     const req: AgendaItemsRequestInterface = {
