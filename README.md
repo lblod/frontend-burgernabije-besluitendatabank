@@ -19,7 +19,21 @@ cd frontend-burgernabije-besluitendatabank
 npm install
 ```
 
-From there, you can use `npm run dev` in order to use the mock API, `npm run prod` in order to use a local BNB api, or `npm run --proxy=https://burgernabije-besluitendatabank-dev.s.redhost.be/` to run using the BNB API on [the external dev server](https://burgernabije-besluitendatabank-dev.s.redhost.be/).
+From there, you can use `npm run dev:proxy`, or any of the following npm scripts:
+
+
+|  npm run...  |  Description |
+| ------------ | ------------ |
+| build        | Creates a production-ready static build |
+| lint         | Runs the linter and returns any errors/warnings. *Is run automatically before committing, cancelling the commit on error* |
+| lint:fix     | Runs the linter, attempting to automatically fix any errors |
+| dev          | Run a development server with the mock api |
+| dev:proxy    | Run a development server with a proxy to [the external dev server](https://burgernabije-besluitendatabank-dev.s.redhost.be/) |
+| start        | Run a development server with the mock api |
+| prod         | Run a production server |
+| test         | Run the linter and then ember tests |
+
+
 
 ### Automated builds
 
@@ -74,6 +88,3 @@ The levels are as follows:
 
 ![Data Alignment Analysis]("./../docs/analysis-bnb.png)
 
-### Ember-Data@3
-
-For some reason beyond human comprehension, Ember-Data refused to work as is documented in the _latest documentation_ when using v4, but it did on v3. So guess what. It's v3 now.
