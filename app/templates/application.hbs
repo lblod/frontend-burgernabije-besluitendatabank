@@ -3,16 +3,7 @@
 <AuApp>
   <AppHeader />
   {{#if this.isIndex}}
-  <AuContentHeader
-    @titlePartOne="We geven je alle beslissingen"
-    @titlePartTwo="uit JOUW gemeente"
-  >
-    <img
-      sizes="50vw"
-      src={{"/assets/loket-header-1600.jpg"}}
-      alt="Foto van een laptop met daarop het vlaanderen logo."
-    />
-  </AuContentHeader>
+  <ContentHeader />
   {{/if}}
   <AuMainContainer as |m|>
     <m.content>
