@@ -13,16 +13,10 @@ const getQuery = (
   plannedStartMax?: string,
   locationIds?: string
 ) => ({
-  // exclude sessions without governing body and administrative unit
-  //todo investigate why filtering is not working
   filter: {
-    ':has:governing-body': true,
     'governing-body': {
-      ':has:is-time-specialization-of': true,
       'is-time-specialization-of': {
-        ':has:administrative-unit': true,
         'administrative-unit': {
-          ':has:location': true,
           location: {
             ':id:': locationIds ? locationIds : undefined,
           },

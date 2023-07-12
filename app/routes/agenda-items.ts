@@ -24,8 +24,6 @@ const getQuery = ({
   plannedStartMin?: string;
   plannedStartMax?: string;
 }): AgendaItemsRequestInterface => ({
-  // exclude sessions without governing body and administrative unit
-  //todo investigate why filtering is not working
   include: [
     'sessions.governing-body.is-time-specialization-of.administrative-unit.location',
     'sessions.governing-body.administrative-unit.location',
@@ -35,11 +33,8 @@ const getQuery = ({
     sessions: {
       ':gt:planned-start': plannedStartMin ? plannedStartMin : undefined,
       ':lt:planned-start': plannedStartMax ? plannedStartMax : undefined,
-      ':has:governing-body': true,
       'governing-body': {
-        ':has:is-time-specialization-of': true,
         'is-time-specialization-of': {
-          ':has:administrative-unit': true,
           'administrative-unit': {
             location: {
               ':id:': locationIds ? locationIds : undefined,
@@ -71,11 +66,8 @@ interface AgendaItemsRequestInterface {
     sessions?: {
       ':gt:planned-start'?: string;
       ':lt:planned-start'?: string;
-      ':has:governing-body'?: boolean;
       'governing-body'?: {
-        ':has:is-time-specialization-of'?: boolean;
         'is-time-specialization-of'?: {
-          ':has:administrative-unit'?: boolean;
           'administrative-unit': {
             location?: unknown;
           };

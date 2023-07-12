@@ -10,19 +10,12 @@ interface AgendaItemsRequestInterface {
   include: string;
   municipality?: string;
   filter?: {
-    ':has:sessions'?: boolean;
     sessions?: {
       ':gt:planned-start'?: string;
-
-      ':has:governing-body'?: boolean;
       'governing-body'?: {
-        ':has:is-time-specialization-of': true;
         'is-time-specialization-of': {
-          ':has:administrative-unit'?: boolean;
           'administrative-unit': {
-            ':has:location'?: boolean;
             location?: {
-              ':has:label'?: boolean;
               label?: string;
             };
           };
@@ -46,26 +39,12 @@ export default class MapRoute extends Route {
         'sessions.governing-body.administrative-unit.location',
       ].join(','),
       filter: {
-        ':has:sessions': true,
         sessions: {
           ':gt:planned-start': new Date(
             new Date().setMonth(new Date().getMonth() - 3)
           )
             .toISOString()
             .split('T')[0],
-          ':has:governing-body': true,
-          'governing-body': {
-            ':has:is-time-specialization-of': true,
-            'is-time-specialization-of': {
-              ':has:administrative-unit': true,
-              'administrative-unit': {
-                ':has:location': true,
-                location: {
-                  ':has:label': true,
-                },
-              },
-            },
-          },
         },
       },
     };
