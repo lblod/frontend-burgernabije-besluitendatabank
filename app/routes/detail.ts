@@ -4,7 +4,7 @@ import { service } from '@ember/service';
 import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
 import { sortObjectsByTitle } from 'frontend-burgernabije-besluitendatabank/utils/array-utils';
 
-interface detailParams {
+interface DetailParams {
   id: string;
 }
 
