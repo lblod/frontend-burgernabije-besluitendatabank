@@ -10,7 +10,7 @@ interface ArgsInterface {
   queryParamsB: string;
 
   searchField: string;
-  options: any;
+  options: Array<object>;
 }
 
 export default class FilterComponent extends Component<ArgsInterface> {

@@ -5,7 +5,7 @@
   "description": "The front-end for BNB, a site that uses linked data to empower everyone in Flanders to consult the decisions made by their local authorities.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lblod/frontend-gelinkt-notuleren"
+    "url": "git+https://github.com/lblod/frontend-burgernabije-besluitendatabank"
   },
   "license": "MIT",
   "author": "redpencil.io",
@@ -76,11 +76,16 @@
     "@types/qunit": "^2.19.4",
     "@types/rsvp": "^4.0.4",
     "@types/topojson": "^3.2.3",
+    "@types/topojson-specification": "^1.0.2",
     "@typescript-eslint/eslint-plugin": "^5.61.0",
     "@typescript-eslint/parser": "^5.61.0",
     "au-date-range-picker": "^0.2.0",
     "broccoli-asset-rev": "^3.0.0",
+    "c3": "0.7.20",
     "concurrently": "^7.6.0",
+    "d3": "6.6.0",
+    "d3-geo": "^3.1.0",
+    "date-fns": "^2.29.3",
     "ember-auto-import": "^2.6.3",
     "ember-c3": "^4.0.2",
     "ember-cli": "~4.10.0",
@@ -90,7 +95,6 @@
     "ember-cli-dependency-checker": "^3.3.1",
     "ember-cli-deploy": "^2.0.0",
     "ember-cli-htmlbars": "^6.2.0",
-    "ember-cli-htmlbars-inline-precompile": "^3.0.2",
     "ember-cli-inject-live-reload": "^2.1.0",
     "ember-cli-moment-shim": "^3.8.0",
     "ember-cli-sass": "^11.0.1",
@@ -112,11 +116,15 @@
     "eslint-plugin-n": "^15.6.1",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-qunit": "^7.3.4",
+    "geojson": "^0.5.0",
     "loader.js": "^4.7.0",
+    "postscribe": "^2.0.8",
+    "pre-commit": "^1.2.2",
     "prettier": "^2.8.8",
     "qunit": "^2.19.3",
     "qunit-dom": "^2.0.0",
     "sass": "^1.57.1",
+    "topojson-client": "^3.1.0",
     "tracked-built-ins": "^3.1.0",
     "typescript": "^5.0.4",
     "url-polyfill": "^1.1.9",
@@ -128,12 +136,7 @@
   "ember": {
     "edition": "octane"
   },
-  "dependencies": {
-    "c3": "0.7.20",
-    "d3": "6.6.0",
-    "d3-geo": "^3.1.0",
-    "date-fns": "^2.29.3",
-    "postscribe": "^2.0.8",
-    "topojson": "^3.0.2"
-  }
+  "pre-commit": [
+    "lint"
+  ]
 }

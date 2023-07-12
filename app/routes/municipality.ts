@@ -3,6 +3,11 @@ import Route from '@ember/routing/route';
 import { service } from '@ember/service';
 import { hash } from 'rsvp';
 
+interface MunicipalityParams {
+  municipality?: string;
+  page?: number;
+}
+
 interface AgendaItemsRequestInterface {
   page: {
     size: number;
@@ -10,12 +15,12 @@ interface AgendaItemsRequestInterface {
   include: string;
   municipality?: string;
   filter?: {
-    ':or:'?: unknown;
+    ':or:'?: object;
     sessions?: {
       'governing-body'?: {
         'is-time-specialization-of'?: {
           'administrative-unit': {
-            location?: unknown;
+            location?: object;
           };
         };
       };
@@ -30,7 +35,7 @@ export default class MunicipalityRoute extends Route {
     page: { refreshModel: true },
   };
 
-  async model(params: any) {
+  async model(params: MunicipalityParams) {
     const { municipality } = params;
 
     const req: AgendaItemsRequestInterface = {
@@ -45,7 +50,7 @@ export default class MunicipalityRoute extends Route {
       filter: {},
     };
 
-    const sessionFilter: { [key: string]: any } = {};
+    const sessionFilter: { [key: string]: object } = {};
     sessionFilter['governing-body'] = {
       'is-time-specialization-of': {
         'administrative-unit': {

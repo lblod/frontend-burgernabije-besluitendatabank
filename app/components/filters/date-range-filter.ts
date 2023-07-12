@@ -11,7 +11,7 @@ export default class DateRangeFilterComponent extends FilterComponent {
   }
 
   @action
-  async dateChange(e: any, start: string, end: string) {
+  async dateChange(e: Event, start: string, end: string) {
     this.updateQueryParams({
       [this.args.queryParamsA]: start,
       [this.args.queryParamsB]: end,

@@ -30,7 +30,7 @@ export default class AgendaItemsController extends Controller {
   @tracked errorMsg = '';
 
   setup() {
-    this.agendaItems = this.model.agendaItems.slice();
+    this.agendaItems = this.model?.agendaItems.slice() || [];
   }
 
   @action
