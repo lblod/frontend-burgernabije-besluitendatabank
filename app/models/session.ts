@@ -22,7 +22,8 @@ export default class SessionModel extends Model {
 
   get name() {
     return (
-      this.governingBody?.isTimeSpecializationOf?.name ??
+      this.governingBody?.isTimeSpecializationOf?.name ||
+      this.governingBody?.name ||
       'Ontbrekend bestuursorgaan'
     );
   }
@@ -30,12 +31,17 @@ export default class SessionModel extends Model {
   get municipality() {
     return (
       this.governingBody?.isTimeSpecializationOf?.administrativeUnit?.location
-        ?.label ?? 'Ontbrekende bestuurseenheid'
+        ?.label ||
+      this.governingBody?.administrativeUnit?.location?.label ||
+      'Ontbrekende bestuurseenheid'
     );
   }
 
   get hasMunicipality() {
-    return !!this.governingBody?.isTimeSpecializationOf?.administrativeUnit;
+    return (
+      !!this.governingBody?.isTimeSpecializationOf?.administrativeUnit ||
+      !!this.governingBody?.administrativeUnit
+    );
   }
 
   get dateFormatted() {

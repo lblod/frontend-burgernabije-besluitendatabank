@@ -38,8 +38,10 @@ export default class MunicipalityRoute extends Route {
         size: 10,
       },
       municipality: municipality,
-      include:
+      include: [
         'sessions.governing-body.is-time-specialization-of.administrative-unit.location',
+        'sessions.governing-body.administrative-unit.location',
+      ].join(','),
       filter: {},
     };
 

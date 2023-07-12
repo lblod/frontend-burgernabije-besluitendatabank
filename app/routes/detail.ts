@@ -14,6 +14,7 @@ const agendaItemIncludes = [
   'handled-by.has-votes.has-proponents.alias',
   'handled-by.has-votes.has-proponents.has-membership.inner-group',
   'sessions.governing-body.is-time-specialization-of.administrative-unit.location',
+  'sessions.governing-body.administrative-unit.location',
 ].join(',');
 
 export default class DetailRoute extends Route {

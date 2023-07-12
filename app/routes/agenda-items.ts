@@ -26,8 +26,10 @@ const getQuery = ({
 }): AgendaItemsRequestInterface => ({
   // exclude sessions without governing body and administrative unit
   //todo investigate why filtering is not working
-  include:
+  include: [
     'sessions.governing-body.is-time-specialization-of.administrative-unit.location',
+    'sessions.governing-body.administrative-unit.location',
+  ].join(','),
   sort: '-sessions.planned-start',
   filter: {
     sessions: {

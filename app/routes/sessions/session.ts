@@ -16,6 +16,7 @@ export default class SessionRoute extends Route {
       (await this.store.findRecord('session', session_id, {
         include: [
           'governing-body.is-time-specialization-of.administrative-unit.location',
+          'governing-body.administrative-unit.location',
           'agenda-items',
         ].join(','),
       }));

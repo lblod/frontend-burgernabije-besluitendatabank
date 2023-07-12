@@ -41,8 +41,10 @@ export default class MapRoute extends Route {
       page: {
         size: 600,
       },
-      include:
+      include: [
         'sessions.governing-body.is-time-specialization-of.administrative-unit.location',
+        'sessions.governing-body.administrative-unit.location',
+      ].join(','),
       filter: {
         ':has:sessions': true,
         sessions: {
