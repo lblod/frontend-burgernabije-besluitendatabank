@@ -57,7 +57,7 @@ export default class SearcherDateRangeFilterComponent extends FilterComponent {
   }
 
   @action
-  async dateChange(e: any, start: string, end: string) {
+  async dateChange(e: Event, start: string, end: string) {
     this.changeValue(start, end);
   }
 }

@@ -10,7 +10,7 @@ interface ArgsInterface {
   queryParamsB: string;
 
   searchField: string;
-  options: any;
+  options: Array<object>;
 
   valueA?: any;
   valueB?: any;
