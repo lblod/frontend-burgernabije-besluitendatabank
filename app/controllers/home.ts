@@ -26,7 +26,7 @@ export default class HomeController extends Controller {
     this.loading = false;
   }
 
-  @action handleMunicipalityChange(m: any) {
+  @action handleMunicipalityChange(m: { label: string; id: string }) {
     this.selectedMunicipality = m
       ? {
           label: m.label,

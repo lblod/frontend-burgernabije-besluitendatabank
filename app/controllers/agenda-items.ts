@@ -34,7 +34,7 @@ export default class AgendaItemsController extends Controller {
   @tracked errorMsg = ''; // Controls whether an Oops is shown
 
   setup() {
-    this.agendaItems = this.model.agendaItems.slice();
+    this.agendaItems = this.model?.agendaItems.slice() || [];
   }
 
   @action

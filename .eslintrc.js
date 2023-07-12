@@ -24,10 +24,6 @@ module.exports = {
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
       ],
-      rules: {
-        '@typescript-eslint/ban-ts-comment': 'warn',
-        '@typescript-eslint/ban-types': 'warn',
-      },
     },
     {
       // node files
