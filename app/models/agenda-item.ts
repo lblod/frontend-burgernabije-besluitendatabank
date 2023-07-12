@@ -4,6 +4,7 @@ import Model, {
   hasMany,
   AsyncHasMany,
   AsyncBelongsTo,
+  SyncHasMany,
 } from '@ember-data/model';
 import AgendaItemHandlingModel from './agenda-item-handling';
 import SessionModel from './session';
@@ -25,7 +26,11 @@ export default class AgendaItemModel extends Model {
    * This is the session we want to use to resolve municipality & governingBody name
    */
   get session() {
-    return this.sessions?.slice().find((session) => {
+    // cast this because of https://github.com/typed-ember/ember-cli-typescript/issues/1416
+    const sessions: SyncHasMany<SessionModel> | null = (this as AgendaItemModel)
+      .hasMany('sessions')
+      ?.value();
+    return sessions?.find((session) => {
       return session.hasMunicipality;
     });
   }

@@ -109,15 +109,11 @@
               @iconClosed={{"nav-right"}}
               @buttonLabel={{"Stemming"}}
             >
-              {{#each this.model.agendaItem.handledBy.hasVotes as |vote|}}
-
-                <VoteOverview
-                  @numberOfAbstentions={{vote.numberOfAbstentions}}
-                  @numberOfOpponents={{vote.numberOfOpponents}}
-                  @numberOfProponents={{vote.numberOfProponents}}
-                />
-
-              {{/each}}
+              <VoteOverview
+                @numberOfAbstentions={{this.model.vote.numberOfAbstentions}}
+                @numberOfOpponents={{this.model.vote.numberOfOpponents}}
+                @numberOfProponents={{this.model.vote.numberOfProponents}}
+              />
 
               <AuAccordion
                 class="au-u-1-1"
