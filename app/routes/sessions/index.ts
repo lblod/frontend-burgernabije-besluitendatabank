@@ -7,6 +7,13 @@ import { seperator } from 'frontend-burgernabije-besluitendatabank/helpers/const
 import Transition from '@ember/routing/transition';
 import SessionsIndexController from 'frontend-burgernabije-besluitendatabank/controllers/sessions';
 
+interface sessionsIndexParams {
+  plannedStartMin?: string;
+  plannedStartMax?: string;
+  municipalityLabels?: string;
+}
+
+/** Generate Ember Data options to fetch more sessions based on the passed filters */
 const getQuery = (
   page: number,
   plannedStartMin?: string,
@@ -55,11 +62,12 @@ export default class SessionsIndexRoute extends Route {
     },
   };
 
-  @tracked municipalityLabels: any;
-  @tracked plannedStartMin: any;
-  @tracked plannedStartMax: any;
+  // QueryParams
+  @tracked municipalityLabels?: string;
+  @tracked plannedStartMin?: string;
+  @tracked plannedStartMax?: string;
 
-  async model(params: any) {
+  async model(params: sessionsIndexParams) {
     /*
     const model: any = this.modelFor("sessions.index");
     if (model?.sessions?.toArray().length > 0) {
@@ -68,8 +76,8 @@ export default class SessionsIndexRoute extends Route {
     }
     */
 
-    this.plannedStartMin = params.plannedStartMin || null;
-    this.plannedStartMax = params.plannedStartMax || null;
+    this.plannedStartMin = params.plannedStartMin;
+    this.plannedStartMax = params.plannedStartMax || undefined;
     this.municipalityLabels = params.municipalityLabels || '';
 
     /**
@@ -77,7 +85,7 @@ export default class SessionsIndexRoute extends Route {
      *
      */
     const locationIds = await this.municipalityList.getLocationIdsFromLabels(
-      this.municipalityLabels.split(seperator)
+      this.municipalityLabels?.split(seperator) || []
     );
 
     console.log(locationIds);

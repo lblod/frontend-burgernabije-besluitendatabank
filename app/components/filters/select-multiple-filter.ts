@@ -7,8 +7,9 @@ import { seperator } from 'frontend-burgernabije-besluitendatabank/helpers/const
 const regex = new RegExp('\\' + seperator + '$', 'm');
 
 export default class SelectMultipleFilterComponent extends FilterComponent {
-  @tracked selected: any;
+  @tracked selected?: object;
 
+  /** Action to parse the queryParameter value(s) & select them in the select input */
   @action
   async inserted() {
     // The queryParam is an array of searchField values, joined by seperator
@@ -18,9 +19,8 @@ export default class SelectMultipleFilterComponent extends FilterComponent {
       const needles = queryParam.split(seperator);
       const searchField = this.args.searchField;
 
-      const haystack: [{ [key: string]: any }] = await this.args.options;
-
-      const results: Array<{ [key: string]: any }> = [];
+      const haystack: Array<object> = await this.args.options;
+      const results: Array<object> = [];
 
       for (let i = 0; i < needles.length; i++) {
         const needle = needles[i];

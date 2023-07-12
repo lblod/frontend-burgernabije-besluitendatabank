@@ -3,8 +3,6 @@
  *    import config from 'my-app/config/environment'
  */
 declare const config: {
-  VO_HEADER_WIDGET_URL: any;
-  VO_FOOTER_WIDGET_URL: any;
   environment: string;
   modulePrefix: string;
   podModulePrefix: string;

@@ -21,9 +21,9 @@
       <div class="au-o-grid au-o-grid--small">
         <div class="au-o-grid__item au-u-hidden-from@small">
           {{#if this.model.agendaItem.handledBy.resolutions}}
-            <AuAlert @skin="success" @icon="sign" @title="Dit is beslist" class="au-u-margin-bottom-none" />
+            <AuAlert @skin="success" @icon="sign" @title="Dit werd behandeld" class="au-u-margin-bottom-none" />
           {{else}}
-            <AuAlert @skin="warning" @icon="three-dots" @title="Dit is nog niet beslist" class="au-u-margin-bottom-none" />
+            <AuAlert @skin="warning" @icon="three-dots" @title="Dit werd nog niet behandeld" class="au-u-margin-bottom-none" />
           {{/if}}
         </div>
         <article

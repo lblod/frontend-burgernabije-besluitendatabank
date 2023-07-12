@@ -17,20 +17,24 @@ export default class AgendaItemsController extends Controller {
   @service declare keywordStore: KeywordStoreService;
   @service declare municipalityList: MunicipalityListService;
 
+  // QueryParameters
   @tracked agendaItems: AgendaItem[] = [];
   @tracked municipalityLabels = '';
   @tracked sort = '';
   @tracked plannedStartMin = '';
   @tracked plannedStartMax = '';
 
+  /** Used for requesting more data */
   declare model: ModelFrom<AgendaItemsRoute>;
+
+  /** Controls the loading animation of the "load more" button */
   @tracked isLoadingMore = false;
 
-  @tracked loading = false;
-  @tracked errorMsg = '';
+  @tracked loading = false; // Controls the loading animation that replaces the main view
+  @tracked errorMsg = ''; // Controls whether an Oops is shown
 
   setup() {
-    this.agendaItems = this.model.agendaItems.slice();
+    this.agendaItems = this.model?.agendaItems.slice() || [];
   }
 
   @action

@@ -1,19 +1,25 @@
 import Controller from '@ember/controller';
 import Store from '@ember-data/store';
 import { action } from '@ember/object';
-import { ModelFrom } from '../../lib/type-utils';
-import SessionIndexRoute from '../../routes/sessions/index';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
-import Session from 'frontend-burgernabije-besluitendatabank/models/session';
+import SessionIndexRoute from '../../routes/sessions/index';
+import { ModelFrom } from '../../lib/type-utils';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
+import Session from 'frontend-burgernabije-besluitendatabank/models/session';
 
 export default class SessionsIndexController extends Controller {
-  declare model: ModelFrom<SessionIndexRoute>;
   @service declare store: Store;
-  @tracked isLoadingMore = false;
   @service declare municipalityList: MunicipalityListService;
+
+  /** Used to request more data */
+  declare model: ModelFrom<SessionIndexRoute>;
+
+  /** Controls the loading animation of the "load more" button */
+  @tracked isLoadingMore = false;
+
   @tracked sessions: Session[] = [];
+
   plannedStartMin?: string;
   plannedStartMax?: string;
   municipality?: string;
