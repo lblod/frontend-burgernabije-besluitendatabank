@@ -36,7 +36,7 @@
           >Locatie(s) Opslaan</AuButton>
         </div>
         <div class="au-o-grid__item au-u-text-center">
-          <AuHelpText @skin="secondary">Hu, gemeentes? <AuLink>Laat mij gewoon zoeken</AuLink></AuHelpText>
+          <AuHelpText @skin="secondary">Hu, gemeentes? <AuButton @skin="link" {{on "click" this.handleMunicipalitySelect}}>Laat mij gewoon zoeken</AuButton></AuHelpText>
         </div>
       </div>
     </div>
