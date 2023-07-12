@@ -5,7 +5,7 @@
   "description": "The front-end for BNB, a site that uses linked data to empower everyone in Flanders to consult the decisions made by their local authorities.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lblod/frontend-gelinkt-notuleren"
+    "url": "git+https://github.com/lblod/frontend-burgernabije-besluitendatabank"
   },
   "license": "MIT",
   "author": "redpencil.io",
@@ -81,7 +81,11 @@
     "@typescript-eslint/parser": "^5.61.0",
     "au-date-range-picker": "^0.2.0",
     "broccoli-asset-rev": "^3.0.0",
+    "c3": "0.7.20",
     "concurrently": "^7.6.0",
+    "d3": "6.6.0",
+    "d3-geo": "^3.1.0",
+    "date-fns": "^2.29.3",
     "ember-auto-import": "^2.6.3",
     "ember-c3": "^4.0.2",
     "ember-cli": "~4.10.0",
@@ -114,6 +118,8 @@
     "eslint-plugin-qunit": "^7.3.4",
     "geojson": "^0.5.0",
     "loader.js": "^4.7.0",
+    "postscribe": "^2.0.8",
+    "pre-commit": "^1.2.2",
     "prettier": "^2.8.8",
     "qunit": "^2.19.3",
     "qunit-dom": "^2.0.0",
@@ -130,11 +136,7 @@
   "ember": {
     "edition": "octane"
   },
-  "dependencies": {
-    "c3": "0.7.20",
-    "d3": "6.6.0",
-    "d3-geo": "^3.1.0",
-    "date-fns": "^2.29.3",
-    "postscribe": "^2.0.8"
-  }
+  "pre-commit": [
+    "lint"
+  ]
 }
