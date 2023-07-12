@@ -19,7 +19,21 @@ cd frontend-burgernabije-besluitendatabank
 npm install
 ```
 
-From there, you can use `npm run dev` in order to use the mock API, `npm run prod` in order to use a local BNB api, or `npm run --proxy=https://burgernabije-besluitendatabank-dev.s.redhost.be/` to run using the BNB API on [the external dev server](https://burgernabije-besluitendatabank-dev.s.redhost.be/).
+From there, you can use `npm run dev:proxy`, or any of the following npm scripts:
+
+
+|  npm run...  |  Description |
+| ------------ | ------------ |
+| build        | Creates a production-ready static build |
+| lint         | Runs the linter and returns any errors/warnings. *Is run automatically before committing, cancelling the commit on error* |
+| lint:fix     | Runs the linter, attempting to automatically fix any errors |
+| dev          | Run a development server with the mock api |
+| dev:proxy    | Run a development server with a proxy to [the external dev server](https://burgernabije-besluitendatabank-dev.s.redhost.be/) |
+| start        | Run a development server with the mock api |
+| prod         | Run a production server |
+| test         | Run the linter and then ember tests |
+
+
 
 ### Automated builds
 
@@ -74,6 +88,69 @@ The levels are as follows:
 
 ![Data Alignment Analysis]("./../docs/analysis-bnb.png)
 
-### Ember-Data@3
 
-For some reason beyond human comprehension, Ember-Data refused to work as is documented in the _latest documentation_ when using v4, but it did on v3. So guess what. It's v3 now.
+### Filtering
+To help end users find what they're looking for, we allow filtering on agenda-items as well as sessions in the following ways:
+- [Filter on municipality](#municipality)
+- [Filter on keyword (*)](#keyword)
+- [Filter on date](#date)
+
+*\*: only agenda-items*
+
+These filters are powered by two important moving parts
+1. [mu-cl-resources](https://github.com/mu-semtech/mu-cl-resources): this is the JSON:API our [back-end uses](https://github.com/lblod/app-burgernabije-besluitendatabank) (because JSON:API leaves some freedom of implementation, mentioning this is important! There are a few features and quirks that come from mu-cl-resources itself)
+2. [Ember-Data](https://guides.emberjs.com/release/models/): this is the JSON:API-to-JavaScript our front-end uses
+
+
+#### Default filters
+The following filters are on by default for both agenda-items and sessions:
+- `session:has:governing-body` == true
+- `session.governing-body:has:administrative-unit` == true
+- `session.governing-body.administrative-unit:has:name` == true
+
+
+#### Municipality
+So, the filter we present offers to filter on municipality. This is kind of a lie. Or well, it works different in the back-end.
+
+We chose not to allow filtering on which entity made the decision. While this would allow specific filtering (e.g. "OCMW X" or "Police Y"), this would also:
+- Create a gigantic select options list
+- Make the general use case of "I want to know what is happening in my city" tedious to achieve
+
+Instead, we check `(agenda-item.) session.governing-body.administrative-unit.location`. Our [municipality-list service](app/services/municipality-list.ts) queries all locations on the gemeente/municipality level, and we keep their label/name as well as their id.
+
+This id allows us to use mu-cl-resources' `:id:` helper, which makes searching on one location as easy as multiple
+- Single: `(agenda-item.) session.governing-body.administrative-unit.location:id:=ID`
+- Multiple: `(agenda-item.) session.governing-body.administrative-unit.location:id:=ID1,ID2,ID3` (*)
+
+*\*Note: the `:id:` helper is an or selector, not and*
+
+#### Keyword
+This is a very simple one! This uses mu-cl-resources' `:or:` helper to check if `agenda-items.title` or `agenda-items.description` features the typed keyword.
+
+#### Date
+This uses the mu-cl-resources' `:gt:` and `:lt:` helpers (greater than and less than respectively). An agenda-item or session is returned if...
+
+**Agenda-items:**
+- The first selected date is *after* (gt) `agenda-item.session.started-at`
+- The second selected date is *before* (lt) `agenda-item.session.ended-at`
+
+This will return agenda-items with sessions that have been finished.
+
+**Sessions:**
+- The first selected date is *after* (gt) `session.planned-start`
+- The second selected date is *before* (lt) `session.planned-start`
+
+This will return sessions that started between those two dates, whether they have been finished or not. 
+
+
+<details>
+    <summary>Note: the information in this spoiler is for a possible future filter change</summary>
+
+- The first selected date is *after* (gt) `(agenda-item.) session.planned-start`
+- The second selected date is *before* (lt) `(agenda-item.) session.planned-start`
+
+There is additionally a `session.started-at` and `session.ended-at` property, but these are only present when the session is in the past, which would give incomplete results.
+
+
+</details>
+

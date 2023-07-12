@@ -8,7 +8,7 @@ interface DetailParams {
   id: string;
 }
 
-interface formattedTableVoteInterface {
+interface FormattedTableVote {
   proponent: Array<string>;
   opponent: Array<string>;
   abstainer: Array<string>;
@@ -40,7 +40,7 @@ export default class DetailRoute extends Route {
   @service declare store: Store;
   @service declare keywordStore: KeywordStoreService;
 
-  async model(params: detailParams) {
+  async model(params: DetailParams) {
     const agendaItem = await this.store.findRecord('agenda-item', params.id, {
       include: agendaItemIncludes,
     });
@@ -62,7 +62,7 @@ export default class DetailRoute extends Route {
       .sort(sortObjectsByTitle)
       .slice(0, 4);
 
-    const formattedTableVote: formattedTableVoteInterface[] = [];
+    const formattedTableVote: FormattedTableVote[] = [];
 
     // add the votes to formattedTableVote in the form of [{proponent: {proponent1}, opponent: {oponent1}, abstainer: {abstainer1}},{proponent: {proponent2}, opponent: {oponent2}, abstainer: {abstainer2}},... ]
     // iterate over all 3 arrays (proponent, opponent, abstainer) and push only one voter to the formattedTableVote array each iteration

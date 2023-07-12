@@ -27,7 +27,6 @@ export default class MapComponent extends Controller {
     type: 'FeatureCollection',
     features: [],
   };
-  //@tracked provincesData: Feature[] = [];
   @tracked features?: Map<string, Feature>;
   @tracked width = 800;
   @tracked height = 400;
