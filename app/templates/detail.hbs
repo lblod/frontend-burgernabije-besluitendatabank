@@ -207,11 +207,11 @@
 
       {{#if this.model.agendaItem.handledBy.resolutions}}
         <AuAlert class="au-u-medium" @skin="success" @icon="sign">
-          Dit is beslist
+          Dit werd behandeld
         </AuAlert>
       {{else}}
         <AuAlert class="au-u-medium" @skin="warning" @icon="three-dots">
-          Dit is nog niet beslist
+          Dit werd nog niet behandeld
         </AuAlert>
       {{/if}}
       {{#if this.model.agendaItem.session.hasMunicipality}}
