@@ -1,3 +1,9 @@
+:root {
+  --value-abstentions: 0;
+  --value-opponents: 0;
+  --value-proponents: 0;
+}
+
 .c-chart {
   display: flex;
   gap: $au-unit;

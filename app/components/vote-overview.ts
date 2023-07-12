@@ -1,5 +1,6 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
+import { action } from '@ember/object';
 import * as d3 from 'd3';
 
 interface ArgsInterface {
@@ -20,24 +21,44 @@ export default class VoteOverview extends Component<ArgsInterface> {
   }
 
   get numberOfAbstentionsGraphValue() {
-    let totalValue = (this.args.numberOfProponents || 0) + (this.args.numberOfOpponents || 0) + (this.args.numberOfAbstentions || 0);
-    let abstentionsValue = this.args.numberOfAbstentions || 0;
+    const totalValue =
+      (this.args.numberOfProponents || 0) +
+      (this.args.numberOfOpponents || 0) +
+      (this.args.numberOfAbstentions || 0);
+    const abstentionsValue = this.args.numberOfAbstentions || 0;
 
-    return (abstentionsValue / totalValue * 158);
+    return (abstentionsValue / totalValue) * 158;
   }
-  
-  get numberOfOpponentsGraphValue() {
-    let totalValue = (this.args.numberOfProponents || 0) + (this.args.numberOfOpponents || 0) + (this.args.numberOfAbstentions || 0);
-    let opponentsValue = this.args.numberOfOpponents || 0;
 
-    return (opponentsValue / totalValue * 158);
+  get numberOfOpponentsGraphValue() {
+    const totalValue =
+      (this.args.numberOfProponents || 0) +
+      (this.args.numberOfOpponents || 0) +
+      (this.args.numberOfAbstentions || 0);
+    const opponentsValue = this.args.numberOfOpponents || 0;
+
+    return (opponentsValue / totalValue) * 158;
   }
 
   get numberOfProponentsGraphValue() {
-    let totalValue = (this.args.numberOfProponents || 0) + (this.args.numberOfOpponents || 0) + (this.args.numberOfAbstentions || 0);
-    let proponentsValue = this.args.numberOfProponents || 0;
+    const totalValue =
+      (this.args.numberOfProponents || 0) +
+      (this.args.numberOfOpponents || 0) +
+      (this.args.numberOfAbstentions || 0);
+    const proponentsValue = this.args.numberOfProponents || 0;
 
-    return (proponentsValue / totalValue * 158);
+    return (proponentsValue / totalValue) * 158;
+  }
+
+  @action
+  bake() {
+    [
+      { key: '--value-abstentions', val: this.numberOfAbstentionsGraphValue },
+      { key: '--value-opponents', val: this.numberOfOpponentsGraphValue },
+      { key: '--value-proponents', val: this.numberOfProponentsGraphValue },
+    ].forEach(({ key, val }) => {
+      document.documentElement.style.setProperty(key, val.toString());
+    });
   }
 
   @tracked pie = {

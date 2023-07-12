@@ -1,12 +1,5 @@
 <div class="c-chart">
-  <style>
-    .c-pie {
-      --value-abstentions: {{this.numberOfAbstentionsGraphValue}};
-      --value-opponents: {{this.numberOfOpponentsGraphValue}};
-      --value-proponents: {{this.numberOfProponentsGraphValue}};
-    }
-  </style>
-  <svg viewBox="0 0 100 100" class="c-chart__pie">
+  <svg viewBox="0 0 100 100" class="c-chart__pie" {{did-insert this.bake}}>
     <circle r="25" cx="50" cy="50" class="c-pie c-pie--proponents"/>
     <circle r="25" cx="50" cy="50" class="c-pie c-pie--opponents"/>
     <circle r="25" cx="50" cy="50" class="c-pie c-pie--abstentions"/>
