@@ -99,8 +99,37 @@ cursor {
     padding-bottom: 0;
   }
 
-  & + & {
+  > .au-c-accordion > .au-c-content {
+    margin-left: calc(7.2rem * -1);
+    border-top: .1rem solid var(--au-gray-200);
     margin-top: $au-unit;
+    padding-top: 0;
+  }
+
+  &:first-of-type {
+    padding-top: $au-unit-small;
+    border-top: .1rem solid var(--au-gray-200);
+  }
+
+  & + & {
+    margin-top: $au-unit-small;
+    padding-top: $au-unit-small;
+    border-top: .1rem solid var(--au-gray-200);
+  }
+}
+
+
+.c-accordion-holder--top {
+  > .au-c-accordion .au-c-toolbar {
+    align-items: flex-start;
+  }
+
+  > .au-c-accordion .au-c-icon {
+    margin-top: .85rem !important;
+  }
+
+  > .au-c-accordion > .au-c-content {
+    margin-left: 0;
   }
 }
 
@@ -155,4 +184,17 @@ cursor {
       flex-basis: calc(100% - var(--gap) - var(--button));
     }
   }
+}
+
+// Vote table colors
+.c-vote-table-proponent {
+  color: var(--au-green-700);
+}
+
+.c-vote-table-opponent {
+  color: var(--au-red-600);
+}
+
+.c-vote-table-abstention {
+  color: var(--au-gray-800);
 }

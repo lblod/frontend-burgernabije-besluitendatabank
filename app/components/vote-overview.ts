@@ -19,6 +19,27 @@ export default class VoteOverview extends Component<ArgsInterface> {
     return this.args.numberOfProponents || 0;
   }
 
+  get numberOfAbstentionsGraphValue() {
+    let totalValue = (this.args.numberOfProponents || 0) + (this.args.numberOfOpponents || 0) + (this.args.numberOfAbstentions || 0);
+    let abstentionsValue = this.args.numberOfAbstentions || 0;
+
+    return (abstentionsValue / totalValue * 158);
+  }
+  
+  get numberOfOpponentsGraphValue() {
+    let totalValue = (this.args.numberOfProponents || 0) + (this.args.numberOfOpponents || 0) + (this.args.numberOfAbstentions || 0);
+    let opponentsValue = this.args.numberOfOpponents || 0;
+
+    return (opponentsValue / totalValue * 158);
+  }
+
+  get numberOfProponentsGraphValue() {
+    let totalValue = (this.args.numberOfProponents || 0) + (this.args.numberOfOpponents || 0) + (this.args.numberOfAbstentions || 0);
+    let proponentsValue = this.args.numberOfProponents || 0;
+
+    return (proponentsValue / totalValue * 158);
+  }
+
   @tracked pie = {
     label: {
       format: function (value: any, ratio: any, id: any) {
