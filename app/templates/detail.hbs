@@ -252,9 +252,9 @@
           <div class="u-top-sticky">
             <div class="au-u-visible-from@medium">
               {{#if this.model.agendaItem.handledBy.resolutions}}
-                <AuAlert @skin="success" @icon="sign" @title="Dit is beslist" />
+                <AuAlert @skin="success" @icon="sign" @title="Dit werd behandeld" />
               {{else}}
-                <AuAlert @skin="warning" @icon="three-dots" @title="Dit is nog niet beslist" />
+                <AuAlert @skin="warning" @icon="three-dots" @title="Dit werd nog niet behandeld" />
               {{/if}}
             </div>
             {{#if this.model.agendaItem.session.hasMunicipality}}
