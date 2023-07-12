@@ -13,6 +13,7 @@ interface sessionsIndexParams {
   municipalityLabels?: string;
 }
 
+/** Generate Ember Data options to fetch more sessions based on the passed filters */
 const getQuery = (
   page: number,
   plannedStartMin?: string,
@@ -61,6 +62,7 @@ export default class SessionsIndexRoute extends Route {
     },
   };
 
+  // QueryParams
   @tracked municipalityLabels?: string;
   @tracked plannedStartMin?: string;
   @tracked plannedStartMax?: string;
