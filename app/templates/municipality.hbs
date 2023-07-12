@@ -19,7 +19,7 @@
   <AuBodyContainer @scroll={{true}}>
     <div class="au-o-box">
       {{#if this.model.agenda_items}}
-      <ul class="au-c-infinite-list">
+      <ul class="c-infinite-list">
       {{#each this.model.agenda_items as |item|}}
       <li>
         <DecisionCard @item={{item}} @startDate={{item.session.startedAt}} @endDate={{item.session.endedAt}} />
