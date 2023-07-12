@@ -1,60 +1,62 @@
 {{page-title "Zittingen"}}
 
-<AuBodyContainer>
-  <div class="c-interface">
-    <div class="c-interface__content c-interface__content--fixed">
-      {{#if this.isEmpty}}
-        <AuAlert
-          @size="small"
-          @skin="warning"
-          @icon="info-circle"
-          @title="Er werden geen zoekresultaten gevonden."
-        >
-        </AuAlert>
-      {{else}}
-        <InfiniteList
-          @loadMore={{this.loadMore}}
-          @isLoading={{this.isLoadingMore}}
-        >
-          {{#each this.sessions as |session|}}
-          <li>
-            <article class="c-decision-card">
-              <AuHeading @level="1" @skin="5">
-                <AuLink @route="sessions.session" @model={{session.id}} class="c-decision-card__link">
-                  {{session.name}}
-                  {{session.dateFormatted}}
-                </AuLink>
-              </AuHeading>
-              <div class="c-decision-card__footer">
-                {{session.municipality}}
-                -
-                {{session.agendaItemCount}}
-              </div>
-            </article>
-          </li>
-          {{/each}}
-        </InfiniteList>
-      {{/if}}
+<LayoutList>
+  <AuBodyContainer>
+    <div class="c-interface">
+      <div class="c-interface__content c-interface__content--fixed">
+        {{#if this.isEmpty}}
+          <AuAlert
+            @size="small"
+            @skin="warning"
+            @icon="info-circle"
+            @title="Er werden geen zoekresultaten gevonden."
+          >
+          </AuAlert>
+        {{else}}
+          <InfiniteList
+            @loadMore={{this.loadMore}}
+            @isLoading={{this.isLoadingMore}}
+          >
+            {{#each this.sessions as |session|}}
+            <li>
+              <article class="c-decision-card">
+                <AuHeading @level="1" @skin="5">
+                  <AuLink @route="sessions.session" @model={{session.id}} class="c-decision-card__link">
+                    {{session.name}}
+                    {{session.dateFormatted}}
+                  </AuLink>
+                </AuHeading>
+                <div class="c-decision-card__footer">
+                  {{session.municipality}}
+                  -
+                  {{session.agendaItemCount}}
+                </div>
+              </article>
+            </li>
+            {{/each}}
+          </InfiniteList>
+        {{/if}}
+      </div>
+      <FilterSidebar @class="c-interface__sidebar au-o-flow">
+        <h3 class="au-u-h4 au-u-medium">Verfijn de zoekresultaten</h3>
+        <Filters::SelectMultipleFilter
+          @id="municipality"
+          @label="Gemeente"
+          @options={{this.municipalities}}
+          @searchField="label"
+          @queryParam="gemeentes"
+          @placeholder="Selecteer een optie"
+          @value={{this.municipality}}
+        />
+        <Filters::DateRangeFilter
+          @id="startDate"
+          @label="Datum"
+          @queryParamsA="begin"
+          @queryParamsB="eind"
+          @valueA={{this.plannedStartMin}}
+          @valueB={{this.plannedStartMax}}
+        />
+    </FilterSidebar>
     </div>
-    <FilterSidebar @class="c-interface__sidebar au-o-flow">
-      <h3 class="au-u-h4 au-u-medium">Verfijn de zoekresultaten</h3>
-      <Filters::SelectMultipleFilter
-        @id="municipality"
-        @label="Gemeente"
-        @options={{this.municipalities}}
-        @searchField="label"
-        @queryParam="gemeentes"
-        @placeholder="Selecteer een optie"
-        @value={{this.municipality}}
-      />
-      <Filters::DateRangeFilter
-        @id="startDate"
-        @label="Datum"
-        @queryParamsA="begin"
-        @queryParamsB="eind"
-        @valueA={{this.plannedStartMin}}
-        @valueB={{this.plannedStartMax}}
-      />
-   </FilterSidebar>
-  </div>
-</AuBodyContainer>
+  </AuBodyContainer>
+</LayoutList>

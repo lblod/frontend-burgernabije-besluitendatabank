@@ -2,13 +2,5 @@
 
 <AuApp>
   <AppHeader />
-  {{#if this.isIndex}}
-  <ContentHeader />
-  {{/if}}
-  <AuMainContainer as |m|>
-    <m.content>
-      {{outlet}}
-    </m.content>
-  </AuMainContainer>
-  <Footer />
+  {{outlet}}
 </AuApp>

@@ -1,28 +1,30 @@
 {{page-title "Zitting"}}
 
-<AuBodyContainer @scroll={{true}} id="route-session" class="au-o-region-large">
-  <div class="au-o-layout">
-    <AuHeading @level="1" class="au-u-margin-bottom">
-      {{this.model.name}}
-      {{this.model.dateFormatted}}
-    </AuHeading>
-    <ul class="c-infinite-list">
-      {{#each this.agendaItemsSorted as |item|}}
-        <li>
-          <article class="c-decision-card">
-            <AuHeading @level="1" @skin="5">
-              <AuLink 
-                class="c-decision-card__link"
-                @route="detail"
-                @model={{ item.id }}
-              >
-                {{ item.title }}
-              </AuLink>
-            </AuHeading>
-            <p class="c-decision-card__content">{{item.description}}</p>
-          </article>
-        </li>
-      {{/each}}
-    </ul>
-  </div>
-</AuBodyContainer>
+<LayoutList>
+  <AuBodyContainer @scroll={{true}} id="route-session" class="au-o-region-large">
+    <div class="au-o-layout">
+      <AuHeading @level="1" class="au-u-margin-bottom">
+        {{this.model.name}}
+        {{this.model.dateFormatted}}
+      </AuHeading>
+      <ul class="c-infinite-list">
+        {{#each this.agendaItemsSorted as |item|}}
+          <li>
+            <article class="c-decision-card">
+              <AuHeading @level="1" @skin="5">
+                <AuLink 
+                  class="c-decision-card__link"
+                  @route="detail"
+                  @model={{ item.id }}
+                >
+                  {{ item.title }}
+                </AuLink>
+              </AuHeading>
+              <p class="c-decision-card__content">{{item.description}}</p>
+            </article>
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+  </AuBodyContainer>
+</LayoutList>

@@ -1,43 +1,42 @@
-
-<AuBodyContainer @scroll={{true}}>
-  <section class="au-o-region-huge">
-    <div class="au-o-layout au-o-layout--small">
-      <AuLabel
-        for={{"municipality"}}
-        class="au-u-h5 au-u-margin-bottom-tiny"
-        @inline={{true}}
-      >
-        In welke gemeente(s) wil je zoeken?
-      </AuLabel>
-      <div class="au-u-1-1 au-o-grid au-o-grid--tiny"
-        {{did-insert this.resetLoading}}
+<LayoutHome>
+  <AuBodyContainer @scroll={{true}}>
+    <section class="au-o-region-huge">
+      <div class="au-o-layout au-o-layout--small">
+        <AuLabel
+          for={{"municipality"}}
+          class="au-u-h5 au-u-margin-bottom-tiny"
+          @inline={{true}}
         >
-        <div class="au-o-grid__item au-u-3-4@small">
-          <PowerSelect
-            @onChange={{this.handleMunicipalityChange}}
-            @selected={{this.selectedMunicipality}}
-            @options={{this.municipalities}}
-            @allowClear={{true}}
-            @searchField="label"
-            @placeholder={{"Alle gemeentes"}}
-            @noMatchesMessage={{"Geen gemeente gevonden"}}
-            @searchMessage="Aan het zoeken..."
-            @searchEnabled={{true}}
-            as |singleSelect|
+          In welke gemeente(s) wil je zoeken?
+        </AuLabel>
+        <div class="au-u-1-1 au-o-grid au-o-grid--tiny"
+          {{did-insert this.resetLoading}}
           >
-            {{singleSelect.label}}
-          </PowerSelect>
-        </div>
-        <div class="au-o-grid__item au-u-1-4@small">
-          <AuButton
-            @loading={{this.loading}}
-            @width="block"
-            {{on "click" this.handleMunicipalitySelect}}
-          >Locatie(s) Opslaan</AuButton>
+          <div class="au-o-grid__item au-u-3-4@small">
+            <PowerSelect
+              @onChange={{this.handleMunicipalityChange}}
+              @selected={{this.selectedMunicipality}}
+              @options={{this.municipalities}}
+              @allowClear={{true}}
+              @searchField="label"
+              @placeholder={{"Alle gemeentes"}}
+              @noMatchesMessage={{"Geen gemeente gevonden"}}
+              @searchMessage="Aan het zoeken..."
+              @searchEnabled={{true}}
+              as |singleSelect|
+            >
+              {{singleSelect.label}}
+            </PowerSelect>
+          </div>
+          <div class="au-o-grid__item au-u-1-4@small">
+            <AuButton
+              @loading={{this.loading}}
+              @width="block"
+              {{on "click" this.handleMunicipalitySelect}}
+            >Locatie(s) Opslaan</AuButton>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-</AuBodyContainer>
-
-
+    </section>
+  </AuBodyContainer>
+</LayoutHome>

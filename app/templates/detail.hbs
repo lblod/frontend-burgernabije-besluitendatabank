@@ -1,22 +1,23 @@
 {{page-title this.model.agendaItem.title}}
-<AuBodyContainer @scroll={{true}} id="route-detail">
-  <AuToolbar @size="medium" @skin="tint" @border="bottom" as |Group|>
-    <Group>
-      <ul class="au-c-list-horizontal au-c-list-horizontal--small">
-        <li class="au-c-list-horizontal__item">
-          <AuLink @route="agenda-items" @icon="arrow-left">
-            Lijst
-          </AuLink>
-        </li>
-        {{#if this.model.agendaItem.title}}
-        <li class="au-c-list-horizontal__item">
-          <span class="u-truncate">{{this.model.agendaItem.title}}</span>
-        </li>
-        {{/if}}
-      </ul>
-    </Group>
-  </AuToolbar>
-  <AuBodyContainer @scroll={{true}}>
+
+<LayoutDetail>
+  <div id="route-detail">
+    <AuToolbar @size="medium" @skin="tint" @border="bottom" as |Group|>
+      <Group>
+        <ul class="au-c-list-horizontal au-c-list-horizontal--small">
+          <li class="au-c-list-horizontal__item">
+            <AuLink @route="agenda-items" @icon="arrow-left">
+              Lijst
+            </AuLink>
+          </li>
+          {{#if this.model.agendaItem.title}}
+          <li class="au-c-list-horizontal__item">
+            <span class="u-truncate">{{this.model.agendaItem.title}}</span>
+          </li>
+          {{/if}}
+        </ul>
+      </Group>
+    </AuToolbar>
     <div class="au-o-box">
       <div class="au-o-grid au-o-grid--small">
         <div class="au-o-grid__item au-u-hidden-from@medium">
@@ -279,6 +280,5 @@
         </aside>
       </div>
     </div>
-  </AuBodyContainer>
-</AuBodyContainer>
-
+  </div>
+</LayoutDetail>
