@@ -19,7 +19,7 @@
   <AuBodyContainer @scroll={{true}}>
     <div class="au-o-box">
       <div class="au-o-grid au-o-grid--small">
-        <div class="au-o-grid__item au-u-hidden-from@small">
+        <div class="au-o-grid__item au-u-hidden-from@medium">
           {{#if this.model.agendaItem.handledBy.resolutions}}
             <AuAlert @skin="success" @icon="sign" @title="Dit werd behandeld" class="au-u-margin-bottom-none" />
           {{else}}
@@ -28,7 +28,7 @@
         </div>
         <article
           id="detail-left-section"
-          class="au-o-grid__item au-u-4-6@small"
+          class="au-o-grid__item au-u-4-6@medium"
         >
           <AuCard
             class="u-color-top-border"
@@ -247,9 +247,9 @@
             </AuCard>
           {{/if}}
         </article>
-        <aside class="au-o-grid__item au-u-2-6@small">
+        <aside class="au-o-grid__item au-u-2-6@medium">
           <div class="u-top-sticky">
-            <div class="au-u-visible-from@small">
+            <div class="au-u-visible-from@medium">
               {{#if this.model.agendaItem.handledBy.resolutions}}
                 <AuAlert @skin="success" @icon="sign" @title="Dit is beslist" />
               {{else}}
