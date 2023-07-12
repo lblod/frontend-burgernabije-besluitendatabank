@@ -72,6 +72,12 @@
   }
 }
 
+.c-interface__content--fixed {
+  height: 100%;
+  overflow: hidden;
+  padding: 0;
+}
+
 .c-interface__sidebar-main {
   display: flex;
   flex-direction: column;

@@ -1,6 +1,6 @@
 <AuBodyContainer>
   <div class="c-interface">
-    <div id="filtercontent" class="c-interface__content">
+    <div id="filtercontent" class="c-interface__content c-interface__content--fixed au-u-flex au-u-flex--column">
       {{#if this.errorMsg}}
         <Oops
           @title="Oeps!"
@@ -10,7 +10,7 @@
         {{#if this.loading}}
           <LoaderFullPage @content="Agendapunt aan het laden"/>
         {{else}}
-          <div class="au-o-flow au-o-flow--small au-u-margin-bottom-large">
+          <div class="au-o-flow au-o-flow--small au-u-padding">
             <h2 class="au-u-h2 au-u-medium">Wat zoek je?</h2>
             <Filters::TextFilter
               @id="keyword"
