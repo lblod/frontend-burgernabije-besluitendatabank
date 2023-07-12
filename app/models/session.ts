@@ -20,6 +20,14 @@ export default class SessionModel extends Model {
   @belongsTo('governing-body', { async: false, inverse: 'sessions' })
   declare governingBody: GoverningBodyModel;
 
+  /**
+   * @returns
+   * - ... the session's timeSpecialised governing body's name
+   * - ... if the above can't be found, the abstracted governing body's name
+   * - ... if the above can't be found, an error string
+   *
+   * This naming scheme is in relation to the app/back-end
+   */
   get name() {
     return (
       this.governingBody?.isTimeSpecializationOf?.name ||

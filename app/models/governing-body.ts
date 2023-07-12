@@ -7,6 +7,21 @@ import Model, {
 import SessionModel from './session';
 import AdministrativeUnitModel from './administrative-unit';
 
+/**
+ * There are two types of governing bodies
+ *
+ * 1. The abstraction (undated)
+ * 2. With the time that they are active specified
+ *
+ * That time is called a timeSpecialisation (tijdspecialisatie),
+ * which is defined {@link https://themis.vlaanderen.be/docs/catalogs here (see 2.2.2.2)}
+ * as "the governing period where a *governing body*
+ * is appointed through direct elections"
+ *
+ * You can view the mandatendatabank specification
+ * on vlaanderen.be {@link https://data.vlaanderen.be/doc/applicatieprofiel/mandatendatabank here}
+ *
+ */
 export default class GoverningBodyModel extends Model {
   @attr('string', { defaultValue: 'Ontbrekende naam' }) declare name: string;
 

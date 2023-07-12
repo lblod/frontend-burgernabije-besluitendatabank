@@ -20,6 +20,10 @@ export default class AgendaItemModel extends Model {
   @belongsTo('agenda-item-handling', { async: true, inverse: null })
   declare handledBy?: AsyncBelongsTo<AgendaItemHandlingModel>;
 
+  /**
+   * @returns the first session with hasMunicipality == true
+   * This is the session we want to use to resolve municipality & governingBody name
+   */
   get session() {
     return this.sessions?.slice().find((session) => {
       return session.hasMunicipality;
