@@ -91,6 +91,7 @@ export default class DetailRoute extends Route {
         size: 4,
       },
       municipality: agendaItem.session?.get('municipality') || undefined,
+      include: agendaItemIncludes,
       filter: {
         sessions: {
           'governing-body': {
