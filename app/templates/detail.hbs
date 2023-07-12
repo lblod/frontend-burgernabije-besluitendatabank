@@ -136,40 +136,74 @@
                         @buttonLabel={{"Wie stemde?"}}
                         @subtitle="Meer informatie over stemmers en hun partijen"
                       >
-                        <AuTable>
-                          <:header>
-                            <tr>
-                              <th class="c-vote-table-proponent au-u-medium">Voorstanders</th>
-                              <th class="c-vote-table-opponent au-u-medium">Tegenstanders</th>
-                              <th class="c-vote-table-abstention au-u-medium">Onthouders</th>
-                            </tr>
-                          </:header>
-                          <:body>
-                            {{#each this.model.formattedTableVote as |mandatary|}}
+                        <div class="c-responsive-tables">
+                          <AuTable>
+                            <:header>
                               <tr>
-                                <td><VoteTableEntry
-                                    @familyName={{mandatary.proponent.alias.familyName}}
-                                    @firstName={{mandatary.proponent.alias.firstNameUsed}}
-                                    @fraction={{mandatary.proponent.hasMembership.innerGroup.name}}
-                                  /></td>
-                                <td>
-                                  <VoteTableEntry
-                                    @familyName={{mandatary.opponent.alias.familyName}}
-                                    @firstName={{mandatary.opponent.alias.firstNameUsed}}
-                                    @fraction={{mandatary.opponent.hasMembership.innerGroup.name}}
-                                  />
-                                </td>
-                                <td>
-                                  <VoteTableEntry
-                                    @familyName={{mandatary.abstainer.alias.familyName}}
-                                    @firstName={{mandatary.abstainer.alias.firstNameUsed}}
-                                    @fraction={{mandatary.abstainer.hasMembership.innerGroup.name}}
-                                  />
-                                </td>
+                                <th class="c-vote-table-proponent au-u-medium">Voorstanders</th>
                               </tr>
-                            {{/each}}
-                          </:body>
-                        </AuTable>
+                            </:header>
+                            <:body>
+                              {{#each this.model.formattedTableVote as |mandatary|}}
+                                {{#if mandatary.proponent}}
+                                <tr>
+                                  <td>
+                                    <VoteTableEntry
+                                      @familyName={{mandatary.proponent.alias.familyName}}
+                                      @firstName={{mandatary.proponent.alias.firstNameUsed}}
+                                      @fraction={{mandatary.proponent.hasMembership.innerGroup.name}}
+                                    />
+                                  </td>
+                                </tr>
+                                {{/if}}
+                              {{/each}}
+                            </:body>
+                          </AuTable>
+                          <AuTable>
+                            <:header>
+                              <tr>
+                                <th class="c-vote-table-opponent au-u-medium">Tegenstanders</th>
+                              </tr>
+                            </:header>
+                            <:body>
+                              {{#each this.model.formattedTableVote as |mandatary|}}
+                                {{#if mandatary.opponent}}
+                                <tr>
+                                  <td>
+                                    <VoteTableEntry
+                                      @familyName={{mandatary.opponent.alias.familyName}}
+                                      @firstName={{mandatary.opponent.alias.firstNameUsed}}
+                                      @fraction={{mandatary.opponent.hasMembership.innerGroup.name}}
+                                    />
+                                  </td>
+                                </tr>
+                                {{/if}}
+                              {{/each}}
+                            </:body>
+                          </AuTable>
+                          <AuTable>
+                            <:header>
+                              <tr>
+                                <th class="c-vote-table-abstention au-u-medium">Onthouders</th>
+                              </tr>
+                            </:header>
+                            <:body>
+                              {{#each this.model.formattedTableVote as |mandatary|}}
+                                {{#if mandatary.abstainer}}
+                                <tr>
+                                  <td>
+                                    <VoteTableEntry
+                                      @familyName={{mandatary.abstainer.alias.familyName}}
+                                      @firstName={{mandatary.abstainer.alias.firstNameUsed}}
+                                      @fraction={{mandatary.abstainer.hasMembership.innerGroup.name}}
+                                    />
+                                  </td>
+                                </tr>
+                                {{/if}}
+                              {{/each}}
+                            </:body>
+                          </AuTable>
+                        </div>
                       </AuAccordion>
                     </div>
                   </AuAccordion>
