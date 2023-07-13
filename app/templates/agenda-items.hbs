@@ -49,7 +49,7 @@
                 @loadMore={{this.loadMore}}
                 @isLoading={{this.isLoadingMore}}
               >
-                {{#each @model.agendaItems as |item|}}
+                {{#each this.agendaItems as |item|}}
                 <li>
                   <DecisionCard
                     @startDate={{item.session.startedAt}}
