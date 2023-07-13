@@ -84,6 +84,10 @@ cursor {
   border-top: solid .5rem var(--au-yellow-300);
 }
 
+.u-gray-top-border {
+  border-top: 1px solid var(--au-gray-200);
+}
+
 // Card fill override
 .au-c-card--fill {
   height: initial !important;
@@ -203,8 +207,4 @@ cursor {
 .u-overflow-y-scroll {
   overflow-y: scroll;
   height: 100%; 
-
-  * + & {
-    border-top: 1px solid var(--au-gray-200);
-  }
 }
