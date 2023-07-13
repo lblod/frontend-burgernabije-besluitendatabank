@@ -46,7 +46,14 @@
               </div>
             {{else}}
               {{#if @model.count}}
-                <p class="au-u-margin-left au-u-margin-top-large au-u-margin-bottom-small au-u-h4 au-u-medium">{{@model.count}} Zoekresultaten</p>
+                <p class="au-u-margin-left au-u-margin-top-large au-u-margin-bottom-small au-u-h4 au-u-medium">
+                  {{@model.count}} 
+                  {{#if (eq @model.count 1)}} 
+                  Zoekresultaat
+                  {{else}}
+                  Zoekresultaten
+                  {{/if}}
+                  </p>
               {{/if}}
 
               <InfiniteList
