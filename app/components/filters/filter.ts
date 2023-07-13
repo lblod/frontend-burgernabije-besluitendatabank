@@ -12,8 +12,8 @@ interface ArgsInterface {
   searchField: string;
   options: Array<object>;
 
-  valueA?: any;
-  valueB?: any;
+  valueA?: string;
+  valueB?: string;
 }
 
 export default class FilterComponent extends Component<ArgsInterface> {
@@ -32,7 +32,7 @@ export default class FilterComponent extends Component<ArgsInterface> {
    *
    * @param params object with {queryParameterName: newValue}
    */
-  updateQueryParams(params: { [key: string]: any }) {
+  updateQueryParams(params: { [key: string]: unknown }) {
     this.router.transitionTo(this.router.currentRouteName, {
       queryParams: params,
     });
