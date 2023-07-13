@@ -16,16 +16,8 @@
   <div class="c-decision-card__footer">
     {{@item.session.dateFormatted}}
     -
-    {{#if @item.session.governingBody.name}}
-      {{@item.session.governingBody.name}}
-    {{else}}
-      Geen Bestuurorgaan
-    {{/if}}
+    {{@item.session.name}}
     -
-    {{#if @item.session.governingBody.administrativeUnit.name}}
-      {{@item.session.governingBody.administrativeUnit.name}}
-    {{else}}
-      Geen Bestuurseenheid
-    {{/if}}
+    {{@item.session.municipality}}
   </div>
 </article>

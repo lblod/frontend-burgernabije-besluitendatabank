@@ -56,8 +56,8 @@
                 </dt>
                 <dd>
                   <AuLink
-                    @route="municipality"
-                    @model={{this.model.agendaItem.session.municipality}}
+                    @route="agenda-items"
+                    @query={{this.municipalityQuery}}
                   >
                     {{#if this.model.agendaItem.session.municipality}}
                       Gemeente
@@ -121,14 +121,11 @@
                     @iconClosed={{"nav-right"}}
                     @buttonLabel={{"Stemming"}}
                   >
-                    {{#each this.model.agendaItem.handledBy.hasVotes as |vote|}}
-                      <VoteOverview
-                        @numberOfAbstentions={{vote.numberOfAbstentions}}
-                        @numberOfOpponents={{vote.numberOfOpponents}}
-                        @numberOfProponents={{vote.numberOfProponents}}
-                      />
-                    {{/each}}
-
+                    <VoteOverview
+                      @numberOfAbstentions={{this.model.vote.numberOfAbstentions}}
+                      @numberOfOpponents={{this.model.vote.numberOfOpponents}}
+                      @numberOfProponents={{this.model.vote.numberOfProponents}}
+                    />
                     <div class="c-accordion-holder c-accordion-holder--top">
                       <AuAccordion
                         @reverse={{true}}
@@ -260,7 +257,18 @@
             {{#if this.model.agendaItem.session.hasMunicipality}}
               <AuContent class="au-u-margin-top">
                 <h4 class="au-u-medium">
-                  {{#if this.keywordStore.keyword}}Meer relevante info over{{else}}Meer agendapunten{{/if}} <AuLink class="au-u-medium">{{this.keywordStore.keyword}}</AuLink>in <AuLink class="au-u-medium">{{this.model.agendaItem.session.municipality}}</AuLink>
+                  {{#if this.keywordStore.keyword}}
+                    Meer relevante info over
+                  {{else}}
+                    Meer agendapunten
+                  {{/if}}
+                  <AuLink class="au-u-medium">{{this.keywordStore.keyword}}</AuLink>
+                  in
+                  <AuLink
+                    @route="agenda-items"
+                    @query={{this.municipalityQuery}}
+                    class="au-u-medium"
+                  >{{this.model.agendaItem.session.municipality}}</AuLink>
                 </h4>
                 <ol type="1">
                   {{#each this.model.similiarAgendaItems as |agendaItem|}}

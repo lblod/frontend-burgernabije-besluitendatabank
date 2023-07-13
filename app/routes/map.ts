@@ -9,16 +9,15 @@ interface AgendaItemsRequestInterface {
   include: string;
   municipality?: string;
   filter?: {
-    ':has:session'?: boolean;
-    session?: {
+    sessions?: {
       ':gt:planned-start'?: string;
-
-      ':has:governing-body'?: boolean;
       'governing-body'?: {
-        ':has:administrative-unit'?: boolean;
-        'administrative-unit': {
-          ':has:name'?: boolean;
-          name?: object;
+        'is-time-specialization-of': {
+          'administrative-unit': {
+            location?: {
+              label?: string;
+            };
+          };
         };
       };
     };
@@ -36,26 +35,16 @@ export default class MapRoute extends Route {
         size: 600,
       },
       include: [
-        'session',
-        'session.governing-body',
-        'session.governing-body.administrative-unit',
-        'session.governing-body.administrative-unit.location',
+        'sessions.governing-body.is-time-specialization-of.administrative-unit.location',
+        'sessions.governing-body.administrative-unit.location',
       ].join(','),
       filter: {
-        ':has:session': true,
-        session: {
+        sessions: {
           ':gt:planned-start': new Date(
             new Date().setMonth(new Date().getMonth() - 3)
           )
             .toISOString()
             .split('T')[0],
-          ':has:governing-body': true,
-          'governing-body': {
-            ':has:administrative-unit': true,
-            'administrative-unit': {
-              ':has:name': true,
-            },
-          },
         },
       },
     };
@@ -64,8 +53,7 @@ export default class MapRoute extends Route {
       .query('agenda-item', req)
       .then((data) => {
         return data.filter((item) => {
-          return item.session?.get('governingBody')?.get('administrativeUnit')
-            ?.name;
+          return item.session?.hasMunicipality;
         });
       });
 

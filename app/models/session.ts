@@ -14,32 +14,42 @@ export default class SessionModel extends Model {
   @attr('date') declare startedAt?: Date;
   @attr('date') declare endedAt?: Date;
 
-  @hasMany('agenda-item', { async: true, inverse: 'session' })
+  @hasMany('agenda-item', { async: true, inverse: 'sessions' })
   declare agendaItems: AsyncHasMany<AgendaItemModel>;
 
-  @belongsTo('governing-body', { async: false, inverse: 'session' })
+  @belongsTo('governing-body', { async: false, inverse: 'sessions' })
   declare governingBody: GoverningBodyModel;
 
+  /**
+   * @returns
+   * - ... the session's timeSpecialised governing body's name
+   * - ... if the above can't be found, the abstracted governing body's name
+   * - ... if the above can't be found, an error string
+   *
+   * This naming scheme is in relation to the app/back-end
+   */
   get name() {
-    return this.governingBody?.name ?? 'Ontbrekend bestuursorgaan';
+    return (
+      this.governingBody?.isTimeSpecializationOf?.name ||
+      this.governingBody?.name ||
+      'Ontbrekend bestuursorgaan'
+    );
   }
 
   get municipality() {
     return (
-      this.governingBody?.administrativeUnit?.name ??
+      this.governingBody?.isTimeSpecializationOf?.administrativeUnit?.location
+        ?.label ||
+      this.governingBody?.administrativeUnit?.location?.label ||
       'Ontbrekende bestuurseenheid'
     );
   }
 
-  get location() {
-    return (
-      this.governingBody?.administrativeUnit?.location?.label ??
-      'Ontbrekende locatie'
-    );
-  }
-
   get hasMunicipality() {
-    return !!this.governingBody?.administrativeUnit;
+    return (
+      !!this.governingBody?.isTimeSpecializationOf?.administrativeUnit ||
+      !!this.governingBody?.administrativeUnit
+    );
   }
 
   get dateFormatted() {

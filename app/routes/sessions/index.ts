@@ -20,23 +20,24 @@ const getQuery = (
   plannedStartMax?: string,
   locationIds?: string
 ) => ({
-  // exclude sessions without governing body and administrative unit
-  //todo investigate why filtering is not working
   filter: {
-    ':has:governing-body': true,
     'governing-body': {
-      ':has:administrative-unit': true,
-      'administrative-unit': {
-        ':has:name': locationIds ? true : undefined,
-        location: {
-          ':id:': locationIds ? locationIds : undefined,
+      'is-time-specialization-of': {
+        'administrative-unit': {
+          location: {
+            ':id:': locationIds ? locationIds : undefined,
+          },
         },
       },
     },
     ':gt:planned-start': plannedStartMin ? plannedStartMin : undefined,
     ':lt:planned-start': plannedStartMax ? plannedStartMax : undefined,
   },
-  include: ['governing-body.administrative-unit', 'agenda-items'].join(','),
+  include: [
+    'governing-body.is-time-specialization-of.administrative-unit.location',
+    'governing-body.administrative-unit.location',
+    'agenda-items',
+  ].join(','),
   sort: '-planned-start',
   page: {
     number: page,

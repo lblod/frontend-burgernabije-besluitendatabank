@@ -1,6 +1,8 @@
 import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
+import AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
+import MandataryModel from 'frontend-burgernabije-besluitendatabank/models/mandatary';
 import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
 import { sortObjectsByTitle } from 'frontend-burgernabije-besluitendatabank/utils/array-utils';
 
@@ -9,31 +11,22 @@ interface DetailParams {
 }
 
 interface FormattedTableVote {
-  proponent: Array<string>;
-  opponent: Array<string>;
-  abstainer: Array<string>;
+  proponent: MandataryModel | null;
+  opponent: MandataryModel | null;
+  abstainer: MandataryModel | null;
 }
 
 const agendaItemIncludes = [
-  'session',
-  // "session.governing-body",
-  'session.governing-body.administrative-unit',
-  // 'handled-by',
   'handled-by.has-votes',
   'handled-by.resolutions',
-  // 'session.governing-body',
-  'session.governing-body.administrative-unit',
-  // 'handled-by.has-votes.has-presents',
-  // 'handled-by.has-votes.has-abstainers',
   'handled-by.has-votes.has-abstainers.alias',
   'handled-by.has-votes.has-abstainers.has-membership.inner-group',
-  // 'handled-by.has-votes.has-voters',
-  // 'handled-by.has-votes.has-opponents',
   'handled-by.has-votes.has-opponents.alias',
   'handled-by.has-votes.has-opponents.has-membership.inner-group',
-  // 'handled-by.has-votes.has-proponents',
   'handled-by.has-votes.has-proponents.alias',
   'handled-by.has-votes.has-proponents.has-membership.inner-group',
+  'sessions.governing-body.is-time-specialization-of.administrative-unit.location',
+  'sessions.governing-body.administrative-unit.location',
 ].join(',');
 
 export default class DetailRoute extends Route {
@@ -41,16 +34,20 @@ export default class DetailRoute extends Route {
   @service declare keywordStore: KeywordStoreService;
 
   async model(params: DetailParams) {
-    const agendaItem = await this.store.findRecord('agenda-item', params.id, {
-      include: agendaItemIncludes,
-    });
+    const agendaItem: AgendaItemModel = await this.store.findRecord(
+      'agenda-item',
+      params.id,
+      {
+        include: agendaItemIncludes,
+      }
+    );
 
-    const sessionId = agendaItem.session?.get('id');
+    const sessionId = agendaItem.session?.id;
     const agendaItemOnSameSessionRaw = sessionId
       ? await this.store.query('agenda-item', {
           include: agendaItemIncludes,
           filter: {
-            session: {
+            sessions: {
               [':id:']: sessionId,
             },
           },
@@ -69,39 +66,28 @@ export default class DetailRoute extends Route {
     // this means that the length of the formattedTableVote array will be the length of the longest array (proponent, opponent, abstainer)
     // if there is no voter, push an empty object
 
+    const agendaItemHandling = await agendaItem.handledBy;
+    const vote = (await agendaItemHandling?.hasVotes)?.toArray().shift();
+
+    //TODO: The vote formatting is not the responssibility of the route. Move this logic to the component.
+    // https://binnenland.atlassian.net/browse/BNB-246
+    const proponents = (await vote?.hasProponents)?.toArray();
+    const opponents = (await vote?.hasOpponents)?.toArray();
+    const abstainers = (await vote?.hasAbstainers)?.toArray();
     // get the length of the longest array (not the accumaleted length of all 3 arrays)
     const longestArrayLength = Math.max(
-      agendaItem.handledBy
-        .get('hasVotes')
-        ?.toArray()[0]
-        ?.hasProponents.toArray().length || 0,
-      agendaItem.handledBy.get('hasVotes')?.toArray()[0]?.hasOpponents.toArray()
-        .length || 0,
-      agendaItem.handledBy
-        .get('hasVotes')
-        ?.toArray()[0]
-        ?.hasAbstainers.toArray().length || 0
+      proponents?.length || 0,
+      opponents?.length || 0,
+      abstainers?.length || 0
     );
 
     // iterate over the longest array
     for (let i = 0; i < longestArrayLength; i++) {
       // push the proponent, opponent and abstainer of the current iteration to the formattedTableVote array
       formattedTableVote.push({
-        proponent:
-          agendaItem.handledBy
-            .get('hasVotes')
-            .toArray()[0]
-            ?.hasProponents?.toArray()[i] || undefined,
-        opponent:
-          agendaItem.handledBy
-            .get('hasVotes')
-            .toArray()[0]
-            ?.hasOpponents?.toArray()[i] || undefined,
-        abstainer:
-          agendaItem.handledBy
-            .get('hasVotes')
-            .toArray()[0]
-            ?.hasAbstainers?.toArray()[i] || undefined,
+        proponent: proponents?.[i] || null,
+        opponent: opponents?.[i] || null,
+        abstainer: abstainers?.[i] || null,
       });
     }
 
@@ -109,12 +95,17 @@ export default class DetailRoute extends Route {
       page: {
         size: 4,
       },
-      municipality: agendaItem.session?.get('municipality') || undefined,
+      municipality: agendaItem.session?.municipality,
+      include: agendaItemIncludes,
       filter: {
-        session: {
+        sessions: {
           'governing-body': {
-            'administrative-unit': {
-              name: agendaItem.session?.get('municipality') || undefined,
+            'is-time-specialization-of': {
+              'administrative-unit': {
+                location: {
+                  label: agendaItem.session?.municipality,
+                },
+              },
             },
           },
         },
@@ -131,6 +122,7 @@ export default class DetailRoute extends Route {
 
     return {
       agendaItem,
+      vote,
       agendaItemOnSameSession,
       formattedTableVote,
       similiarAgendaItems,
