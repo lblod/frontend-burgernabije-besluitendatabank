@@ -55,7 +55,7 @@
                 @itemsShown={{this.agendaItems.length}}
                 @itemsAmount={{@model.count}}
               >
-                {{#each @model.agendaItems as |item|}}
+                {{#each this.agendaItems as |item|}}
                 <li>
                   <DecisionCard
                     @startDate={{item.session.startedAt}}
