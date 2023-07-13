@@ -20,7 +20,7 @@
 
                 @label="Zoeken"
                 @labelHidden={{true}}
-                
+
                 @placeholder="Zoek in alle lokale agendas en besluiten"
                 @buttonText="Zoeken"
 
@@ -34,9 +34,8 @@
               </a>
             </div>
 
-            {{! if @model.agendaItems length is equal to 0 }}
             {{#if (eq this.agendaItems.length 0)}}
-              <div class="o-box">
+              <div class="au-o-box">
                 <AuAlert
                   @size="small"
                   @skin="warning"
