@@ -1,72 +1,62 @@
 {{page-title "Zittingen"}}
 
-<div class="au-u-flex" style="overflow-y: scroll; width: 100%; height: 100%;" {{!template-lint-disable no-inline-styles}}>
-
-  <FilterSidebar @class="au-u-2-5">
-    <Filters::SelectMultipleFilter
-      @id="municipality"
-      @label="Gemeente"
-      @options={{this.municipalities}}
-      @searchField="label"
-      @queryParam="gemeentes"
-      @placeholder="Selecteer een optie"
-      @value={{this.municipality}}
-    />
-    <Filters::DateRangeFilter
-      @id="startDate"
-      @label="Datum"
-      @queryParamsA="begin"
-      @queryParamsB="eind"
-      @valueA={{this.plannedStartMin}}
-      @valueB={{this.plannedStartMax}}
-    />
-
-  </FilterSidebar>
-  <section
-    class="au-u-flex au-u-flex--column au-u-padding-top-large"
-    {{!template-lint-disable no-inline-styles}}
-    style="width: 100%; height: 100%;"
-  >
-    {{#if this.isEmpty}}
-      <AuAlert
-        class="au-u-medium au-u-margin"
-        {{!template-lint-disable no-inline-styles}}
-        style=" position: sticky; top: 0;"
-        @skin="warning"
-        @icon="three-dots"
-      >
-        Geen zittingen gevonden
-      </AuAlert>
-    {{else}}
-      <InfiniteList
-        @class="au-u-padding-left-large au-u-padding-right-large"
-        @loadMore={{this.loadMore}}
-        @isLoading={{this.isLoadingMore}}
-      >
-        {{#each this.sessions as |session|}}
-          <LinkTo
-            @route="sessions.session"
-            class="au-u-margin-bottom-small"
-            @model={{session.id}}
+<LayoutList>
+  <AuBodyContainer>
+    <div class="c-interface">
+      <div class="c-interface__content c-interface__content--fixed">
+        {{#if this.isEmpty}}
+          <AuAlert
+            @size="small"
+            @skin="warning"
+            @icon="info-circle"
+            @title="Er werden geen zoekresultaten gevonden."
           >
-            <AuCard @size="small" class="card-hover au-u-padding" as |c|>
-              <c.header>
-                <AuHeading @level="1" @skin="3">
-                  <AuLink @route="sessions.session" @model={{session.id}}>
+          </AuAlert>
+        {{else}}
+          <InfiniteList
+            @loadMore={{this.loadMore}}
+            @isLoading={{this.isLoadingMore}}
+          >
+            {{#each this.sessions as |session|}}
+            <li>
+              <article class="c-decision-card">
+                <AuHeading @level="1" @skin="5">
+                  <AuLink @route="sessions.session" @model={{session.id}} class="c-decision-card__link">
                     {{session.name}}
                     {{session.dateFormatted}}
                   </AuLink>
                 </AuHeading>
-              </c.header>
-              <c.footer>
-                {{session.municipality}}
-                -
-                {{session.agendaItemCount}}
-              </c.footer>
-            </AuCard>
-          </LinkTo>
-        {{/each}}
-      </InfiniteList>
-    {{/if}}
-  </section>
-</div>
+                <div class="c-decision-card__footer">
+                  {{session.municipality}}
+                  -
+                  {{session.agendaItemCount}}
+                </div>
+              </article>
+            </li>
+            {{/each}}
+          </InfiniteList>
+        {{/if}}
+      </div>
+      <FilterSidebar @class="c-interface__sidebar au-o-flow">
+        <h3 class="au-u-h4 au-u-medium">Verfijn de zoekresultaten</h3>
+        <Filters::SelectMultipleFilter
+          @id="municipality"
+          @label="Gemeente"
+          @options={{this.municipalities}}
+          @searchField="label"
+          @queryParam="gemeentes"
+          @placeholder="Selecteer een optie"
+          @value={{this.municipality}}
+        />
+        <Filters::DateRangeFilter
+          @id="startDate"
+          @label="Datum"
+          @queryParamsA="begin"
+          @queryParamsB="eind"
+          @valueA={{this.plannedStartMin}}
+          @valueB={{this.plannedStartMax}}
+        />
+    </FilterSidebar>
+    </div>
+  </AuBodyContainer>
+</LayoutList>

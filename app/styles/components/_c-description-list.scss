@@ -1,0 +1,22 @@
+.c-description-list {
+  --basis: #{$au-unit};
+  --gap: #{$au-unit-small};
+
+  display: flex;
+  gap: $au-unit-small;
+  flex-wrap: wrap;
+  align-items: center;
+
+  dt {
+    flex-basis: var(--basis);
+    display: flex;
+    align-items: center;
+  }
+
+  dd {
+    @include au-font-size(var(--au-h6));
+
+    flex-basis: calc(100% - var(--gap) - var(--basis));
+    color: var(--au-gray-700);
+  }
+}

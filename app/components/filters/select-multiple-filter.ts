@@ -9,6 +9,7 @@ const regex = new RegExp('\\' + seperator + '$', 'm');
 export default class SelectMultipleFilterComponent extends FilterComponent {
   @tracked selected?: object;
 
+  /** Action to parse the queryParameter value(s) & select them in the select input */
   @action
   async inserted() {
     // The queryParam is an array of searchField values, joined by seperator
