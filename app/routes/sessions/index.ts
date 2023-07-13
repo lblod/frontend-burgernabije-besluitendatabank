@@ -6,6 +6,11 @@ import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/ser
 import { seperator } from 'frontend-burgernabije-besluitendatabank/helpers/constants';
 import Transition from '@ember/routing/transition';
 import SessionsIndexController from 'frontend-burgernabije-besluitendatabank/controllers/sessions';
+import {
+  AdapterPopulatedRecordArrayWithMeta,
+  getCount,
+} from 'frontend-burgernabije-besluitendatabank/utils/ember-data';
+import SessionModel from 'frontend-burgernabije-besluitendatabank/models/session';
 
 interface sessionsIndexParams {
   plannedStartMin?: string;
@@ -92,20 +97,24 @@ export default class SessionsIndexRoute extends Route {
     console.log(locationIds);
 
     const currentPage = 0;
-    const sessions = await this.store.query(
-      'session',
-      getQuery(
-        currentPage,
-        this.plannedStartMin,
-        this.plannedStartMax,
-        locationIds.join(',')
-      )
-    );
+    const sessions: AdapterPopulatedRecordArrayWithMeta<SessionModel> =
+      await this.store.query(
+        'session',
+        getQuery(
+          currentPage,
+          this.plannedStartMin,
+          this.plannedStartMax,
+          locationIds.join(',')
+        )
+      );
+
+    const count = getCount(sessions);
 
     return {
       sessions,
       currentPage: currentPage,
       getQuery,
+      count,
     };
   }
 

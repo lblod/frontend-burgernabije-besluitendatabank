@@ -45,9 +45,15 @@
                 </AuAlert>
               </div>
             {{else}}
+              {{#if @model.count}}
+                <p class="au-u-margin-left au-u-margin-top-large au-u-margin-bottom-small au-u-h4 au-u-medium">{{@model.count}} Zoekresultaten</p>
+              {{/if}}
+
               <InfiniteList
                 @loadMore={{this.loadMore}}
                 @isLoading={{this.isLoadingMore}}
+                @itemsShown={{this.agendaItems.length}}
+                @itemsAmount={{@model.count}}
               >
                 {{#each @model.agendaItems as |item|}}
                 <li>
