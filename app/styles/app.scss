@@ -1,3 +1,4 @@
+// Ember appuniversum
 @import "ember-appuniversum/a-settings";
 @import "ember-appuniversum/a-tools";
 @import "ember-appuniversum/a-generic";
@@ -7,41 +8,17 @@
 @import "ember-appuniversum/a-plugins";
 @import "ember-appuniversum/a-utilities";
 
-@import "au-overrides";
-@import "custom-classes";
+// Components
+@import "components/c-interface";
+@import "components/c-decision-card";
+@import "components/c-infinite-list";
+@import "components/c-description-list";
+@import "components/c-chart";
+@import "components/c-responsive-tables";
 
+// Scoped styles
 @import "routes/map";
-@import "routes/municipality";
-@import "routes/session";
 
-@import "components/content-header";
-@import "components/decision-card";
-@import "components/participant-card";
-@import "components/vote-table-entry";
+// Overrides
+@import "shame";
 
-
-html {
-  font-size: 50%;
-}
-
-ol {
-  list-style-type: decimal;
-  li {
-    // display: inline;
-    // float: left;
-    margin: 0 12px;
-    padding: 0 12px;
-  }
-}
-
-path {
-  stroke: white;
-  stroke-width: 0.08rem;
-}
-
-cursor {
-  cursor: pointer;
-}
-
-
-@import "ember-appuniversum/p-ember-power-select";

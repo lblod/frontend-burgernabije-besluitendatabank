@@ -1,32 +1,36 @@
 {{page-title this.model.name}}
 
-  <section id="route-municipality" class="au-u-flex au-u-flex--column au-o-flow au-u-padding au-u-padding-left-large au-u-padding-right-large">
-
-    <AuToolbar @size="medium" class="au-u-margin-small" as |Group|>
-
+<LayoutList>
+  <AuBodyContainer id="route-municipality">
+    <AuToolbar @size="medium" @skin="tint" @border="bottom" as |Group|>
       <Group>
         <ul class="au-c-list-horizontal au-c-list-horizontal--small">
           <li class="au-c-list-horizontal__item">
-            <AuLink @route="home" @icon="arrow-left">
+            <AuLink @route="agenda-items" @icon="arrow-left">
               Alle Agendapunten
             </AuLink>
           </li>
-          <li class="municipality-title au-c-list-horizontal__item">
-            {{this.model.title}}
+          <li class="au-c-list-horizontal__item">
+            <span class="u-truncate">{{this.model.title}}</span>
           </li>
         </ul>
       </Group>
     </AuToolbar>
 
-    <section class="overflow-y-scroll au-o-flow au-u-flex au-u-flex--column">
-      {{#if this.model.agenda_items}}
-
-      {{#each this.model.agenda_items as |item|}}
-        <DecisionCard @item={{item}} @startDate={{item.session.startedAt}} @endDate={{item.session.endedAt}} />
-      {{/each}}
-      {{else}}
-        <p>Geen Data</p>
-      {{/if}}
-    </section>
-
-  </section>
+    <AuBodyContainer @scroll={{true}}>
+      <div class="au-o-box">
+        {{#if this.model.agenda_items}}
+        <ul class="c-infinite-list">
+          {{#each this.model.agenda_items as |item|}}
+          <li>
+            <DecisionCard @item={{item}} @startDate={{item.session.startedAt}} @endDate={{item.session.endedAt}} />
+          </li>
+          {{/each}}
+        </ul>
+        {{else}}
+          <p>Geen Data</p>
+        {{/if}}
+      </div>
+    </AuBodyContainer>
+  </AuBodyContainer>
+</LayoutList>

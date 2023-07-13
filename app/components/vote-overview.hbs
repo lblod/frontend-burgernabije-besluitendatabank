@@ -1,6 +1,26 @@
-<C3Chart
-  @data={{this.data}}
-  @color={{this.color}}
-  @pie={{this.pie}}
-  @legend={{this.legend}}
-/>
+<p class="au-u-h6 au-u-flex au-u-flex--spaced-tiny au-u-flex--vertical-center au-u-margin-top">
+  <AuIcon @icon="visible" @size="medium" />
+  Openbare stemming
+</p>
+
+{{! We use a style tag here since it's way simpler than the JS equivalent which provides no other benefits other than not triggering the linting error}}
+<style {{!template-lint-disable no-forbidden-elements}}>
+  .c-pie {
+    --value-abstentions: {{this.numberOfAbstentionsGraphValue}};
+    --value-opponents: {{this.numberOfOpponentsGraphValue}};
+    --value-proponents: {{this.numberOfProponentsGraphValue}};
+  }
+</style>
+
+<div class="c-chart">
+  <svg viewBox="0 0 100 100" class="c-chart__pie">
+    <circle r="25" cx="50" cy="50" class="c-pie c-pie--proponents"/>
+    <circle r="25" cx="50" cy="50" class="c-pie c-pie--opponents"/>
+    <circle r="25" cx="50" cy="50" class="c-pie c-pie--abstentions"/>
+  </svg>
+  <ul class="c-chart__legend">
+    <li class="c-chart__legend-item c-chart__legend-item--proponents">Voor ({{this.numberOfProponents}})</li>
+    <li class="c-chart__legend-item c-chart__legend-item--opponents">Tegen ({{this.numberOfOpponents}})</li>
+    <li class="c-chart__legend-item c-chart__legend-item--abstentions">Onthouden ({{this.numberOfAbstentions}})</li>
+  </ul>
+</div>
