@@ -36,13 +36,15 @@
 
             {{! if @model.agendaItems length is equal to 0 }}
             {{#if (eq this.agendaItems.length 0)}}
-              <AuAlert
-                @size="small"
-                @skin="warning"
-                @icon="info-circle"
-                @title="Er werden geen zoekresultaten gevonden."
-              >
-              </AuAlert>
+              <div class="o-box">
+                <AuAlert
+                  @size="small"
+                  @skin="warning"
+                  @icon="info-circle"
+                  @title="Er werden geen zoekresultaten gevonden."
+                >
+                </AuAlert>
+              </div>
             {{else}}
               <InfiniteList
                 @loadMore={{this.loadMore}}
