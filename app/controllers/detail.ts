@@ -9,6 +9,10 @@ export default class DetailController extends Controller {
   declare model: ModelFrom<DetailRoute>;
 
   get hasVotes() {
-    return this.model.agendaItem?.handledBy?.get('hasVotes')?.length > 0;
+    return !!this.model.vote;
+  }
+
+  get municipalityQuery() {
+    return { gemeentes: this.model.agendaItem.session?.municipality };
   }
 }

@@ -42,8 +42,8 @@
           />
           {{#if this.model.agendaItem.session.hasMunicipality}}
             <AuLink
-              @route="municipality"
-              @model={{this.model.agendaItem.session.municipality}}
+              @route="agenda-items"
+              @query={{this.municipalityQuery}}
             >
               <p>Gemeente
                 {{#if this.model.agendaItem.session.municipality}}
@@ -109,15 +109,11 @@
               @iconClosed={{"nav-right"}}
               @buttonLabel={{"Stemming"}}
             >
-              {{#each this.model.agendaItem.handledBy.hasVotes as |vote|}}
-
-                <VoteOverview
-                  @numberOfAbstentions={{vote.numberOfAbstentions}}
-                  @numberOfOpponents={{vote.numberOfOpponents}}
-                  @numberOfProponents={{vote.numberOfProponents}}
-                />
-
-              {{/each}}
+              <VoteOverview
+                @numberOfAbstentions={{this.model.vote.numberOfAbstentions}}
+                @numberOfOpponents={{this.model.vote.numberOfOpponents}}
+                @numberOfProponents={{this.model.vote.numberOfProponents}}
+              />
 
               <AuAccordion
                 class="au-u-1-1"
@@ -222,7 +218,10 @@
             {{/if}}
             <AuLink>{{this.keywordStore.keyword}}</AuLink>
             in
-            <AuLink>{{this.model.agendaItem.session.municipality}}</AuLink></h4>
+            <AuLink
+              @route="agenda-items"
+              @query={{this.municipalityQuery}}
+            >{{this.model.agendaItem.session.municipality}}</AuLink></h4>
           <ol type="1">
             {{#each this.model.similiarAgendaItems as |agendaItem|}}
               <li class="au-u-margin-top-small au-u-medium">

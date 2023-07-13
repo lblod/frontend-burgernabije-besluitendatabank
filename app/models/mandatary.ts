@@ -1,4 +1,4 @@
-import Model, { attr, belongsTo } from '@ember-data/model';
+import Model, { AsyncBelongsTo, attr, belongsTo } from '@ember-data/model';
 import MembershipModel from './membership';
 import PersonModel from './person';
 
@@ -7,8 +7,8 @@ export default class MandataryModel extends Model {
   @attr('date') declare endDate: Date;
 
   @belongsTo('person', { async: true, inverse: null })
-  declare alias: PersonModel;
+  declare alias: AsyncBelongsTo<PersonModel>;
 
   @belongsTo('membership', { async: true, inverse: null })
-  declare hasMembership: MembershipModel;
+  declare hasMembership: AsyncBelongsTo<MembershipModel>;
 }

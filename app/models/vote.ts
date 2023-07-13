@@ -1,4 +1,4 @@
-import Model, { attr, hasMany } from '@ember-data/model';
+import Model, { AsyncHasMany, attr, hasMany } from '@ember-data/model';
 import MandataryModel from './mandatary';
 
 export default class VoteModel extends Model {
@@ -8,11 +8,11 @@ export default class VoteModel extends Model {
   @attr('boolean') declare secret: boolean;
 
   @hasMany('mandatary', { async: true, inverse: null })
-  declare hasAbstainers: MandataryModel;
+  declare hasAbstainers: AsyncHasMany<MandataryModel>;
 
   @hasMany('mandatary', { async: true, inverse: null })
-  declare hasOpponents: MandataryModel;
+  declare hasOpponents: AsyncHasMany<MandataryModel>;
 
   @hasMany('mandatary', { async: true, inverse: null })
-  declare hasProponents: MandataryModel;
+  declare hasProponents: AsyncHasMany<MandataryModel>;
 }
