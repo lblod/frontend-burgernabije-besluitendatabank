@@ -208,3 +208,10 @@ cursor {
   overflow-y: scroll;
   height: 100%; 
 }
+
+.u-overflow-divider {
+  * + & {
+    border-top: .1rem solid var(--au-gray-200);
+    margin-top: $au-unit;
+  }
+}
