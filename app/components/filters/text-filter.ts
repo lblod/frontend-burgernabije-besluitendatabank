@@ -1,14 +1,29 @@
 import FilterComponent from './filter';
 import { action } from '@ember/object';
+import { localCopy } from 'tracked-toolbox';
 
-export default class TextFilterComponent extends FilterComponent {
+export interface Signature {
+  Args: {
+    id: string;
+    queryParam: string;
+    value: string;
+  };
+}
+
+export default class TextFilterComponent extends FilterComponent<Signature> {
+  @localCopy<string>('args.value', '') declare value: string;
+
   @action
-  async onChange(e: Event) {
-    if (e.target) {
-      const value = (e.target as HTMLInputElement).value;
-      this.updateQueryParams({
-        [this.args.queryParam]: value,
-      });
-    }
+  handleChange(event: Event) {
+    this.value = (event.target as HTMLInputElement).value;
+  }
+
+  @action
+  handleSubmit(event: Event) {
+    event.preventDefault();
+
+    this.updateQueryParams({
+      [this.args.queryParam]: this.value,
+    });
   }
 }
