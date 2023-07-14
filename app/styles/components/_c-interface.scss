@@ -27,6 +27,10 @@
   }
 
   @include mq(medium) {
+    --sidebar: 300px;
+  }
+
+  @include mq(large) {
     --sidebar: 356px;
   }
 }
@@ -68,6 +72,10 @@
   }
 
   @include mq(medium) {
+    --main: calc(100% - 300px);
+  }
+
+  @include mq(large) {
     --main: calc(100% - 356px);
   }
 }
