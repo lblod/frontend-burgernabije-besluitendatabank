@@ -11,3 +11,9 @@ export default class AgendaItemHandlingModel extends Model {
   @hasMany('resolution', { async: true, inverse: null })
   declare resolutions?: AsyncHasMany<ResolutionModel>;
 }
+
+declare module 'ember-data/types/registries/model' {
+  export default interface ModelRegistry {
+    'agenda-item-handling': AgendaItemHandlingModel;
+  }
+}

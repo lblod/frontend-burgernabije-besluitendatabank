@@ -35,3 +35,9 @@ export default class AgendaItemModel extends Model {
     });
   }
 }
+
+declare module 'ember-data/types/registries/model' {
+  export default interface ModelRegistry {
+    'agenda-item': AgendaItemModel;
+  }
+}
