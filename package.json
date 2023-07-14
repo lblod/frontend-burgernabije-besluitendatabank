@@ -31,7 +31,7 @@
     "test:ember": "ember test"
   },
   "devDependencies": {
-    "@appuniversum/ember-appuniversum": "^2.2.0",
+    "@appuniversum/ember-appuniversum": "^2.8.0",
     "@ember/jquery": "^2.0.0",
     "@ember/optional-features": "^2.0.0",
     "@ember/string": "^3.0.1",
@@ -132,6 +132,7 @@
     "stylelint-prettier": "^3.0.0",
     "topojson-client": "^3.1.0",
     "tracked-built-ins": "^3.1.1",
+    "tracked-toolbox": "^2.0.0",
     "typescript": "^5.0.4",
     "url-polyfill": "^1.1.9",
     "webpack": "^5.78.0"

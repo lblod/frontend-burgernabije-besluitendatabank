@@ -1,5 +1,5 @@
 <div
-  class="{{@class}} au-u-padding u-overflow-y-scroll"
+  class="{{@class}} u-overflow-padding u-overflow-y-scroll u-overflow-divider"
   {{on "scroll" this.scroll}}
 >
   <ul class="c-infinite-list">
@@ -8,7 +8,7 @@
   <div class="au-u-flex au-u-flex--center au-u-padding-top">
     {{#if @isLoading}}
       <AuLoader />
-    {{else}}
+    {{else if (lt @itemsShown @itemsAmount)}}
       <AuButton @icon="add" @skin="secondary" @width="block" {{on "click" this.loadMore}}>Laad meer</AuButton>
     {{/if}}
   </div>

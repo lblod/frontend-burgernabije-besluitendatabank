@@ -8,8 +8,13 @@ import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import AgendaItemsController from 'frontend-burgernabije-besluitendatabank/controllers/agenda-items';
 import { seperator } from 'frontend-burgernabije-besluitendatabank/helpers/constants';
+import AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
 import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
+import {
+  AdapterPopulatedRecordArrayWithMeta,
+  getCount,
+} from 'frontend-burgernabije-besluitendatabank/utils/ember-data';
 
 interface AgendaItemsParams {
   keyword: string;
@@ -162,27 +167,31 @@ export default class AgendaItemsRoute extends Route {
     );
 
     const currentPage = 0;
-    const agendaItems = await this.store.query(
-      'agenda-item',
-      getQuery({
-        page: currentPage,
+    const agendaItems: AdapterPopulatedRecordArrayWithMeta<AgendaItemModel> =
+      await this.store.query(
+        'agenda-item',
+        getQuery({
+          page: currentPage,
 
-        locationIds: locationIds.join(','),
+          locationIds: locationIds.join(','),
 
-        keyword: params.keyword ? params.keyword : undefined,
-        plannedStartMin: params.plannedStartMin
-          ? params.plannedStartMin
-          : undefined,
-        plannedStartMax: params.plannedStartMax
-          ? params.plannedStartMax
-          : undefined,
-      })
-    );
+          keyword: params.keyword ? params.keyword : undefined,
+          plannedStartMin: params.plannedStartMin
+            ? params.plannedStartMin
+            : undefined,
+          plannedStartMax: params.plannedStartMax
+            ? params.plannedStartMax
+            : undefined,
+        })
+      );
+
+    const count = getCount(agendaItems);
 
     return {
       agendaItems,
       currentPage,
       getQuery,
+      count,
     };
   }
 

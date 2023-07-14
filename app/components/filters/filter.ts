@@ -3,20 +3,22 @@ import RouterService from '@ember/routing/router-service';
 import { service } from '@ember/service';
 import { get } from '@ember/object';
 
-interface ArgsInterface {
-  id: string;
-  queryParam: string;
-  queryParamsA: string;
-  queryParamsB: string;
+interface Signature {
+  Args: {
+    id: string;
+    queryParam: string;
+    queryParamsA: string;
+    queryParamsB: string;
 
-  searchField: string;
-  options: Array<object>;
+    searchField: string;
+    options: Array<object>;
 
-  valueA?: string;
-  valueB?: string;
+    valueA?: string;
+    valueB?: string;
+  };
 }
 
-export default class FilterComponent extends Component<ArgsInterface> {
+export default class FilterComponent<S = Signature> extends Component<S> {
   @service declare router: RouterService;
 
   /**

@@ -44,11 +44,24 @@
                 </AuAlert>
               </div>
             {{else}}
+              {{#if @model.count}}
+                <p class="au-u-margin-left au-u-margin-top-small au-u-h4 au-u-medium">
+                  {{@model.count}} 
+                  {{#if (eq @model.count 1)}} 
+                  Zoekresultaat
+                  {{else}}
+                  Zoekresultaten
+                  {{/if}}
+                  </p>
+              {{/if}}
+
               <InfiniteList
                 @loadMore={{this.loadMore}}
                 @isLoading={{this.isLoadingMore}}
+                @itemsShown={{this.agendaItems.length}}
+                @itemsAmount={{@model.count}}
               >
-                {{#each @model.agendaItems as |item|}}
+                {{#each this.agendaItems as |item|}}
                 <li>
                   <DecisionCard
                     @startDate={{item.session.startedAt}}
