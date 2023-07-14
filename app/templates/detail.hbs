@@ -258,11 +258,10 @@
               <AuContent class="au-u-margin-top">
                 <h4 class="au-u-medium">
                   {{#if this.keywordStore.keyword}}
-                    Meer relevante info over
+                    Meer relevante info over <AuLink class="au-u-medium">{{this.keywordStore.keyword}}</AuLink>
                   {{else}}
-                    Meer agendapunten
+                    Meer agendapunten 
                   {{/if}}
-                  <AuLink class="au-u-medium">{{this.keywordStore.keyword}}</AuLink>
                   in
                   <AuLink
                     @route="agenda-items"
