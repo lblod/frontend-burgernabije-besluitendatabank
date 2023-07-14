@@ -1,16 +1,20 @@
-<Filters::Filter @id={{@id}} @label={{@label}}>
-  <AuDateRangePicker
-    @width="block"
-    {{!template-lint-disable no-duplicate-id}}
-    id={{@id}}
-    @label={{@label}}
-    @start={{@valueA}}
-    @end={{@valueB}}
+<Filters::Filter @label={{@label}}>
+    <AuDateRangePicker
+      @width="block"
 
-    @cancelAction={{this.resetDate}}
-    @applyAction={{this.dateChange}}
-    @hideAction={{this.dateChange}}
+      id={{@id}}
+      @label={{@label}}
+      
+      @start={{this.start}}
+      @end={{this.end}}
+      
+      @cancelAction={{this.resetDate}}
+      @applyAction={{this.dateChange}}
+      @hideAction={{this.hideDate}}
 
-    @cancelLabel="Reset"
-  />
+      @cancelLabel="Reset"
+    />
+    {{!-- did-insert didn't work on the custom components --}}
+    <span class="au-u-hidden" {{did-insert this.hideDate}}></span>
+
 </Filters::Filter>

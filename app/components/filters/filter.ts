@@ -12,6 +12,9 @@ interface Signature {
 
     searchField: string;
     options: Array<object>;
+
+    valueA?: string;
+    valueB?: string;
   };
 }
 
@@ -31,7 +34,7 @@ export default class FilterComponent<S = Signature> extends Component<S> {
    *
    * @param params object with {queryParameterName: newValue}
    */
-  updateQueryParams(params: { [key: string]: any }) {
+  updateQueryParams(params: { [key: string]: unknown }) {
     this.router.transitionTo(this.router.currentRouteName, {
       queryParams: params,
     });
