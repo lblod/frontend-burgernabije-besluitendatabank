@@ -8,8 +8,20 @@ import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import AgendaItemsController from 'frontend-burgernabije-besluitendatabank/controllers/agenda-items';
 import { seperator } from 'frontend-burgernabije-besluitendatabank/helpers/constants';
+import AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
 import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
+import {
+  AdapterPopulatedRecordArrayWithMeta,
+  getCount,
+} from 'frontend-burgernabije-besluitendatabank/utils/ember-data';
+
+interface AgendaItemsParams {
+  keyword: string;
+  municipalityLabels: string;
+  plannedStartMin: string;
+  plannedStartMax: string;
+}
 
 const getQuery = ({
   page,
@@ -24,26 +36,21 @@ const getQuery = ({
   plannedStartMin?: string;
   plannedStartMax?: string;
 }): AgendaItemsRequestInterface => ({
-  // exclude sessions without governing body and administrative unit
-  //todo investigate why filtering is not working
   include: [
-    'session',
-    'session.governing-body',
-    'session.governing-body.administrative-unit',
-    'session.governing-body.administrative-unit.location',
+    'sessions.governing-body.is-time-specialization-of.administrative-unit.location',
+    'sessions.governing-body.administrative-unit.location',
   ].join(','),
-  sort: '-session.planned-start',
+  sort: '-sessions.planned-start',
   filter: {
-    session: {
+    sessions: {
       ':gt:planned-start': plannedStartMin ? plannedStartMin : undefined,
       ':lt:planned-start': plannedStartMax ? plannedStartMax : undefined,
-      ':has:governing-body': true,
       'governing-body': {
-        ':has:administrative-unit': true,
-        'administrative-unit': {
-          ':has:name': true,
-          location: {
-            ':id:': locationIds ? locationIds : undefined,
+        'is-time-specialization-of': {
+          'administrative-unit': {
+            location: {
+              ':id:': locationIds ? locationIds : undefined,
+            },
           },
         },
       },
@@ -67,17 +74,15 @@ interface AgendaItemsRequestInterface {
   include: string;
   sort?: string;
   filter?: {
-    ':or:'?: {};
-    session?: {
-      ':gt:planned-start'?: string | undefined;
-      ':lt:planned-start'?: string | undefined;
-      ':has:governing-body'?: boolean;
+    ':or:'?: object;
+    sessions?: {
+      ':gt:planned-start'?: string;
+      ':lt:planned-start'?: string;
       'governing-body'?: {
-        ':has:administrative-unit'?: boolean;
-        'administrative-unit': {
-          ':has:name'?: boolean;
-          name?: any;
-          location?: {};
+        'is-time-specialization-of'?: {
+          'administrative-unit': {
+            location?: object;
+          };
         };
       };
     };
@@ -111,21 +116,24 @@ export default class AgendaItemsRoute extends Route {
     },
   };
 
-  @tracked municipalityLabels: any;
-  @tracked sort: any;
-  @tracked plannedStartMin: any;
-  @tracked plannedStartMax: any;
+  @tracked municipalityLabels?: string;
+  @tracked plannedStartMin?: string;
+  @tracked plannedStartMax?: string;
 
   @action
   error(error: Error) {
-    const controller: any = this.controllerFor('agenda-items');
+    const controller: AgendaItemsController = this.controllerFor(
+      'agenda-items'
+    ) as AgendaItemsController;
     controller.set('errorMsg', error.message);
     return true;
   }
 
   @action
-  loading(transition: any, originRoute: any) {
-    const controller: any = this.controllerFor('agenda-items');
+  loading(transition: Transition) {
+    const controller: AgendaItemsController = this.controllerFor(
+      'agenda-items'
+    ) as AgendaItemsController;
 
     controller.set('loading', true);
     transition.promise.finally(() => {
@@ -133,61 +141,57 @@ export default class AgendaItemsRoute extends Route {
     });
   }
 
-  async model(params: any, transition: Transition<unknown>) {
-    const controller: any = this.controllerFor('agenda-items');
-    const model: any = this.modelFor('agenda-items');
+  async model(params: AgendaItemsParams) {
+    const controller: AgendaItemsController = this.controllerFor(
+      'agenda-items'
+    ) as AgendaItemsController;
 
     if (
-      model?.agendaItems?.length > 0 &&
+      controller.agendaItems?.length > 0 &&
       params.keyword === this.keywordStore.keyword &&
       params.municipalityLabels === this.municipalityLabels &&
-      params.sort === this.sort &&
       params.plannedStartMin === this.plannedStartMin &&
       params.plannedStartMax === this.plannedStartMax
     ) {
-      return model;
+      return null;
     }
     this.keywordStore.keyword = params.keyword || '';
     this.municipalityLabels = params.municipalityLabels || '';
-    this.sort = params.sort || '';
     this.plannedStartMin = params.plannedStartMin || '';
     this.plannedStartMax = params.plannedStartMax || '';
-
-    params.municipality
-      ? controller.set('selectedMunicipality', {
-          id: params.municipality,
-          label: params.municipality,
-        })
-      : controller.set('selectedMunicipality', null);
 
     // Check if the parameters have changed compared to the last time
 
     const locationIds = await this.municipalityList.getLocationIdsFromLabels(
-      this.municipalityLabels.split(seperator)
+      this.municipalityLabels?.split(seperator) || []
     );
 
     const currentPage = 0;
-    const agendaItems = await this.store.query(
-      'agenda-item',
-      getQuery({
-        page: currentPage,
+    const agendaItems: AdapterPopulatedRecordArrayWithMeta<AgendaItemModel> =
+      await this.store.query(
+        'agenda-item',
+        getQuery({
+          page: currentPage,
 
-        locationIds: locationIds.join(','),
+          locationIds: locationIds.join(','),
 
-        keyword: params.keyword ? params.keyword : undefined,
-        plannedStartMin: params.plannedStartMin
-          ? params.plannedStartMin
-          : undefined,
-        plannedStartMax: params.plannedStartMax
-          ? params.plannedStartMax
-          : undefined,
-      })
-    );
+          keyword: params.keyword ? params.keyword : undefined,
+          plannedStartMin: params.plannedStartMin
+            ? params.plannedStartMin
+            : undefined,
+          plannedStartMax: params.plannedStartMax
+            ? params.plannedStartMax
+            : undefined,
+        })
+      );
+
+    const count = getCount(agendaItems);
 
     return {
       agendaItems,
       currentPage,
       getQuery,
+      count,
     };
   }
 

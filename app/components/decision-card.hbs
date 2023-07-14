@@ -1,47 +1,23 @@
-<LinkTo
-
-  class="au-u-margin-bottom-small component-decision-card"
-  @route="detail"
-  @model={{@item.id}}
+<article
+  class="c-decision-card au-o-flow au-o-flow--small"
 >
-  <AuCard
-    @size="small"
-    class="card-hover au-u-padding-bottom au-u-padding component-decision-card-card"
-    as |c|
-  >
-
-    <c.header>
-      <AuHeading @level="1" @skin="3">
-        <AuLink
-          class="component-decision-card-header-link"
-          {{! template-lint-disable no-inline-styles}}
-          style="text-overflow: ellipsis; max-height: 50%;"
-          @route="detail"
-          @model={{@item.id}}
-        >
-          {{@item.title}}
-        </AuLink>
-      </AuHeading>
-    </c.header>
-    <c.content>
-      {{#if @item.description}}
-        <p class="truncate">{{@item.description}}</p>
-      {{/if}}
-    </c.content>
-    <c.footer>
-      {{@item.session.dateFormatted}}
-      -
-      {{#if @item.session.governingBody.name}}
-        {{@item.session.governingBody.name}}
-      {{else}}
-        Geen Bestuurorgaan
-      {{/if}}
-      -
-      {{#if @item.session.governingBody.administrativeUnit.name}}
-        {{@item.session.governingBody.administrativeUnit.name}}
-      {{else}}
-        Geen Bestuurseenheid
-      {{/if}}
-    </c.footer>
-  </AuCard>
-</LinkTo>
+  <AuHeading @level="1" @skin="5">
+    <AuLink
+      class="c-decision-card__link"
+      @route="detail"
+      @model={{@item.id}}
+    >
+      {{@item.title}}
+    </AuLink>
+  </AuHeading>
+  {{#if @item.description}}
+    <p class="au-u-base c-decision-card__content">{{@item.description}}</p>
+  {{/if}}
+  <div class="c-decision-card__footer">
+    {{@item.session.dateFormatted}}
+    -
+    {{@item.session.name}}
+    -
+    {{@item.session.municipality}}
+  </div>
+</article>

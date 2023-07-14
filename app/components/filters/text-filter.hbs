@@ -1,4 +1,4 @@
-<Filters::Filter @id={{@id}} @label={{@label}}>
+<Filters::Filter @id={{@id}} @label={{@label}} @labelHidden={{@labelHidden}} @rowClass={{@rowClass}}>
     <AuInput
         {{!template-lint-disable no-duplicate-id}}
         id={{@id}}
@@ -19,11 +19,11 @@
     {{#if @buttonText}}
         <AuButton
             {{!-- au-u-flex--center centers the text --}}
-            class="{{@inputClass}} au-u-1-5 au-u-padding-left au-u-padding-right au-u-flex--center"
+            class="{{@inputClass}}"
+            @width="block"
             {{on "click" this.onChange}}
         >
             {{@buttonText}}
         </AuButton>
     {{/if}}
-
 </Filters::Filter>

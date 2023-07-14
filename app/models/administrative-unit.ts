@@ -1,4 +1,10 @@
-import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
+import Model, {
+  attr,
+  belongsTo,
+  hasMany,
+  AsyncHasMany,
+  AsyncBelongsTo,
+} from '@ember-data/model';
 import GoverningBodyModel from './governing-body';
 import AdministrativeUnitClasssificationCodeModel from './location';
 import LocationModel from './location';
@@ -8,14 +14,14 @@ export default class AdministrativeUnitModel extends Model {
   declare name: string;
 
   @hasMany('governing-body', { async: true, inverse: 'administrativeUnit' })
-  declare governingBodies: GoverningBodyModel;
+  declare governingBodies: AsyncHasMany<GoverningBodyModel>;
 
   @belongsTo('administrative-unit-classification-code', {
     async: true,
     inverse: null,
   })
-  declare classification: AdministrativeUnitClasssificationCodeModel;
+  declare classification: AsyncBelongsTo<AdministrativeUnitClasssificationCodeModel>;
 
-  @belongsTo('location', { async: true, inverse: null })
+  @belongsTo('location', { async: false, inverse: null })
   declare location: LocationModel;
 }

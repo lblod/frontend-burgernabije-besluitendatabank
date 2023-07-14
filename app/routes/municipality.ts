@@ -3,6 +3,11 @@ import Route from '@ember/routing/route';
 import { service } from '@ember/service';
 import { hash } from 'rsvp';
 
+interface MunicipalityParams {
+  municipality?: string;
+  page?: number;
+}
+
 interface AgendaItemsRequestInterface {
   page: {
     size: number;
@@ -10,12 +15,13 @@ interface AgendaItemsRequestInterface {
   include: string;
   municipality?: string;
   filter?: {
-    ':or:'?: {};
-    session?: {
+    ':or:'?: object;
+    sessions?: {
       'governing-body'?: {
-        'administrative-unit': {
-          name?: {};
-          location?: {};
+        'is-time-specialization-of'?: {
+          'administrative-unit': {
+            location?: object;
+          };
         };
       };
     };
@@ -29,8 +35,8 @@ export default class MunicipalityRoute extends Route {
     page: { refreshModel: true },
   };
 
-  async model(params: any) {
-    const { municipality, page } = params;
+  async model(params: MunicipalityParams) {
+    const { municipality } = params;
 
     const req: AgendaItemsRequestInterface = {
       page: {
@@ -38,20 +44,25 @@ export default class MunicipalityRoute extends Route {
       },
       municipality: municipality,
       include: [
-        'session',
-        'session.governing-body',
-        'session.governing-body.administrative-unit',
+        'sessions.governing-body.is-time-specialization-of.administrative-unit.location',
+        'sessions.governing-body.administrative-unit.location',
       ].join(','),
       filter: {},
     };
 
-    const sessionFilter: { [key: string]: any } = {};
+    const sessionFilter: { [key: string]: object } = {};
     sessionFilter['governing-body'] = {
-      'administrative-unit': { name: municipality },
+      'is-time-specialization-of': {
+        'administrative-unit': {
+          location: {
+            label: municipality,
+          },
+        },
+      },
     };
     req.filter = {};
 
-    req.filter.session = sessionFilter;
+    req.filter.sessions = sessionFilter;
 
     const data = await hash({
       gemeenteraadsleden: [],

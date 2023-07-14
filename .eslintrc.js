@@ -24,16 +24,13 @@ module.exports = {
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
       ],
-      rules: {
-        '@typescript-eslint/ban-ts-comment': 'warn',
-        '@typescript-eslint/ban-types': 'warn',
-      },
     },
     {
       // node files
       files: [
         './.eslintrc.js',
         './.prettierrc.js',
+        './.stylelintrc.js',
         './.template-lintrc.js',
         './ember-cli-build.js',
         './testem.js',

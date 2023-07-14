@@ -1,13 +1,12 @@
-<span
-  class="au-u-flex au-u-flex--column au-u-padding-small au-u-padding-bottom-tiny au-u-padding-top-tiny component-vote-table-entry"
->
+{{#if @familyName}}
   <p>
     {{@familyName}}
     {{@firstName}}
   </p>
+{{/if}}
+{{#if @fraction}}
   <p class="au-u-muted au-u-para-small">
-    {{#if @fraction}}
       ({{@fraction}})
-    {{/if}}
   </p>
-</span>
+{{/if}}
+

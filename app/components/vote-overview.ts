@@ -19,9 +19,42 @@ export default class VoteOverview extends Component<ArgsInterface> {
     return this.args.numberOfProponents || 0;
   }
 
+  get numberOfAbstentionsGraphValue() {
+    const strokeDashArray = 158;
+    const totalValue =
+      (this.args.numberOfProponents || 0) +
+      (this.args.numberOfOpponents || 0) +
+      (this.args.numberOfAbstentions || 0);
+    const abstentionsValue = this.args.numberOfAbstentions || 0;
+
+    return (abstentionsValue / totalValue) * strokeDashArray;
+  }
+
+  get numberOfOpponentsGraphValue() {
+    const strokeDashArray = 158;
+    const totalValue =
+      (this.args.numberOfProponents || 0) +
+      (this.args.numberOfOpponents || 0) +
+      (this.args.numberOfAbstentions || 0);
+    const opponentsValue = this.args.numberOfOpponents || 0;
+
+    return (opponentsValue / totalValue) * strokeDashArray;
+  }
+
+  get numberOfProponentsGraphValue() {
+    const strokeDashArray = 158;
+    const totalValue =
+      (this.args.numberOfProponents || 0) +
+      (this.args.numberOfOpponents || 0) +
+      (this.args.numberOfAbstentions || 0);
+    const proponentsValue = this.args.numberOfProponents || 0;
+
+    return (proponentsValue / totalValue) * strokeDashArray;
+  }
+
   @tracked pie = {
     label: {
-      format: function (value: any, ratio: any, id: any) {
+      format: function (value: string) {
         return value;
       },
     },
@@ -29,10 +62,10 @@ export default class VoteOverview extends Component<ArgsInterface> {
 
   @tracked tooltip = {
     format: {
-      title: (d: any) => {
+      title: (d: string) => {
         return 'Data ' + d;
       },
-      value: (value: any, ratio: any, id: any) => {
+      value: (value: number, id: string) => {
         const format = id === 'data1' ? d3.format(',') : d3.format('$');
         return format(value);
       },

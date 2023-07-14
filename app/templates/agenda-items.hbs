@@ -1,79 +1,116 @@
-<AuBodyContainer class="au-u-flex--row">
+<LayoutList>
+  <AuBodyContainer>
+    <div class="c-interface">
+      <div id="filtercontent" class="c-interface__content c-interface__content--fixed au-u-flex au-u-flex--column">
+        {{#if this.errorMsg}}
+          <Oops
+            @title="Oeps!"
+            @content="Er is iets fout gelopen!"
+          />
+        {{else}}
+          {{#if this.loading}}
+            <LoaderFullPage @content="Agendapunt aan het laden"/>
+          {{else}}
+            <div class="au-o-flow au-o-flow--small au-u-padding">
+              <h2 class="au-u-h2 au-u-medium">Wat zoek je?</h2>
+              <Filters::TextFilter
+                @id="keyword"
+                @queryParam="trefwoord"
+                @value={{this.keyword}}
 
-  <FilterSidebar @class="au-u-2-5 au-u-max-width-xsmall">
-    <Filters::SelectMultipleFilter
-      @id="municipality"
-      @label="Waar woon je?"
-      @options={{this.municipalities}}
-      @searchField="label"
-      @queryParam="gemeentes"
-      @placeholder="Selecteer een optie"
-      @value={{this.municipality}}
-    />
-    <Filters::DateRangeFilter
-      @id="startDate"
-      @label="Wanneer?"
-      @queryParamsA="begin"
-      @queryParamsB="eind"
-      @valueA={{this.plannedStartMin}}
-      @valueB={{this.plannedStartMax}}
-    />
+                @label="Zoeken"
+                @labelHidden={{true}}
 
-  </FilterSidebar>
+                @placeholder="Zoek in alle lokale agendas en besluiten"
+                @buttonText="Zoeken"
 
-  <section class="smooth-scroll-children au-u-flex au-u-flex--column au-u-3-5 au-u-padding-left-large au-u-padding-right-large">
-    {{#if this.errorMsg}}
-      <Oops
-        @title="Oeps!"
-        @content="Er is iets fout gelopen!"
-      />
-    {{else}}
-      {{#if this.loading}}
-        <LoaderFullPage @content="Agendapunt aan het laden"/>
+                @icon="search"
 
-      {{else}}
-        <div class="au-u-margin-bottom-large">
-          <h2 class="au-u-h2 au-u-medium">Wat zoek je?</h2>
-          <Filters::TextFilter
-            @id="keyword"
-            @queryParam="trefwoord"
-            @value={{this.keyword}}
+                @rowClass="au-c-form-row--button"
+              />
+              <a href="#filtersidebar" class="au-c-button au-c-button--secondary au-c-button--block c-interface__filter-button" {{on "click" (fn (mut this.showFilter) true)}}>
+                <AuIcon @icon="filter" />
+                Toon filters
+              </a>
+            </div>
 
-            @placeholder="Zoek in alle lokale agendas en besluiten"
-            @buttonText="Zoeken"
+            {{#if (eq this.agendaItems.length 0)}}
+              <div class="au-o-box">
+                <AuAlert
+                  @size="small"
+                  @skin="warning"
+                  @icon="info-circle"
+                  @title="Er werden geen zoekresultaten gevonden."
+                >
+                </AuAlert>
+              </div>
+            {{else}}
+              {{#if @model.count}}
+                <p class="au-u-margin-left au-u-margin-top-large au-u-h4 au-u-medium">
+                  {{@model.count}} 
+                  {{#if (eq @model.count 1)}} 
+                  Zoekresultaat
+                  {{else}}
+                  Zoekresultaten
+                  {{/if}}
+                  </p>
+              {{/if}}
 
-            @inputClass="au-u-padding"
-
-            @icon="search"
+              <InfiniteList
+                @loadMore={{this.loadMore}}
+                @isLoading={{this.isLoadingMore}}
+                @itemsShown={{this.agendaItems.length}}
+                @itemsAmount={{@model.count}}
+              >
+                {{#each this.agendaItems as |item|}}
+                <li>
+                  <DecisionCard
+                    @startDate={{item.session.startedAt}}
+                    @endDate={{item.session.endedAt}}
+                    @item={{item}}
+                  />
+                </li>
+                {{/each}}
+              </InfiniteList>
+            {{/if}}
+          {{/if}}
+        {{/if}}
+      </div>
+      <FilterSidebar @id="filtersidebar" @class="c-interface__sidebar c-interface__sidebar--dialog {{if (eq this.showFilter true) 'is-visible'}}">
+        <div class="c-interface__sidebar-close-button">
+          <a href="#filtercontent" class="au-c-button au-c-button--naked" {{on "click" (fn (mut this.showFilter) false)}}>
+            Terug
+          </a>
+        </div>
+        <div class="c-interface__sidebar-main">
+          <h3 class="au-u-h4 au-u-medium">Verfijn de zoekresultaten</h3>
+          <Filters::SelectMultipleFilter
+            @id="municipality"
+            @label="Waar woon je?"
+            @options={{this.municipalities}}
+            @searchField="label"
+            @queryParam="gemeentes"
+            @placeholder="Selecteer een optie"
+            @value={{this.municipality}}
+          />
+          <Filters::DateRangeFilter
+            @id="startDate"
+            @label="Wanneer?"
+            @queryParamsA="begin"
+            @queryParamsB="eind"
+            @valueA={{this.plannedStartMin}}
+            @valueB={{this.plannedStartMax}}
           />
         </div>
-
-
-        {{! if @model.agendaItems length is equal to 0 }}
-        {{#if (eq this.agendaItems.length 0)}}
-          <AuAlert
-            class="top-sticky au-u-medium au-u-margin"
-            @skin="warning"
-            @icon="three-dots"
-          >
-            Geen agendapunten gevonden
-          </AuAlert>
-        {{else}}
-          <InfiniteList
-            @loadMore={{this.loadMore}}
-            @isLoading={{this.isLoadingMore}}
-          >
-            {{#each this.agendaItems as |item|}}
-              <DecisionCard
-                @startDate={{item.session.startedAt}}
-                @endDate={{item.session.endedAt}}
-                @item={{item}}
-              />
-            {{/each}}
-          </InfiniteList>
-        {{/if}}
-      {{/if}}
-    {{/if}}
-
-  </section>
-</AuBodyContainer>
+        <div class="c-interface__sidebar-submit-buttons">
+          <AuButton @skin="primary" @width="block" {{on "click" (fn (mut this.showFilter) false)}}>
+            Zoeken
+          </AuButton>
+          <a href="#filtercontent" class="au-c-button au-c-button--naked au-c-button--block" {{on "click" (fn (mut this.showFilter) false)}}>
+            Annuleer
+          </a>
+        </div>
+      </FilterSidebar>
+    </div>
+  </AuBodyContainer>
+</LayoutList>
