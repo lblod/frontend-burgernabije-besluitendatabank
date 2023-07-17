@@ -2,6 +2,28 @@
   <AuBodyContainer>
     <div class="c-interface">
       <div id="filtercontent" class="c-interface__content c-interface__content--fixed au-u-flex au-u-flex--column">
+        <div class="au-o-flow au-o-flow--small au-u-padding">
+          <h2 class="au-u-h2 au-u-medium">Wat zoek je?</h2>
+          <Filters::TextFilter
+            @id="keyword"
+            @queryParam="trefwoord"
+            @value={{this.keyword}}
+
+            @label="Zoeken"
+            @labelHidden={{true}}
+
+            @placeholder="Zoek in alle lokale agendas en besluiten"
+            @buttonText="Zoeken"
+
+            @icon="search"
+
+            @rowClass="au-c-form-row--button"
+          />
+          <a href="#filtersidebar" class="au-c-button au-c-button--secondary au-c-button--block c-interface__filter-button" {{on "click" (fn (mut this.showFilter) true)}}>
+            <AuIcon @icon="filter" />
+              Toon filters
+            </a>
+          </div>
         {{#if this.errorMsg}}
           <Oops
             @title="Oeps!"
@@ -11,29 +33,6 @@
           {{#if this.loading}}
             <LoaderFullPage @content="Agendapunt aan het laden"/>
           {{else}}
-            <div class="au-o-flow au-o-flow--small au-u-padding">
-              <h2 class="au-u-h2 au-u-medium">Wat zoek je?</h2>
-              <Filters::TextFilter
-                @id="keyword"
-                @queryParam="trefwoord"
-                @value={{this.keyword}}
-
-                @label="Zoeken"
-                @labelHidden={{true}}
-
-                @placeholder="Zoek in alle lokale agendas en besluiten"
-                @buttonText="Zoeken"
-
-                @icon="search"
-
-                @rowClass="au-c-form-row--button"
-              />
-              <a href="#filtersidebar" class="au-c-button au-c-button--secondary au-c-button--block c-interface__filter-button" {{on "click" (fn (mut this.showFilter) true)}}>
-                <AuIcon @icon="filter" />
-                Toon filters
-              </a>
-            </div>
-
             {{#if (eq this.agendaItems.length 0)}}
               <div class="au-o-box">
                 <AuAlert
@@ -46,7 +45,7 @@
               </div>
             {{else}}
               {{#if @model.count}}
-                <p class="au-u-margin-left au-u-margin-top-large au-u-h4 au-u-medium">
+                <p class="au-u-margin-left au-u-margin-top-small au-u-h4 au-u-medium">
                   {{@model.count}} 
                   {{#if (eq @model.count 1)}} 
                   Zoekresultaat

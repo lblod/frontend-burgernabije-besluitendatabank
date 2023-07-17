@@ -22,7 +22,7 @@
       <div class="au-o-grid au-o-grid--small">
         <div class="au-o-grid__item au-u-hidden-from@medium">
           {{#if this.model.agendaItem.handledBy.resolutions}}
-            <AuAlert @skin="success" @icon="sign" @title="Dit werd behandeld" class="au-u-margin-bottom-none" />
+            <AuAlert @skin="success" @icon="decided" @title="Dit werd behandeld" class="au-u-margin-bottom-none" />
           {{else}}
             <AuAlert @skin="warning" @icon="three-dots" @title="Dit werd nog niet behandeld" class="au-u-margin-bottom-none" />
           {{/if}}
@@ -51,7 +51,7 @@
               <dl class="c-description-list">
                 {{#if this.model.agendaItem.session.hasMunicipality}}
                 <dt>
-                  <AuIcon @size="large" @icon="label" />
+                  <AuIcon @size="large" @icon="location" />
                   <span class="au-u-hidden-visually">Gemeente</span>
                 </dt>
                 <dd>
@@ -95,7 +95,7 @@
                 </p>
               </AuContent>
               <section class="c-accordion-holder">
-                <AuBadge @icon="archive" @skin="brand" />
+                <AuBadge @icon="report" @skin="brand" />
                 <AuAccordion
                   @reverse={{true}}
                   @iconOpen={{"nav-down"}}
@@ -114,7 +114,7 @@
 
               {{#if this.hasVotes}}
                 <section class="c-accordion-holder">
-                  <AuBadge @icon="message" @skin="brand" />
+                  <AuBadge @icon="vote" @skin="brand" />
                   <AuAccordion
                     @reverse={{true}}
                     @iconOpen={{"nav-down"}}
@@ -249,7 +249,7 @@
           <div class="u-top-sticky">
             <div class="au-u-visible-from@medium">
               {{#if this.model.agendaItem.handledBy.resolutions}}
-                <AuAlert @skin="success" @icon="sign" @title="Dit werd behandeld" />
+                <AuAlert @skin="success" @icon="decided" @title="Dit werd behandeld" />
               {{else}}
                 <AuAlert @skin="warning" @icon="three-dots" @title="Dit werd nog niet behandeld" />
               {{/if}}
@@ -258,11 +258,10 @@
               <AuContent class="au-u-margin-top">
                 <h4 class="au-u-medium">
                   {{#if this.keywordStore.keyword}}
-                    Meer relevante info over
+                    Meer relevante info over <AuLink class="au-u-medium">{{this.keywordStore.keyword}}</AuLink>
                   {{else}}
-                    Meer agendapunten
+                    Meer agendapunten 
                   {{/if}}
-                  <AuLink class="au-u-medium">{{this.keywordStore.keyword}}</AuLink>
                   in
                   <AuLink
                     @route="agenda-items"

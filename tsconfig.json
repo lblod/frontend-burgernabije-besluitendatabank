@@ -23,6 +23,5 @@
     "tests/**/*",
     "types/**/*",
     "app/config/environment.d.ts",
-    "app/templates/flandersMunicipalities.ts"
   ]
 }
