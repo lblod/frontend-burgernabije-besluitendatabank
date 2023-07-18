@@ -37,14 +37,9 @@
           >
             <c.header>
               <AuHeading @level="1" @skin="3">
-                <AuLink
-                  @route="detail"
-                  class="u-header-link"
-                >
-                  {{#if this.model.agendaItem.title}}
-                    {{this.model.agendaItem.title}}
-                  {{/if}}
-                </AuLink>
+                {{#if this.model.agendaItem.title}}
+                  {{this.model.agendaItem.title}}
+                {{/if}}
               </AuHeading>
             </c.header>
             <c.content class="content">
