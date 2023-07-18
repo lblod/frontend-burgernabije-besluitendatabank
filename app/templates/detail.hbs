@@ -256,7 +256,7 @@
             </div>
             {{#if this.model.agendaItem.session.hasMunicipality}}
               <AuContent class="au-u-margin-top">
-                <h4 class="au-u-medium">
+                <AuHeading @level="2" @skin="4">
                   {{#if this.keywordStore.keyword}}
                     Meer relevante info over <AuLink class="au-u-medium">{{this.keywordStore.keyword}}</AuLink>
                   {{else}}
@@ -268,7 +268,7 @@
                     @query={{this.municipalityQuery}}
                     class="au-u-medium"
                   >{{this.model.agendaItem.session.municipality}}</AuLink>
-                </h4>
+                </AuHeading>
                 <ol type="1">
                   {{#each this.model.similiarAgendaItems as |agendaItem|}}
                     <li class="au-u-margin-top-small">
