@@ -19,11 +19,14 @@
 
             @rowClass="au-c-form-row--button"
           />
+          <a href="#filtersidebar" class="au-c-interface__filter-link">
+            Ga naar filters
+          </a>
           <a href="#filtersidebar" class="au-c-button au-c-button--secondary au-c-button--block c-interface__filter-button" {{on "click" this.showFilter}}>
             <AuIcon @icon="filter" />
               Toon filters
-            </a>
-          </div>
+          </a>
+        </div>
         {{#if this.errorMsg}}
           <Oops
             @title="Oeps!"
