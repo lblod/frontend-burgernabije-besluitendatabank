@@ -94,6 +94,7 @@
                   {{/if}}
                 </p>
               </AuContent>
+
               <section class="c-accordion-holder">
                 <AuBadge @icon="report" @skin="brand" />
                 <AuAccordion
@@ -102,13 +103,14 @@
                   @iconClosed={{"nav-right"}}
                   @buttonLabel={{"Verslag"}}
                 >
-                  {{#if this.model.agendaItem.handledBy.resolution.value}}
+                {{#let (get this.model.agendaItem.handledBy.resolutions "firstObject") as |resolution|}}
+                  {{#if resolution.value}}
                     <AuAlert
                       @skin="success"
                       @icon="sign"
                       class="au-u-medium"
                     >
-                      {{this.model.agendaItem.handledBy.resolution.value}}
+                      {{resolution.value}}
                     </AuAlert>
                   {{else}}
                     <AuAlert
@@ -117,6 +119,7 @@
                       class="au-u-margin-top au-u-margin-bottom"
                     />
                   {{/if}}
+                {{/let}}
                 </AuAccordion>
               </section>
 
