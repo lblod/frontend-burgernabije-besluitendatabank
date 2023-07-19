@@ -3,7 +3,8 @@
   Openbare stemming
 </p>
 
-{{! We use a style tag here since it's way simpler than the JS equivalent which provides no other benefits other than not triggering the linting error}}
+{{! We use a style tag here since it's way simpler than the JS equivalent which provides no other benefits other than
+not triggering the linting error}}
 <style {{!template-lint-disable no-forbidden-elements}}>
   .c-pie {
     --value-abstentions: {{this.numberOfAbstentionsGraphValue}};
@@ -14,13 +15,81 @@
 
 <div class="c-chart">
   <svg viewBox="0 0 100 100" class="c-chart__pie">
-    <circle r="25" cx="50" cy="50" class="c-pie c-pie--proponents"/>
-    <circle r="25" cx="50" cy="50" class="c-pie c-pie--opponents"/>
-    <circle r="25" cx="50" cy="50" class="c-pie c-pie--abstentions"/>
+    <circle r="25" cx="50" cy="50" class="c-pie c-pie--proponents" />
+    <circle r="25" cx="50" cy="50" class="c-pie c-pie--opponents" />
+    <circle r="25" cx="50" cy="50" class="c-pie c-pie--abstentions" />
   </svg>
   <ul class="c-chart__legend">
     <li class="c-chart__legend-item c-chart__legend-item--proponents">Voor ({{this.numberOfProponents}})</li>
     <li class="c-chart__legend-item c-chart__legend-item--opponents">Tegen ({{this.numberOfOpponents}})</li>
     <li class="c-chart__legend-item c-chart__legend-item--abstentions">Onthouden ({{this.numberOfAbstentions}})</li>
   </ul>
+</div>
+
+<div class="c-accordion-holder c-accordion-holder--top">
+  <AuAccordion @reverse={{true}} @iconOpen={{"nav-down"}} @iconClosed={{"nav-right"}} @buttonLabel={{"Wie stemde?"}}
+    @subtitle="Meer informatie over stemmers en hun partijen">
+    <div class="c-responsive-tables">
+      <AuTable>
+        <:header>
+          <tr>
+            <th class="c-vote-table-proponent au-u-medium">Voorstanders</th>
+          </tr>
+        </:header>
+        <:body>
+          {{#each this.formattedTableVote as |mandatary|}}
+          {{#if mandatary.proponent}}
+          <tr>
+            <td>
+              <VoteTableEntry @familyName={{mandatary.proponent.alias.familyName}}
+                @firstName={{mandatary.proponent.alias.firstNameUsed}}
+                @fraction={{mandatary.proponent.hasMembership.innerGroup.name}} />
+            </td>
+          </tr>
+          {{/if}}
+          {{/each}}
+        </:body>
+      </AuTable>
+      <AuTable>
+        <:header>
+          <tr>
+            <th class="c-vote-table-opponent au-u-medium">Tegenstanders</th>
+          </tr>
+        </:header>
+        <:body>
+          {{#each this.formattedTableVote as |mandatary|}}
+          {{#if mandatary.opponent}}
+          <tr>
+            <td>
+              <VoteTableEntry @familyName={{mandatary.opponent.alias.familyName}}
+                @firstName={{mandatary.opponent.alias.firstNameUsed}}
+                @fraction={{mandatary.opponent.hasMembership.innerGroup.name}} />
+            </td>
+          </tr>
+          {{/if}}
+          {{/each}}
+        </:body>
+      </AuTable>
+      <AuTable>
+        <:header>
+          <tr>
+            <th class="c-vote-table-abstention au-u-medium">Onthouders</th>
+          </tr>
+        </:header>
+        <:body>
+          {{#each this.formattedTableVote as |mandatary|}}
+          {{#if mandatary.abstainer}}
+          <tr>
+            <td>
+              <VoteTableEntry @familyName={{mandatary.abstainer.alias.familyName}}
+                @firstName={{mandatary.abstainer.alias.firstNameUsed}}
+                @fraction={{mandatary.abstainer.hasMembership.innerGroup.name}} />
+            </td>
+          </tr>
+          {{/if}}
+          {{/each}}
+        </:body>
+      </AuTable>
+    </div>
+  </AuAccordion>
 </div>
