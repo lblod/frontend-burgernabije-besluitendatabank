@@ -102,13 +102,13 @@
                   @iconClosed={{"nav-right"}}
                   @buttonLabel={{"Verslag"}}
                 >
-                  {{#if this.model.agendaItem.handledBy.resolutions.value}}
+                  {{#if this.model.agendaItem.handledBy.resolution.value}}
                     <AuAlert
                       @skin="success"
                       @icon="sign"
                       class="au-u-medium"
                     >
-                      {{this.model.agendaItem.handledBy.resolutions.value}}
+                      {{this.model.agendaItem.handledBy.resolution.value}}
                     </AuAlert>
                   {{else}}
                     <AuAlert
