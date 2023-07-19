@@ -102,13 +102,21 @@
                   @iconClosed={{"nav-right"}}
                   @buttonLabel={{"Verslag"}}
                 >
-                  <AuAlert
-                    @skin="warning"
-                    @title="Geen verslag"
-                    class="au-u-margin-top au-u-margin-bottom"
-                  >
-                    <p>Dit agendapunt heeft geen verslag.</p>
-                  </AuAlert>
+                  {{#if this.model.agendaItem.handledBy.resolutions.value}}
+                    <AuAlert
+                      @skin="success"
+                      @icon="sign"
+                      class="au-u-medium"
+                    >
+                      {{this.model.agendaItem.handledBy.resolutions.value}}
+                    </AuAlert>
+                  {{else}}
+                    <AuAlert
+                      @skin="warning"
+                      @title="Geen verslag"
+                      class="au-u-margin-top au-u-margin-bottom"
+                    />
+                  {{/if}}
                 </AuAccordion>
               </section>
 
@@ -260,7 +268,7 @@
                   {{#if this.keywordStore.keyword}}
                     Meer relevante info over <AuLink class="au-u-medium">{{this.keywordStore.keyword}}</AuLink>
                   {{else}}
-                    Meer agendapunten 
+                    Meer agendapunten
                   {{/if}}
                   in
                   <AuLink
