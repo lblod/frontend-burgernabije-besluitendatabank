@@ -61,10 +61,10 @@ export default class VoteOverview extends Component<ArgsInterface> {
   get numberOfAbstentionsGraphValue() {
     const strokeDashArray = 158;
     const totalValue =
-      (this.args.numberOfProponents || 0) +
-      (this.args.numberOfOpponents || 0) +
-      (this.args.numberOfAbstentions || 0);
-    const abstentionsValue = this.args.numberOfAbstentions || 0;
+      (this.numberOfProponents || 0) +
+      (this.numberOfOpponents || 0) +
+      (this.numberOfAbstentions || 0);
+    const abstentionsValue = this.numberOfAbstentions || 0;
 
     return (abstentionsValue / totalValue) * strokeDashArray;
   }
@@ -72,10 +72,10 @@ export default class VoteOverview extends Component<ArgsInterface> {
   get numberOfOpponentsGraphValue() {
     const strokeDashArray = 158;
     const totalValue =
-      (this.args.numberOfProponents || 0) +
-      (this.args.numberOfOpponents || 0) +
-      (this.args.numberOfAbstentions || 0);
-    const opponentsValue = this.args.numberOfOpponents || 0;
+      (this.numberOfProponents || 0) +
+      (this.numberOfOpponents || 0) +
+      (this.numberOfAbstentions || 0);
+    const opponentsValue = this.numberOfOpponents || 0;
 
     return (opponentsValue / totalValue) * strokeDashArray;
   }
@@ -83,10 +83,10 @@ export default class VoteOverview extends Component<ArgsInterface> {
   get numberOfProponentsGraphValue() {
     const strokeDashArray = 158;
     const totalValue =
-      (this.args.numberOfProponents || 0) +
-      (this.args.numberOfOpponents || 0) +
-      (this.args.numberOfAbstentions || 0);
-    const proponentsValue = this.args.numberOfProponents || 0;
+      (this.numberOfProponents || 0) +
+      (this.numberOfOpponents || 0) +
+      (this.numberOfAbstentions || 0);
+    const proponentsValue = this.numberOfProponents || 0;
 
     return (proponentsValue / totalValue) * strokeDashArray;
   }
