@@ -116,6 +116,7 @@
                 <section class="c-accordion-holder">
                   <AuBadge @icon="vote" @skin="brand" />
                   <AuAccordion
+                    @subtitle={{this.model.vote.subject}}
                     @reverse={{true}}
                     @iconOpen={{"nav-down"}}
                     @iconClosed={{"nav-right"}}
@@ -260,7 +261,7 @@
                   {{#if this.keywordStore.keyword}}
                     Meer relevante info over <AuLink class="au-u-medium">{{this.keywordStore.keyword}}</AuLink>
                   {{else}}
-                    Meer agendapunten 
+                    Meer agendapunten
                   {{/if}}
                   in
                   <AuLink
