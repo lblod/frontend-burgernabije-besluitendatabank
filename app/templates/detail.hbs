@@ -43,13 +43,11 @@
               </AuHeading>
             </c.header>
             <c.content class="content">
-              <dl class="c-description-list">
+              <ul class="c-description-list">
                 {{#if this.model.agendaItem.session.hasMunicipality}}
-                <dt>
+                <li>
                   <AuIcon @size="large" @icon="location" />
-                  <span class="au-u-hidden-visually">Gemeente</span>
-                </dt>
-                <dd>
+                  <span class="au-u-hidden-visually">Gemeente:</span>
                   <AuLink
                     @route="agenda-items"
                     @query={{this.municipalityQuery}}
@@ -61,25 +59,23 @@
                       Geen Gemeente
                     {{/if}}
                   </AuLink>
-                </dd>
+                </li>
                 {{/if}}
-                <dt>
+                <li>
                   <AuIcon @size="large" @icon="calendar" />
-                  <span class="au-u-hidden-visually">Planning</span>
-                </dt>
-                <dd>{{this.model.agendaItem.session.dateFormatted}}</dd>
+                  <span class="au-u-hidden-visually">Planning:</span>
+                  {{this.model.agendaItem.session.dateFormatted}}
+                </li>
                 {{#if this.model.agendaItem.alternateLink}}
-                <dt>
+                <li>
                   <AuIcon @size="large" @icon="link" />
                   <span class="au-u-hidden-visually">Externe link</span>
-                </dt>
-                <dd>
                   <AuLinkExternal href="{{this.model.agendaItem.alternateLink}}">
                     Bekijk agendapunt op de website van de gemeente
                   </AuLinkExternal>
-                </dd>
+                </li>
                 {{/if}}
-              </dl>
+              </ul>
               <AuContent @skin="small">
                 <p class="au-u-muted">
                   {{#if this.model.agendaItem.description}}
