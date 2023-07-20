@@ -103,6 +103,14 @@ cursor {
     padding-bottom: 0;
   }
 
+  > .au-c-accordion .au-c-toolbar {
+    align-items: flex-start;
+  }
+
+  > .au-c-accordion .au-c-toolbar .au-c-icon {
+    margin-top: .85rem !important;
+  }
+
   > .au-c-accordion > .au-c-content {
     margin-left: calc(7.2rem * -1);
     border-top: .1rem solid var(--au-gray-200);
@@ -124,14 +132,6 @@ cursor {
 
 
 .c-accordion-holder--top {
-  > .au-c-accordion .au-c-toolbar {
-    align-items: flex-start;
-  }
-
-  > .au-c-accordion .au-c-icon {
-    margin-top: .85rem !important;
-  }
-
   > .au-c-accordion > .au-c-content {
     margin-left: 0;
   }
