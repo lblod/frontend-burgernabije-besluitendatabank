@@ -7,7 +7,6 @@ import Transition from '@ember/routing/transition';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import AgendaItemsController from 'frontend-burgernabije-besluitendatabank/controllers/agenda-items';
-import { seperator } from 'frontend-burgernabije-besluitendatabank/helpers/constants';
 import AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
 import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
@@ -156,14 +155,14 @@ export default class AgendaItemsRoute extends Route {
       return null;
     }
     this.keywordStore.keyword = params.keyword || '';
-    this.municipalityLabels = params.municipalityLabels || '';
+    this.municipalityLabels = params.municipalityLabels || undefined;
     this.plannedStartMin = params.plannedStartMin || '';
     this.plannedStartMax = params.plannedStartMax || '';
 
     // Check if the parameters have changed compared to the last time
 
     const locationIds = await this.municipalityList.getLocationIdsFromLabels(
-      this.municipalityLabels?.split(seperator) || []
+      this.municipalityLabels
     );
 
     const currentPage = 0;
@@ -173,7 +172,7 @@ export default class AgendaItemsRoute extends Route {
         getQuery({
           page: currentPage,
 
-          locationIds: locationIds.join(','),
+          locationIds: locationIds,
 
           keyword: params.keyword ? params.keyword : undefined,
           plannedStartMin: params.plannedStartMin

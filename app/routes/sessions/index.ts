@@ -3,7 +3,6 @@ import Route from '@ember/routing/route';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
-import { seperator } from 'frontend-burgernabije-besluitendatabank/helpers/constants';
 import Transition from '@ember/routing/transition';
 import SessionsIndexController from 'frontend-burgernabije-besluitendatabank/controllers/sessions';
 import {
@@ -91,7 +90,7 @@ export default class SessionsIndexRoute extends Route {
      *
      */
     const locationIds = await this.municipalityList.getLocationIdsFromLabels(
-      this.municipalityLabels?.split(seperator) || []
+      this.municipalityLabels
     );
 
     console.log(locationIds);
@@ -104,7 +103,7 @@ export default class SessionsIndexRoute extends Route {
           currentPage,
           this.plannedStartMin,
           this.plannedStartMax,
-          locationIds.join(',')
+          locationIds
         )
       );
 
