@@ -7,6 +7,7 @@ import SessionIndexRoute from '../../routes/sessions/index';
 import { ModelFrom } from '../../lib/type-utils';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 import Session from 'frontend-burgernabije-besluitendatabank/models/session';
+import { seperator } from 'frontend-burgernabije-besluitendatabank/helpers/constants';
 
 export default class SessionsIndexController extends Controller {
   @service declare store: Store;
@@ -22,7 +23,7 @@ export default class SessionsIndexController extends Controller {
 
   plannedStartMin?: string;
   plannedStartMax?: string;
-  municipality?: string;
+  municipalityLabels?: string;
 
   get municipalities() {
     return this.municipalityList.municipalities();
@@ -39,17 +40,21 @@ export default class SessionsIndexController extends Controller {
       this.isLoadingMore = true;
       const nextPage = this.model.currentPage + 1;
 
-      const plannedStartMin = String(this.plannedStartMin) || undefined;
-      const plannedStartMax = String(this.plannedStartMax) || undefined;
-      const municipalities = String(this.municipality) || undefined;
+      const locationIds = this.municipalityLabels
+        ? (
+            await this.municipalityList.getLocationIdsFromLabels(
+              this.municipalityLabels.split(seperator)
+            )
+          ).join(',')
+        : undefined;
 
       const sessions = (await this.store.query(
         'session',
         this.model.getQuery(
           nextPage,
-          plannedStartMin,
-          plannedStartMax,
-          municipalities
+          this.plannedStartMin,
+          this.plannedStartMax,
+          locationIds
         )
       )) as unknown as Session[];
 
