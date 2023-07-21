@@ -1,31 +1,27 @@
 import Store from '@ember-data/store';
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
-import RouterService from '@ember/routing/router-service';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { seperator } from 'frontend-burgernabije-besluitendatabank/helpers/constants';
-import { ModelFrom } from 'frontend-burgernabije-besluitendatabank/lib/type-utils';
-import AgendaItemsRoute from 'frontend-burgernabije-besluitendatabank/routes/agenda-items';
-import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
+import { agendaItemsQuery } from 'frontend-burgernabije-besluitendatabank/routes/agenda-items';
+import AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
 
 export default class AgendaItemsController extends Controller {
-  @service declare router: RouterService;
   @service declare store: Store;
-  @service declare keywordStore: KeywordStoreService;
   @service declare municipalityList: MunicipalityListService;
 
-  // QueryParameters
-  @tracked agendaItems: AgendaItem[] = [];
-  @tracked municipalityLabels = '';
-  @tracked sort = '';
-  @tracked plannedStartMin = '';
-  @tracked plannedStartMax = '';
-
   /** Used for requesting more data */
-  declare model: ModelFrom<AgendaItemsRoute>;
+  @tracked agendaItems: AgendaItem[] = [];
+  @tracked currentPage = 0;
+
+  // QueryParameters
+  @tracked keyword?: string = '';
+  @tracked municipalityLabels?: string = '';
+  @tracked plannedStartMin?: string;
+  @tracked plannedStartMax?: string;
 
   /** Controls the loading animation of the "load more" button */
   @tracked isLoadingMore = false;
@@ -46,39 +42,38 @@ export default class AgendaItemsController extends Controller {
     }
   };
 
-  setup() {
-    this.agendaItems = this.model?.agendaItems.slice() || [];
-  }
-
   @action
   async loadMore() {
-    if (this.model && !this.isLoadingMore) {
+    if (!this.isLoadingMore) {
       this.isLoadingMore = true;
 
-      const locationIds = await this.municipalityList.getLocationIdsFromLabels(
-        this.municipalityLabels.split(seperator)
-      );
+      let locationIds;
+      if (this.municipalityLabels) {
+        locationIds = (
+          await this.municipalityList.getLocationIdsFromLabels(
+            this.municipalityLabels?.split(seperator) || []
+          )
+        ).join(',');
+      } else {
+        locationIds = undefined;
+      }
 
-      const nextPage = this.model.currentPage + 1;
+      this.currentPage++;
+
       const agendaItems = (await this.store.query(
         'agenda-item',
-        this.model.getQuery({
-          page: nextPage,
-          keyword: this.keywordStore.keyword,
-          locationIds: locationIds.join(','),
+        agendaItemsQuery({
+          page: this.currentPage,
+          keyword: this.keyword,
+          locationIds: locationIds,
           plannedStartMin: this.plannedStartMin,
           plannedStartMax: this.plannedStartMax,
         })
-      )) as unknown as AgendaItem[];
+      )) as unknown as AgendaItemModel[];
 
       this.agendaItems = [...this.agendaItems, ...agendaItems];
-
-      this.model.currentPage = nextPage;
       this.isLoadingMore = false;
     }
-  }
-  get currentRoute() {
-    return this.router.currentRouteName;
   }
 
   get municipalities() {
