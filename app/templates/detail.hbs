@@ -37,24 +37,17 @@
           >
             <c.header>
               <AuHeading @level="1" @skin="3">
-                <AuLink
-                  @route="detail"
-                  class="u-header-link"
-                >
-                  {{#if this.model.agendaItem.title}}
-                    {{this.model.agendaItem.title}}
-                  {{/if}}
-                </AuLink>
+                {{#if this.model.agendaItem.title}}
+                  {{this.model.agendaItem.title}}
+                {{/if}}
               </AuHeading>
             </c.header>
             <c.content class="content">
-              <dl class="c-description-list">
+              <ul class="c-description-list">
                 {{#if this.model.agendaItem.session.hasMunicipality}}
-                <dt>
+                <li>
                   <AuIcon @size="large" @icon="location" />
-                  <span class="au-u-hidden-visually">Gemeente</span>
-                </dt>
-                <dd>
+                  <span class="au-u-hidden-visually">Gemeente:</span>
                   <AuLink
                     @route="agenda-items"
                     @query={{this.municipalityQuery}}
@@ -66,25 +59,23 @@
                       Geen Gemeente
                     {{/if}}
                   </AuLink>
-                </dd>
+                </li>
                 {{/if}}
-                <dt>
+                <li>
                   <AuIcon @size="large" @icon="calendar" />
-                  <span class="au-u-hidden-visually">Planning</span>
-                </dt>
-                <dd>{{this.model.agendaItem.session.dateFormatted}}</dd>
+                  <span class="au-u-hidden-visually">Planning:</span>
+                  {{this.model.agendaItem.session.dateFormatted}}
+                </li>
                 {{#if this.model.agendaItem.alternateLink}}
-                <dt>
+                <li>
                   <AuIcon @size="large" @icon="link" />
                   <span class="au-u-hidden-visually">Externe link</span>
-                </dt>
-                <dd>
                   <AuLinkExternal href="{{this.model.agendaItem.alternateLink}}">
                     Bekijk agendapunt op de website van de gemeente
                   </AuLinkExternal>
-                </dd>
+                </li>
                 {{/if}}
-              </dl>
+              </ul>
               <AuContent @skin="small">
                 <p class="au-u-muted">
                   {{#if this.model.agendaItem.description}}
@@ -116,6 +107,7 @@
                 <section class="c-accordion-holder">
                   <AuBadge @icon="vote" @skin="brand" />
                   <AuAccordion
+                    @subtitle={{this.model.vote.subject.content}}
                     @reverse={{true}}
                     @iconOpen={{"nav-down"}}
                     @iconClosed={{"nav-right"}}
@@ -176,11 +168,11 @@
             </div>
             {{#if this.model.agendaItem.session.hasMunicipality}}
               <AuContent class="au-u-margin-top">
-                <h4 class="au-u-medium">
+                <AuHeading @level="2" @skin="4">
                   {{#if this.keywordStore.keyword}}
                     Meer relevante info over <AuLink class="au-u-medium">{{this.keywordStore.keyword}}</AuLink>
                   {{else}}
-                    Meer agendapunten 
+                    Meer agendapunten
                   {{/if}}
                   in
                   <AuLink
@@ -188,7 +180,7 @@
                     @query={{this.municipalityQuery}}
                     class="au-u-medium"
                   >{{this.model.agendaItem.session.municipality}}</AuLink>
-                </h4>
+                </AuHeading>
                 <ol type="1">
                   {{#each this.model.similiarAgendaItems as |agendaItem|}}
                     <li class="au-u-margin-top-small">

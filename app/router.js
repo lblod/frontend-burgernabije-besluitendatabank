@@ -18,11 +18,9 @@ Router.map(function () {
   });
   this.route('four-oh-four', { path: '/*path' });
 
-  this.route('legal', function () {
-    this.route('disclaimer');
-    this.route('cookie-notice', { path: '/cookieverklaring' });
-    this.route('accessibility-statement', {
-      path: '/toegankelijkheidsverklaring',
-    });
+  this.route('disclaimer');
+  this.route('cookie-notice', { path: '/cookieverklaring' });
+  this.route('accessibility-statement', {
+    path: '/toegankelijkheidsverklaring',
   });
 });

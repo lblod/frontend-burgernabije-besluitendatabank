@@ -3,7 +3,7 @@
     <div class="c-interface">
       <div id="filtercontent" class="c-interface__content c-interface__content--fixed au-u-flex au-u-flex--column">
         <div class="au-o-flow au-o-flow--small au-u-padding">
-          <h2 class="au-u-h2 au-u-medium">Wat zoek je?</h2>
+          <AuHeading @level="1" @skin="2">Wat zoek je?</AuHeading>
           <Filters::TextFilter
             @id="keyword"
             @queryParam="trefwoord"
@@ -19,11 +19,14 @@
 
             @rowClass="au-c-form-row--button"
           />
-          <a href="#filtersidebar" class="au-c-button au-c-button--secondary au-c-button--block c-interface__filter-button" {{on "click" (fn (mut this.showFilter) true)}}>
+          <a href="#filtersidebar" class="au-c-interface__filter-link">
+            Ga naar filters
+          </a>
+          <a href="#filtersidebar" class="au-c-button au-c-button--secondary au-c-button--block c-interface__filter-button" {{on "click" this.showFilter}}>
             <AuIcon @icon="filter" />
               Toon filters
-            </a>
-          </div>
+          </a>
+        </div>
         {{#if this.errorMsg}}
           <Oops
             @title="Oeps!"
@@ -75,9 +78,19 @@
           {{/if}}
         {{/if}}
       </div>
-      <FilterSidebar @id="filtersidebar" @class="c-interface__sidebar c-interface__sidebar--dialog {{if (eq this.showFilter true) 'is-visible'}}">
+      <FilterSidebar 
+        @id="filtersidebar" 
+        @class="c-interface__sidebar c-interface__sidebar--dialog {{if this.hasFilter 'is-visible'}}"
+        {{focus-trap
+          isActive=this.hasFilter
+          shouldSelfFocus=true
+          focusTrapOptions=(hash
+            onDeactivate=this.hideFilter
+          )
+        }}
+      >
         <div class="c-interface__sidebar-close-button">
-          <a href="#filtercontent" class="au-c-button au-c-button--naked" {{on "click" (fn (mut this.showFilter) false)}}>
+          <a href="#filtercontent" class="au-c-button au-c-button--naked" {{on "click" this.hideFilter}}>
             Terug
           </a>
         </div>
@@ -102,10 +115,10 @@
           />
         </div>
         <div class="c-interface__sidebar-submit-buttons">
-          <AuButton @skin="primary" @width="block" {{on "click" (fn (mut this.showFilter) false)}}>
+          <AuButton @skin="primary" @width="block" {{on "click" this.hideFilter}}>
             Zoeken
           </AuButton>
-          <a href="#filtercontent" class="au-c-button au-c-button--naked au-c-button--block" {{on "click" (fn (mut this.showFilter) false)}}>
+          <a href="#filtercontent" class="au-c-button au-c-button--naked au-c-button--block" {{on "click" this.hideFilter}}>
             Annuleer
           </a>
         </div>

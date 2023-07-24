@@ -33,6 +33,19 @@ export default class AgendaItemsController extends Controller {
   @tracked loading = false; // Controls the loading animation that replaces the main view
   @tracked errorMsg = ''; // Controls whether an Oops is shown
 
+  /** Mobile filter */
+  @tracked hasFilter = false;
+
+  showFilter = () => {
+    this.hasFilter = true;
+  };
+
+  hideFilter = () => {
+    if (this.hasFilter) {
+      this.hasFilter = false;
+    }
+  };
+
   setup() {
     this.agendaItems = this.model?.agendaItems.slice() || [];
   }
