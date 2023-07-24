@@ -40,13 +40,9 @@ export default class SessionsIndexController extends Controller {
       this.isLoadingMore = true;
       const nextPage = this.model.currentPage + 1;
 
-      const locationIds = this.municipalityLabels
-        ? (
-            await this.municipalityList.getLocationIdsFromLabels(
-              this.municipalityLabels.split(seperator)
-            )
-          ).join(',')
-        : undefined;
+      const locationIds = await this.municipalityList.getLocationIdsFromLabels(
+        this.municipalityLabels
+      );
 
       const sessions = (await this.store.query(
         'session',

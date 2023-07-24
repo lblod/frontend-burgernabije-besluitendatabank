@@ -4,7 +4,6 @@ import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import { seperator } from 'frontend-burgernabije-besluitendatabank/helpers/constants';
 import { ModelFrom } from 'frontend-burgernabije-besluitendatabank/lib/type-utils';
 import AgendaItemsRoute from 'frontend-burgernabije-besluitendatabank/routes/agenda-items';
 import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
@@ -56,7 +55,7 @@ export default class AgendaItemsController extends Controller {
       this.isLoadingMore = true;
 
       const locationIds = await this.municipalityList.getLocationIdsFromLabels(
-        this.municipalityLabels.split(seperator)
+        this.municipalityLabels
       );
 
       const nextPage = this.model.currentPage + 1;
@@ -65,7 +64,7 @@ export default class AgendaItemsController extends Controller {
         this.model.getQuery({
           page: nextPage,
           keyword: this.keywordStore.keyword,
-          locationIds: locationIds.join(','),
+          locationIds: locationIds,
           plannedStartMin: this.plannedStartMin,
           plannedStartMax: this.plannedStartMax,
         })
