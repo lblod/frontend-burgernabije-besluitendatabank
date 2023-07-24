@@ -46,3 +46,9 @@ export default class GoverningBodyModel extends Model {
   })
   declare hasTimeSpecializations: AsyncHasMany<GoverningBodyModel>;
 }
+
+declare module 'ember-data/types/registries/model' {
+  export default interface ModelRegistry {
+    'governing-body': GoverningBodyModel;
+  }
+}

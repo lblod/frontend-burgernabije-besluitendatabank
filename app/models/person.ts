@@ -5,3 +5,9 @@ export default class PersonModel extends Model {
   @attr('string') declare firstNameUsed: string;
   @attr('string') declare alternatieveNaam: string;
 }
+
+declare module 'ember-data/types/registries/model' {
+  export default interface ModelRegistry {
+    person: PersonModel;
+  }
+}
