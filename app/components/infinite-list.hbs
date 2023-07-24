@@ -1,6 +1,7 @@
 <div
   class="{{@class}} u-overflow-padding u-overflow-y-scroll u-overflow-divider"
   {{on "scroll" this.scroll}}
+  tabindex="-1"
 >
   <ul class="c-infinite-list">
     {{yield}}

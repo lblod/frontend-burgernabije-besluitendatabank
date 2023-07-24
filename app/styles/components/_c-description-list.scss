@@ -1,22 +1,19 @@
 .c-description-list {
-  --basis: #{$au-unit};
-  --gap: #{$au-unit-small};
-
+  @include au-font-size(var(--au-h6));
   display: flex;
+  flex-direction: column;
   gap: $au-unit-small;
-  flex-wrap: wrap;
-  align-items: center;
+  color: var(--au-gray-700);
+  margin-left: 0 !important;
 
-  dt {
-    flex-basis: var(--basis);
+  & > li {
+    list-style: none; 
     display: flex;
+    gap: $au-unit-small;
     align-items: center;
   }
 
-  dd {
-    @include au-font-size(var(--au-h6));
-
-    flex-basis: calc(100% - var(--gap) - var(--basis));
-    color: var(--au-gray-700);
+  & > li > .au-c-icon {
+    color: var(--au-gray-900);
   }
 }

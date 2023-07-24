@@ -99,10 +99,40 @@
   }
 }
 
+.au-c-interface__filter-link {
+  @include mq($until: small) {
+    display: none;
+  }
+
+  @include mq(small) {
+    @include au-font-size(var(--au-base), 1);
+    font-weight: var(--au-regular);
+    position: absolute;
+    top: -1000px;
+    left: -1000px;
+
+    &,
+    &:hover,
+    &:focus {
+      color: var(--au-gray-900);
+      text-decoration: underline;
+      text-decoration-color: var(--au-gray-300);
+    }
+
+    &:focus {
+      position: relative;
+      outline: var(--au-outline);
+      top: $au-unit-small;
+      left: 0;
+    }
+  }
+}
+
 .c-interface__sidebar-submit-buttons {
   display: flex;
   flex-direction: column;
   gap: $au-unit-tiny;
+
   @include mq(small) {
     display: none;
   }
