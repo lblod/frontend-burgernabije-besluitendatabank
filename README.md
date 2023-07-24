@@ -45,6 +45,12 @@ The project uses woodpecker to automate builds. The configuration files can be f
 
 
 ## Reference
+### Environment variables
+|       Name        | Description |
+| ----------------- |
+| PLAUSIBLE_APIHOST | The domain where the plausible.js can be found |
+| PLAUSIBLE_DOMAIN  | The domain that has been configured to be tracked. If undefined |
+
 ### styles/ naming scheme
 Ember works by outputting one big CSS file. This results in only needing one request for all styling (good for the end users) but also that every css you write for a route will always apply (ouch for the developers). To prevent duplicate ID's goofing things up and the .scss file becoming unreadable, The following structure has been set.
 
