@@ -12,3 +12,9 @@ export default class MandataryModel extends Model {
   @belongsTo('membership', { async: true, inverse: null })
   declare hasMembership: AsyncBelongsTo<MembershipModel>;
 }
+
+declare module 'ember-data/types/registries/model' {
+  export default interface ModelRegistry {
+    mandatary: MandataryModel;
+  }
+}

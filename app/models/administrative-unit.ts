@@ -25,3 +25,9 @@ export default class AdministrativeUnitModel extends Model {
   @belongsTo('location', { async: false, inverse: null })
   declare location: LocationModel;
 }
+
+declare module 'ember-data/types/registries/model' {
+  export default interface ModelRegistry {
+    'administrative-unit': AdministrativeUnitModel;
+  }
+}
