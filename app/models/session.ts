@@ -2,7 +2,8 @@ import Model, {
   attr,
   belongsTo,
   hasMany,
-  type AsyncHasMany,
+  AsyncHasMany,
+  AsyncBelongsTo,
 } from '@ember-data/model';
 import { getFormattedDateRange } from 'frontend-burgernabije-besluitendatabank/utils/get-formatted-date-range';
 import { getFormattedDate } from 'frontend-burgernabije-besluitendatabank/utils/get-formatted-date';
@@ -17,8 +18,15 @@ export default class SessionModel extends Model {
   @hasMany('agenda-item', { async: true, inverse: 'sessions' })
   declare agendaItems: AsyncHasMany<AgendaItemModel>;
 
-  @belongsTo('governing-body', { async: false, inverse: 'sessions' })
-  declare governingBody: GoverningBodyModel;
+  @belongsTo('governing-body', { async: true, inverse: 'sessions' })
+  declare governingBody: AsyncBelongsTo<GoverningBodyModel>;
+
+  get governingBodyValue() {
+    // cast this because of https://github.com/typed-ember/ember-cli-typescript/issues/1416
+    return (this as SessionModel)
+      .belongsTo('governingBody')
+      ?.value() as GoverningBodyModel | null;
+  }
 
   /**
    * @returns
@@ -30,25 +38,26 @@ export default class SessionModel extends Model {
    */
   get name() {
     return (
-      this.governingBody?.isTimeSpecializationOf?.name ||
-      this.governingBody?.name ||
+      this.governingBodyValue?.isTimeSpecializationOfValue?.name ||
+      this.governingBodyValue?.name ||
       'Ontbrekend bestuursorgaan'
     );
   }
 
   get municipality() {
     return (
-      this.governingBody?.isTimeSpecializationOf?.administrativeUnit?.location
-        ?.label ||
-      this.governingBody?.administrativeUnit?.location?.label ||
+      this.governingBodyValue?.isTimeSpecializationOfValue
+        ?.administrativeUnitValue?.locationValue?.label ||
+      this.governingBodyValue?.administrativeUnitValue?.locationValue?.label ||
       'Ontbrekende bestuurseenheid'
     );
   }
 
   get hasMunicipality() {
     return (
-      !!this.governingBody?.isTimeSpecializationOf?.administrativeUnit ||
-      !!this.governingBody?.administrativeUnit
+      !!this.governingBodyValue?.isTimeSpecializationOfValue
+        ?.administrativeUnitValue ||
+      !!this.governingBodyValue?.administrativeUnitValue
     );
   }
 
