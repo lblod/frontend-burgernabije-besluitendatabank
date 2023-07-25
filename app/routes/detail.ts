@@ -10,12 +10,6 @@ interface DetailParams {
   id: string;
 }
 
-interface FormattedTableVote {
-  proponent: MandataryModel | null;
-  opponent: MandataryModel | null;
-  abstainer: MandataryModel | null;
-}
-
 export default class DetailRoute extends Route {
   @service declare store: Store;
   @service declare keywordStore: KeywordStoreService;
