@@ -37,13 +37,13 @@ not triggering the linting error}}
           </tr>
         </:header>
         <:body>
-          {{#each this.formattedTableVote as |mandatary|}}
-          {{#if mandatary.proponent}}
+          {{#each this.proponents as |mandatary|}}
+          {{#if mandatary.alias.familyName}}
           <tr>
             <td>
-              <VoteTableEntry @familyName={{mandatary.proponent.alias.familyName}}
-                @firstName={{mandatary.proponent.alias.firstNameUsed}}
-                @fraction={{mandatary.proponent.hasMembership.innerGroup.name}} />
+              <VoteTableEntry @familyName={{mandatary.alias.familyName}}
+                @firstName={{mandatary.alias.firstNameUsed}}
+                @fraction={{mandatary.hasMembership.innerGroup.name}} />
             </td>
           </tr>
           {{/if}}
@@ -57,13 +57,13 @@ not triggering the linting error}}
           </tr>
         </:header>
         <:body>
-          {{#each this.formattedTableVote as |mandatary|}}
-          {{#if mandatary.opponent}}
+          {{#each this.opponents as |mandatary|}}
+          {{#if mandatary.alias.familyName}}
           <tr>
             <td>
-              <VoteTableEntry @familyName={{mandatary.opponent.alias.familyName}}
-                @firstName={{mandatary.opponent.alias.firstNameUsed}}
-                @fraction={{mandatary.opponent.hasMembership.innerGroup.name}} />
+              <VoteTableEntry @familyName={{mandatary.alias.familyName}}
+                @firstName={{mandatary.alias.firstNameUsed}}
+                @fraction={{mandatary.hasMembership.innerGroup.name}} />
             </td>
           </tr>
           {{/if}}
@@ -77,13 +77,13 @@ not triggering the linting error}}
           </tr>
         </:header>
         <:body>
-          {{#each this.formattedTableVote as |mandatary|}}
-          {{#if mandatary.abstainer}}
+          {{#each this.abstainers as |mandatary|}}
+          {{#if mandatary.alias.familyName}}
           <tr>
             <td>
-              <VoteTableEntry @familyName={{mandatary.abstainer.alias.familyName}}
-                @firstName={{mandatary.abstainer.alias.firstNameUsed}}
-                @fraction={{mandatary.abstainer.hasMembership.innerGroup.name}} />
+              <VoteTableEntry @familyName={{mandatary.alias.familyName}}
+                @firstName={{mandatary.alias.firstNameUsed}}
+                @fraction={{mandatary.hasMembership.innerGroup.name}} />
             </td>
           </tr>
           {{/if}}
