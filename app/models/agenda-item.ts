@@ -41,3 +41,16 @@ declare module 'ember-data/types/registries/model' {
     'agenda-item': AgendaItemModel;
   }
 }
+export interface AgendaItemMuSearch {
+  id?: string;
+  locationId?: string;
+  timeSpecizalizationLocationName?: string;
+  governingBodyLocationName?: string;
+  timeSpecializationName?: string;
+  governingBodyName?: string;
+  sessionPlannedStart?: Date;
+  sessionStartedAt?: Date;
+  sessionEndedAt?: Date;
+  title?: string;
+  description?: string;
+}

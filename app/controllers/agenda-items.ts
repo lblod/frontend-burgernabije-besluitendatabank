@@ -8,16 +8,22 @@ import { ModelFrom } from 'frontend-burgernabije-besluitendatabank/lib/type-util
 import AgendaItemsRoute from 'frontend-burgernabije-besluitendatabank/routes/agenda-items';
 import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
-import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
+import AgendaItem, {
+  AgendaItemMuSearch,
+} from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
+import MuSearchService, {
+  MuSearchResponse,
+} from 'frontend-burgernabije-besluitendatabank/services/mu-search';
 
 export default class AgendaItemsController extends Controller {
   @service declare router: RouterService;
   @service declare store: Store;
+  @service declare muSearch: MuSearchService;
   @service declare keywordStore: KeywordStoreService;
   @service declare municipalityList: MunicipalityListService;
 
   // QueryParameters
-  @tracked agendaItems: AgendaItem[] = [];
+  @tracked agendaItems: AgendaItemMuSearch[] = [];
   @tracked municipalityLabels = '';
   @tracked sort = '';
   @tracked plannedStartMin = '';
@@ -59,18 +65,21 @@ export default class AgendaItemsController extends Controller {
       );
 
       const nextPage = this.model.currentPage + 1;
-      const agendaItems = (await this.store.query(
-        'agenda-item',
-        this.model.getQuery({
-          page: nextPage,
-          keyword: this.keywordStore.keyword,
-          locationIds: locationIds,
-          plannedStartMin: this.plannedStartMin,
-          plannedStartMax: this.plannedStartMax,
-        })
-      )) as unknown as AgendaItem[];
 
-      this.agendaItems = [...this.agendaItems, ...agendaItems];
+      const agendaItems: MuSearchResponse<AgendaItemMuSearch> =
+        await this.muSearch.search(
+          this.model.getQueryMuSearch({
+            index: 'agenda-items',
+            page: nextPage,
+            locationIds: locationIds,
+
+            keyword: this.keywordStore.keyword,
+            plannedStartMin: this.plannedStartMin,
+            plannedStartMax: this.plannedStartMax,
+          })
+        );
+
+      this.agendaItems = [...this.agendaItems, ...agendaItems.items];
 
       this.model.currentPage = nextPage;
       this.isLoadingMore = false;
