@@ -15,6 +15,8 @@ interface FormattedTableVote {
   abstainer: MandataryModel | null;
 }
 
+const strokeDashArray = 158;
+
 const sortByFamilyName = (a: MandataryModel, b: MandataryModel) => {
   const aFamilyName = (a?.aliasValue?.familyName || '').toLowerCase();
   const bFamilyName = (b?.aliasValue?.familyName || '').toLowerCase();
@@ -23,58 +25,53 @@ const sortByFamilyName = (a: MandataryModel, b: MandataryModel) => {
 };
 
 export default class VoteOverview extends Component<ArgsInterface> {
-  get proponents() {
-    return this.args.vote.hasProponents.toArray().sort(sortByFamilyName);
+  get abstainers() {
+    return this.args.vote.hasAbstainers.toArray().sort(sortByFamilyName);
   }
 
   get opponents() {
     return this.args.vote.hasOpponents.toArray().sort(sortByFamilyName);
   }
 
-  get abstainers() {
-    return this.args.vote.hasAbstainers.toArray().sort(sortByFamilyName);
+  get proponents() {
+    return this.args.vote.hasProponents.toArray().sort(sortByFamilyName);
   }
 
   get numberOfAbstentions() {
     return this.args.vote.numberOfAbstentions || 0;
   }
+
   get numberOfOpponents() {
     return this.args.vote.numberOfOpponents || 0;
   }
+
   get numberOfProponents() {
     return this.args.vote.numberOfProponents || 0;
   }
 
-  get numberOfAbstentionsGraphValue() {
-    const strokeDashArray = 158;
-    const totalValue =
-      (this.numberOfProponents || 0) +
-      (this.numberOfOpponents || 0) +
-      (this.numberOfAbstentions || 0);
-    const abstentionsValue = this.numberOfAbstentions || 0;
+  private get totalVoters() {
+    return (
+      this.numberOfAbstentions +
+      this.numberOfOpponents +
+      this.numberOfProponents
+    );
+  }
 
-    return (abstentionsValue / totalValue) * strokeDashArray;
+  get numberOfAbstentionsGraphValue() {
+    return this.totalVoters > 0
+      ? (this.numberOfAbstentions / this.totalVoters) * strokeDashArray
+      : 0;
   }
 
   get numberOfOpponentsGraphValue() {
-    const strokeDashArray = 158;
-    const totalValue =
-      (this.numberOfProponents || 0) +
-      (this.numberOfOpponents || 0) +
-      (this.numberOfAbstentions || 0);
-    const opponentsValue = this.numberOfOpponents || 0;
-
-    return (opponentsValue / totalValue) * strokeDashArray;
+    return this.totalVoters > 0
+      ? (this.numberOfOpponents / this.totalVoters) * strokeDashArray
+      : 0;
   }
 
   get numberOfProponentsGraphValue() {
-    const strokeDashArray = 158;
-    const totalValue =
-      (this.numberOfProponents || 0) +
-      (this.numberOfOpponents || 0) +
-      (this.numberOfAbstentions || 0);
-    const proponentsValue = this.numberOfProponents || 0;
-
-    return (proponentsValue / totalValue) * strokeDashArray;
+    return this.totalVoters > 0
+      ? (this.numberOfProponents / this.totalVoters) * strokeDashArray
+      : 0;
   }
 }
