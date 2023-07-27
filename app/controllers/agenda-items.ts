@@ -47,16 +47,9 @@ export default class AgendaItemsController extends Controller {
     if (!this.isLoadingMore) {
       this.isLoadingMore = true;
 
-      let locationIds;
-      if (this.municipalityLabels) {
-        locationIds = (
-          await this.municipalityList.getLocationIdsFromLabels(
-            this.municipalityLabels?.split(seperator) || []
-          )
-        ).join(',');
-      } else {
-        locationIds = undefined;
-      }
+      const locationIds = await this.municipalityList.getLocationIdsFromLabels(
+        this.municipalityLabels
+      );
 
       this.currentPage++;
 

@@ -9,7 +9,7 @@
   <div class="au-u-flex au-u-flex--center au-u-padding-top">
     {{#if @isLoading}}
       <AuLoader />
-    {{else if (lt @itemsShown @itemsAmount)}}
+    {{else if this.moreDataToLoad}}
       <AuButton @icon="add" @skin="secondary" @width="block" {{on "click" this.loadMore}}>Laad meer</AuButton>
     {{/if}}
   </div>

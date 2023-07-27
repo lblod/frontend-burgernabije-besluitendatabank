@@ -7,7 +7,6 @@ import Transition from '@ember/routing/transition';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import AgendaItemsController from 'frontend-burgernabije-besluitendatabank/controllers/agenda-items';
-import { seperator } from 'frontend-burgernabije-besluitendatabank/helpers/constants';
 import AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 import {
@@ -130,16 +129,9 @@ export default class AgendaItemsRoute extends Route {
 
     const currentPage = 0;
 
-    let locationIds: string | undefined;
-    if (this.municipalityLabels) {
-      locationIds = (
-        await this.municipalityList.getLocationIdsFromLabels(
-          this.municipalityLabels.split(seperator)
-        )
-      ).join(',');
-    } else {
-      locationIds = undefined;
-    }
+    const locationIds = await this.municipalityList.getLocationIdsFromLabels(
+      this.municipalityLabels
+    );
 
     const agendaItems: AdapterPopulatedRecordArrayWithMeta<AgendaItemModel> =
       await this.store.query(
