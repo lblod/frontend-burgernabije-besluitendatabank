@@ -7,7 +7,6 @@ import SessionIndexRoute from '../../routes/sessions/index';
 import { ModelFrom } from '../../lib/type-utils';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 import Session from 'frontend-burgernabije-besluitendatabank/models/session';
-import { seperator } from 'frontend-burgernabije-besluitendatabank/helpers/constants';
 
 export default class SessionsIndexController extends Controller {
   @service declare store: Store;
