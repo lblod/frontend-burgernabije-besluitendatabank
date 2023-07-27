@@ -15,79 +15,63 @@ interface FormattedTableVote {
   abstainer: MandataryModel | null;
 }
 
+const strokeDashArray = 158;
+
+const sortByFamilyName = (a: MandataryModel, b: MandataryModel) => {
+  const aFamilyName = (a?.aliasValue?.familyName || '').toLowerCase();
+  const bFamilyName = (b?.aliasValue?.familyName || '').toLowerCase();
+
+  return aFamilyName.localeCompare(bFamilyName);
+};
+
 export default class VoteOverview extends Component<ArgsInterface> {
-  get formattedTableVote() {
-    const formattedTableVote: FormattedTableVote[] = [];
-    const vote = this.args.vote;
+  get abstainers() {
+    return this.args.vote.hasAbstainers.toArray().sort(sortByFamilyName);
+  }
 
-    // add the votes to formattedTableVote in the form of [{proponent: {proponent1}, opponent: {oponent1}, abstainer: {abstainer1}},{proponent: {proponent2}, opponent: {oponent2}, abstainer: {abstainer2}},... ]
-    // iterate over all 3 arrays (proponent, opponent, abstainer) and push only one voter to the formattedTableVote array each iteration
-    // this means that the length of the formattedTableVote array will be the length of the longest array (proponent, opponent, abstainer)
-    // if there is no voter, push an empty object
+  get opponents() {
+    return this.args.vote.hasOpponents.toArray().sort(sortByFamilyName);
+  }
 
-    const proponents = vote.hasProponents.toArray();
-    const opponents = vote.hasOpponents.toArray();
-    const abstainers = vote.hasAbstainers.toArray();
-
-    // get the length of the longest array (not the accumaleted length of all 3 arrays)
-    const longestArrayLength = Math.max(
-      proponents?.length || 0,
-      opponents?.length || 0,
-      abstainers?.length || 0
-    );
-
-    // iterate over the longest array
-    for (let i = 0; i < longestArrayLength; i++) {
-      // push the proponent, opponent and abstainer of the current iteration to the formattedTableVote array
-      formattedTableVote.push({
-        proponent: proponents?.[i] || null,
-        opponent: opponents?.[i] || null,
-        abstainer: abstainers?.[i] || null,
-      });
-    }
-    return formattedTableVote;
+  get proponents() {
+    return this.args.vote.hasProponents.toArray().sort(sortByFamilyName);
   }
 
   get numberOfAbstentions() {
     return this.args.vote.numberOfAbstentions || 0;
   }
+
   get numberOfOpponents() {
     return this.args.vote.numberOfOpponents || 0;
   }
+
   get numberOfProponents() {
     return this.args.vote.numberOfProponents || 0;
   }
 
-  get numberOfAbstentionsGraphValue() {
-    const strokeDashArray = 158;
-    const totalValue =
-      (this.numberOfProponents || 0) +
-      (this.numberOfOpponents || 0) +
-      (this.numberOfAbstentions || 0);
-    const abstentionsValue = this.numberOfAbstentions || 0;
+  private get totalVoters() {
+    return (
+      this.numberOfAbstentions +
+      this.numberOfOpponents +
+      this.numberOfProponents
+    );
+  }
 
-    return (abstentionsValue / totalValue) * strokeDashArray;
+  get numberOfAbstentionsGraphValue() {
+    return this.totalVoters > 0
+      ? (this.numberOfAbstentions / this.totalVoters) * strokeDashArray
+      : 0;
   }
 
   get numberOfOpponentsGraphValue() {
-    const strokeDashArray = 158;
-    const totalValue =
-      (this.numberOfProponents || 0) +
-      (this.numberOfOpponents || 0) +
-      (this.numberOfAbstentions || 0);
-    const opponentsValue = this.numberOfOpponents || 0;
-
-    return (opponentsValue / totalValue) * strokeDashArray;
+    return this.totalVoters > 0
+      ? (this.numberOfOpponents / this.totalVoters) * strokeDashArray
+      : 0;
   }
 
   get numberOfProponentsGraphValue() {
-    const strokeDashArray = 158;
-    const totalValue =
-      (this.numberOfProponents || 0) +
-      (this.numberOfOpponents || 0) +
-      (this.numberOfAbstentions || 0);
-    const proponentsValue = this.numberOfProponents || 0;
-
-    return (proponentsValue / totalValue) * strokeDashArray;
+    return this.totalVoters > 0
+      ? (this.numberOfProponents / this.totalVoters) * strokeDashArray
+      : 0;
   }
 }
