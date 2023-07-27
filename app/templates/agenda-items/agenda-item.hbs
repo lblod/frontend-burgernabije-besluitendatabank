@@ -151,7 +151,7 @@
                       {{#if (eq agendaItem.id this.model.agendaItem.id)}}
                         <p class="au-u-medium">Huidige agendapunt</p>
                       {{else}}
-                        <AuLink @route="agenda-item" @model={{agendaItem.id}}>
+                        <AuLink @route="agenda-items.agenda-item" @model={{agendaItem.id}}>
                           {{agendaItem.title}}
                         </AuLink>
                       {{/if}}

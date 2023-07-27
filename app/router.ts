@@ -16,7 +16,7 @@ Router.map(function () {
   });
 
   this.route('sessions', { path: '/zittingen' }, function () {
-    this.route('session', { path: '/zitting/:session_id' });
+    this.route('session', { path: '/:session_id' });
   });
   this.route('four-oh-four', { path: '/*path' });
 
