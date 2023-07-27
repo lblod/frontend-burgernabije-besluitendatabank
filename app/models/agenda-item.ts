@@ -9,6 +9,8 @@ import Model, {
 import AgendaItemHandlingModel from './agenda-item-handling';
 import SessionModel from './session';
 
+import { getFormattedDateRange } from 'frontend-burgernabije-besluitendatabank/utils/get-formatted-date-range';
+import { getFormattedDate } from 'frontend-burgernabije-besluitendatabank/utils/get-formatted-date';
 export default class AgendaItemModel extends Model {
   @attr('string', { defaultValue: 'Ontbrekende titel' }) declare title: string;
   @attr('string') declare description: string;
@@ -41,7 +43,7 @@ declare module 'ember-data/types/registries/model' {
     'agenda-item': AgendaItemModel;
   }
 }
-export interface AgendaItemMuSearch {
+export class AgendaItemMuSearch {
   id?: string;
   locationId?: string;
   timeSpecizalizationLocationName?: string;
@@ -53,4 +55,29 @@ export interface AgendaItemMuSearch {
   sessionEndedAt?: Date;
   title?: string;
   description?: string;
+  get dateFormatted() {
+    if (this.sessionStartedAt || this.sessionEndedAt) {
+      return getFormattedDateRange(this.sessionStartedAt, this.sessionEndedAt);
+    }
+    if (this.sessionPlannedStart) {
+      return 'Gepland op ' + getFormattedDate(this.sessionPlannedStart);
+    }
+
+    return 'Geen Datum';
+  }
+  get name() {
+    return (
+      this.timeSpecializationName ||
+      this.governingBodyName ||
+      'Ontbrekend bestuursorgaan'
+    );
+  }
+
+  get municipality() {
+    return (
+      this.timeSpecizalizationLocationName ||
+      this.governingBodyLocationName ||
+      'Ontbrekende bestuurseenheid'
+    );
+  }
 }

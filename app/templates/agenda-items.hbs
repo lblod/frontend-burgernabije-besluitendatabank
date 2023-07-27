@@ -49,8 +49,8 @@
             {{else}}
               {{#if @model.count}}
                 <p class="au-u-margin-left au-u-margin-top-small au-u-h4 au-u-medium">
-                  {{@model.count}} 
-                  {{#if (eq @model.count 1)}} 
+                  {{@model.count}}
+                  {{#if (eq @model.count 1)}}
                   Zoekresultaat
                   {{else}}
                   Zoekresultaten
@@ -66,9 +66,9 @@
               >
                 {{#each this.agendaItems as |item|}}
                 <li>
-                  <DecisionCard
-                    @startDate={{item.session.startedAt}}
-                    @endDate={{item.session.endedAt}}
+                  <DecisionCardMuSearch
+                    @startDate={{item.sessionStartedAt}}
+                    @endDate={{item.sessionEndedAt}}
                     @item={{item}}
                   />
                 </li>
@@ -78,8 +78,8 @@
           {{/if}}
         {{/if}}
       </div>
-      <FilterSidebar 
-        @id="filtersidebar" 
+      <FilterSidebar
+        @id="filtersidebar"
         @class="c-interface__sidebar c-interface__sidebar--dialog {{if this.hasFilter 'is-visible'}}"
         {{focus-trap
           isActive=this.hasFilter
