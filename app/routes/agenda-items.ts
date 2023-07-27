@@ -14,14 +14,14 @@ import {
   getCount,
 } from 'frontend-burgernabije-besluitendatabank/utils/ember-data';
 
-interface AgendaItemsParams {
-  keyword: string;
-  municipalityLabels: string;
-  plannedStartMin: string;
-  plannedStartMax: string;
+export interface AgendaItemsParams {
+  keyword?: string;
+  municipalityLabels?: string;
+  plannedStartMin?: string;
+  plannedStartMax?: string;
 }
 
-export const agendaItemsQuery = ({
+const agendaItemsQuery = ({
   page,
   keyword,
   locationIds,
@@ -63,6 +63,60 @@ export const agendaItemsQuery = ({
     size: 10,
   },
 });
+
+export async function getAgendaItems(
+  context: AgendaItemsRoute | AgendaItemsController,
+  params: AgendaItemsParams,
+  currentPage = 0
+) {
+  const controller =
+    context instanceof AgendaItemsController
+      ? context
+      : context.routeController;
+
+  /**
+   * The || undefined is important!
+   *
+   * Some queryParams are set to '' in the controller this is for
+   * the sake of having empty values not leaving behind a ?queryparam=&...
+   *
+   * However, whether it be because of the way we build our queries,
+   * because of our back-ends code, or because of internal Ember-Data structure,
+   * it does not like being given '' when you intend to disable that filter
+   * So this ensures that '' as well as undefined get both resolved to undefined!
+   */
+  controller.keyword = params.keyword || undefined;
+  controller.municipalityLabels = params.municipalityLabels || undefined;
+  controller.plannedStartMin = params.plannedStartMin || undefined;
+  controller.plannedStartMax = params.plannedStartMax || undefined;
+
+  const locationIds = await context.municipalityList.getLocationIdsFromLabels(
+    controller.municipalityLabels
+  );
+
+  const agendaItems: AdapterPopulatedRecordArrayWithMeta<AgendaItemModel> =
+    await context.store.query(
+      'agenda-item',
+      agendaItemsQuery({
+        page: currentPage,
+
+        locationIds: locationIds,
+
+        keyword: controller.keyword,
+        plannedStartMin: controller.plannedStartMin,
+        plannedStartMax: controller.plannedStartMax,
+      })
+    );
+
+  if (context instanceof AgendaItemsRoute) {
+    controller.set('agendaItems', agendaItems.slice());
+  }
+
+  controller.set('currentPage', currentPage);
+  controller.set('count', getCount(agendaItems));
+
+  return agendaItems.slice();
+}
 
 export default class AgendaItemsRoute extends Route {
   @service declare store: Store;
@@ -111,50 +165,6 @@ export default class AgendaItemsRoute extends Route {
   }
 
   async model(params: AgendaItemsParams) {
-    /**
-     * The || undefined is important!
-     *
-     * Some queryParams are set to '' in the controller this is for
-     * the sake of having empty values not leaving behind a ?queryparam=&...
-     *
-     * However, whether it be because of the way we build our queries,
-     * because of our back-ends code, or because of internal Ember-Data structure,
-     * it does not like being given '' when you intend to disable that filter
-     * So this ensures that '' as well as undefined get both resolved to undefined!
-     */
-    this.keyword = params.keyword || undefined;
-    this.municipalityLabels = params.municipalityLabels || undefined;
-    this.plannedStartMin = params.plannedStartMin || undefined;
-    this.plannedStartMax = params.plannedStartMax || undefined;
-
-    const currentPage = 0;
-
-    const locationIds = await this.municipalityList.getLocationIdsFromLabels(
-      this.municipalityLabels
-    );
-
-    const agendaItems: AdapterPopulatedRecordArrayWithMeta<AgendaItemModel> =
-      await this.store.query(
-        'agenda-item',
-        agendaItemsQuery({
-          page: currentPage,
-
-          locationIds: locationIds,
-
-          keyword: this.keyword,
-          plannedStartMin: this.plannedStartMin,
-          plannedStartMax: this.plannedStartMax,
-        })
-      );
-
-    this.routeController.set('agendaItems', agendaItems.slice());
-    this.routeController.set('currentPage', currentPage);
-
-    const count = getCount(agendaItems);
-
-    return {
-      currentPage,
-      count,
-    };
+    return getAgendaItems(this, params);
   }
 }

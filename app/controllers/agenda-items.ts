@@ -3,11 +3,12 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import { seperator } from 'frontend-burgernabije-besluitendatabank/helpers/constants';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
-import { agendaItemsQuery } from 'frontend-burgernabije-besluitendatabank/routes/agenda-items';
-import AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
+import {
+  getAgendaItems,
+  AgendaItemsParams,
+} from 'frontend-burgernabije-besluitendatabank/routes/agenda-items';
 
 export default class AgendaItemsController extends Controller {
   @service declare store: Store;
@@ -15,11 +16,11 @@ export default class AgendaItemsController extends Controller {
 
   /** Used for requesting more data */
   @tracked agendaItems: AgendaItem[] = [];
-  @tracked currentPage = 0;
+  @tracked currentPage = 0; // Will be set by model
 
-  // QueryParameters
-  @tracked keyword?: string = '';
-  @tracked municipalityLabels?: string = '';
+  // QueryParameters. Values will be set by getAgendaItems
+  @tracked keyword?: string;
+  @tracked municipalityLabels?: string;
   @tracked plannedStartMin?: string;
   @tracked plannedStartMax?: string;
 
@@ -32,6 +33,9 @@ export default class AgendaItemsController extends Controller {
   /** Mobile filter */
   @tracked hasFilter = false;
 
+  /** Shows how many results have been found */
+  @tracked count = 0;
+
   showFilter = () => {
     this.hasFilter = true;
   };
@@ -42,29 +46,29 @@ export default class AgendaItemsController extends Controller {
     }
   };
 
+  get params(): AgendaItemsParams {
+    return {
+      keyword: this.keyword,
+      municipalityLabels: this.municipalityLabels,
+      plannedStartMin: this.plannedStartMin,
+      plannedStartMax: this.plannedStartMax,
+    };
+  }
+
   @action
   async loadMore() {
     if (!this.isLoadingMore) {
       this.isLoadingMore = true;
 
-      const locationIds = await this.municipalityList.getLocationIdsFromLabels(
-        this.municipalityLabels
-      );
-
       this.currentPage++;
 
-      const agendaItems = (await this.store.query(
-        'agenda-item',
-        agendaItemsQuery({
-          page: this.currentPage,
-          keyword: this.keyword,
-          locationIds: locationIds,
-          plannedStartMin: this.plannedStartMin,
-          plannedStartMax: this.plannedStartMax,
-        })
-      )) as unknown as AgendaItemModel[];
-
+      const agendaItems = await getAgendaItems(
+        this,
+        this.params,
+        this.currentPage
+      );
       this.agendaItems = [...this.agendaItems, ...agendaItems];
+
       this.isLoadingMore = false;
     }
   }
