@@ -44,17 +44,18 @@ declare module 'ember-data/types/registries/model' {
   }
 }
 export class AgendaItemMuSearch {
-  id?: string;
-  locationId?: string;
-  timeSpecizalizationLocationName?: string;
-  governingBodyLocationName?: string;
-  timeSpecializationName?: string;
-  governingBodyName?: string;
-  sessionPlannedStart?: Date;
-  sessionStartedAt?: Date;
-  sessionEndedAt?: Date;
-  title?: string;
-  description?: string;
+  declare id?: string;
+  declare locationId?: string;
+  declare timeSpecizalizationLocationName?: string;
+  declare governingBodyLocationName?: string;
+  declare timeSpecializationName?: string;
+  declare governingBodyName?: string;
+  declare sessionPlannedStart?: Date;
+  declare sessionStartedAt?: Date;
+  declare sessionEndedAt?: Date;
+  declare title?: string;
+  declare description?: string;
+
   get dateFormatted() {
     if (this.sessionStartedAt || this.sessionEndedAt) {
       return getFormattedDateRange(this.sessionStartedAt, this.sessionEndedAt);

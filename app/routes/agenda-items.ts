@@ -182,10 +182,9 @@ export default class AgendaItemsRoute extends Route {
     ) => {
       const entry = data['attributes'] as any;
       const uuid = entry['uuid'];
+      const dataResponse = new AgendaItemMuSearch();
+      dataResponse.id = Array.isArray(uuid) ? uuid[0] : uuid;
 
-      const dataResponse = {
-        id: Array.isArray(uuid) ? uuid[0] : uuid,
-      } as AgendaItemMuSearch;
       dataResponse.locationId = entry['location_id'];
       dataResponse.timeSpecizalizationLocationName =
         entry['time_specialization_location_name'];
