@@ -18,7 +18,7 @@ module.exports = function (defaults) {
     staticHelpers: true,
     staticModifiers: true,
     staticComponents: true,
-    splitAtRoutes: ['map'],
+    staticEmberSource: true,
 
     // These compatAdapters are needed to work around an Ember Data v4.12 + Embroider issue
     // We can remove them once the issue is fixed or when we update to v5.4 since supposedly it's not an issue there
