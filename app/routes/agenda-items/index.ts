@@ -7,13 +7,15 @@ import Transition from '@ember/routing/transition';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import AgendaItemsIndexController from 'frontend-burgernabije-besluitendatabank/controllers/agenda-items';
-import AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
+import { AgendaItemMuSearch } from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
 import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
+import MuSearchService, {
+  DataMapper,
+  MuSearchData,
+  MuSearchResponse,
+  PageableRequest,
+} from 'frontend-burgernabije-besluitendatabank/services/mu-search';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
-import {
-  AdapterPopulatedRecordArrayWithMeta,
-  getCount,
-} from 'frontend-burgernabije-besluitendatabank/utils/ember-data';
 
 interface AgendaItemsParams {
   keyword: string;
@@ -21,74 +23,22 @@ interface AgendaItemsParams {
   plannedStartMin: string;
   plannedStartMax: string;
 }
-
-const getQuery = ({
-  page,
-  keyword,
-  locationIds,
-  plannedStartMin,
-  plannedStartMax,
-}: {
-  page: number;
-  keyword?: string;
-  locationIds?: string;
-  plannedStartMin?: string;
-  plannedStartMax?: string;
-}): AgendaItemsRequestInterface => ({
-  include: [
-    'sessions.governing-body.is-time-specialization-of.administrative-unit.location',
-    'sessions.governing-body.administrative-unit.location',
-  ].join(','),
-  sort: '-sessions.planned-start',
-  filter: {
-    sessions: {
-      ':gt:planned-start': plannedStartMin ? plannedStartMin : undefined,
-      ':lt:planned-start': plannedStartMax ? plannedStartMax : undefined,
-      'governing-body': {
-        'is-time-specialization-of': {
-          'administrative-unit': {
-            location: {
-              ':id:': locationIds ? locationIds : undefined,
-            },
-          },
-        },
-      },
-    },
-    ':or:': {
-      title: keyword ? keyword : undefined,
-      description: keyword ? keyword : undefined,
-    },
-  },
-  page: {
-    number: page,
-    size: 10,
-  },
-});
-
-interface AgendaItemsRequestInterface {
-  page: {
-    number: number;
-    size: number;
-  };
-  include: string;
-  sort?: string;
-  filter?: {
-    ':or:'?: object;
-    sessions?: {
-      ':gt:planned-start'?: string;
-      ':lt:planned-start'?: string;
-      'governing-body'?: {
-        'is-time-specialization-of'?: {
-          'administrative-unit': {
-            location?: object;
-          };
-        };
-      };
-    };
-  };
+interface AgendaItemMuSearchEntry {
+  uuid: string[] | string;
+  location_id?: string;
+  time_specialization_location_name?: string;
+  governing_body_location_name?: string;
+  governing_body_name?: string;
+  time_specialization_name?: string;
+  session_planned_start?: string;
+  session_started_at?: string;
+  session_ended_at?: string;
+  title?: string;
+  description?: string;
 }
 export default class AgendaItemsIndexRoute extends Route {
   @service declare store: Store;
+  @service declare muSearch: MuSearchService;
   @service declare keywordStore: KeywordStoreService;
   @service declare municipalityList: MunicipalityListService;
 
@@ -126,6 +76,83 @@ export default class AgendaItemsIndexRoute extends Route {
     ) as AgendaItemsIndexController;
     controller.set('errorMsg', error.message);
     return true;
+  }
+
+  getMuSearchQuery({
+    index,
+    page,
+    keyword,
+    locationIds,
+    plannedStartMin,
+    plannedStartMax,
+  }: {
+    index: string;
+    page: number;
+    keyword?: string;
+    locationIds?: string;
+    plannedStartMin?: string;
+    plannedStartMax?: string;
+  }): PageableRequest<AgendaItemMuSearchEntry, AgendaItemMuSearch> {
+    const filters = {} as { [key: string]: string };
+    const request: PageableRequest<
+      AgendaItemMuSearchEntry,
+      AgendaItemMuSearch
+    > = {} as PageableRequest<AgendaItemMuSearchEntry, AgendaItemMuSearch>;
+    request.sort = '-session_planned_start';
+    request.index = index;
+    // make sure there is at least a title
+    // and a location_id
+    filters[':query:title'] = '_exists_:title AND _exists_:location_id';
+    if (plannedStartMin) {
+      filters[
+        ':query:session_planned_start'
+      ] = `(session_planned_start:[${plannedStartMin} TO
+           ${plannedStartMax || '*'}] ) `;
+    }
+
+    if (locationIds) {
+      filters['location_id'] = locationIds;
+    }
+    if (keyword) {
+      filters[
+        ':query:title'
+      ] = `(title:${keyword})  OR (description:${keyword}) `;
+    }
+    request.page = page;
+    request.size = 10;
+    request.filters = filters;
+
+    const dataMapping: DataMapper<
+      AgendaItemMuSearchEntry,
+      AgendaItemMuSearch
+    > = (data: MuSearchData<AgendaItemMuSearchEntry>) => {
+      const entry = data.attributes;
+      const uuid = entry.uuid;
+      const dataResponse = new AgendaItemMuSearch();
+      dataResponse.id = Array.isArray(uuid) ? uuid[0] : uuid;
+
+      dataResponse.locationId = entry.location_id;
+      dataResponse.timeSpecizalizationLocationName =
+        entry.time_specialization_location_name;
+      dataResponse.governingBodyLocationName =
+        entry.governing_body_location_name;
+      dataResponse.timeSpecializationName = entry.time_specialization_name;
+      dataResponse.governingBodyName = entry.governing_body_name;
+      dataResponse.sessionPlannedStart = entry.session_planned_start
+        ? new Date(entry.session_planned_start)
+        : undefined;
+      dataResponse.sessionEndedAt = entry.session_ended_at
+        ? new Date(entry.session_ended_at)
+        : undefined;
+      dataResponse.sessionStartedAt = entry.session_started_at
+        ? new Date(entry.session_started_at)
+        : undefined;
+      dataResponse.title = entry.title;
+      dataResponse.description = entry.description;
+      return dataResponse;
+    };
+    request.dataMapping = dataMapping;
+    return request;
   }
 
   @action
@@ -166,10 +193,11 @@ export default class AgendaItemsIndexRoute extends Route {
     );
 
     const currentPage = 0;
-    const agendaItems: AdapterPopulatedRecordArrayWithMeta<AgendaItemModel> =
-      await this.store.query(
-        'agenda-item',
-        getQuery({
+
+    const agendaItems: MuSearchResponse<AgendaItemMuSearch> =
+      await this.muSearch.search(
+        this.getMuSearchQuery({
+          index: 'agenda-items',
           page: currentPage,
 
           locationIds: locationIds,
@@ -184,12 +212,12 @@ export default class AgendaItemsIndexRoute extends Route {
         })
       );
 
-    const count = getCount(agendaItems);
+    const count = agendaItems.count;
 
     return {
-      agendaItems,
+      agendaItems: agendaItems.items,
       currentPage,
-      getQuery,
+      getQueryMuSearch: this.getMuSearchQuery,
       count,
     };
   }
