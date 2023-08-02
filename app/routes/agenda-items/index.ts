@@ -6,7 +6,7 @@ import Route from '@ember/routing/route';
 import Transition from '@ember/routing/transition';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import AgendaItemsController from 'frontend-burgernabije-besluitendatabank/controllers/agenda-items';
+import AgendaItemsIndexController from 'frontend-burgernabije-besluitendatabank/controllers/agenda-items';
 import AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 import {
@@ -65,12 +65,12 @@ const agendaItemsQuery = ({
 });
 
 export async function getAgendaItems(
-  context: AgendaItemsRoute | AgendaItemsController,
+  context: AgendaItemsIndexRoute | AgendaItemsIndexController,
   params: AgendaItemsParams,
   currentPage = 0
 ) {
   const controller =
-    context instanceof AgendaItemsController
+    context instanceof AgendaItemsIndexController
       ? context
       : context.routeController;
 
@@ -108,7 +108,7 @@ export async function getAgendaItems(
       })
     );
 
-  if (context instanceof AgendaItemsRoute) {
+  if (context instanceof AgendaItemsIndexRoute) {
     controller.set('agendaItems', agendaItems.slice());
   }
 
@@ -118,7 +118,7 @@ export async function getAgendaItems(
   return agendaItems.slice();
 }
 
-export default class AgendaItemsRoute extends Route {
+export default class AgendaItemsIndexRoute extends Route {
   @service declare store: Store;
   @service declare municipalityList: MunicipalityListService;
 
@@ -147,7 +147,7 @@ export default class AgendaItemsRoute extends Route {
   @tracked keyword?: string;
 
   get routeController() {
-    return this.controllerFor('agenda-items') as AgendaItemsController;
+    return this.controllerFor('agenda-items') as AgendaItemsIndexController;
   }
 
   @action

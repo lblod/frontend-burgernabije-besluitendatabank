@@ -10,7 +10,7 @@ import {
   AgendaItemsParams,
 } from 'frontend-burgernabije-besluitendatabank/routes/agenda-items';
 
-export default class AgendaItemsController extends Controller {
+export default class AgendaItemsIndexController extends Controller {
   @service declare store: Store;
   @service declare municipalityList: MunicipalityListService;
 
