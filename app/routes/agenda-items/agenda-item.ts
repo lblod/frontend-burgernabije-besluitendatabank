@@ -10,20 +10,30 @@ interface DetailParams {
   id: string;
 }
 
-interface FormattedTableVote {
-  proponent: MandataryModel | null;
-  opponent: MandataryModel | null;
-  abstainer: MandataryModel | null;
-}
-
-export default class DetailRoute extends Route {
+export default class AgendaItemRoute extends Route {
   @service declare store: Store;
   @service declare keywordStore: KeywordStoreService;
 
   async model(params: DetailParams) {
-    const agendaItem: AgendaItemModel = await this.store.findRecord(
-      'agenda-item',
-      params.id
+    const agendaItem = await this.store.findRecord('agenda-item', params.id);
+
+    // wait until sessions are loaded
+    const sessions = await agendaItem.sessions;
+    // SessionModel expects the following to be loaded:
+    // - governingBody.isTimeSpecializationOf.administrativeUnit.location
+    // - governingBody.administrativeUnit.location
+    // to resolve municipality & governingBody name
+    await Promise.all(
+      sessions?.map(async (session) => {
+        const governingBody = await session.governingBody;
+        const isTimeSpecializationOf =
+          await governingBody?.isTimeSpecializationOf;
+        let administrativeUnit =
+          await isTimeSpecializationOf?.administrativeUnit;
+        await administrativeUnit?.location;
+        administrativeUnit = await governingBody?.administrativeUnit;
+        await administrativeUnit?.location;
+      }) || []
     );
 
     const sessionId = agendaItem.session?.id;

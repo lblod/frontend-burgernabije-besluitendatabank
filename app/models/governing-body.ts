@@ -3,6 +3,7 @@ import Model, {
   belongsTo,
   hasMany,
   AsyncHasMany,
+  AsyncBelongsTo,
 } from '@ember-data/model';
 import SessionModel from './session';
 import AdministrativeUnitModel from './administrative-unit';
@@ -26,25 +27,39 @@ export default class GoverningBodyModel extends Model {
   @attr('string', { defaultValue: 'Ontbrekende naam' }) declare name: string;
 
   @belongsTo('administrative-unit', {
-    async: false,
+    async: true,
     inverse: 'governingBodies',
   })
-  declare administrativeUnit: AdministrativeUnitModel;
+  declare administrativeUnit: AsyncBelongsTo<AdministrativeUnitModel>;
+
+  get administrativeUnitValue() {
+    // cast this because of https://github.com/typed-ember/ember-cli-typescript/issues/1416
+    return (this as GoverningBodyModel)
+      .belongsTo('administrativeUnit')
+      ?.value() as AdministrativeUnitModel | null;
+  }
 
   @hasMany('session', { async: true, inverse: 'governingBody' })
   declare sessions: AsyncHasMany<SessionModel>;
 
   @belongsTo('governing-body', {
-    async: false,
+    async: true,
     inverse: 'hasTimeSpecializations',
   })
-  declare isTimeSpecializationOf: GoverningBodyModel;
+  declare isTimeSpecializationOf: AsyncBelongsTo<GoverningBodyModel>;
 
   @hasMany('governing-body', {
     async: true,
     inverse: 'isTimeSpecializationOf',
   })
   declare hasTimeSpecializations: AsyncHasMany<GoverningBodyModel>;
+
+  get isTimeSpecializationOfValue() {
+    // cast this because of https://github.com/typed-ember/ember-cli-typescript/issues/1416
+    return (this as GoverningBodyModel)
+      .belongsTo('isTimeSpecializationOf')
+      ?.value() as GoverningBodyModel | null;
+  }
 }
 
 declare module 'ember-data/types/registries/model' {

@@ -5,7 +5,7 @@ import RouterService from '@ember/routing/router-service';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { ModelFrom } from 'frontend-burgernabije-besluitendatabank/lib/type-utils';
-import AgendaItemsRoute from 'frontend-burgernabije-besluitendatabank/routes/agenda-items';
+import AgendaItemsIndexRoute from 'frontend-burgernabije-besluitendatabank/routes/agenda-items';
 import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 import { AgendaItemMuSearch } from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
@@ -13,7 +13,7 @@ import MuSearchService, {
   MuSearchResponse,
 } from 'frontend-burgernabije-besluitendatabank/services/mu-search';
 
-export default class AgendaItemsController extends Controller {
+export default class AgendaItemsIndexController extends Controller {
   @service declare router: RouterService;
   @service declare store: Store;
   @service declare muSearch: MuSearchService;
@@ -29,7 +29,7 @@ export default class AgendaItemsController extends Controller {
   @tracked keyword = '';
 
   /** Used for requesting more data */
-  declare model: ModelFrom<AgendaItemsRoute>;
+  declare model: ModelFrom<AgendaItemsIndexRoute>;
 
   /** Controls the loading animation of the "load more" button */
   @tracked isLoadingMore = false;

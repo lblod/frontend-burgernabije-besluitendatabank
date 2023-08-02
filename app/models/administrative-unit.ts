@@ -22,8 +22,15 @@ export default class AdministrativeUnitModel extends Model {
   })
   declare classification: AsyncBelongsTo<AdministrativeUnitClasssificationCodeModel>;
 
-  @belongsTo('location', { async: false, inverse: null })
-  declare location: LocationModel;
+  @belongsTo('location', { async: true, inverse: null })
+  declare location: AsyncBelongsTo<LocationModel>;
+
+  get locationValue() {
+    // cast this because of https://github.com/typed-ember/ember-cli-typescript/issues/1416
+    return (this as AdministrativeUnitModel)
+      .belongsTo('location')
+      ?.value() as LocationModel | null;
+  }
 }
 
 declare module 'ember-data/types/registries/model' {
