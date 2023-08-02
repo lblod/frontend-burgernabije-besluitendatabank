@@ -1,7 +1,6 @@
 {
   "extends": "@tsconfig/ember/tsconfig.json",
   "compilerOptions": {
-
     // The combination of `baseUrl` with `paths` allows Ember's classic package
     // layout, which is not resolvable with the Node resolution algorithm, to
     // work with TypeScript.
@@ -13,6 +12,9 @@
       "frontend-burgernabije-besluitendatabank/*": [
         "app/*"
       ],
+      "fetch": [
+        "node_modules/ember-fetch"
+      ],
       "*": [
         "types/*"
       ]
@@ -22,6 +24,7 @@
     "app/**/*",
     "tests/**/*",
     "types/**/*",
-    "app/config/environment.d.ts",
+    "node_modules/ember-fetch/*",
+    "app/config/environment.d.ts"
   ]
 }

@@ -7,6 +7,9 @@ module.exports = function (defaults) {
     '@appuniversum/ember-appuniversum': {
       disableWormholeElement: true,
     },
+    'ember-fetch': {
+      nativePromise: true,
+    },
   });
 
   const { Webpack } = require('@embroider/webpack');
@@ -23,6 +26,7 @@ module.exports = function (defaults) {
         // au-date-range-picker imports jquery but doesn't depend on the jquery package directly. Instead it uses `@ember/jquery` which Embroider can't detect.
         // We can either update the addon to depend on jquery directly (+ ember-auto-import) or switch to a different solution that doesn't use jquery at all
         ['jquery', ['default']],
+        ['fetch', ['default']],
       ],
     },
 

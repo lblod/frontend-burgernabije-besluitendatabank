@@ -1,5 +1,5 @@
 import Service from '@ember/service';
-
+import fetch from 'fetch';
 export type PageMetadata = { number?: number; size?: number };
 export type Page = {
   first?: PageMetadata;
@@ -10,9 +10,6 @@ export type Page = {
 };
 
 export type MuSearchData<E> = { attributes: E };
-export type MuSearchEntry = {
-  [key: string]: [key: string[] | string | boolean | number];
-};
 export type DataMapper<I, O> = (data: MuSearchData<I>) => O;
 export type PageableRequest<I, O> = {
   index?: string;
