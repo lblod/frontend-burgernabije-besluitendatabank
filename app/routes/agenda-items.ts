@@ -6,7 +6,7 @@ import Route from '@ember/routing/route';
 import Transition from '@ember/routing/transition';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import AgendaItemsIndexController from 'frontend-burgernabije-besluitendatabank/controllers/agenda-items';
+import AgendaItemsController from 'frontend-burgernabije-besluitendatabank/controllers/agenda-items';
 import AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
 import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
@@ -87,7 +87,7 @@ interface AgendaItemsRequestInterface {
     };
   };
 }
-export default class AgendaItemsIndexRoute extends Route {
+export default class AgendaItemsRoute extends Route {
   @service declare store: Store;
   @service declare keywordStore: KeywordStoreService;
   @service declare municipalityList: MunicipalityListService;
@@ -121,18 +121,18 @@ export default class AgendaItemsIndexRoute extends Route {
 
   @action
   error(error: Error) {
-    const controller: AgendaItemsIndexController = this.controllerFor(
-      'agenda-items.index'
-    ) as AgendaItemsIndexController;
+    const controller: AgendaItemsController = this.controllerFor(
+      'agenda-items'
+    ) as AgendaItemsController;
     controller.set('errorMsg', error.message);
     return true;
   }
 
   @action
   loading(transition: Transition) {
-    const controller: AgendaItemsIndexController = this.controllerFor(
-      'agenda-items.index'
-    ) as AgendaItemsIndexController;
+    const controller: AgendaItemsController = this.controllerFor(
+      'agenda-items'
+    ) as AgendaItemsController;
 
     controller.set('loading', true);
     transition.promise.finally(() => {
@@ -141,9 +141,9 @@ export default class AgendaItemsIndexRoute extends Route {
   }
 
   async model(params: AgendaItemsParams) {
-    const controller: AgendaItemsIndexController = this.controllerFor(
-      'agenda-items.index'
-    ) as AgendaItemsIndexController;
+    const controller: AgendaItemsController = this.controllerFor(
+      'agenda-items'
+    ) as AgendaItemsController;
 
     if (
       controller.agendaItems?.length > 0 &&
@@ -195,7 +195,7 @@ export default class AgendaItemsIndexRoute extends Route {
   }
 
   setupController(
-    controller: AgendaItemsIndexController,
+    controller: AgendaItemsController,
     model: unknown,
     transition: Transition<unknown>
   ): void {

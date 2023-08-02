@@ -10,7 +10,7 @@ interface DetailParams {
   id: string;
 }
 
-export default class AgendaItemRoute extends Route {
+export default class DetailRoute extends Route {
   @service declare store: Store;
   @service declare keywordStore: KeywordStoreService;
 

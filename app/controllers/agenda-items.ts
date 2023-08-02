@@ -5,12 +5,12 @@ import RouterService from '@ember/routing/router-service';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { ModelFrom } from 'frontend-burgernabije-besluitendatabank/lib/type-utils';
-import AgendaItemsIndexRoute from 'frontend-burgernabije-besluitendatabank/routes/agenda-items';
+import AgendaItemsRoute from 'frontend-burgernabije-besluitendatabank/routes/agenda-items';
 import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
 
-export default class AgendaItemsIndexController extends Controller {
+export default class AgendaItemsController extends Controller {
   @service declare router: RouterService;
   @service declare store: Store;
   @service declare keywordStore: KeywordStoreService;
@@ -24,7 +24,7 @@ export default class AgendaItemsIndexController extends Controller {
   @tracked plannedStartMax = '';
 
   /** Used for requesting more data */
-  declare model: ModelFrom<AgendaItemsIndexRoute>;
+  declare model: ModelFrom<AgendaItemsRoute>;
 
   /** Controls the loading animation of the "load more" button */
   @tracked isLoadingMore = false;
