@@ -12,9 +12,6 @@
       "frontend-burgernabije-besluitendatabank/*": [
         "app/*"
       ],
-      "fetch": [
-        "node_modules/ember-fetch"
-      ],
       "*": [
         "types/*"
       ]

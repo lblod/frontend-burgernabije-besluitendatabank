@@ -1,5 +1,4 @@
 import Service from '@ember/service';
-import fetch from 'fetch';
 export type PageMetadata = { number?: number; size?: number };
 export type Page = {
   first?: PageMetadata;
