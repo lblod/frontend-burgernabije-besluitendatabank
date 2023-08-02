@@ -18,82 +18,12 @@ import MuSearchService, {
   PageableRequest,
 } from 'frontend-burgernabije-besluitendatabank/services/mu-search';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
-import {
-  AdapterPopulatedRecordArrayWithMeta,
-  getCount,
-} from 'frontend-burgernabije-besluitendatabank/utils/ember-data';
 
 interface AgendaItemsParams {
   keyword: string;
   municipalityLabels: string;
   plannedStartMin: string;
   plannedStartMax: string;
-}
-
-const getQuery = ({
-  page,
-  keyword,
-  locationIds,
-  plannedStartMin,
-  plannedStartMax,
-}: {
-  page: number;
-  keyword?: string;
-  locationIds?: string;
-  plannedStartMin?: string;
-  plannedStartMax?: string;
-}): AgendaItemsRequestInterface => ({
-  include: [
-    'sessions.governing-body.is-time-specialization-of.administrative-unit.location',
-    'sessions.governing-body.administrative-unit.location',
-  ].join(','),
-  sort: '-sessions.planned-start',
-  filter: {
-    sessions: {
-      ':gt:planned-start': plannedStartMin ? plannedStartMin : undefined,
-      ':lt:planned-start': plannedStartMax ? plannedStartMax : undefined,
-      'governing-body': {
-        'is-time-specialization-of': {
-          'administrative-unit': {
-            location: {
-              ':id:': locationIds ? locationIds : undefined,
-            },
-          },
-        },
-      },
-    },
-    ':or:': {
-      title: keyword ? keyword : undefined,
-      description: keyword ? keyword : undefined,
-    },
-  },
-  page: {
-    number: page,
-    size: 10,
-  },
-});
-
-interface AgendaItemsRequestInterface {
-  page: {
-    number: number;
-    size: number;
-  };
-  include: string;
-  sort?: string;
-  filter?: {
-    ':or:'?: object;
-    sessions?: {
-      ':gt:planned-start'?: string;
-      ':lt:planned-start'?: string;
-      'governing-body'?: {
-        'is-time-specialization-of'?: {
-          'administrative-unit': {
-            location?: object;
-          };
-        };
-      };
-    };
-  };
 }
 
 export default class AgendaItemsRoute extends Route {
@@ -271,7 +201,6 @@ export default class AgendaItemsRoute extends Route {
     return {
       agendaItems: agendaItems.items,
       currentPage,
-      getQuery,
       getQueryMuSearch: this.getMuSearchQuery,
       count,
     };
