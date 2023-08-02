@@ -8,9 +8,7 @@ import { ModelFrom } from 'frontend-burgernabije-besluitendatabank/lib/type-util
 import AgendaItemsRoute from 'frontend-burgernabije-besluitendatabank/routes/agenda-items';
 import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
-import {
-  AgendaItemMuSearch,
-} from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
+import { AgendaItemMuSearch } from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
 import MuSearchService, {
   MuSearchResponse,
 } from 'frontend-burgernabije-besluitendatabank/services/mu-search';
