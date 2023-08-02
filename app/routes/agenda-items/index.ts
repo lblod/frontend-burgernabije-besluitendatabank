@@ -147,7 +147,9 @@ export default class AgendaItemsIndexRoute extends Route {
   @tracked keyword?: string;
 
   get routeController() {
-    return this.controllerFor('agenda-items') as AgendaItemsIndexController;
+    return this.controllerFor(
+      'agenda-items.index'
+    ) as AgendaItemsIndexController;
   }
 
   @action
