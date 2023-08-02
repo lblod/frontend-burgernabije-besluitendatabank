@@ -12,7 +12,7 @@
       <input
         {{!template-lint-disable no-duplicate-id}}
         id={{@id}}
-        value={{@value}}
+        value={{this.value}}
         class="au-c-input au-c-input--block {{@inputClass}}"
         disabled={{@disabled}}
         {{on "input" this.handleChange}}
