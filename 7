@@ -100,9 +100,6 @@ export default class AgendaItemsRoute extends Route {
     > = {} as PageableRequest<AgendaItemMuSearchEntry, AgendaItemMuSearch>;
     request.sort = '-session_planned_start';
     request.index = index;
-    // make sure there is at least a title
-    // and a location_id
-    filters[':query:title'] = '_exists_:title AND _exists_:location_id';
     if (plannedStartMin) {
       filters[
         ':query:session_planned_start'

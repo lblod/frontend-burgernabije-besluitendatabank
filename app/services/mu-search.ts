@@ -9,15 +9,18 @@ export type Page = {
   self?: PageMetadata;
 };
 
-export type MuSearchData = { [key: string]: [key: string] };
-export type DataMapper<T> = (data: MuSearchData) => T;
-export type PageableRequest<T> = {
+export type MuSearchData<E> = { attributes: E };
+export type MuSearchEntry = {
+  [key: string]: [key: string[] | string | boolean | number];
+};
+export type DataMapper<I, O> = (data: MuSearchData<I>) => O;
+export type PageableRequest<I, O> = {
   index?: string;
   page: number;
   size: number;
   sort?: string;
   filters: { [key: string]: string };
-  dataMapping?: DataMapper<T>;
+  dataMapping?: DataMapper<I, O>;
 };
 
 export interface MuSearchResponse<T> {
@@ -82,7 +85,9 @@ export default class MuSearchService extends Service {
     return pagination;
   }
 
-  async search<T>(request: PageableRequest<T>): Promise<MuSearchResponse<T>> {
+  async search<I, O>(
+    request: PageableRequest<I, O>
+  ): Promise<MuSearchResponse<O>> {
     const { index, page, size, sort, filters, dataMapping } = request;
     const params = [];
     params.push(`page[size]=${size}`);

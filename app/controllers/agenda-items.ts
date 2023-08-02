@@ -8,7 +8,7 @@ import { ModelFrom } from 'frontend-burgernabije-besluitendatabank/lib/type-util
 import AgendaItemsRoute from 'frontend-burgernabije-besluitendatabank/routes/agenda-items';
 import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
-import AgendaItem, {
+import {
   AgendaItemMuSearch,
 } from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
 import MuSearchService, {
@@ -28,6 +28,7 @@ export default class AgendaItemsController extends Controller {
   @tracked sort = '';
   @tracked plannedStartMin = '';
   @tracked plannedStartMax = '';
+  @tracked keyword = '';
 
   /** Used for requesting more data */
   declare model: ModelFrom<AgendaItemsRoute>;
