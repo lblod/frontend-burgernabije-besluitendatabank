@@ -31,7 +31,7 @@
     "test:ember": "ember test"
   },
   "devDependencies": {
-    "@appuniversum/ember-appuniversum": "^2.9.3",
+    "@appuniversum/ember-appuniversum": "^2.11.0",
     "@ember/optional-features": "^2.0.0",
     "@ember/string": "^3.0.1",
     "@ember/test-helpers": "^2.9.3",
@@ -94,7 +94,7 @@
     "ember-modifier": "^4.1.0",
     "ember-page-title": "^7.0.0",
     "ember-plausible": "^0.2.0",
-    "ember-power-select": "^6.0.1",
+    "ember-power-select": "^7.1.0",
     "ember-qunit": "^6.2.0",
     "ember-resolver": "^10.0.0",
     "ember-source": "~4.12.0",
