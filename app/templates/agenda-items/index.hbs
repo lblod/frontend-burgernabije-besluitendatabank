@@ -47,10 +47,10 @@
                 </AuAlert>
               </div>
             {{else}}
-              {{#if @model.count}}
+              {{#if this.count}}
                 <p class="au-u-margin-left au-u-margin-top-small au-u-h4 au-u-medium">
-                  {{@model.count}} 
-                  {{#if (eq @model.count 1)}} 
+                  {{this.count}} 
+                  {{#if (eq this.count 1)}} 
                   Zoekresultaat
                   {{else}}
                   Zoekresultaten
@@ -62,7 +62,7 @@
                 @loadMore={{this.loadMore}}
                 @isLoading={{this.isLoadingMore}}
                 @itemsShown={{this.agendaItems.length}}
-                @itemsAmount={{@model.count}}
+                @itemsAmount={{this.count}}
               >
                 {{#each this.agendaItems as |item|}}
                 <li>

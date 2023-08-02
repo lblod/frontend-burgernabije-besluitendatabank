@@ -8,21 +8,20 @@ import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import AgendaItemsIndexController from 'frontend-burgernabije-besluitendatabank/controllers/agenda-items';
 import AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
-import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 import {
   AdapterPopulatedRecordArrayWithMeta,
   getCount,
 } from 'frontend-burgernabije-besluitendatabank/utils/ember-data';
 
-interface AgendaItemsParams {
-  keyword: string;
-  municipalityLabels: string;
-  plannedStartMin: string;
-  plannedStartMax: string;
+export interface AgendaItemsParams {
+  keyword?: string;
+  municipalityLabels?: string;
+  plannedStartMin?: string;
+  plannedStartMax?: string;
 }
 
-const getQuery = ({
+const agendaItemsQuery = ({
   page,
   keyword,
   locationIds,
@@ -34,7 +33,7 @@ const getQuery = ({
   locationIds?: string;
   plannedStartMin?: string;
   plannedStartMax?: string;
-}): AgendaItemsRequestInterface => ({
+}) => ({
   include: [
     'sessions.governing-body.is-time-specialization-of.administrative-unit.location',
     'sessions.governing-body.administrative-unit.location',
@@ -42,21 +41,21 @@ const getQuery = ({
   sort: '-sessions.planned-start',
   filter: {
     sessions: {
-      ':gt:planned-start': plannedStartMin ? plannedStartMin : undefined,
-      ':lt:planned-start': plannedStartMax ? plannedStartMax : undefined,
+      ':gt:planned-start': plannedStartMin,
+      ':lt:planned-start': plannedStartMax,
       'governing-body': {
         'is-time-specialization-of': {
           'administrative-unit': {
             location: {
-              ':id:': locationIds ? locationIds : undefined,
+              ':id:': locationIds,
             },
           },
         },
       },
     },
     ':or:': {
-      title: keyword ? keyword : undefined,
-      description: keyword ? keyword : undefined,
+      title: keyword,
+      description: keyword,
     },
   },
   page: {
@@ -65,40 +64,67 @@ const getQuery = ({
   },
 });
 
-interface AgendaItemsRequestInterface {
-  page: {
-    number: number;
-    size: number;
-  };
-  include: string;
-  sort?: string;
-  filter?: {
-    ':or:'?: object;
-    sessions?: {
-      ':gt:planned-start'?: string;
-      ':lt:planned-start'?: string;
-      'governing-body'?: {
-        'is-time-specialization-of'?: {
-          'administrative-unit': {
-            location?: object;
-          };
-        };
-      };
-    };
-  };
+export async function getAgendaItems(
+  context: AgendaItemsIndexRoute | AgendaItemsIndexController,
+  params: AgendaItemsParams,
+  currentPage = 0
+) {
+  const controller =
+    context instanceof AgendaItemsIndexController
+      ? context
+      : context.routeController;
+
+  /**
+   * The || undefined is important!
+   *
+   * Some queryParams are set to '' in the controller this is for
+   * the sake of having empty values not leaving behind a ?queryparam=&...
+   *
+   * However, whether it be because of the way we build our queries,
+   * because of our back-ends code, or because of internal Ember-Data structure,
+   * it does not like being given '' when you intend to disable that filter
+   * So this ensures that '' as well as undefined get both resolved to undefined!
+   */
+  controller.keyword = params.keyword || undefined;
+  controller.municipalityLabels = params.municipalityLabels || undefined;
+  controller.plannedStartMin = params.plannedStartMin || undefined;
+  controller.plannedStartMax = params.plannedStartMax || undefined;
+
+  const locationIds = await context.municipalityList.getLocationIdsFromLabels(
+    controller.municipalityLabels
+  );
+
+  const agendaItems: AdapterPopulatedRecordArrayWithMeta<AgendaItemModel> =
+    await context.store.query(
+      'agenda-item',
+      agendaItemsQuery({
+        page: currentPage,
+
+        locationIds: locationIds,
+
+        keyword: controller.keyword,
+        plannedStartMin: controller.plannedStartMin,
+        plannedStartMax: controller.plannedStartMax,
+      })
+    );
+
+  if (context instanceof AgendaItemsIndexRoute) {
+    controller.set('agendaItems', agendaItems.slice());
+  }
+
+  controller.set('currentPage', currentPage);
+  controller.set('count', getCount(agendaItems));
+
+  return agendaItems.slice();
 }
+
 export default class AgendaItemsIndexRoute extends Route {
   @service declare store: Store;
-  @service declare keywordStore: KeywordStoreService;
   @service declare municipalityList: MunicipalityListService;
 
   queryParams = {
     municipalityLabels: {
       as: 'gemeentes',
-      refreshModel: true,
-    },
-    sort: {
-      as: 'sorteren',
       refreshModel: true,
     },
     plannedStartMin: {
@@ -118,88 +144,27 @@ export default class AgendaItemsIndexRoute extends Route {
   @tracked municipalityLabels?: string;
   @tracked plannedStartMin?: string;
   @tracked plannedStartMax?: string;
+  @tracked keyword?: string;
+
+  get routeController() {
+    return this.controllerFor('agenda-items') as AgendaItemsIndexController;
+  }
 
   @action
   error(error: Error) {
-    const controller: AgendaItemsIndexController = this.controllerFor(
-      'agenda-items.index'
-    ) as AgendaItemsIndexController;
-    controller.set('errorMsg', error.message);
+    this.routeController.set('errorMsg', error.message);
     return true;
   }
 
   @action
   loading(transition: Transition) {
-    const controller: AgendaItemsIndexController = this.controllerFor(
-      'agenda-items.index'
-    ) as AgendaItemsIndexController;
-
-    controller.set('loading', true);
+    this.routeController.set('loading', true);
     transition.promise.finally(() => {
-      controller.set('loading', false);
+      this.routeController.set('loading', false);
     });
   }
 
   async model(params: AgendaItemsParams) {
-    const controller: AgendaItemsIndexController = this.controllerFor(
-      'agenda-items.index'
-    ) as AgendaItemsIndexController;
-
-    if (
-      controller.agendaItems?.length > 0 &&
-      params.keyword === this.keywordStore.keyword &&
-      params.municipalityLabels === this.municipalityLabels &&
-      params.plannedStartMin === this.plannedStartMin &&
-      params.plannedStartMax === this.plannedStartMax
-    ) {
-      return null;
-    }
-    this.keywordStore.keyword = params.keyword || '';
-    this.municipalityLabels = params.municipalityLabels || undefined;
-    this.plannedStartMin = params.plannedStartMin || '';
-    this.plannedStartMax = params.plannedStartMax || '';
-
-    // Check if the parameters have changed compared to the last time
-
-    const locationIds = await this.municipalityList.getLocationIdsFromLabels(
-      this.municipalityLabels
-    );
-
-    const currentPage = 0;
-    const agendaItems: AdapterPopulatedRecordArrayWithMeta<AgendaItemModel> =
-      await this.store.query(
-        'agenda-item',
-        getQuery({
-          page: currentPage,
-
-          locationIds: locationIds,
-
-          keyword: params.keyword ? params.keyword : undefined,
-          plannedStartMin: params.plannedStartMin
-            ? params.plannedStartMin
-            : undefined,
-          plannedStartMax: params.plannedStartMax
-            ? params.plannedStartMax
-            : undefined,
-        })
-      );
-
-    const count = getCount(agendaItems);
-
-    return {
-      agendaItems,
-      currentPage,
-      getQuery,
-      count,
-    };
-  }
-
-  setupController(
-    controller: AgendaItemsIndexController,
-    model: unknown,
-    transition: Transition<unknown>
-  ): void {
-    super.setupController(controller, model, transition);
-    controller.setup();
+    return getAgendaItems(this, params);
   }
 }
