@@ -9,20 +9,13 @@ module.exports = function (environment) {
     EmberENV: {
       EXTEND_PROTOTYPES: false,
     },
-
-    // https://github.com/redpencilio/ember-plausible#configuration-options
     'ember-plausible': {
-      enabled: true, // Unless specified otherwise (test env), enabled by default
+      enabled: false, // We enable this manually when the config is provided by the server
+    },
+    plausible: {
       apiHost: '{{PLAUSIBLE_APIHOST}}',
       domain: '{{PLAUSIBLE_DOMAIN}}',
-
-      hashMode: false, // If locationType is hash, change to true
-      //trackLocalhost: true,  // Uncomment if you want your local instance to add to the statistics
-
-      enableAutoPageviewTracking: true, // if true, all page changes will send an event
-      enableAutoOutboundTracking: false, // if true, all clicks to external websites will send an event
     },
-
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
@@ -30,8 +23,6 @@ module.exports = function (environment) {
   };
 
   if (environment === 'test') {
-    ENV['ember-plausible'].enabled = false;
-
     ENV.locationType = 'none';
     ENV.APP.LOG_ACTIVE_GENERATION = false;
     ENV.APP.LOG_VIEW_LOOKUPS = false;
