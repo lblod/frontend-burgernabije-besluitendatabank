@@ -27,56 +27,56 @@
               Toon filters
           </a>
         </div>
-        {{#if this.errorMsg}}
-          <Oops
-            @title="Oeps!"
-            @content="Er is iets fout gelopen!"
-          />
-        {{else}}
-          {{#if this.loading}}
-            <LoaderFullPage @content="Agendapunt aan het laden"/>
+        {{#let (this.AgendaItemsLoader filters=this.filters) as |loader|}}
+          {{#if loader.hasErrored}}
+            <Oops @title="Oeps!" @content="Er is iets fout gelopen!" />
           {{else}}
-            {{#if (eq this.agendaItems.length 0)}}
-              <div class="au-o-box">
-                <AuAlert
-                  @size="small"
-                  @skin="warning"
-                  @icon="info-circle"
-                  @title="Er werden geen zoekresultaten gevonden."
-                >
-                </AuAlert>
-              </div>
+            {{#if (and loader.isLoading (not loader.hasResults))}}
+              <LoaderFullPage @content="Agendapunten aan het laden" />
             {{else}}
-              {{#if this.count}}
-                <p class="au-u-margin-left au-u-margin-top-small au-u-h4 au-u-medium">
-                  {{this.count}} 
-                  {{#if (eq this.count 1)}} 
-                  Zoekresultaat
-                  {{else}}
-                  Zoekresultaten
-                  {{/if}}
+              {{#if loader.hasResults}}
+                {{#if loader.total}}
+                  <p
+                    class="au-u-margin-left au-u-margin-top-small au-u-h4 au-u-medium"
+                  >
+                    {{loader.total}}
+                    {{#if (eq loader.total 1)}}
+                      Zoekresultaat
+                    {{else}}
+                      Zoekresultaten
+                    {{/if}}
                   </p>
-              {{/if}}
+                {{/if}}
 
-              <InfiniteList
-                @loadMore={{this.loadMore}}
-                @isLoading={{this.isLoadingMore}}
-                @itemsShown={{this.agendaItems.length}}
-                @itemsAmount={{this.count}}
-              >
-                {{#each this.agendaItems as |item|}}
-                <li>
-                  <DecisionCard
-                    @startDate={{item.session.startedAt}}
-                    @endDate={{item.session.endedAt}}
-                    @item={{item}}
+                <InfiniteList
+                  @loadMore={{loader.loadMore}}
+                  @isLoading={{loader.isLoading}}
+                  @itemsShown={{loader.data.length}}
+                  @itemsAmount={{loader.total}}
+                >
+                  {{#each loader.data as |item|}}
+                    <li>
+                      <DecisionCard
+                        @startDate={{item.session.startedAt}}
+                        @endDate={{item.session.endedAt}}
+                        @item={{item}}
+                      />
+                    </li>
+                  {{/each}}
+                </InfiniteList>
+              {{else}}
+                <div class="au-o-box">
+                  <AuAlert
+                    @size="small"
+                    @skin="warning"
+                    @icon="info-circle"
+                    @title="Er werden geen zoekresultaten gevonden."
                   />
-                </li>
-                {{/each}}
-              </InfiniteList>
+                </div>
+              {{/if}}
             {{/if}}
           {{/if}}
-        {{/if}}
+        {{/let}}
       </div>
       <FilterSidebar 
         @id="filtersidebar" 
