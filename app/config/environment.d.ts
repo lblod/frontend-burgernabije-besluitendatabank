@@ -9,6 +9,10 @@ declare const config: {
   locationType: 'history' | 'none';
   rootURL: string;
   APP: Record<string, unknown>;
+  plausible: {
+    apiHost: string;
+    domain: string;
+  };
 };
 
 export default config;
