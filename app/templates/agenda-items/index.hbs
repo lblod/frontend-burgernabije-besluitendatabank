@@ -78,8 +78,8 @@
           {{/if}}
         {{/let}}
       </div>
-      <FilterSidebar 
-        @id="filtersidebar" 
+      <FilterSidebar
+        @id="filtersidebar"
         @class="c-interface__sidebar c-interface__sidebar--dialog {{if this.hasFilter 'is-visible'}}"
         {{focus-trap
           isActive=this.hasFilter
@@ -106,12 +106,11 @@
             @value={{this.municipality}}
           />
           <Filters::DateRangeFilter
-            @id="startDate"
             @label="Wanneer?"
-            @queryParamsA="begin"
-            @queryParamsB="eind"
-            @valueA={{this.plannedStartMin}}
-            @valueB={{this.plannedStartMax}}
+            @startQueryParam="begin"
+            @endQueryParam="eind"
+            @start={{this.plannedStartMin}}
+            @end={{this.plannedStartMax}}
           />
         </div>
         <div class="c-interface__sidebar-submit-buttons">

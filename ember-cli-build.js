@@ -39,13 +39,6 @@ module.exports = function (defaults) {
     // As a workaround we only enable it for production builds so that we can still use the dev tools for local development
     // while still having a smaller bundle in production.
     embroiderOptions.staticEmberSource = true;
-    embroiderOptions.amdCompatibility = {
-      es: [
-        // au-date-range-picker imports jquery but doesn't depend on the jquery package directly. Instead it uses `@ember/jquery` which Embroider can't detect.
-        // We can either update the addon to depend on jquery directly (+ ember-auto-import) or switch to a different solution that doesn't use jquery at all
-        ['jquery', ['default']],
-      ],
-    };
   }
 
   return require('@embroider/compat').compatBuild(

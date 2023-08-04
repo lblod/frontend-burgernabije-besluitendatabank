@@ -1,63 +1,236 @@
 import { action } from '@ember/object';
-import FilterComponent from './filter';
-import { tracked } from '@glimmer/tracking';
+import RouterService from '@ember/routing/router-service';
+import { service } from '@ember/service';
+import Component from '@glimmer/component';
+import { cached, tracked } from '@glimmer/tracking';
+import {
+  endOfMonth,
+  endOfWeek as endOfWeekDateFns,
+  endOfYear,
+  formatISO,
+  startOfMonth,
+  startOfWeek as startOfWeekDateFns,
+  startOfYear,
+  sub,
+} from 'date-fns';
 
-export default class SearcherDateRangeFilterComponent extends FilterComponent {
-  @tracked start: string | undefined = this.args.valueA
-    ? this.args.valueA
-    : undefined;
-  @tracked end: string | undefined = this.args.valueB
-    ? this.args.valueB
-    : undefined;
+type ISODateString = string;
 
-  changeValue(start?: string, end?: string) {
-    this.start = start;
-    this.end = end;
-    this.updateQueryParams({
-      [this.args.queryParamsA]: this.start,
-      [this.args.queryParamsB]: this.end,
+interface Signature {
+  Args: {
+    label: string;
+    startQueryParam: string;
+    endQueryParam: string;
+    start?: ISODateString;
+    end?: ISODateString;
+  };
+}
+
+enum Preset {
+  ThisWeek = 'Deze week',
+  LastWeek = 'Vorige week',
+  ThisMonth = 'Deze maand',
+  LastMonth = 'Vorige maand',
+  ThisYear = 'Dit jaar',
+  LastYear = 'Vorig jaar',
+}
+
+export default class DateRangeFilterComponent extends Component<Signature> {
+  @service declare router: RouterService;
+  @tracked start: string | null;
+  @tracked end: string | null;
+  @tracked selectedPreset: Preset | null = null;
+  @tracked isChoosingPresets = true;
+
+  presets = [
+    Preset.ThisWeek,
+    Preset.LastWeek,
+    Preset.ThisMonth,
+    Preset.LastMonth,
+    Preset.ThisYear,
+    Preset.LastYear,
+  ];
+
+  @cached
+  get presetDateRanges() {
+    const today = new Date();
+    return {
+      [Preset.ThisWeek]: [
+        toIsoDateString(startOfWeek(today)),
+        toIsoDateString(endOfWeek(today)),
+      ],
+      [Preset.LastWeek]: [
+        toIsoDateString(startOfWeek(sub(today, { weeks: 1 }))),
+        toIsoDateString(endOfWeek(sub(today, { weeks: 1 }))),
+      ],
+      [Preset.ThisMonth]: [
+        toIsoDateString(startOfMonth(today)),
+        toIsoDateString(endOfMonth(today)),
+      ],
+      [Preset.LastMonth]: [
+        toIsoDateString(startOfMonth(sub(today, { months: 1 }))),
+        toIsoDateString(endOfMonth(sub(today, { months: 1 }))),
+      ],
+      [Preset.ThisYear]: [
+        toIsoDateString(startOfYear(today)),
+        toIsoDateString(endOfYear(today)),
+      ],
+      [Preset.LastYear]: [
+        toIsoDateString(startOfYear(sub(today, { years: 1 }))),
+        toIsoDateString(endOfYear(sub(today, { years: 1 }))),
+      ],
+    };
+  }
+
+  get hasBothDates(): boolean {
+    return Boolean(this.start) && Boolean(this.end);
+  }
+
+  get hasNoDates(): boolean {
+    return !this.start && !this.end;
+  }
+
+  get isInvalidDateRange(): boolean {
+    return (
+      !!this.start && !!this.end && new Date(this.start) > new Date(this.end)
+    );
+  }
+
+  constructor(owner: unknown, args: Signature['Args']) {
+    super(owner, args);
+
+    const { start, end } = this.args;
+    this.start = start ? start : null;
+    this.end = end ? end : null;
+    this.setInitialPreset();
+  }
+
+  @action handleSelectionChange(selectedPreset: Preset | null): void {
+    this.selectedPreset = selectedPreset;
+
+    if (selectedPreset) {
+      const presetDates = this.presetDateRanges[selectedPreset];
+
+      if (presetDates) {
+        const [presetStart = null, presetEnd = null] = presetDates;
+        this.start = presetStart;
+        this.end = presetEnd;
+        this.updateQueryParams();
+      }
+    } else {
+      this.resetQueryParams();
+    }
+  }
+
+  @action handleStartDateChange(newDate: string | null): void {
+    this.start = newDate;
+
+    if (this.isInvalidDateRange) {
+      this.end = null;
+    }
+
+    this.updateQueryParamsIfValid();
+  }
+
+  @action handleEndDateChange(newDate: string | null): void {
+    this.end = newDate;
+
+    if (this.isInvalidDateRange) {
+      this.start = null;
+    }
+
+    this.updateQueryParamsIfValid();
+  }
+
+  @action chooseCustomRange() {
+    this.isChoosingPresets = false;
+    this.selectedPreset = null;
+  }
+
+  @action choosePresets() {
+    this.isChoosingPresets = true;
+
+    if (this.hasNoDates) {
+      return;
+    }
+
+    const maybePreset = this.findPreset(this.start, this.end);
+    if (maybePreset) {
+      this.selectedPreset = maybePreset;
+    } else {
+      // If the dates don't match a preset we clear the dates. Otherwise the UI would show an empty select while
+      // there is still a date filter applied in the background.
+      this.resetQueryParams();
+    }
+  }
+
+  setInitialPreset(): void {
+    if (this.hasNoDates) {
+      return;
+    }
+
+    const maybePreset = this.findPreset(this.start, this.end);
+    if (maybePreset) {
+      this.selectedPreset = maybePreset;
+    } else {
+      // The dates don't match a preset, so we switch to the custom date inputs instead
+      this.isChoosingPresets = false;
+    }
+  }
+
+  findPreset(
+    start: ISODateString | null,
+    end: ISODateString | null
+  ): Preset | null {
+    const NO_PRESET = null;
+
+    const couldMatchPreset = start && end;
+    if (couldMatchPreset) {
+      const maybePreset = this.presets.find((preset) => {
+        const presetDates = this.presetDateRanges[preset];
+
+        if (presetDates) {
+          const [presetStart, presetEnd] = presetDates;
+          return start === presetStart && end === presetEnd;
+        }
+      });
+
+      return maybePreset ? maybePreset : NO_PRESET;
+    } else {
+      return NO_PRESET;
+    }
+  }
+
+  updateQueryParamsIfValid() {
+    if (this.hasBothDates || this.hasNoDates) {
+      this.updateQueryParams();
+    }
+  }
+
+  resetQueryParams(): void {
+    this.start = null;
+    this.end = null;
+    this.updateQueryParams();
+  }
+
+  updateQueryParams(): void {
+    this.router.transitionTo({
+      queryParams: {
+        [this.args.startQueryParam]: this.start,
+        [this.args.endQueryParam]: this.end,
+      },
     });
   }
+}
 
-  @action
-  resetDate() {
-    this.changeValue(undefined, undefined);
-  }
+function toIsoDateString(date: Date): ISODateString {
+  return formatISO(date, { representation: 'date' });
+}
 
-  @action
-  hideDate() {
-    /**
-     * There was a weird interaction with a weirder solution
-     *
-     * If you...
-     * - Selected a daterange
-     * - Applied
-     * - Opened & resetted
-     * - Applied
-     * - Opened
-     * - And then hide it (don't select anything)
-     *
-     * It would display & apply the value you've used before resetting
-     *
-     * This was because the hideAction was the same as the applyAction
-     * Not defining the hideAction makes au-date-range-picker throw an error
-     *
-     * So instead, an empty hideAction?
-     * This kinda fixed it:
-     * - Now the old value would no longer be applied
-     * - But, the old value was still displayed
-     *
-     * So how do we fix it?
-     * See the silly solution below
-     */
-    /* eslint-disable no-self-assign */
-    this.start = this.start;
-    this.end = this.end;
-    /* eslint-enable no-self-assign*/
-  }
+function startOfWeek(date: Date) {
+  return startOfWeekDateFns(date, { weekStartsOn: 1 });
+}
 
-  @action
-  async dateChange(e: Event, start: string, end: string) {
-    this.changeValue(start, end);
-  }
+function endOfWeek(date: Date) {
+  return endOfWeekDateFns(date, { weekStartsOn: 1 });
 }

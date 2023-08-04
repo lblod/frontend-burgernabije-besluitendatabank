@@ -1,20 +1,52 @@
-<Filters::Filter @label={{@label}}>
-    <AuDateRangePicker
-      @width="block"
+<AuFieldset as |f|>
+  <f.legend @skin={{this.skin}}>
+    {{@label}}
+  </f.legend>
+  <f.content class="au-u-1-1">
+    {{#if this.isChoosingPresets}}
+      <AuFormRow>
+        <PowerSelect
+          @selected={{this.selectedPreset}}
+          @options={{this.presets}}
+          @onChange={{this.handleSelectionChange}}
+          @allowClear={{true}}
+          @placeholder="Selecteer een periode"
+          class="au-u-1-1"
+          as |preset|
+        >{{preset}}</PowerSelect>
 
-      id={{@id}}
-      @label={{@label}}
-      
-      @start={{this.start}}
-      @end={{this.end}}
-      
-      @cancelAction={{this.resetDate}}
-      @applyAction={{this.dateChange}}
-      @hideAction={{this.hideDate}}
+        <Filters::DateRangeFilter::ToggleButton
+          @icon="calendar"
+          @onClick={{this.chooseCustomRange}}
+          class="au-u-margin-top-tiny"
+        >
+          Eigen periode kiezen
+        </Filters::DateRangeFilter::ToggleButton>
+      </AuFormRow>
+    {{else}}
+      <AuFormRow>
+        <AuLabel for="date-from">Van</AuLabel>
+        <Filters::DateRangeFilter::DateInput
+          @value={{this.start}}
+          @onChange={{this.handleStartDateChange}}
+          id="date-from"
+        />
+      </AuFormRow>
+      <AuFormRow>
+        <AuLabel for="date-until">Tot</AuLabel>
+        <Filters::DateRangeFilter::DateInput
+          @value={{this.end}}
+          @onChange={{this.handleEndDateChange}}
+          id="date-until"
+        />
 
-      @cancelLabel="Reset"
-    />
-    {{!-- did-insert didn't work on the custom components --}}
-    <span class="au-u-hidden" {{did-insert this.hideDate}}></span>
-
-</Filters::Filter>
+        <Filters::DateRangeFilter::ToggleButton
+          @icon="nav-up-down"
+          @onClick={{this.choosePresets}}
+        >
+          Bestaande periodes
+        </Filters::DateRangeFilter::ToggleButton>
+      </AuFormRow>
+    {{/if}}
+  </f.content>
+</AuFieldset>

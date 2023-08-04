@@ -51,12 +51,11 @@
           @value={{this.municipality}}
         />
         <Filters::DateRangeFilter
-          @id="startDate"
-          @label="Datum"
-          @queryParamsA="begin"
-          @queryParamsB="eind"
-          @valueA={{this.plannedStartMin}}
-          @valueB={{this.plannedStartMax}}
+          @label="Wanneer?"
+          @startQueryParam="begin"
+          @endQueryParam="eind"
+          @start={{this.plannedStartMin}}
+          @end={{this.plannedStartMax}}
         />
     </FilterSidebar>
     </div>
