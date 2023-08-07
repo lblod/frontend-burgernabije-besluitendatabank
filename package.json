@@ -88,7 +88,7 @@
     "ember-cli-inject-live-reload": "^2.1.0",
     "ember-cli-sass": "^11.0.1",
     "ember-cli-typescript": "^5.2.1",
-    "ember-concurrency": "^3.0.0",
+    "ember-concurrency": "^3.1.0",
     "ember-data": "~4.12.2",
     "ember-focus-trap": "^1.0.2",
     "ember-load-initializers": "^2.1.2",
