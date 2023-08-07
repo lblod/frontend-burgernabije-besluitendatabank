@@ -30,7 +30,9 @@ export default class AgendaItemsIndexRoute extends Route {
     // if mu-search-agenda-items feature is enabled display the mu-search agenda items
     // otherwise display the default agenda items
     if (this.features.isEnabled('mu-search-agenda-items')) {
-      console.log('mu-search-agenda-items feature is enabled');
+      console.log(
+        'mu-search-agenda-items feature is enabled, but no visible change yet'
+      );
       // this.controllerName = 'agenda-items/mu-search';
       // this.templateName = 'agenda-items/mu-search';
     }

@@ -21,7 +21,7 @@ module.exports = function (environment) {
       // when it is created
     },
     features: {
-      'mu-search-agenda-items': true,
+      'mu-search-agenda-items': false,
     },
   };
 
