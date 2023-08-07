@@ -43,6 +43,49 @@ The project uses woodpecker to automate builds. The configuration files can be f
 
 
 ## Reference
+
+### Feature flags
+
+Feature flags are used to enable/disable features in the application. They are defined in [config/environment.js](config/environment.js), and can be overridden by setting a cookie in the browser console. 
+
+```javascript
+let ENV = {
+    // Other configuration settings...
+    features: {
+      'new-feature': true,    // Enable the 'new-feature' by default
+      'beta-feature': false,  // Disable the 'beta-feature' by default
+    }
+  };
+```
+
+The configuration can be manually overridden by setting a variable in the browser console, feature name have to be prefixed with `feature-`: 
+- `window.cookie='feature-new-feature=false'` to disable the 'new-feature'
+- `window.cookie='feature-beta-feature=true'` to enable the 'beta-feature'
+
+The feature flags can be used in the application by injecting the `feature` service and calling the `isEnabled` method.
+```javascript
+import { inject as service } from '@ember/service';
+
+export default class ExampleComponent extends Component {
+  @service features;
+
+  doSomething() {
+    if (this.features.isEnabled('new-feature')) {
+      // Implement the logic for the new feature
+      console.log('New feature is enabled!');
+    } else {
+      // Implement the logic for the default behavior without the new feature
+      console.log('New feature is disabled!');
+    }
+  }
+}
+
+```
+
+### List of feature flags
+|       Name        | Description |
+| ----------------- | ----------- |
+
 ### Environment variables
 |       Name        | Description |
 | ----------------- |
