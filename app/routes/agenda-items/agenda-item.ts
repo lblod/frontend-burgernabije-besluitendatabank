@@ -1,8 +1,6 @@
 import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
-import AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
-import MandataryModel from 'frontend-burgernabije-besluitendatabank/models/mandatary';
 import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
 import { sortObjectsByTitle } from 'frontend-burgernabije-besluitendatabank/utils/array-utils';
 

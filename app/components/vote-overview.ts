@@ -9,12 +9,6 @@ interface ArgsInterface {
   vote: VoteModel;
 }
 
-interface FormattedTableVote {
-  proponent: MandataryModel | null;
-  opponent: MandataryModel | null;
-  abstainer: MandataryModel | null;
-}
-
 const strokeDashArray = 158;
 
 const sortByFamilyName = (a: MandataryModel, b: MandataryModel) => {
