@@ -46,9 +46,10 @@ The project uses woodpecker to automate builds. The configuration files can be f
 
 ### Feature flags
 
-Feature flags are used to enable/disable features in the application. They are defined in [config/environment.js](config/environment.js), and can be overridden by setting a cookie in the browser console. 
+Feature flags are used to enable/disable features in the application. They are defined in [config/environment.js](config/environment.js). 
 
 ```javascript
+// in config/environment.js
 let ENV = {
     // Other configuration settings...
     features: {
@@ -62,7 +63,7 @@ The configuration can be manually overridden by setting a variable in the browse
 - `window.cookie='feature-new-feature=false'` to disable the 'new-feature'
 - `window.cookie='feature-beta-feature=true'` to enable the 'beta-feature'
 
-The feature flags can be used in the application by injecting the `feature` service and calling the `isEnabled` method.
+The feature flags can be used in the application by injecting the `features` service and calling the `isEnabled` method.
 ```javascript
 import { inject as service } from '@ember/service';
 
