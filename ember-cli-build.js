@@ -1,6 +1,7 @@
 'use strict';
 
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = function (defaults) {
   let app = new EmberApp(defaults, {
@@ -29,5 +30,12 @@ module.exports = function (defaults) {
     // This config is needed to work around an Ember Data v4.12 + Embroider issue
     // We can remove it once the fix is released: // https://github.com/embroider-build/embroider/issues/1506
     compatAdapters: new Map([['@ember-data/debug', null]]),
+    packagerOptions: {
+      webpackConfig: {
+        plugins: [
+          process.env.ANALYZE_BUNDLE ? new BundleAnalyzerPlugin() : null,
+        ].filter(Boolean),
+      },
+    },
   });
 };

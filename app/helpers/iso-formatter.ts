@@ -1,4 +1,4 @@
-import { format, parseISO } from 'date-fns';
+import { lightFormat, parseISO } from 'date-fns';
 
 /**
  * Date formatter, allows consistent formatting across the application
@@ -10,5 +10,5 @@ export default function isoFormatter(date: string | Date) {
   if (typeof date == 'string') {
     date = parseISO(date);
   }
-  return format(date, 'MM/dd/yyyy');
+  return lightFormat(date, 'MM/dd/yyyy');
 }
