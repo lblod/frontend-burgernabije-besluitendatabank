@@ -85,6 +85,7 @@ export default class ExampleComponent extends Component {
 ### List of feature flags
 |       Name        | Description |
 | ----------------- | ----------- |
+| mu-search-agenda-items | Use mu-search in `agenda-items/index` |
 
 ### Environment variables
 |       Name        | Description |
