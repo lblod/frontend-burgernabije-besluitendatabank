@@ -13,7 +13,7 @@ declare const config: {
     apiHost: string;
     domain: string;
   };
-  features: Record<string, boolean>;
+  features: Record<string, boolean | string>;
 };
 
 export default config;

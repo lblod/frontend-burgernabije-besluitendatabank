@@ -3,17 +3,34 @@ import { assert } from '@ember/debug';
 import config from 'frontend-burgernabije-besluitendatabank/config/environment';
 
 export default class FeaturesService extends Service {
+  static PREFIX = 'feature-';
   #features: Record<string, boolean> = {};
 
   constructor() {
     super();
+    const queryParams = this.#getQueryParams();
+    if (queryParams.get('clear-feature-overrides') === 'true') {
+      this.#clearCookieFeatures();
+    }
 
+    const configFeatures = this.#getConfigFeatures();
     const cookieFeatures = this.#getCookieFeatures();
-    this.setup({ ...config.features, ...cookieFeatures });
+    const queryFeatures = this.#getQueryParamsFeatures(queryParams);
+    this.setup({
+      ...configFeatures,
+      ...cookieFeatures,
+      ...queryFeatures,
+    });
+
+    // save query params in cookie
+    if (Object.keys(queryFeatures).length > 0) {
+      this.#setCookieFeatures(queryFeatures);
+    }
   }
 
   setup(features: Record<string, boolean>) {
     this.#features = { ...features };
+    console.log('Feature flags:', this.#features);
   }
 
   isEnabled(feature: string): boolean {
@@ -25,19 +42,70 @@ export default class FeaturesService extends Service {
     return this.#features[feature] ?? false;
   }
 
+  #getConfigFeatures(): Record<string, boolean> {
+    const cookieFeatures: Record<string, boolean> = Object.fromEntries(
+      Object.entries(config.features).map(([featureName, value]) => {
+        return [featureName, value === 'true' || value === true];
+      })
+    );
+
+    return cookieFeatures;
+  }
+
   // cookie has to start with 'feature-{{feature-name}}'
   #getCookieFeatures(): Record<string, boolean> {
     const cookieFeatures: Record<string, boolean> = {};
     const cookies = document.cookie.split('; ');
+
     for (const cookie of cookies) {
-      const [name, value] = cookie.split('=');
-      if (name?.startsWith('feature-')) {
-        const featureName = name.replace('feature-', '');
-        const featureValue = value === 'true';
-        cookieFeatures[featureName] = featureValue;
+      const [key, value] = cookie.split('=');
+      const featureName = this.#extractFeatureNameFromKey(key);
+      if (featureName) {
+        cookieFeatures[featureName] = value === 'true';
       }
     }
     return cookieFeatures;
+  }
+
+  #setCookieFeatures(features: Record<string, boolean>) {
+    for (const [featureName, featureValue] of Object.entries(features)) {
+      document.cookie = `feature-${featureName}=${featureValue}; path=/`;
+    }
+  }
+
+  #clearCookieFeatures() {
+    const featuresToClear = Object.keys(this.#getCookieFeatures());
+    for (const featureName of featuresToClear) {
+      document.cookie = `feature-${featureName}=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+    }
+  }
+
+  #getQueryParams(): URLSearchParams {
+    const queryString = window.location.search.substring(1);
+    return new URLSearchParams(queryString);
+  }
+
+  //query param has to start with 'feature-{{feature-name}}'
+  #getQueryParamsFeatures(
+    queryParams: URLSearchParams
+  ): Record<string, boolean> {
+    const queryFeatures: Record<string, boolean> = {};
+
+    for (const [key, value] of queryParams.entries()) {
+      const featureName = this.#extractFeatureNameFromKey(key);
+      if (featureName) {
+        queryFeatures[featureName] = value === 'true';
+      }
+    }
+
+    return queryFeatures;
+  }
+
+  #extractFeatureNameFromKey(key?: string): string | null {
+    if (key?.startsWith('feature-')) {
+      return key.replace('feature-', '');
+    }
+    return null;
   }
 }
 
