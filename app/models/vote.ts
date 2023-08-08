@@ -6,7 +6,8 @@ export default class VoteModel extends Model {
   @attr('number') declare numberOfOpponents: number;
   @attr('number') declare numberOfProponents: number;
   @attr('boolean') declare secret: boolean;
-  @attr declare subject: { content: string; language: string };
+  @attr declare subject: string;
+  @attr declare consequence: string;
 
   @hasMany('mandatary', { async: true, inverse: null })
   declare hasAbstainers: AsyncHasMany<MandataryModel>;
