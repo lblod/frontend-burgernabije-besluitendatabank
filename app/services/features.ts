@@ -43,13 +43,13 @@ export default class FeaturesService extends Service {
   }
 
   #getConfigFeatures(): Record<string, boolean> {
-    const cookieFeatures: Record<string, boolean> = Object.fromEntries(
+    const configFeatures: Record<string, boolean> = Object.fromEntries(
       Object.entries(config.features).map(([featureName, value]) => {
         return [featureName, value === 'true' || value === true];
       })
     );
 
-    return cookieFeatures;
+    return configFeatures;
   }
 
   // cookie has to start with 'feature-{{feature-name}}'
@@ -64,19 +64,20 @@ export default class FeaturesService extends Service {
         cookieFeatures[featureName] = value === 'true';
       }
     }
+
     return cookieFeatures;
   }
 
   #setCookieFeatures(features: Record<string, boolean>) {
     for (const [featureName, featureValue] of Object.entries(features)) {
-      document.cookie = `feature-${featureName}=${featureValue}; path=/`;
+      document.cookie = `${FeaturesService.PREFIX}${featureName}=${featureValue}; path=/`;
     }
   }
 
   #clearCookieFeatures() {
     const featuresToClear = Object.keys(this.#getCookieFeatures());
     for (const featureName of featuresToClear) {
-      document.cookie = `feature-${featureName}=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+      document.cookie = `${FeaturesService.PREFIX}${featureName}=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
     }
   }
 
@@ -102,8 +103,8 @@ export default class FeaturesService extends Service {
   }
 
   #extractFeatureNameFromKey(key?: string): string | null {
-    if (key?.startsWith('feature-')) {
-      return key.replace('feature-', '');
+    if (key?.startsWith(FeaturesService.PREFIX)) {
+      return key.replace(FeaturesService.PREFIX, '');
     }
     return null;
   }
