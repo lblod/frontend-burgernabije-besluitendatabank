@@ -26,6 +26,18 @@ not triggering the linting error}}
   </ul>
 </div>
 
+{{#if @vote.consequence}}
+  <div class="c-accordion-holder c-accordion-holder--top">
+    <AuAccordion @reverse={{true}} @iconOpen={{"nav-down"}} @iconClosed={{"nav-right"}} @buttonLabel={{"Gevolg van de stemming"}}>
+      <AuContent @skin="small" class="au-u-padding">
+        <p class="au-u-muted">
+          {{@vote.consequence}}
+        </p>
+      </AuContent>
+    </AuAccordion>
+  </div>
+{{/if}}
+
 <div class="c-accordion-holder c-accordion-holder--top">
   <AuAccordion @reverse={{true}} @iconOpen={{"nav-down"}} @iconClosed={{"nav-right"}} @buttonLabel={{"Wie stemde?"}}
     @subtitle="Meer informatie over stemmers en hun partijen">
