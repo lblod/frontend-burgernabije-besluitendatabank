@@ -13,10 +13,12 @@
   --sidebar: 100%;
 
   flex-basis: var(--sidebar);
+  // Without this `width`, the sidebar dissapears from the page on some breakpoints if the content is too wide
+  width: var(--sidebar);
   padding: $au-unit-small;
   background-color: var(--au-gray-100);
   border-bottom: .1rem solid var(--au-gray-200);
-  
+
   @include mq(small) {
     --sidebar: 250px;
 
@@ -46,7 +48,7 @@
     left: 0;
     background-color: var(--au-white);
     flex-direction: column;
-  
+
     &.is-visible {
       display: flex;
     }
