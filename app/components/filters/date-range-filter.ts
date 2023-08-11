@@ -18,7 +18,6 @@ type ISODateString = string;
 
 interface Signature {
   Args: {
-    label: string;
     startQueryParam: string;
     endQueryParam: string;
     start?: ISODateString;
