@@ -41,30 +41,6 @@ cursor {
   }
 }
 
-// Daterangepicker tweaks
-.daterangepicker .ranges li.active {
-  background-color: var(--au-blue-700);
-  color: #fff;
-}
-
-.daterangepicker {
-  font: var(--au-font);
-}
-  
-.daterangepicker td.active,
-.daterangepicker td.start-date.end-date {
-  background-color: var(--au-blue-700) !important;
-  border-radius: 0;
-
-  &:hover {
-    background-color: var(--au-blue-900);
-  }
-}
-
-.daterangepicker td.in-range {
-  background-color: var(--au-blue-200);
-}
-
 // Sticky utility
 .u-top-sticky {
   @include mq(small) {
@@ -81,7 +57,7 @@ cursor {
 
 // Yellow top border
 .u-color-top-border {
-  border-top: solid .5rem var(--au-yellow-300);
+  border-top: solid 0.5rem var(--au-yellow-300);
 }
 
 .u-gray-top-border {
@@ -98,7 +74,7 @@ cursor {
   display: flex;
 
   > .au-c-accordion {
-    margin-top: .6rem;
+    margin-top: 0.6rem;
     width: 100%;
     padding-bottom: 0;
   }
@@ -108,28 +84,27 @@ cursor {
   }
 
   > .au-c-accordion .au-c-toolbar .au-c-icon {
-    margin-top: .85rem !important;
+    margin-top: 0.85rem !important;
   }
 
   > .au-c-accordion > .au-c-content {
     margin-left: calc(7.2rem * -1);
-    border-top: .1rem solid var(--au-gray-200);
+    border-top: 0.1rem solid var(--au-gray-200);
     margin-top: $au-unit;
     padding-top: 0;
   }
 
   &:first-of-type {
     padding-top: $au-unit-small;
-    border-top: .1rem solid var(--au-gray-200);
+    border-top: 0.1rem solid var(--au-gray-200);
   }
 
   & + & {
     margin-top: $au-unit-small;
     padding-top: $au-unit-small;
-    border-top: .1rem solid var(--au-gray-200);
+    border-top: 0.1rem solid var(--au-gray-200);
   }
 }
-
 
 .c-accordion-holder--top {
   > .au-c-accordion > .au-c-content {
@@ -206,12 +181,12 @@ cursor {
 // Add auto scroll behaviour
 .u-overflow-y-scroll {
   overflow-y: scroll;
-  height: 100%; 
+  height: 100%;
 }
 
 .u-overflow-divider {
   * + & {
-    border-top: .1rem solid var(--au-gray-200);
+    border-top: 0.1rem solid var(--au-gray-200);
     margin-top: $au-unit-small;
   }
 
@@ -245,5 +220,40 @@ cursor {
     border-left: 0;
     margin-left: 0;
     padding-left: 0;
+  }
+}
+
+// <input type="date"> fixes for Safari
+.au-c-input {
+  background-color: var(--au-white); // We don't set a background color, and safari uses a different one on iOS
+}
+
+.au-c-input[type="date"] {
+  appearance: none; // This ensures the datepicker fills the full width on iOS
+  line-height: $au-input-height; // This vertical aligns the text in the middle
+
+  // https://github.com/tailwindlabs/tailwindcss-forms/blob/e60d81afe6526a015e8f38023f454b4d27c9859b/src/index.js#L99-L101
+  &::-webkit-datetime-edit,
+  &::-webkit-datetime-edit-year-field,
+  &::-webkit-datetime-edit-month-field,
+  &::-webkit-datetime-edit-day-field,
+  &::-webkit-datetime-edit-hour-field,
+  &::-webkit-datetime-edit-minute-field,
+  &::-webkit-datetime-edit-second-field,
+  &::-webkit-datetime-edit-millisecond-field,
+  &::-webkit-datetime-edit-meridiem-field {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  // https://github.com/tailwindlabs/tailwindcss-forms/blob/e60d81afe6526a015e8f38023f454b4d27c9859b/src/index.js#L82-L87
+  &::-webkit-datetime-edit-fields-wrapper {
+    padding: 0;
+  }
+
+  // https://github.com/tailwindlabs/tailwindcss-forms/blob/e60d81afe6526a015e8f38023f454b4d27c9859b/src/index.js#L89-L91
+  &::-webkit-date-and-time-value {
+    min-height: 1.5em;
+    text-align: left; // iOS shows the text centered by default
   }
 }

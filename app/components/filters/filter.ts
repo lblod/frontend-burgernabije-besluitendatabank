@@ -7,14 +7,9 @@ interface Signature {
   Args: {
     id: string;
     queryParam: string;
-    queryParamsA: string;
-    queryParamsB: string;
 
     searchField: string;
     options: Array<object>;
-
-    valueA?: string;
-    valueB?: string;
   };
 }
 
