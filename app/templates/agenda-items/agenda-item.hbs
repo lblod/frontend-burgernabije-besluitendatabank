@@ -21,7 +21,7 @@
     <div class="au-o-box">
       <div class="au-o-grid au-o-grid--small">
         <div class="au-o-grid__item au-u-hidden-from@medium">
-          {{#if this.model.agendaItem.handledBy.resolutions}}
+          {{#if this.wasHandled}}
             <AuAlert @skin="success" @icon="decided" @title="Dit werd behandeld" class="au-u-margin-bottom-none" />
           {{else}}
             <AuAlert @skin="warning" @icon="three-dots" @title="Dit werd nog niet behandeld" class="au-u-margin-bottom-none" />
@@ -106,7 +106,7 @@
                   {{else}}
                     <AuAlert
                       @skin="warning"
-                      @title="Geen verslag"
+                      @title={{if this.wasHandled "Geen verslag" "Dit agenda punt werd nog niet behandeld"}}
                       class="au-u-margin-top au-u-margin-bottom"
                     />
                   {{/if}}
@@ -114,22 +114,32 @@
                 </AuAccordion>
               </section>
 
-              {{#if this.hasVotes}}
-                <section class="c-accordion-holder">
-                  <AuBadge @icon="vote" @skin="brand" />
-                  <AuAccordion
-                    @subtitle={{this.model.vote.subject}}
-                    @reverse={{true}}
-                    @iconOpen={{"nav-down"}}
-                    @iconClosed={{"nav-right"}}
-                    @buttonLabel={{"Stemming"}}
-                  >
+              <section class="c-accordion-holder">
+                <AuBadge @icon="vote" @skin="brand" />
+                <AuAccordion
+                  @subtitle={{this.model.vote.subject}}
+                  @reverse={{true}}
+                  @iconOpen="nav-down"
+                  @iconClosed="nav-right"
+                  @buttonLabel="Stemming"
+                >
+                  {{#if this.hasVotes}}
                     <VoteOverview
                       @vote={{this.model.vote}}
                     />
-                  </AuAccordion>
-                </section>
-              {{/if}}
+                  {{else}}
+                    <AuAlert
+                      @skin="warning"
+                      @title={{if
+                        this.wasHandled
+                        "Stemming niet beschikbaar"
+                        "Dit agendapunt werd nog niet behandeld"
+                      }}
+                      class="au-u-margin-top au-u-margin-bottom"
+                    />
+                  {{/if}}
+                </AuAccordion>
+              </section>
             </c.content>
           </AuCard>
           {{#if this.model.agendaItemOnSameSession}}
@@ -171,7 +181,7 @@
         <aside class="au-o-grid__item au-u-2-6@medium">
           <div class="u-top-sticky">
             <div class="au-u-visible-from@medium">
-              {{#if this.model.agendaItem.handledBy.resolutions}}
+              {{#if this.wasHandled}}
                 <AuAlert @skin="success" @icon="decided" @title="Dit werd behandeld" />
               {{else}}
                 <AuAlert @skin="warning" @icon="three-dots" @title="Dit werd nog niet behandeld" />
