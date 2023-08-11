@@ -98,11 +98,11 @@
           <h3 class="au-u-h4 au-u-medium">Verfijn de zoekresultaten</h3>
           <Filters::SelectMultipleFilter
             @id="municipality"
-            @label="Waar woon je?"
+            @label="Kies één of meer gemeentes"
             @options={{this.municipalities}}
             @searchField="label"
             @queryParam="gemeentes"
-            @placeholder="Selecteer een optie"
+            @placeholder="Alle gemeentes"
             @value={{this.municipality}}
           />
           <Filters::DateRangeFilter
