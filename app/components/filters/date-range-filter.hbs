@@ -1,52 +1,49 @@
-<AuFieldset as |f|>
-  <f.legend @skin={{this.skin}}>
-    {{@label}}
-  </f.legend>
-  <f.content class="au-u-1-1">
-    {{#if this.isChoosingPresets}}
-      <AuFormRow>
-        <PowerSelect
-          @selected={{this.selectedPreset}}
-          @options={{this.presets}}
-          @onChange={{this.handleSelectionChange}}
-          @allowClear={{true}}
-          @placeholder="Selecteer een periode"
-          class="au-u-1-1"
-          as |preset|
-        >{{preset}}</PowerSelect>
+{{#if this.isChoosingPresets}}
+  <AuFormRow>
+    <AuLabel for="date-period">Selecteer een periode</AuLabel>
+    <PowerSelect
+      @selected={{this.selectedPreset}}
+      @options={{this.presets}}
+      @onChange={{this.handleSelectionChange}}
+      @allowClear={{true}}
+      @placeholder="Alle periodes"
+      @triggerId="date-period"
+      class="au-u-1-1"
+      as |preset|
+    >{{preset}}</PowerSelect>
 
-        <Filters::DateRangeFilter::ToggleButton
-          @icon="calendar"
-          @onClick={{this.chooseCustomRange}}
-          class="au-u-margin-top-tiny"
-        >
-          Eigen periode kiezen
-        </Filters::DateRangeFilter::ToggleButton>
-      </AuFormRow>
-    {{else}}
-      <AuFormRow>
-        <AuLabel for="date-from">Van</AuLabel>
-        <Filters::DateRangeFilter::DateInput
-          @value={{this.start}}
-          @onChange={{this.handleStartDateChange}}
-          id="date-from"
-        />
-      </AuFormRow>
-      <AuFormRow>
-        <AuLabel for="date-until">Tot</AuLabel>
-        <Filters::DateRangeFilter::DateInput
-          @value={{this.end}}
-          @onChange={{this.handleEndDateChange}}
-          id="date-until"
-        />
+    <Filters::DateRangeFilter::ToggleButton
+      @icon="calendar"
+      @onClick={{this.chooseCustomRange}}
+      class="au-u-margin-top-tiny"
+    >
+      Eigen periode kiezen
+    </Filters::DateRangeFilter::ToggleButton>
+  </AuFormRow>
+{{else}}
+  <AuFormRow>
+    <AuLabel for="date-from">Startdatum</AuLabel>
+    <Filters::DateRangeFilter::DateInput
+      @value={{this.start}}
+      @onChange={{this.handleStartDateChange}}
+      id="date-from"
+    />
+  </AuFormRow>
+  <div>
+    <AuFormRow>
+      <AuLabel for="date-until">Einddatum</AuLabel>
+      <Filters::DateRangeFilter::DateInput
+        @value={{this.end}}
+        @onChange={{this.handleEndDateChange}}
+        id="date-until"
+      />
+    </AuFormRow>
 
-        <Filters::DateRangeFilter::ToggleButton
-          @icon="nav-up-down"
-          @onClick={{this.choosePresets}}
-        >
-          Bestaande periodes
-        </Filters::DateRangeFilter::ToggleButton>
-      </AuFormRow>
-    {{/if}}
-  </f.content>
-</AuFieldset>
+    <Filters::DateRangeFilter::ToggleButton
+      @icon="nav-up-down"
+      @onClick={{this.choosePresets}}
+    >
+      Bestaande periodes
+    </Filters::DateRangeFilter::ToggleButton>
+  </div>
+{{/if}}

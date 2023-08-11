@@ -1,3 +1,5 @@
+@use "sass:map";
+
 // Add ol styles
 ol {
   counter-reset: item;
@@ -255,5 +257,12 @@ cursor {
   &::-webkit-date-and-time-value {
     min-height: 1.5em;
     text-align: left; // iOS shows the text centered by default
+  }
+}
+
+// The max-width utils don't have responsive versions yet
+.au-u-max-width-xsmall\@small {
+  @include mq(small) {
+    max-width: map.get($mq-breakpoints, "xsmall");
   }
 }
