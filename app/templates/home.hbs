@@ -14,9 +14,9 @@
           {{did-insert this.resetLoading}}
           >
           <div class="au-o-grid__item au-u-3-4@small">
-            <PowerSelect
+            <PowerSelectMultiple
               @onChange={{this.handleMunicipalityChange}}
-              @selected={{this.selectedMunicipality}}
+              @selected={{this.selectedMunicipalities}}
               @options={{this.municipalities}}
               @allowClear={{true}}
               @searchField="label"
@@ -24,10 +24,10 @@
               @noMatchesMessage={{"Geen gemeente gevonden"}}
               @searchMessage="Aan het zoeken..."
               @searchEnabled={{true}}
-              as |singleSelect|
+              as |municipality|
             >
-              {{singleSelect.label}}
-            </PowerSelect>
+              {{municipality.label}}
+            </PowerSelectMultiple>
           </div>
           <div class="au-o-grid__item au-u-1-4@small">
             <AuButton

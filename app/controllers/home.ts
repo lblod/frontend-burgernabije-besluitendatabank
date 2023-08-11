@@ -3,6 +3,7 @@ import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import { seperator } from 'frontend-burgernabije-besluitendatabank/helpers/constants';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 
 export default class HomeController extends Controller {
@@ -11,11 +12,7 @@ export default class HomeController extends Controller {
 
   /** Controls the loading animation of the "locatie's opslaan" button */
   @tracked loading = false;
-
-  @tracked selectedMunicipality: {
-    label: string;
-    id: string;
-  } | null = null;
+  @tracked selectedMunicipalities: Array<{ label: string; id: string }> = [];
 
   get municipalities() {
     return this.municipalityList.municipalities();
@@ -26,20 +23,19 @@ export default class HomeController extends Controller {
     this.loading = false;
   }
 
-  @action handleMunicipalityChange(m: { label: string; id: string }) {
-    this.selectedMunicipality = m
-      ? {
-          label: m.label,
-          id: m.id,
-        }
-      : null;
+  @action handleMunicipalityChange(
+    selectedMunicipalities: Array<{ label: string; id: string }>
+  ) {
+    this.selectedMunicipalities = selectedMunicipalities;
   }
 
   @action handleMunicipalitySelect() {
     this.loading = true;
     this.router.transitionTo('agenda-items', {
       queryParams: {
-        gemeentes: this.selectedMunicipality?.label || '',
+        gemeentes: this.selectedMunicipalities
+          .map((municipality) => municipality.label)
+          .join(seperator),
       },
     });
   }
