@@ -72,6 +72,23 @@ cursor {
 }
 
 // Accordion override
+.au-c-accordion {
+  .au-c-toolbar {
+    align-items: center;
+  }
+
+  .au-c-icon {
+    margin-top: 0 !important;
+  }
+
+  .au-c-button--link {
+    text-decoration: none;
+    font-weight: var(--au-medium);
+
+    @include au-font-size(var(--au-h4));
+  }
+}
+
 .c-accordion-holder {
   display: flex;
 
@@ -114,22 +131,6 @@ cursor {
   }
 }
 
-.au-c-accordion {
-  .au-c-toolbar {
-    align-items: center;
-  }
-
-  .au-c-icon {
-    margin-top: 0 !important;
-  }
-
-  .au-c-button--link {
-    text-decoration: none;
-    font-weight: var(--au-medium);
-    @include au-font-size(var(--au-h4));
-  }
-}
-
 // Truncate
 .u-truncate {
   display: -webkit-box;
@@ -146,8 +147,7 @@ cursor {
   --button: 100%;
 
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-flow: row wrap;
   gap: var(--gap);
 
   & > .au-c-input-wrapper {
@@ -227,7 +227,8 @@ cursor {
 
 // <input type="date"> fixes for Safari
 .au-c-input {
-  background-color: var(--au-white); // We don't set a background color, and safari uses a different one on iOS
+  // We don't set a background color, and safari uses a different one on iOS
+  background-color: var(--au-white);
 }
 
 .au-c-input[type="date"] {

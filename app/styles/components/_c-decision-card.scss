@@ -12,8 +12,8 @@
   font-weight: var(--au-medium);
   max-width: 120ch;
 
-  &:after {
-    content: '';
+  &::after {
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -25,6 +25,7 @@
 
 .c-decision-card__content {
   @include au-font-size(var(--au-h6), 1.5);
+
   color: var(--au-gray-900);
   display: -webkit-box;
   -webkit-line-clamp: 3;

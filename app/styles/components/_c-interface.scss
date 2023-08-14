@@ -13,18 +13,19 @@
   --sidebar: 100%;
 
   flex-basis: var(--sidebar);
+
   // Without this `width`, the sidebar dissapears from the page on some breakpoints if the content is too wide
   width: var(--sidebar);
   padding: $au-unit-small;
   background-color: var(--au-gray-100);
-  border-bottom: .1rem solid var(--au-gray-200);
+  border-bottom: 0.1rem solid var(--au-gray-200);
 
   @include mq(small) {
     --sidebar: 250px;
 
     padding: $au-unit;
     border-bottom: 0;
-    border-right: .1rem solid var(--au-gray-200);
+    border-right: 0.1rem solid var(--au-gray-200);
     height: 100%;
   }
 
@@ -108,6 +109,7 @@
 
   @include mq(small) {
     @include au-font-size(var(--au-base), 1);
+
     font-weight: var(--au-regular);
     position: absolute;
     top: -1000px;

@@ -1,5 +1,6 @@
 .c-description-list {
   @include au-font-size(var(--au-h6));
+
   display: flex;
   flex-direction: column;
   gap: $au-unit-small;
@@ -7,7 +8,7 @@
   margin-left: 0 !important;
 
   & > li {
-    list-style: none; 
+    list-style: none;
     display: flex;
     gap: $au-unit-small;
     align-items: center;
