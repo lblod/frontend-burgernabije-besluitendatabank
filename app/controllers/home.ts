@@ -3,8 +3,8 @@ import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import { seperator } from 'frontend-burgernabije-besluitendatabank/helpers/constants';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
+import { serializeArray } from 'frontend-burgernabije-besluitendatabank/utils/query-params';
 
 export default class HomeController extends Controller {
   @service declare router: RouterService;
@@ -33,9 +33,9 @@ export default class HomeController extends Controller {
     this.loading = true;
     this.router.transitionTo('agenda-items', {
       queryParams: {
-        gemeentes: this.selectedMunicipalities
-          .map((municipality) => municipality.label)
-          .join(seperator),
+        gemeentes: serializeArray(
+          this.selectedMunicipalities.map((municipality) => municipality.label)
+        ),
       },
     });
   }

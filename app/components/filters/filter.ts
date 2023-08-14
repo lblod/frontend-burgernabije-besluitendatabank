@@ -1,16 +1,17 @@
 import Component from '@glimmer/component';
 import RouterService from '@ember/routing/router-service';
 import { service } from '@ember/service';
-import { get } from '@ember/object';
+
+export interface FilterArgs {
+  id: string;
+  queryParam: string;
+
+  searchField: string;
+  options: Array<object>;
+}
 
 interface Signature {
-  Args: {
-    id: string;
-    queryParam: string;
-
-    searchField: string;
-    options: Array<object>;
-  };
+  Args: FilterArgs;
 }
 
 export default class FilterComponent<S = Signature> extends Component<S> {
@@ -21,8 +22,8 @@ export default class FilterComponent<S = Signature> extends Component<S> {
    * @param param name of the queryParameter that is presented to the user
    * @returns queryParameter value. Possibly undefined
    */
-  getQueryParam(param: string) {
-    return get(this.router.currentRoute.queryParams, param);
+  getQueryParam(param: string): string | undefined {
+    return this.router.currentRoute.queryParams[param];
   }
 
   /**
