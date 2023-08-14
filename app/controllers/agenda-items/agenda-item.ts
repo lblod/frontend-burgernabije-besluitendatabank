@@ -12,6 +12,10 @@ export default class AgendaItemController extends Controller {
     return !!this.model.vote;
   }
 
+  get wasHandled() {
+    return Boolean(this.model.agendaItem.belongsTo('handledBy').value());
+  }
+
   get municipalityQuery() {
     return { gemeentes: this.model.agendaItem.session?.municipality };
   }
