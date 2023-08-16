@@ -33,6 +33,7 @@
 
 .c-chart__legend {
   @include au-font-size(var(--au-h6));
+
   color: var(--au-gray-700);
   flex-shrink: 0;
   width: 200px;
@@ -49,13 +50,13 @@
 }
 
 .c-chart__legend-item::before {
-  content: '';
+  content: "";
   display: block;
   width: $au-unit-small;
   height: $au-unit-small;
   background-color: var(--au-gray-500);
-  border-radius: .3rem;
-  margin-bottom: .1rem;
+  border-radius: 0.3rem;
+  margin-bottom: 0.1rem;
   margin-right: $au-unit-small;
 }
 
@@ -92,7 +93,9 @@
 }
 
 .c-pie--abstentions {
-  --offset: calc((((var(--value-proponents) + var(--value-opponents)) / 158) * 360) * 1deg);
+  --offset: calc(
+    (((var(--value-proponents) + var(--value-opponents)) / 158) * 360) * 1deg
+  );
 
   stroke: var(--au-gray-400);
   stroke-dasharray: var(--value-abstentions) 158;

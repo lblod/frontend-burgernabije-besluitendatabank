@@ -1,7 +1,7 @@
 .c-responsive-tables {
   --width: 100%;
   --gap: #{$au-unit-small};
-  
+
   display: flex;
   flex-wrap: wrap;
   margin-top: $au-unit-small;
@@ -27,7 +27,7 @@
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
     }
-  
+
     & > .au-c-table-wrapper + .au-c-table-wrapper {
       border-left: 0;
       border-top-left-radius: 0;
