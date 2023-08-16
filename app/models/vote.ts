@@ -17,6 +17,14 @@ export default class VoteModel extends Model {
 
   @hasMany('mandatary', { async: true, inverse: null })
   declare hasProponents: AsyncHasMany<MandataryModel>;
+
+  get hasVotes(): boolean {
+    return (
+      this.numberOfAbstentions !== undefined &&
+      this.numberOfOpponents !== undefined &&
+      this.numberOfProponents !== undefined
+    );
+  }
 }
 
 declare module 'ember-data/types/registries/model' {
