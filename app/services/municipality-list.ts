@@ -1,7 +1,7 @@
 import Service, { service } from '@ember/service';
 import Store from '@ember-data/store';
 import LocationModel from 'frontend-burgernabije-besluitendatabank/models/location';
-import { seperator } from 'frontend-burgernabije-besluitendatabank/helpers/constants';
+import { deserializeArray } from 'frontend-burgernabije-besluitendatabank/utils/query-params';
 
 export default class MunicipalityListService extends Service {
   @service declare store: Store;
@@ -54,11 +54,10 @@ export default class MunicipalityListService extends Service {
    * @returns a Promise for a joined string of those locations' id's, or undefined
    */
   async getLocationIdsFromLabels(
-    labels?: Array<string> | string,
-    stringSeperator = seperator
+    labels?: Array<string> | string
   ): Promise<string | undefined> {
     if (typeof labels === 'string') {
-      labels = labels.split(stringSeperator);
+      labels = deserializeArray(labels);
     } else if (!labels) {
       return undefined;
     }
