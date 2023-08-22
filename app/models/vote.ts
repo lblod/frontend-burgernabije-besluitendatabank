@@ -18,7 +18,7 @@ export default class VoteModel extends Model {
   @hasMany('mandatary', { async: true, inverse: null })
   declare hasProponents: AsyncHasMany<MandataryModel>;
 
-  get hasVotes(): boolean {
+  get hasVoteNumbers(): boolean {
     return (
       this.numberOfAbstentions !== undefined &&
       this.numberOfOpponents !== undefined &&

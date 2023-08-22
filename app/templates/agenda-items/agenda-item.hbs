@@ -138,19 +138,7 @@
                   @iconClosed="nav-right"
                   @buttonLabel="Stemming"
                 >
-                  {{#if this.model.vote.hasVotes}}
-                    <VoteOverview @vote={{this.model.vote}} />
-                  {{else}}
-                    <AuAlert
-                      @skin="warning"
-                      @title={{if
-                        this.wasHandled
-                        "Stemming niet beschikbaar"
-                        "Dit agendapunt werd nog niet behandeld"
-                      }}
-                      class="au-u-margin-top au-u-margin-bottom"
-                    />
-                  {{/if}}
+                  <VoteOverview @vote={{this.model.vote}} />
                 </AuAccordion>
               </section>
             </c.content>
