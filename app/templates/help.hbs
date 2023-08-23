@@ -1,10 +1,182 @@
 {{page-title "Help"}}
 
-<div class="au-u-flex au-u-padding-huge au-u-flex--center">
-  <AuContent class="au-u-1-2 au-u-flex-self-center">
-    <h1>Over BNB
-    </h1>
-    <p>https://burgernabije-besluitendatabank-dev.s.redhost.be/ is de officiële
-      website ...</p>
-  </AuContent>
-</div>
+<main
+  class="au-c-main-container__content au-c-main-container__content--scroll"
+  id="content"
+>
+  <section class="au-o-region">
+    <div class="au-o-layout au-o-layout--small">
+      <AuHeading
+        @level="1"
+        @skin="1"
+        class="au-u-margin-bottom"
+      >Helppagina</AuHeading>
+      <AuHeading @level="2" @skin="2" class="au-u-margin-bottom">Veelgestelde
+        vragen</AuHeading>
+
+      <div class="au-o-flow au-u-margin-bottom-large">
+        <FaqCard
+          @heading="Waarom zijn mijn zoekresultaten onvolledig of leeg?"
+          @subheading="Zorg dat u door gebruik van filters het volledige plaatje ziet, en niet
+      enkel gebruik maakt van inhoudelijke zoekopdrachten."
+        >
+          <div class="au-o-grid au-o-grid--small">
+            <div class="au-o-grid__item au-u-1-2@medium au-c-content">
+              <AuHeading @level="4" @skin="5">
+                PDF’s die ingescand zijn als afbeelding verschijnen niet in de
+                zoekopdracht. Deze zijn niet leesbaar of doorzoekbaar.
+              </AuHeading>
+              <p>De functionaliteit "Zoek in inhoud dossier" doorzoekt de PDF's
+                en webpagina's die lokale besturen doorsturen.</p>
+              <p>Webpagina's en correct opgeslagen PDF's zijn leesbaar.
+                <strong>Afbeeldingen, of een afbeelding in een PDF, zijn niet
+                  doorzoekbaar</strong>
+                omdat ze niet leesbaar zijn door computers. Dit zorgt ervoor dat
+                bepaalde dossiers niet getoond worden, die toch gerelateerd zijn
+                aan uw zoekopdracht</p>
+            </div>
+            <div class="au-o-grid__item au-u-1-2@medium au-c-content">
+              <AuHeading @level="4" @skin="5">
+                Niet alle informatie zit in de inhoud van het dossier zelf.
+              </AuHeading>
+              <p>We zoeken momenteel niet op op synoniemen of lokale varianten.
+                Bepaalde documenten zullen we niet vinden.</p>
+              <p>De functionaliteit "Zoek in inhoud dossier" toont enkel
+                resultaten die overeenkomen met informatie die te vinden is in
+                een dossier.
+                <strong>De zoekfunctionaliteit toont geen informatie over het
+                  bestuur of over het dossier zelf</strong>
+                (zoals het type of de categorie).</p>
+            </div>
+          </div>
+        </FaqCard>
+
+        <FaqCard
+          @heading="Waarom werkt de zoekfunctie niet zoals ik had verwacht?"
+          @subheading="We werken er aan!"
+        >
+          <AuHeading @level="4" @skin="5">
+            Niet alle informatie zit in de inhoud van het dossier zelf.
+          </AuHeading>
+          <p>We willen de zoekfunctionaliteit samen met u verbeteren. We horen
+            dus graag wat er niet werkt zoals verwacht! Neem gerust contact met
+            ons op, zodat we een betere ervaring kunnen creëren.</p>
+        </FaqCard>
+
+        <FaqCard
+          @heading="Hoe moet ik de filters gebruiken?"
+          @subheading="Gebruikers die niet bekend zijn met de Databank Toezicht moeten eerst
+      even wennen aan de gehanteerde benamingen voor filters. We baseren ons
+      hiervoor op de standaarden die gebruikt worden voor linked open data."
+        >
+          <p>We overlopen ze even:</p>
+          <ul>
+            <li><strong>Bestuurseenheid</strong>: hier vind je een lijst van
+              alle juridische entiteiten (zoals Gemeente Wingene of OCMW Gent).
+              Je kan ook meerdere entiteiten selecteren. Deze filter gebruik je
+              dus best als je wenst te zoeken op inzendingen van een specifiek
+              bestuur.</li>
+            <li><strong>Provincie</strong>: hier kan je filteren op de 5 Vlaamse
+              provincies. De maatschappelijke zetel van een bestuurseenheid
+              bepaalt tot welke provincie het bestuur behoort.</li>
+            <li><strong>Type bestuur</strong>: hier geven we een categorisering
+              aan alle lokale besturen op basis van hun vorm (bv. gemeente,
+              OCMW, AGB,…).</li>
+            <li><strong>Type Bestuursorgaan</strong>: deze filter zie je pas als
+              je een ‘type bestuur’ hebt ingevuld. Je kan hier kiezen uit
+              verschillende organen binnen een bepaald bestuur (zoals
+              gemeenteraad, algemene vergadering,…).</li>
+            <li><strong>Categorie dossier</strong>: hier vind je een lijst van
+              alle meldingsplichtige of inzendingsplichtige stukken. Denk
+              hierbij aan adviezen, besluiten of besluitenlijsten. Deze lijst is
+              gebaseerd op de regelgeving.</li>
+            <li><strong>Periode zitting</strong>: hier kan je zoeken op de datum
+              van de zitting waarop het besluit, advies,… genomen werd.</li>
+            <li><strong>Periode verstuurd</strong>: hier kan je zoeken op datum
+              wanneer het bestuur het dossier heeft bezorgd.</li>
+            <li>Voor belastingsreglementen voorzien we nog extra filters zoals
+              de lijst met MAR-codes en de periode waarbinnen een belasting
+              geldig is.</li>
+          </ul>
+          <p>Let wel: in deze versie is er nog verband tussen het gebruik van
+            verschillende filters. Dit wordt in een volgende versie uitgerold.
+            Voorlopig kan je dus nog een combinatie maken van:</p>
+          <ul>
+            <li>Type bestuur = gemeente</li>
+            <li>Type bestuursorgaan = provincieraad</li>
+          </ul>
+          <p>Uiteraard zal je in dit geval dus 0 resultaten zien, omdat deze
+            combinatie onmogelijk kan voorvallen.</p>
+        </FaqCard>
+
+        <FaqCard
+          @heading="Hoe werkt de zoekfunctie?"
+          @subheading="We werken er aan!"
+        >
+          <p>Bij het zoeken in dossiers kan je meerdere regels hanteren die jouw
+            zoekresultaat kunnen finetunen:</p>
+          <ul>
+            <li>Gebruik een
+              <strong>+</strong>
+              als je wenst dat jouw zoekresultaat beide woorden bevat bv. regen
+              + zonneschijn</li>
+            <li>Gebruik een
+              <strong>|</strong>
+              als je wenst dat jouw zoekresultaat minstens 1 van de woorden
+              bevat bv. regen | zonneschijn</li>
+            <li>Door het gebruik van
+              <strong>“"</strong>
+              zorg je ervoor dat er gezocht wordt op een specifieke zin bv.
+              “regen en zonneschijn”</li>
+          </ul>
+          <p>We willen stelselmatig het gebruik van regels in onze zoekfunctie
+            uitbreiden en zullen dit via deze pagina bekend maken.</p>
+        </FaqCard>
+      </div>
+
+      <div class="au-o-region">
+        <AuHeading @level="2" @skin="2" class="au-u-margin-bottom">
+          Geen antwoord op uw vraag?
+          <br />
+          Neem contact met ons op!
+        </AuHeading>
+
+        <p>
+          <AuLinkExternal
+            href="mailto:LoketLokaalBestuur@vlaanderen.be"
+          >LoketLokaalBestuur@vlaanderen.be</AuLinkExternal></p>
+      </div>
+    </div>
+  </section>
+  <AuMainFooter>
+    <AuHeading @level="3" @skin="4">
+      Toezicht ABB is een officiële website van de Vlaamse overheid
+    </AuHeading>
+    <AuContent @skin="small">
+      <p>Uitgegeven door
+        <AuLinkExternal
+          href="https://www.vlaanderen.be/organisaties/administratieve-diensten-van-de-vlaamse-overheid/beleidsdomein-kanselarij-en-bestuur/agentschap-binnenlands-bestuur"
+        >Agentschap Binnenlands Bestuur</AuLinkExternal></p>
+      <ul class="au-c-list-horizontal">
+        <li class="au-c-list-horizontal__item">
+          <AuLink
+            @route="legaal.disclaimer"
+            @skin="secondary"
+          >Disclaimer</AuLink>
+        </li>
+        <li class="au-c-list-horizontal__item">
+          <AuLink
+            @route="legaal.cookieverklaring"
+            @skin="secondary"
+          >Cookieverklaring</AuLink>
+        </li>
+        <li class="au-c-list-horizontal__item">
+          <AuLink
+            @route="legaal.toegankelijkheidsverklaring"
+            @skin="secondary"
+          >Toegankelijkheidsverklaring</AuLink>
+        </li>
+      </ul>
+    </AuContent>
+  </AuMainFooter>
+</main>
