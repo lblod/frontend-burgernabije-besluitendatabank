@@ -16,6 +16,7 @@ interface AgendaItemsParams {
   municipalityLabels: string;
   plannedStartMin: string;
   plannedStartMax: string;
+  dataQualityList: Array<string>;
 }
 
 interface AgendaItemsLoaderArgs {
@@ -124,6 +125,9 @@ export default class AgendaItemsIndexController extends Controller {
   /** Mobile filter */
   @tracked hasFilter = false;
 
+  /** Data quality modal */
+  @tracked modalOpen = false;
+
   AgendaItemsLoader = AgendaItemsLoader;
 
   get municipalities() {
@@ -145,13 +149,28 @@ export default class AgendaItemsIndexController extends Controller {
     }
   };
 
+  showModal = () => {
+    this.modalOpen = true;
+  };
+
+  closeModal = () => {
+    if (this.modalOpen) {
+      this.modalOpen = false;
+    }
+  };
+
   get filters(): AgendaItemsParams {
     return {
       keyword: this.keyword,
       municipalityLabels: this.municipalityLabels,
       plannedStartMin: this.plannedStartMin,
       plannedStartMax: this.plannedStartMax,
+      dataQualityList: this.municipalityLabels.split('+'),
     };
+  }
+
+  get hasMunicipalityFilter() {
+    return this.filters.municipalityLabels.length > 0;
   }
 }
 

@@ -25,4 +25,5 @@ Router.map(function () {
   this.route('accessibility-statement', {
     path: '/toegankelijkheidsverklaring',
   });
+  this.route('data-quality', { path: '/data-kwaliteit' });
 });
