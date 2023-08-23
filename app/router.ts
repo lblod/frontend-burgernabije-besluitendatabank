@@ -20,7 +20,7 @@ Router.map(function () {
   this.route('four-oh-four', { path: '/*path' });
 
   this.route('disclaimer');
-  this.route('help', { path: '/overbnb' });
+  this.route('help');
   this.route('cookie-notice', { path: '/cookieverklaring' });
   this.route('accessibility-statement', {
     path: '/toegankelijkheidsverklaring',
