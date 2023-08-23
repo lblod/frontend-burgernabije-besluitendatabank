@@ -74,7 +74,7 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
 
       const { keyword, plannedStartMin, plannedStartMax } = this.#filters;
 
-      const agendaItems: AdapterPopulatedRecordArrayWithMeta<AgendaItem> =
+      let agendaItems: AdapterPopulatedRecordArrayWithMeta<AgendaItem> =
         await this.store.query(
           'agenda-item',
           agendaItemsQuery({
@@ -83,9 +83,23 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
             keyword,
             plannedStartMin,
             plannedStartMax,
+            withTimeSpecialization: true,
           })
         );
 
+      if (agendaItems.length === 0) {
+        agendaItems = await this.store.query(
+          'agenda-item',
+          agendaItemsQuery({
+            page,
+            locationIds: locationIds,
+            keyword,
+            plannedStartMin,
+            plannedStartMax,
+            withTimeSpecialization: false,
+          })
+        );
+      }
       this.total = getCount(agendaItems) ?? 0;
       this.data = [...this.data, ...agendaItems.slice()];
     }
@@ -161,12 +175,14 @@ const agendaItemsQuery = ({
   locationIds,
   plannedStartMin,
   plannedStartMax,
+  withTimeSpecialization,
 }: {
   page: number;
   keyword?: string;
   locationIds?: string;
   plannedStartMin?: string;
   plannedStartMax?: string;
+  withTimeSpecialization?: boolean;
 }) => ({
   include: [
     'sessions.governing-body.is-time-specialization-of.administrative-unit.location',
@@ -175,21 +191,33 @@ const agendaItemsQuery = ({
   sort: '-sessions.planned-start',
   filter: {
     sessions: {
-      ':gt:planned-start': plannedStartMin ? plannedStartMin : undefined,
-      ':lt:planned-start': plannedStartMax ? plannedStartMax : undefined,
-      'governing-body': {
-        'is-time-specialization-of': {
-          'administrative-unit': {
-            location: {
-              ':id:': locationIds ? locationIds : undefined,
+      ':gt:planned-start': plannedStartMin || undefined,
+      ':lt:planned-start': plannedStartMax || undefined,
+      ...(locationIds && withTimeSpecialization
+        ? {
+            'governing-body': {
+              'is-time-specialization-of': {
+                'administrative-unit': {
+                  location: {
+                    ':id:': locationIds,
+                  },
+                },
+              },
             },
-          },
-        },
-      },
+          }
+        : {
+            'governing-body': {
+              'administrative-unit': {
+                location: {
+                  ':id:': locationIds,
+                },
+              },
+            },
+          }),
     },
     ':or:': {
-      title: keyword ? keyword : undefined,
-      description: keyword ? keyword : undefined,
+      title: keyword || undefined,
+      description: keyword || undefined,
     },
   },
   page: {
