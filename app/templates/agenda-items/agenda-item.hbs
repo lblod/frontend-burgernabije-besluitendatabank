@@ -118,8 +118,8 @@
                         @skin="warning"
                         @title={{if
                           this.wasHandled
-                          "Geen verslag"
-                          "Dit agenda punt werd nog niet behandeld"
+                          "Verslag niet beschikbaar"
+                          "Dit agendapunt werd nog niet behandeld"
                         }}
                         class="au-u-margin-top au-u-margin-bottom"
                       />
@@ -139,6 +139,7 @@
                   @buttonLabel="Stemming"
                 >
                   <VoteOverview @vote={{this.model.vote}} />
+
                 </AuAccordion>
               </section>
             </c.content>

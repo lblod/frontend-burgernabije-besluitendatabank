@@ -1,13 +1,22 @@
 import { action } from '@ember/object';
-import FilterComponent from './filter';
+import FilterComponent, { type FilterArgs } from './filter';
 import { get } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
-import { seperator } from 'frontend-burgernabije-besluitendatabank/helpers/constants';
+import {
+  deserializeArray,
+  serializeArray,
+} from 'frontend-burgernabije-besluitendatabank/utils/query-params';
 
-const regex = new RegExp('\\' + seperator + '$', 'm');
+type Option = Record<string, string>;
 
-export default class SelectMultipleFilterComponent extends FilterComponent {
-  @tracked selected?: object;
+interface Signature {
+  Args: {
+    options: Promise<Option[]>;
+  } & FilterArgs;
+}
+
+export default class SelectMultipleFilterComponent extends FilterComponent<Signature> {
+  @tracked selected?: Option[];
 
   /** Action to parse the queryParameter value(s) & select them in the select input */
   @action
@@ -16,11 +25,11 @@ export default class SelectMultipleFilterComponent extends FilterComponent {
     // On the page load, we can use this to load in values
     const queryParam = this.getQueryParam(this.args.queryParam);
     if (queryParam) {
-      const needles = queryParam.split(seperator);
+      const needles = deserializeArray(queryParam);
       const searchField = this.args.searchField;
 
-      const haystack: Array<object> = await this.args.options;
-      const results: Array<object> = [];
+      const haystack = await this.args.options;
+      const results: Option[] = [];
 
       for (let i = 0; i < needles.length; i++) {
         const needle = needles[i];
@@ -37,19 +46,15 @@ export default class SelectMultipleFilterComponent extends FilterComponent {
   }
 
   @action
-  async selectChange(m: []) {
-    // Update UI
-    this.selected = m;
-
-    // Update queryParameters
-    let values = '';
-    for (let i = 0; i < m.length; i++) {
-      values += get(m[i], this.args.searchField) + seperator;
-    }
-    values = values.replace(regex, '');
+  async selectChange(selectedOptions: Option[]) {
+    this.selected = selectedOptions;
 
     this.updateQueryParams({
-      [this.args.queryParam]: values,
+      [this.args.queryParam]: serializeArray(
+        selectedOptions
+          .map((value) => value[this.args.searchField])
+          .filter(Boolean) as string[]
+      ),
     });
   }
 }
