@@ -173,25 +173,13 @@ const agendaItemsQuery = ({
     'sessions.governing-body.administrative-unit.location',
   ].join(','),
   sort: '-sessions.planned-start',
-  filter: {
-    sessions: {
-      ':gt:planned-start': plannedStartMin ? plannedStartMin : undefined,
-      ':lt:planned-start': plannedStartMax ? plannedStartMax : undefined,
-      'governing-body': {
-        'is-time-specialization-of': {
-          'administrative-unit': {
-            location: {
-              ':id:': locationIds ? locationIds : undefined,
-            },
-          },
-        },
-      },
-    },
-    ':or:': {
-      title: keyword ? keyword : undefined,
-      description: keyword ? keyword : undefined,
-    },
-  },
+  filter: keyword || undefined,
+  'filter[:or:][sessions][governing-body][is-time-specialization-of][administrative-unit][location][:id:]':
+    locationIds || undefined,
+  'filter[:or:][sessions][governing-body][administrative-unit][location][:id:]':
+    locationIds || undefined,
+  'filter[sessions][:gt:planned-start]': plannedStartMin || undefined,
+  'filter[sessions][:lt:planned-start]': plannedStartMax || undefined,
   page: {
     number: page,
     size: 10,
