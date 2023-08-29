@@ -1,8 +1,13 @@
 <p
   class="au-u-h6 au-u-flex au-u-flex--spaced-tiny au-u-flex--vertical-center au-u-margin-top"
 >
-  <AuIcon @icon="visible" @size="medium" />
-  Openbare stemming
+  {{#if @agendaItem.handledBy.public}}
+    <AuIcon @icon="visible" @size="medium" />
+    Openbare stemming
+  {{else}}
+    <AuIcon @icon="remove" @size="medium" />
+    Geheime stemming
+  {{/if}}
 </p>
 
 {{! We use a style tag here since it's way simpler than the JS equivalent which provides no other benefits other than
@@ -14,7 +19,7 @@ not triggering the linting error}}
   {{this.numberOfProponentsGraphValue}}; }
 </style>
 
-{{#if this.model.vote.hasVoteNumbers}}
+{{#if @vote.hasVoteNumbers}}
 
   <div class="c-chart">
     <svg
@@ -54,81 +59,83 @@ not triggering the linting error}}
   </div>
 {{/if}}
 
-<div class="c-accordion-holder c-accordion-holder--top">
-  <AuAccordion
-    @reverse={{true}}
-    @iconOpen={{"nav-down"}}
-    @iconClosed={{"nav-right"}}
-    @buttonLabel={{"Wie stemde?"}}
-    @subtitle="Meer informatie over stemmers en hun partijen"
-  >
-    <div class="c-responsive-tables">
-      <AuTable>
-        <:header>
-          <tr>
-            <th class="c-vote-table-proponent au-u-medium">Voorstanders</th>
-          </tr>
-        </:header>
-        <:body>
-          {{#each this.proponents as |mandatary|}}
-            {{#if mandatary.alias.familyName}}
-              <tr>
-                <td>
-                  <VoteTableEntry
-                    @familyName={{mandatary.alias.familyName}}
-                    @firstName={{mandatary.alias.firstNameUsed}}
-                    @fraction={{mandatary.hasMembership.innerGroup.name}}
-                  />
-                </td>
-              </tr>
-            {{/if}}
-          {{/each}}
-        </:body>
-      </AuTable>
-      <AuTable>
-        <:header>
-          <tr>
-            <th class="c-vote-table-opponent au-u-medium">Tegenstanders</th>
-          </tr>
-        </:header>
-        <:body>
-          {{#each this.opponents as |mandatary|}}
-            {{#if mandatary.alias.familyName}}
-              <tr>
-                <td>
-                  <VoteTableEntry
-                    @familyName={{mandatary.alias.familyName}}
-                    @firstName={{mandatary.alias.firstNameUsed}}
-                    @fraction={{mandatary.hasMembership.innerGroup.name}}
-                  />
-                </td>
-              </tr>
-            {{/if}}
-          {{/each}}
-        </:body>
-      </AuTable>
-      <AuTable>
-        <:header>
-          <tr>
-            <th class="c-vote-table-abstention au-u-medium">Onthouders</th>
-          </tr>
-        </:header>
-        <:body>
-          {{#each this.abstainers as |mandatary|}}
-            {{#if mandatary.alias.familyName}}
-              <tr>
-                <td>
-                  <VoteTableEntry
-                    @familyName={{mandatary.alias.familyName}}
-                    @firstName={{mandatary.alias.firstNameUsed}}
-                    @fraction={{mandatary.hasMembership.innerGroup.name}}
-                  />
-                </td>
-              </tr>
-            {{/if}}
-          {{/each}}
-        </:body>
-      </AuTable>
-    </div>
-  </AuAccordion>
-</div>
+{{#if @agendaItem.vote.hasVoteNumbers}}
+  <div class="c-accordion-holder c-accordion-holder--top">
+    <AuAccordion
+      @reverse={{true}}
+      @iconOpen={{"nav-down"}}
+      @iconClosed={{"nav-right"}}
+      @buttonLabel={{"Wie stemde?"}}
+      @subtitle="Meer informatie over stemmers en hun partijen"
+    >
+      <div class="c-responsive-tables">
+        <AuTable>
+          <:header>
+            <tr>
+              <th class="c-vote-table-proponent au-u-medium">Voorstanders</th>
+            </tr>
+          </:header>
+          <:body>
+            {{#each this.proponents as |mandatary|}}
+              {{#if mandatary.alias.familyName}}
+                <tr>
+                  <td>
+                    <VoteTableEntry
+                      @familyName={{mandatary.alias.familyName}}
+                      @firstName={{mandatary.alias.firstNameUsed}}
+                      @fraction={{mandatary.hasMembership.innerGroup.name}}
+                    />
+                  </td>
+                </tr>
+              {{/if}}
+            {{/each}}
+          </:body>
+        </AuTable>
+        <AuTable>
+          <:header>
+            <tr>
+              <th class="c-vote-table-opponent au-u-medium">Tegenstanders</th>
+            </tr>
+          </:header>
+          <:body>
+            {{#each this.opponents as |mandatary|}}
+              {{#if mandatary.alias.familyName}}
+                <tr>
+                  <td>
+                    <VoteTableEntry
+                      @familyName={{mandatary.alias.familyName}}
+                      @firstName={{mandatary.alias.firstNameUsed}}
+                      @fraction={{mandatary.hasMembership.innerGroup.name}}
+                    />
+                  </td>
+                </tr>
+              {{/if}}
+            {{/each}}
+          </:body>
+        </AuTable>
+        <AuTable>
+          <:header>
+            <tr>
+              <th class="c-vote-table-abstention au-u-medium">Onthouders</th>
+            </tr>
+          </:header>
+          <:body>
+            {{#each this.abstainers as |mandatary|}}
+              {{#if mandatary.alias.familyName}}
+                <tr>
+                  <td>
+                    <VoteTableEntry
+                      @familyName={{mandatary.alias.familyName}}
+                      @firstName={{mandatary.alias.firstNameUsed}}
+                      @fraction={{mandatary.hasMembership.innerGroup.name}}
+                    />
+                  </td>
+                </tr>
+              {{/if}}
+            {{/each}}
+          </:body>
+        </AuTable>
+      </div>
+    </AuAccordion>
+  </div>
+{{/if}}
