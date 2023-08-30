@@ -267,3 +267,25 @@ cursor {
     max-width: map.get($mq-breakpoints, "xsmall");
   }
 }
+
+.au-c-main-container__content {
+  flex-grow: 999;
+  flex-basis: 0;
+  height: 100%;
+  max-width: 100%;
+}
+
+.au-c-app {
+  overflow: hidden;
+}
+
+.au-c-app .au-c-main-container {
+  height: auto;
+  overflow: hidden;
+}
+
+.c-interface {
+  flex-direction: row-reverse;
+  align-items: stretch;
+  height: 100%;
+}
