@@ -30,9 +30,18 @@ export default class AgendaItemModel extends Model {
     const sessions: SyncHasMany<SessionModel> | null = (this as AgendaItemModel)
       .hasMany('sessions')
       ?.value();
-    return sessions?.find((session) => {
+
+    // We want to use a session with municipality
+    let session = sessions?.find((session) => {
       return session.hasMunicipality;
     });
+
+    // If not found, use the first session
+    if (!session) {
+      session = sessions?.firstObject;
+    }
+
+    return session;
   }
 }
 
