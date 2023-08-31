@@ -139,10 +139,7 @@
                   @buttonLabel="Stemming"
                 >
                   {{#if this.model.vote}}
-                    <VoteOverview
-                      @agendaItem={{this.model.agendaItem}}
-                      @vote={{this.model.vote}}
-                    />
+                    <VoteOverview @vote={{this.model.vote}} />
                   {{else}}
                     <AuAlert
                       @skin="warning"
