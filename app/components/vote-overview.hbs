@@ -1,8 +1,13 @@
 <p
   class="au-u-h6 au-u-flex au-u-flex--spaced-tiny au-u-flex--vertical-center au-u-margin-top"
 >
-  <AuIcon @icon="visible" @size="medium" />
-  Openbare stemming
+  {{#if @vote.secret}}
+    <AuIcon @icon="remove" @size="medium" />
+    Geheime stemming
+  {{else}}
+    <AuIcon @icon="visible" @size="medium" />
+    Openbare stemming
+  {{/if}}
 </p>
 
 {{! We use a style tag here since it's way simpler than the JS equivalent which provides no other benefits other than
@@ -14,7 +19,7 @@ not triggering the linting error}}
   {{this.numberOfProponentsGraphValue}}; }
 </style>
 
-{{#if this.model.vote.hasVoteNumbers}}
+{{#if @vote.hasVoteNumbers}}
 
   <div class="c-chart">
     <svg
