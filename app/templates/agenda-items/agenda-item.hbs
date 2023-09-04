@@ -101,7 +101,7 @@
                   @reverse={{true}}
                   @iconOpen={{"nav-down"}}
                   @iconClosed={{"nav-right"}}
-                  @buttonLabel={{"Verslag"}}
+                  @buttonLabel={{"Besluit"}}
                 >
                   {{#let
                     (get
@@ -118,8 +118,8 @@
                         @skin="warning"
                         @title={{if
                           this.wasHandled
-                          "Verslag niet beschikbaar"
                           "Dit agendapunt werd nog niet behandeld"
+                          "Besluit niet beschikbaar"
                         }}
                         class="au-u-margin-top au-u-margin-bottom"
                       />
