@@ -1,10 +1,10 @@
 import Model, {
+  AsyncBelongsTo,
+  AsyncHasMany,
+  SyncHasMany,
   attr,
   belongsTo,
   hasMany,
-  AsyncHasMany,
-  AsyncBelongsTo,
-  SyncHasMany,
 } from '@ember-data/model';
 import AgendaItemHandlingModel from './agenda-item-handling';
 import SessionModel from './session';
