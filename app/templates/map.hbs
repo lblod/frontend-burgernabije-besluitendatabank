@@ -1,0 +1,27 @@
+<LayoutList>
+  <AuBodyContainer>
+    <div class="c-interface">
+      <div class="c-interface__content c-interface__content--fixed">
+        <div class="bp-map au-u-padding-huge" {{did-insert this.initMap}} />
+      </div>
+      <FilterSidebar @class="c-interface__sidebar au-o-flow">
+        <h3 class="au-u-h4 au-u-medium">Verfijn de zoekresultaten</h3>
+        <Filters::SelectMultipleFilter
+          @id="municipality"
+          @label="Kies één of meer gemeentes"
+          @options={{this.municipalities}}
+          @searchField="label"
+          @queryParam="gemeentes"
+          @placeholder="Alle gemeentes"
+        />
+        <Filters::DateRangeFilter
+          @startQueryParam="begin"
+          @endQueryParam="eind"
+          @start={{this.plannedStartMin}}
+          @end={{this.plannedStartMax}}
+        />
+      </FilterSidebar>
+      <div id="tooltip"><AuLoader /></div>
+    </div>
+  </AuBodyContainer>
+</LayoutList>
