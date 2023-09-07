@@ -31,6 +31,14 @@ export default class VoteOverview extends Component<ArgsInterface> {
     return this.args.vote.hasProponents.toArray().sort(sortByFamilyName);
   }
 
+  get hasVotersData() {
+    return (
+      this.args.vote.hasAbstainers.toArray().length > 0 ||
+      this.args.vote.hasOpponents.toArray().length > 0 ||
+      this.args.vote.hasProponents.toArray().length > 0
+    );
+  }
+
   get numberOfAbstentions() {
     return this.args.vote.numberOfAbstentions || 0;
   }
