@@ -43,6 +43,18 @@ export default class AgendaItemModel extends Model {
 
     return session;
   }
+
+  get municipality() {
+    return this.session?.municipality;
+  }
+
+  get governingBodyNameResolved() {
+    return this.session?.governingBodyNameResolved;
+  }
+
+  get dateFormatted() {
+    return this.session?.dateFormatted;
+  }
 }
 
 declare module 'ember-data/types/registries/model' {
