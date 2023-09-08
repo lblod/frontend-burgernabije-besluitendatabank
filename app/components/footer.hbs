@@ -1,7 +1,6 @@
 <AuMainFooter>
   <AuHeading @level="2" @skin="4">
-    ....vlaanderen.be is een officiële website van de Vlaamse
-    overheid
+    ....vlaanderen.be is een officiële website van de Vlaamse overheid
   </AuHeading>
   <AuContent @skin="small">
     <p>Uitgegeven door
@@ -11,13 +10,18 @@
       >Agentschap Binnenlands Bestuur</a></p>
     <ul class="au-c-list-horizontal">
       <li class="au-c-list-horizontal__item">
+        <FooterLink @route="help">Help</FooterLink>
+      </li>
+      <li class="au-c-list-horizontal__item">
         <FooterLink @route="disclaimer">Disclaimer</FooterLink>
       </li>
       <li class="au-c-list-horizontal__item">
         <FooterLink @route="cookie-notice">Cookieverklaring</FooterLink>
       </li>
       <li class="au-c-list-horizontal__item">
-        <FooterLink @route="accessibility-statement">Toegankelijkheidsverklaring</FooterLink>
+        <FooterLink
+          @route="accessibility-statement"
+        >Toegankelijkheidsverklaring</FooterLink>
       </li>
     </ul>
   </AuContent>
