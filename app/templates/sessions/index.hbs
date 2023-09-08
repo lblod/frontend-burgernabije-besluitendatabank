@@ -10,8 +10,7 @@
             @skin="warning"
             @icon="info-circle"
             @title="Er werden geen zoekresultaten gevonden."
-          >
-          </AuAlert>
+          />
         {{else}}
           <InfiniteList
             @loadMore={{this.loadMore}}
@@ -20,21 +19,25 @@
             @itemsAmount={{@model.count}}
           >
             {{#each this.sessions as |session|}}
-            <li>
-              <article class="c-decision-card">
-                <AuHeading @level="1" @skin="5">
-                  <AuLink @route="sessions.session" @model={{session.id}} class="c-decision-card__link">
-                    {{session.name}}
-                    {{session.dateFormatted}}
-                  </AuLink>
-                </AuHeading>
-                <div class="c-decision-card__footer">
-                  {{session.municipality}}
-                  -
-                  {{session.agendaItemCount}}
-                </div>
-              </article>
-            </li>
+              <li>
+                <article class="c-agenda-item-card">
+                  <AuHeading @level="1" @skin="5">
+                    <AuLink
+                      @route="sessions.session"
+                      @model={{session.id}}
+                      class="c-agenda-item-card__link"
+                    >
+                      {{session.name}}
+                      {{session.dateFormatted}}
+                    </AuLink>
+                  </AuHeading>
+                  <div class="c-agenda-item-card__footer">
+                    {{session.municipality}}
+                    -
+                    {{session.agendaItemCount}}
+                  </div>
+                </article>
+              </li>
             {{/each}}
           </InfiniteList>
         {{/if}}
@@ -55,7 +58,7 @@
           @start={{this.plannedStartMin}}
           @end={{this.plannedStartMax}}
         />
-    </FilterSidebar>
+      </FilterSidebar>
     </div>
   </AuBodyContainer>
 </LayoutList>

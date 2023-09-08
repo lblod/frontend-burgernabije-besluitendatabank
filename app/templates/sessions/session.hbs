@@ -10,17 +10,17 @@
       <ul class="c-infinite-list">
         {{#each this.agendaItemsSorted as |item|}}
           <li>
-            <article class="c-decision-card">
+            <article class="c-agenda-item-card">
               <AuHeading @level="1" @skin="5">
                 <AuLink 
-                  class="c-decision-card__link"
+                  class="c-agenda-item-card__link"
                   @route="agenda-items.agenda-item"
                   @model={{ item.id }}
                 >
                   {{ item.title }}
                 </AuLink>
               </AuHeading>
-              <p class="c-decision-card__content">{{item.description}}</p>
+              <p class="c-agenda-item-card__content">{{item.description}}</p>
             </article>
           </li>
         {{/each}}

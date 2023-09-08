@@ -1,8 +1,8 @@
-.c-decision-card {
+.c-agenda-item-card {
   position: relative;
 }
 
-.c-decision-card__link {
+.c-agenda-item-card__link {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -23,7 +23,7 @@
   }
 }
 
-.c-decision-card__content {
+.c-agenda-item-card__content {
   @include au-font-size(var(--au-h6), 1.5);
 
   color: var(--au-gray-900);
@@ -35,6 +35,6 @@
   max-width: 100ch;
 }
 
-.c-decision-card__footer {
+.c-agenda-item-card__footer {
   color: var(--au-gray-700);
 }
