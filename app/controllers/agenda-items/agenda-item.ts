@@ -13,7 +13,10 @@ export default class AgendaItemController extends Controller {
   }
 
   get wasHandled() {
-    return Boolean(this.model.agendaItem.belongsTo('handledBy').value());
+    return (
+      Boolean(this.model.agendaItem?.session?.startedAt) ||
+      Boolean(this.model.agendaItem?.session?.endedAt)
+    );
   }
 
   get municipalityQuery() {
