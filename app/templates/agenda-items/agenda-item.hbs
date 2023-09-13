@@ -111,7 +111,17 @@
                   }}
                     {{#if resolution.value}}
                       <AuAlert @skin="success" @icon="sign" class="au-u-margin-top au-u-margin-bottom">
-                        {{resolution.value}}
+                        {{#if (is-pdf-url resolution.value)}}
+                          <AuLinkExternal
+                            href={{resolution.value}}
+                            @skin="small"
+                            @icon="pdf"
+                          >
+                            open besluit
+                          </AuLinkExternal>
+                        {{else}}
+                          {{resolution.value}}
+                        {{/if}}
                       </AuAlert>
                     {{else}}
                       <AuAlert
