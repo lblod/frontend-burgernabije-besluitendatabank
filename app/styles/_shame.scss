@@ -213,7 +213,7 @@ cursor {
     flex-direction: column;
     gap: $au-unit-small;
     align-items: flex-start;
-    margin-top: $au-unit;
+    margin-top: 0;
   }
 }
 
@@ -265,5 +265,29 @@ cursor {
 .au-u-max-width-xsmall\@small {
   @include mq(small) {
     max-width: map.get($mq-breakpoints, "xsmall");
+  }
+}
+
+// Override footer
+.au-c-main-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $au-unit;
+
+  & > .au-c-main-footer__brand {
+    padding: 0;
+  }
+
+  & .au-c-brand {
+    display: flex;
+  }
+
+  & > .au-c-main-footer__content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: $au-unit;
+    flex-grow: 1;
+    padding-top: $au-unit-tiny * 0.3;
   }
 }

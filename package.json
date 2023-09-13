@@ -25,7 +25,7 @@
     "lint:js": "eslint . --cache",
     "lint:js:fix": "eslint . --fix",
     "dev": "ember serve --environment=development",
-    "dev:proxy": "ember serve --environment=development --proxy=https://burgernabije-besluitendatabank-dev.s.redhost.be/",
+    "dev:proxy": "ember serve --environment=development --proxy=https://dev.lokaalbeslist.lblod.info/",
     "start": "ember serve --environment=development",
     "prod": "ember serve --environment=production",
     "test": "concurrently \"npm:lint\" \"npm:test:*\" --names \"lint,test:\"",
