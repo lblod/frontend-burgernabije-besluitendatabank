@@ -36,7 +36,7 @@ export default class SessionModel extends Model {
    *
    * This naming scheme is in relation to the app/back-end
    */
-  get name() {
+  get governingBodyNameResolved() {
     return (
       this.governingBodyValue?.isTimeSpecializationOfValue?.name ||
       this.governingBodyValue?.name ||
