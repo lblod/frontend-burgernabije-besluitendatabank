@@ -110,7 +110,7 @@
                     as |resolution|
                   }}
                     {{#if resolution.value}}
-                      <AuAlert @skin="success" @icon="sign" class="au-u-medium">
+                      <AuAlert @skin="success" @icon="sign" class="au-u-margin-top au-u-margin-bottom">
                         {{#if (is-pdf-url resolution.value)}}
                           <AuLinkExternal
                             href={{resolution.value}}
@@ -139,7 +139,6 @@
               </section>
 
               <section class="c-accordion-holder">
-
                 <AuBadge @icon="vote" @skin="brand" />
                 <AuAccordion
                   @subtitle={{this.model.vote.subject}}
