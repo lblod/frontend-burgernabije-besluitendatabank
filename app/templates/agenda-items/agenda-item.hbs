@@ -214,12 +214,6 @@
                   @icon="decided"
                   @title="Dit werd behandeld"
                 />
-              {{else}}
-                <AuAlert
-                  @skin="warning"
-                  @icon="three-dots"
-                  @title="Dit werd nog niet behandeld"
-                />
               {{/if}}
             </div>
             {{#if this.model.agendaItem.session.hasMunicipality}}
