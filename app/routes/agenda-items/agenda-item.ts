@@ -51,7 +51,7 @@ export default class AgendaItemRoute extends Route {
       .slice(0, 4);
 
     const agendaItemHandling = await agendaItem.handledBy;
-    const vote = (await agendaItemHandling?.hasVotes)?.toArray().shift();
+    const vote = (await agendaItemHandling?.hasVotes)?.slice().shift();
 
     const similiarAgendaItems = await this.store.query('agenda-item', {
       page: {

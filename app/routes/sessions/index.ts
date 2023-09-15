@@ -73,14 +73,6 @@ export default class SessionsIndexRoute extends Route {
   @tracked plannedStartMax?: string;
 
   async model(params: sessionsIndexParams) {
-    /*
-    const model: any = this.modelFor("sessions.index");
-    if (model?.sessions?.toArray().length > 0) {
-      console.log("Returning early")
-      return model;
-    }
-    */
-
     this.plannedStartMin = params.plannedStartMin;
     this.plannedStartMax = params.plannedStartMax || undefined;
     this.municipalityLabels = params.municipalityLabels || '';
