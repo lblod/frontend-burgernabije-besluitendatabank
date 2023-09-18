@@ -1,4 +1,4 @@
-export const parseDateStringToDate = (
+export const parseMuSearchDateToDate = (
   input: string | string[] | undefined
 ): Date | undefined => {
   // Check if input is undefined or an empty array
@@ -8,7 +8,7 @@ export const parseDateStringToDate = (
 
   // Always take the first element if input is an array
   if (Array.isArray(input)) {
-    return parseDateStringToDate(input[0]);
+    return parseMuSearchDateToDate(input[0]);
   }
 
   // Attempt to parse the input string into a Date
