@@ -1,13 +1,14 @@
 import Model, {
+  AsyncBelongsTo,
+  AsyncHasMany,
+  SyncHasMany,
   attr,
   belongsTo,
   hasMany,
-  AsyncHasMany,
-  AsyncBelongsTo,
-  SyncHasMany,
 } from '@ember-data/model';
 import AgendaItemHandlingModel from './agenda-item-handling';
 import SessionModel from './session';
+import { sortSessions } from 'frontend-burgernabije-besluitendatabank/utils/sort-sessions';
 
 export default class AgendaItemModel extends Model {
   @attr('string', { defaultValue: 'Ontbrekende titel' }) declare title: string;
@@ -30,9 +31,23 @@ export default class AgendaItemModel extends Model {
     const sessions: SyncHasMany<SessionModel> | null = (this as AgendaItemModel)
       .hasMany('sessions')
       ?.value();
-    return sessions?.find((session) => {
-      return session.hasMunicipality;
-    });
+
+    // We want to use a session with municipality and start date in priority
+    const session = sessions?.slice()?.sort(sortSessions)?.shift();
+
+    return session;
+  }
+
+  get municipality() {
+    return this.session?.municipality;
+  }
+
+  get governingBodyNameResolved() {
+    return this.session?.governingBodyNameResolved;
+  }
+
+  get dateFormatted() {
+    return this.session?.dateFormatted;
   }
 }
 

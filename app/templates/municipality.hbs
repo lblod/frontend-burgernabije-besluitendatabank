@@ -20,13 +20,20 @@
     <AuBodyContainer @scroll={{true}}>
       <div class="au-o-box">
         {{#if this.model.agenda_items}}
-        <ul class="c-infinite-list">
-          {{#each this.model.agenda_items as |item|}}
-          <li>
-            <DecisionCard @item={{item}} @startDate={{item.session.startedAt}} @endDate={{item.session.endedAt}} />
-          </li>
-          {{/each}}
-        </ul>
+          <ul class="c-infinite-list">
+            {{#each this.model.agenda_items as |item|}}
+              <li>
+                <AgendaItemCard
+                  @id={{item.id}}
+                  @title={{item.title}}
+                  @description={{item.description}}
+                  @date={{item.dateFormatted}}
+                  @governingBodyName={{item.governingBodyNameResolved}}
+                  @municipality={{item.municipality}}
+                />
+              </li>
+            {{/each}}
+          </ul>
         {{else}}
           <p>Geen Data</p>
         {{/if}}

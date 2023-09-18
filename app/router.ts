@@ -8,7 +8,6 @@ export default class Router extends EmbroiderRouter {
 
 Router.map(function () {
   this.route('municipality', { path: '/gemeente/:municipality' });
-  this.route('help');
   this.route('home', { path: '/' });
 
   this.route('agenda-items', { path: '/agendapunten' }, function () {
@@ -21,6 +20,7 @@ Router.map(function () {
   this.route('four-oh-four', { path: '/*path' });
 
   this.route('disclaimer');
+  this.route('help');
   this.route('cookie-notice', { path: '/cookieverklaring' });
   this.route('accessibility-statement', {
     path: '/toegankelijkheidsverklaring',
