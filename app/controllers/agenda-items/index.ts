@@ -200,8 +200,8 @@ const agendaItemsQuery = ({
   request.sort = '-session_planned_start';
   request.index = index;
 
-  // Ensure title and location_id fields are present
-  filters[':query:title'] = '_exists_:title AND _exists_:location_id';
+  // Ensure title fields are present
+  filters[':query:title'] = '_exists_:title';
 
   // Apply optional filter for planned start range
   if (plannedStartMin) {
@@ -214,7 +214,7 @@ const agendaItemsQuery = ({
 
   // Apply optional filter for locationIds
   if (locationIds) {
-    filters['location_id'] = locationIds;
+    filters['abstract_location_id,location_id'] = locationIds;
   }
 
   // Apply optional filter for keyword search
