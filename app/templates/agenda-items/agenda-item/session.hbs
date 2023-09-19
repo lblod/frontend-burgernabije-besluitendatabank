@@ -1,0 +1,46 @@
+{{page-title "Zitting"}}
+
+<LayoutList>
+    <AuToolbar @size="medium" @skin="tint" @border="bottom" as |Group|>
+      <Group>
+        <ul class="au-c-list-horizontal au-c-list-horizontal--small">
+          <li class="au-c-list-horizontal__item">
+            <AuLink @route="agenda-items.agenda-item" @icon="arrow-left" @model={{this.parentAgendaItem}}>
+              Lijst
+            </AuLink>
+          </li>
+          {{#if this.model.agendaItem.title}}
+            <li class="au-c-list-horizontal__item">
+              <span class="u-truncate">{{this.model.agendaItem.title}}</span>
+            </li>
+          {{/if}}
+        </ul>
+      </Group>
+    </AuToolbar>
+  <AuBodyContainer @scroll={{true}} id="route-session" class="au-o-region-large">
+    <div class="au-o-layout">
+      <AuHeading @level="1" class="au-u-margin-bottom">
+        {{this.model.session.governingBodyNameResolved}}
+        {{this.model.session.dateFormatted}}
+      </AuHeading>
+      <ul class="c-infinite-list">
+        {{#each this.agendaItemsSorted as |item|}}
+          <li>
+            <article class="c-agenda-item-card">
+              <AuHeading @level="1" @skin="5">
+                <AuLink 
+                  class="c-agenda-item-card__link"
+                  @route="agenda-items.agenda-item"
+                  @model={{ item.id }}
+                >
+                  {{ item.title }}
+                </AuLink>
+              </AuHeading>
+              <p class="c-agenda-item-card__content">{{item.description}}</p>
+            </article>
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+  </AuBodyContainer>
+</LayoutList>

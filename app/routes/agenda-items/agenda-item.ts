@@ -5,7 +5,7 @@ import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/service
 import { sortObjectsByTitle } from 'frontend-burgernabije-besluitendatabank/utils/array-utils';
 
 interface DetailParams {
-  id: string;
+  agenda_item_id: string;
 }
 
 export default class AgendaItemRoute extends Route {
@@ -13,7 +13,10 @@ export default class AgendaItemRoute extends Route {
   @service declare keywordStore: KeywordStoreService;
 
   async model(params: DetailParams) {
-    const agendaItem = await this.store.findRecord('agenda-item', params.id);
+    const agendaItem = await this.store.findRecord(
+      'agenda-item',
+      params.agenda_item_id
+    );
 
     // wait until sessions are loaded
     const sessions = await agendaItem.sessions;

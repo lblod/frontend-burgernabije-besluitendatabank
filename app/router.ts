@@ -11,7 +11,9 @@ Router.map(function () {
   this.route('home', { path: '/' });
 
   this.route('agenda-items', { path: '/agendapunten' }, function () {
-    this.route('agenda-item', { path: '/:id' });
+    this.route('agenda-item', { path: '/:agenda_item_id' }, function () {
+      this.route('session', { path: '/zittingen/:session_id' });
+    });
   });
 
   this.route('sessions', { path: '/zittingen' }, function () {

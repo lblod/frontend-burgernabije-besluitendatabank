@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import { service } from '@ember/service';
-import { ModelFrom } from '../../lib/type-utils';
+import { ModelFrom } from 'frontend-burgernabije-besluitendatabank/lib/type-utils';
 import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
 import AgendaItemRoute from 'frontend-burgernabije-besluitendatabank/routes/agenda-items/agenda-item';
 
