@@ -20,22 +20,22 @@ const sortByFamilyName = (a: MandataryModel, b: MandataryModel) => {
 
 export default class VoteOverview extends Component<ArgsInterface> {
   get abstainers() {
-    return this.args.vote.hasAbstainers.toArray().sort(sortByFamilyName);
+    return this.args.vote.hasAbstainers.slice().sort(sortByFamilyName);
   }
 
   get opponents() {
-    return this.args.vote.hasOpponents.toArray().sort(sortByFamilyName);
+    return this.args.vote.hasOpponents.slice().sort(sortByFamilyName);
   }
 
   get proponents() {
-    return this.args.vote.hasProponents.toArray().sort(sortByFamilyName);
+    return this.args.vote.hasProponents.slice().sort(sortByFamilyName);
   }
 
   get hasVotersData() {
     return (
-      this.args.vote.hasAbstainers.toArray().length > 0 ||
-      this.args.vote.hasOpponents.toArray().length > 0 ||
-      this.args.vote.hasProponents.toArray().length > 0
+      this.args.vote.hasAbstainers.slice().length > 0 ||
+      this.args.vote.hasOpponents.slice().length > 0 ||
+      this.args.vote.hasProponents.slice().length > 0
     );
   }
 

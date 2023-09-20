@@ -1,7 +1,10 @@
 <LayoutList>
   <AuBodyContainer>
     <div class="c-interface">
-      <div id="filtercontent" class="c-interface__content c-interface__content--fixed au-u-flex au-u-flex--column">
+      <div
+        id="filtercontent"
+        class="c-interface__content c-interface__content--fixed au-u-flex au-u-flex--column"
+      >
         <div class="au-o-flow au-o-flow--small au-u-padding">
           <AuHeading @level="1" @skin="2">Wat zoek je?</AuHeading>
           <div class="au-u-max-width-xsmall@small">
@@ -20,9 +23,13 @@
           <a href="#filtersidebar" class="au-c-interface__filter-link">
             Ga naar filters
           </a>
-          <a href="#filtersidebar" class="au-c-button au-c-button--secondary au-c-button--block c-interface__filter-button" {{on "click" this.showFilter}}>
+          <a
+            href="#filtersidebar"
+            class="au-c-button au-c-button--secondary au-c-button--block c-interface__filter-button"
+            {{on "click" this.showFilter}}
+          >
             <AuIcon @icon="filter" />
-              Toon filters
+            Toon filters
           </a>
         </div>
         {{#let (this.AgendaItemsLoader filters=this.filters) as |loader|}}
@@ -54,10 +61,13 @@
                 >
                   {{#each loader.data as |item|}}
                     <li>
-                      <DecisionCard
-                        @startDate={{item.session.startedAt}}
-                        @endDate={{item.session.endedAt}}
-                        @item={{item}}
+                      <AgendaItemCard
+                        @id={{item.id}}
+                        @title={{item.title}}
+                        @description={{item.description}}
+                        @date={{item.dateFormatted}}
+                        @governingBodyName={{item.governingBodyNameResolved}}
+                        @municipality={{item.municipality}}
                       />
                     </li>
                   {{/each}}
@@ -78,18 +88,23 @@
       </div>
       <FilterSidebar
         @id="filtersidebar"
-        @class="c-interface__sidebar c-interface__sidebar--dialog {{if this.hasFilter 'is-visible'}}"
+        @class="c-interface__sidebar c-interface__sidebar--dialog {{if
+          this.hasFilter
+          'is-visible'
+        }}"
         {{focus-trap
           isActive=this.hasFilter
           shouldSelfFocus=true
           additionalElements=(array "#ember-basic-dropdown-wormhole")
-          focusTrapOptions=(hash
-            onDeactivate=this.hideFilter
-          )
+          focusTrapOptions=(hash onDeactivate=this.hideFilter)
         }}
       >
         <div class="c-interface__sidebar-close-button">
-          <a href="#filtercontent" class="au-c-button au-c-button--naked" {{on "click" this.hideFilter}}>
+          <a
+            href="#filtercontent"
+            class="au-c-button au-c-button--naked"
+            {{on "click" this.hideFilter}}
+          >
             Terug
           </a>
         </div>
@@ -111,10 +126,18 @@
           />
         </div>
         <div class="c-interface__sidebar-submit-buttons">
-          <AuButton @skin="primary" @width="block" {{on "click" this.hideFilter}}>
+          <AuButton
+            @skin="primary"
+            @width="block"
+            {{on "click" this.hideFilter}}
+          >
             Zoeken
           </AuButton>
-          <a href="#filtercontent" class="au-c-button au-c-button--naked au-c-button--block" {{on "click" this.hideFilter}}>
+          <a
+            href="#filtercontent"
+            class="au-c-button au-c-button--naked au-c-button--block"
+            {{on "click" this.hideFilter}}
+          >
             Annuleer
           </a>
         </div>

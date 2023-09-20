@@ -8,6 +8,7 @@ import Model, {
 } from '@ember-data/model';
 import AgendaItemHandlingModel from './agenda-item-handling';
 import SessionModel from './session';
+import { sortSessions } from 'frontend-burgernabije-besluitendatabank/utils/sort-sessions';
 
 export default class AgendaItemModel extends Model {
   @attr('string', { defaultValue: 'Ontbrekende titel' }) declare title: string;
@@ -31,17 +32,22 @@ export default class AgendaItemModel extends Model {
       .hasMany('sessions')
       ?.value();
 
-    // We want to use a session with municipality
-    let session = sessions?.find((session) => {
-      return session.hasMunicipality;
-    });
-
-    // If not found, use the first session
-    if (!session) {
-      session = sessions?.firstObject;
-    }
+    // We want to use a session with municipality and start date in priority
+    const session = sessions?.slice()?.sort(sortSessions)?.shift();
 
     return session;
+  }
+
+  get municipality() {
+    return this.session?.municipality;
+  }
+
+  get governingBodyNameResolved() {
+    return this.session?.governingBodyNameResolved;
+  }
+
+  get dateFormatted() {
+    return this.session?.dateFormatted;
   }
 }
 

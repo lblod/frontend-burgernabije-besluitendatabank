@@ -110,8 +110,18 @@
                     as |resolution|
                   }}
                     {{#if resolution.value}}
-                      <AuAlert @skin="success" @icon="sign" class="au-u-medium">
-                        {{resolution.value}}
+                      <AuAlert @skin="success" @icon="sign" class="au-u-margin-top au-u-margin-bottom">
+                        {{#if (is-pdf-url resolution.value)}}
+                          <AuLinkExternal
+                            href={{resolution.value}}
+                            @skin="small"
+                            @icon="pdf"
+                          >
+                            open besluit
+                          </AuLinkExternal>
+                        {{else}}
+                          {{resolution.value}}
+                        {{/if}}
                       </AuAlert>
                     {{else}}
                       <AuAlert
@@ -129,7 +139,6 @@
               </section>
 
               <section class="c-accordion-holder">
-
                 <AuBadge @icon="vote" @skin="brand" />
                 <AuAccordion
                   @subtitle={{this.model.vote.subject}}
@@ -204,12 +213,6 @@
                   @skin="success"
                   @icon="decided"
                   @title="Dit werd behandeld"
-                />
-              {{else}}
-                <AuAlert
-                  @skin="warning"
-                  @icon="three-dots"
-                  @title="Dit werd nog niet behandeld"
                 />
               {{/if}}
             </div>
