@@ -1,19 +1,25 @@
 <LayoutHome>
-  <AuBodyContainer @scroll={{true}}>
-    <section class="au-o-region-huge">
-      <div class="au-o-layout au-o-layout--small">
-        <h1 class="au-u-hidden-visually">Burgernabije Besluiten Databank</h1>
-        <AuLabel
-          for={{"municipality"}}
-          class="au-u-h5 au-u-margin-bottom-tiny"
-          @inline={{true}}
-        >
-          In welke gemeente(s) wil je zoeken?
-        </AuLabel>
-        <div class="au-u-1-1 au-o-grid au-o-grid--tiny"
-          {{did-insert this.resetLoading}}
+  <AuBodyContainer class="au-u-background-gray-100">
+    <section class="c-home">
+      <div class="au-o-flow">
+        <AuContent>
+          <AuHeading @level="1" @skin="2">Lokaal-beslist is een databank met agendapunten en lokale besluiten.</AuHeading>
+          <div class="c-home__visual">
+            <img src="/assets/homepage-visual.svg" class="c-home-visual" alt="" {{!template-lint-disable require-valid-alt-text}}/>
+          </div>
+          <p>Kies een gemeente om de voor u relevante informatie te raadplegen.</p>
+        </AuContent>
+        <div class="au-c-home__form au-o-flow">
+          <AuLabel
+            for={{"municipality"}}
+            class="au-u-hidden-visually"
+            @inline={{true}}
           >
-          <div class="au-o-grid__item au-u-3-4@small">
+            In welke gemeente(s) wil je zoeken?
+          </AuLabel>
+          <div class="au-o-flow au-o-flow--small"
+            {{did-insert this.resetLoading}}
+            >
             <PowerSelectMultiple
               @onChange={{this.handleMunicipalityChange}}
               @selected={{this.selectedMunicipalities}}
@@ -28,14 +34,15 @@
             >
               {{municipality.label}}
             </PowerSelectMultiple>
-          </div>
-          <div class="au-o-grid__item au-u-1-4@small">
             <AuButton
               @loading={{this.loading}}
               @width="block"
               {{on "click" this.handleMunicipalitySelect}}
-            >Locatie(s) Opslaan</AuButton>
+            >Bekijk agendapunten</AuButton>
           </div>
+          <p class="au-u-text-center">
+            <AuLink @route="help">Meer informatie over agendapunten en beslissingen</AuLink>
+          </p>
         </div>
       </div>
     </section>
