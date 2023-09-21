@@ -12,6 +12,10 @@ export default class AgendaItemController extends Controller {
     return !!this.model.vote;
   }
 
+  get hasArticles() {
+    return !!this.model.articles?.length;
+  }
+
   get wasHandled() {
     return (
       Boolean(this.model.agendaItem?.session?.startedAt) ||

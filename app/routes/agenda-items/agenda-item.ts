@@ -53,6 +53,18 @@ export default class AgendaItemRoute extends Route {
     const agendaItemHandling = await agendaItem.handledBy;
     const vote = (await agendaItemHandling?.hasVotes)?.slice().shift();
 
+    // load resolution and articles
+    const resolutions = await agendaItemHandling?.resolutions;
+    const articles = (
+      await Promise.all(
+        resolutions?.map(async (resolution) => {
+          return (await resolution.articles).slice();
+        }) || []
+      )
+    )
+      .flat()
+      .sort((a, b) => (a.number || '').localeCompare(b.number || ''));
+
     const similiarAgendaItems = await this.store.query('agenda-item', {
       page: {
         size: 4,
@@ -84,6 +96,7 @@ export default class AgendaItemRoute extends Route {
     return {
       agendaItem,
       vote,
+      articles,
       agendaItemOnSameSession,
       similiarAgendaItems,
     };
