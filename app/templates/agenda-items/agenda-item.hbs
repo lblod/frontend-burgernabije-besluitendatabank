@@ -138,6 +138,27 @@
                 </AuAccordion>
               </section>
 
+              {{#if this.hasArticles}}
+              <section class="c-accordion-holder">
+                <AuBadge @icon="book" @skin="brand" />
+                <AuAccordion
+                  @reverse={{true}}
+                  @iconOpen={{"nav-down"}}
+                  @iconClosed={{"nav-right"}}
+                  @buttonLabel={{"Artikel"}}
+                >
+                  <AuAlert @skin="success" @icon="sign" class="au-u-margin-top au-u-margin-bottom">
+                    {{#each this.model.articles as |article|}}
+                      <section class="au-u-margin-bottom">
+                        <h6>{{article.number}}</h6>
+                        <p>{{article.value}}</p>
+                      </section>
+                    {{/each}}
+                  </AuAlert>
+                </AuAccordion>
+              </section>
+              {{/if}}
+
               <section class="c-accordion-holder">
                 <AuBadge @icon="vote" @skin="brand" />
                 <AuAccordion
