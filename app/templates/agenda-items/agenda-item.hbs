@@ -134,6 +134,22 @@
                         class="au-u-margin-top au-u-margin-bottom"
                       />
                     {{/if}}
+                    {{#if resolution.motivation}}
+                      <div class="c-accordion-holder c-accordion-holder--top">
+                        <AuAccordion
+                          @reverse={{true}}
+                          @iconOpen={{"nav-down"}}
+                          @iconClosed={{"nav-right"}}
+                          @buttonLabel={{"Motivering"}}
+                        >
+                          <AuContent @skin="small" class="au-u-padding">
+                            <p class="au-u-muted">
+                              {{resolution.motivation}}
+                            </p>
+                          </AuContent>
+                        </AuAccordion>
+                      </div>
+                    {{/if}}
                   {{/let}}
                 </AuAccordion>
               </section>

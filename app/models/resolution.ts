@@ -4,6 +4,7 @@ import ArticleModel from './article';
 export default class ResolutionModel extends Model {
   @attr('string') declare title?: string;
   @attr('string') declare value?: string;
+  @attr('string') declare motivation?: string;
 
   @hasMany('articles', { async: true })
   declare articles: AsyncHasMany<ArticleModel>;
