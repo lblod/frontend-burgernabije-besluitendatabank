@@ -6,6 +6,7 @@ import { Resource } from 'ember-resources';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/mu-search/agenda-item';
 import { parseMuSearchDateToDate } from 'frontend-burgernabije-besluitendatabank/utils/mu-search-data-format';
+import { cleanString } from 'frontend-burgernabije-besluitendatabank/utils/clean-string';
 import MuSearchService, {
   DataMapper,
   MuSearchData,
@@ -246,8 +247,8 @@ const dataMapping: DataMapper<AgendaItemMuSearchEntry, AgendaItem> = (
 
   // Map data attributes to AgendaItem properties
   dataResponse.id = Array.isArray(uuid) ? uuid[0] : uuid;
-  dataResponse.title = entry.title;
-  dataResponse.description = entry.description;
+  dataResponse.title = cleanString(entry.title);
+  dataResponse.description = cleanString(entry.description);
   dataResponse.locationId = entry.location_id;
   dataResponse.abstractGoverningBodyLocationName =
     entry.abstract_governing_body_location_name;
