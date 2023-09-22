@@ -1,7 +1,6 @@
 import Controller from '@ember/controller';
 import { ModelFrom } from '../../../lib/type-utils';
 import { sortObjectsByTitle } from 'frontend-burgernabije-besluitendatabank/utils/array-utils';
-import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
 import AgendaItemsAgendaItemSessionRoute from 'frontend-burgernabije-besluitendatabank/routes/agenda-items/agenda-item/session';
 
 export default class AgendaItemsAgendaItemSessionController extends Controller {
@@ -9,14 +8,9 @@ export default class AgendaItemsAgendaItemSessionController extends Controller {
   declare model: ModelFrom<AgendaItemsAgendaItemSessionRoute>;
 
   get agendaItemsSorted() {
-    let agendaItems = this.model.session.hasMany('agendaItems').value() as
-      | AgendaItem[]
-      | null;
-
-    if (!agendaItems) {
-      agendaItems = [];
-    }
-
-    return agendaItems.slice().sort(sortObjectsByTitle);
+    return this.model.agendaItemOnSameSession
+      ?.concat(this.model.agendaItem)
+      .slice()
+      .sort(sortObjectsByTitle);
   }
 }

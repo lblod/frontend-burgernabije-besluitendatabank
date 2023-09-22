@@ -205,7 +205,7 @@
               <c.content>
                 {{#if this.model.agendaItemOnSameSession}}
                   <ol>
-                    {{#each this.model.agendaItemOnSameSession as |agendaItem|}}
+                    {{#each this.firstFourAgendaItems as |agendaItem|}}
                       <li>
                         {{! if the agendaItem.id is equal to the current agendaItem then display "Huidige agendapunt" }}
                         {{#if (eq agendaItem.id this.model.agendaItem.id)}}

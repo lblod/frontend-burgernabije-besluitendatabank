@@ -13,7 +13,7 @@
 </AuToolbar>
 
 <Session
-  @governingBodyName={{this.model.session.governingBodyNameResolved}}
-  @sessionDate={{this.model.session.dateFormatted}}
+  @governingBodyName={{this.model.agendaItem.session.governingBodyNameResolved}}
+  @sessionDate={{this.model.agendaItem.session.dateFormatted}}
   @sessionAgendaItems={{this.agendaItemsSorted}}
 />

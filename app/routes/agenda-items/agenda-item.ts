@@ -2,7 +2,6 @@ import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
 import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
-import { sortObjectsByTitle } from 'frontend-burgernabije-besluitendatabank/utils/array-utils';
 
 interface DetailParams {
   id: string;
@@ -35,7 +34,7 @@ export default class AgendaItemRoute extends Route {
     );
 
     const sessionId = agendaItem.session?.id;
-    const agendaItemOnSameSessionRaw = sessionId
+    const agendaItemOnSameSession = sessionId
       ? await this.store.query('agenda-item', {
           filter: {
             sessions: {
@@ -44,11 +43,6 @@ export default class AgendaItemRoute extends Route {
           },
         })
       : [];
-
-    const agendaItemOnSameSession = agendaItemOnSameSessionRaw
-      .filter((item) => item.id !== agendaItem.id)
-      .sort(sortObjectsByTitle)
-      .slice(0, 4);
 
     const agendaItemHandling = await agendaItem.handledBy;
     const vote = (await agendaItemHandling?.hasVotes)?.slice().shift();

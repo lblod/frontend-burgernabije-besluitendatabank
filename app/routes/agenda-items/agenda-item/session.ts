@@ -7,27 +7,9 @@ export default class AgendaItemsAgendaItemSessionRoute extends Route {
   @service declare store: Store;
 
   async model() {
-    const agendaItem = (
-      this.modelFor('agenda-items.agenda-item') as {
-        agendaItem: AgendaItemModel;
-      }
-    ).agendaItem;
-
-    const session = await this.store.findRecord(
-      'session',
-      agendaItem.session?.id as string,
-      {
-        include: [
-          'governing-body.is-time-specialization-of.administrative-unit.location',
-          'governing-body.administrative-unit.location',
-          'agenda-items',
-        ].join(','),
-      }
-    );
-
-    return {
-      agendaItem,
-      session,
+    return this.modelFor('agenda-items.agenda-item') as {
+      agendaItem: AgendaItemModel;
+      agendaItemOnSameSession: AgendaItemModel[];
     };
   }
 }
