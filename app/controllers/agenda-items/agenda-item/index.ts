@@ -8,10 +8,6 @@ export default class AgendaItemController extends Controller {
   @service declare keywordStore: KeywordStoreService;
   declare model: ModelFrom<AgendaItemRoute>;
 
-  get hasVotes() {
-    return !!this.model.vote;
-  }
-
   get hasArticles() {
     return !!this.model.articles?.length;
   }
