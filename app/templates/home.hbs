@@ -3,12 +3,21 @@
     <section class="c-home">
       <div class="au-o-flow">
         <AuContent>
-          <AuHeading @level="1" @skin="2">Welkom bij Lokaal Beslist, jouw centrale bron voor het ontdekken van agendapunten van lokale besturen.</AuHeading>
+          <AuHeading @level="1" @skin="2">Welkom bij Lokaal Beslist, jouw
+            centrale bron voor het ontdekken van agendapunten van lokale
+            besturen.</AuHeading>
           <div class="c-home__visual">
-            <img src="/assets/homepage-visual.svg" class="c-home-visual" alt="" {{!template-lint-disable require-valid-alt-text}}/>
+            <img
+              src="/assets/homepage-visual.svg"
+              class="c-home-visual"
+              alt=""
+              {{!template-lint-disable require-valid-alt-text}}
+            />
           </div>
-          <p>Blijf op de hoogte van waar lokale besturen mee bezig zijn en wat er leeft in en rond je omgeving. Start eenvoudig door
-          een gemeente te selecteren of een zoekwoord in te voeren en krijg direct toegang tot relevante informatie."</p>
+          <p>Blijf op de hoogte van waar lokale besturen mee bezig zijn en wat
+            er leeft in en rond je omgeving. Start eenvoudig door een gemeente
+            te selecteren of een zoekwoord in te voeren en krijg direct toegang
+            tot relevante informatie.</p>
         </AuContent>
         <div class="au-c-home__form au-o-flow">
           <AuLabel
@@ -18,9 +27,10 @@
           >
             In welke gemeente(s) wil je zoeken?
           </AuLabel>
-          <div class="au-o-flow au-o-flow--small"
+          <div
+            class="au-o-flow au-o-flow--small"
             {{did-insert this.resetLoading}}
-            >
+          >
             <PowerSelectMultiple
               @onChange={{this.handleMunicipalityChange}}
               @selected={{this.selectedMunicipalities}}
@@ -42,7 +52,8 @@
             >Bekijk agendapunten</AuButton>
           </div>
           <p class="au-u-text-center">
-            <AuLink @route="help">Meer informatie over agendapunten en beslissingen</AuLink>
+            <AuLink @route="help">Meer informatie over agendapunten en
+              beslissingen</AuLink>
           </p>
         </div>
       </div>
