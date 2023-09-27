@@ -21,3 +21,19 @@ export const parseMuSearchAttributeToDate = (
 
   return date;
 };
+
+export const parseMuSearchAttributeToString = (
+  input: string | string[] | undefined
+): string | undefined => {
+  // Check if input is undefined or an empty array
+  if (!input || (Array.isArray(input) && input.length === 0)) {
+    return undefined;
+  }
+
+  // Always take the first element if input is an array
+  if (Array.isArray(input)) {
+    return parseMuSearchAttributeToString(input[0]);
+  }
+
+  return input;
+};

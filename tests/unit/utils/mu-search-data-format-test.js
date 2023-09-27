@@ -1,5 +1,8 @@
 import { module, test } from 'qunit';
-import { parseMuSearchAttributeToDate } from 'frontend-burgernabije-besluitendatabank/utils/mu-search-data-format';
+import {
+  parseMuSearchAttributeToDate,
+  parseMuSearchAttributeToString,
+} from 'frontend-burgernabije-besluitendatabank/utils/mu-search-data-format';
 
 module('Unit | Utility | mu-search-data-format', function () {
   module('parseMuSearchAttributeToDate', function () {
@@ -26,6 +29,23 @@ module('Unit | Utility | mu-search-data-format', function () {
 
     test('it returns undefined when wrong string', function (assert) {
       assert.deepEqual(parseMuSearchAttributeToDate('wrong-string'), undefined);
+    });
+  });
+
+  module('parseMuSearchAttributeToString', function () {
+    test('it returns a string when input is a string', function (assert) {
+      assert.deepEqual(parseMuSearchAttributeToString('test'), 'test');
+    });
+
+    test('it returns the first string when input is an array of strings', function (assert) {
+      assert.deepEqual(
+        parseMuSearchAttributeToString(['test', 'test2']),
+        'test'
+      );
+    });
+
+    test('it returns undefined when no input', function (assert) {
+      assert.deepEqual(parseMuSearchAttributeToString(), undefined);
     });
   });
 });

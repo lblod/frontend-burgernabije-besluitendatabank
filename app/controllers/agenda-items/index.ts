@@ -5,7 +5,10 @@ import { task } from 'ember-concurrency';
 import { Resource } from 'ember-resources';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/mu-search/agenda-item';
-import { parseMuSearchAttributeToDate } from 'frontend-burgernabije-besluitendatabank/utils/mu-search-data-format';
+import {
+  parseMuSearchAttributeToDate,
+  parseMuSearchAttributeToString,
+} from 'frontend-burgernabije-besluitendatabank/utils/mu-search-data-format';
 import { cleanString } from 'frontend-burgernabije-besluitendatabank/utils/clean-string';
 import MuSearchService, {
   DataMapper,
@@ -248,14 +251,22 @@ const dataMapping: DataMapper<AgendaItemMuSearchEntry, AgendaItem> = (
 
   // Map data attributes to AgendaItem properties
   dataResponse.id = Array.isArray(uuid) ? uuid[0] : uuid;
-  dataResponse.title = cleanString(entry.title);
-  dataResponse.description = cleanString(entry.description);
+  dataResponse.title = cleanString(parseMuSearchAttributeToString(entry.title));
+  dataResponse.description = cleanString(
+    parseMuSearchAttributeToString(entry.description)
+  );
   dataResponse.locationId = entry.location_id || entry.abstract_location_id;
   dataResponse.abstractGoverningBodyLocationName =
-    entry.abstract_governing_body_location_name;
-  dataResponse.governingBodyLocationName = entry.governing_body_location_name;
-  dataResponse.abstractGoverningBodyName = entry.abstract_governing_body_name;
-  dataResponse.governingBodyName = entry.governing_body_name;
+    parseMuSearchAttributeToString(entry.abstract_governing_body_location_name);
+  dataResponse.governingBodyLocationName = parseMuSearchAttributeToString(
+    entry.governing_body_location_name
+  );
+  dataResponse.abstractGoverningBodyName = parseMuSearchAttributeToString(
+    entry.abstract_governing_body_name
+  );
+  dataResponse.governingBodyName = parseMuSearchAttributeToString(
+    entry.governing_body_name
+  );
   dataResponse.sessionPlannedStart = parseMuSearchAttributeToDate(
     entry.session_planned_start
   );
