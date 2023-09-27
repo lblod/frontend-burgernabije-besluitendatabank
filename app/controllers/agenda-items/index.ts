@@ -5,7 +5,7 @@ import { task } from 'ember-concurrency';
 import { Resource } from 'ember-resources';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/mu-search/agenda-item';
-import { parseMuSearchDateToDate } from 'frontend-burgernabije-besluitendatabank/utils/mu-search-data-format';
+import { parseMuSearchAttributeToDate } from 'frontend-burgernabije-besluitendatabank/utils/mu-search-data-format';
 import { cleanString } from 'frontend-burgernabije-besluitendatabank/utils/clean-string';
 import MuSearchService, {
   DataMapper,
@@ -255,11 +255,13 @@ const dataMapping: DataMapper<AgendaItemMuSearchEntry, AgendaItem> = (
   dataResponse.governingBodyLocationName = entry.governing_body_location_name;
   dataResponse.abstractGoverningBodyName = entry.abstract_governing_body_name;
   dataResponse.governingBodyName = entry.governing_body_name;
-  dataResponse.sessionPlannedStart = parseMuSearchDateToDate(
+  dataResponse.sessionPlannedStart = parseMuSearchAttributeToDate(
     entry.session_planned_start
   );
-  dataResponse.sessionEndedAt = parseMuSearchDateToDate(entry.session_ended_at);
-  dataResponse.sessionStartedAt = parseMuSearchDateToDate(
+  dataResponse.sessionEndedAt = parseMuSearchAttributeToDate(
+    entry.session_ended_at
+  );
+  dataResponse.sessionStartedAt = parseMuSearchAttributeToDate(
     entry.session_started_at
   );
 
