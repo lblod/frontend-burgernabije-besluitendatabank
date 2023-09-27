@@ -168,6 +168,7 @@ type AgendaItemsQueryArguments = {
 
 type AgendaItemMuSearchEntry = {
   uuid: string[] | string;
+  abstract_location_id?: string;
   location_id?: string;
   abstract_governing_body_location_name?: string;
   governing_body_location_name?: string;
@@ -249,7 +250,7 @@ const dataMapping: DataMapper<AgendaItemMuSearchEntry, AgendaItem> = (
   dataResponse.id = Array.isArray(uuid) ? uuid[0] : uuid;
   dataResponse.title = cleanString(entry.title);
   dataResponse.description = cleanString(entry.description);
-  dataResponse.locationId = entry.location_id;
+  dataResponse.locationId = entry.location_id || entry.abstract_location_id;
   dataResponse.abstractGoverningBodyLocationName =
     entry.abstract_governing_body_location_name;
   dataResponse.governingBodyLocationName = entry.governing_body_location_name;
