@@ -5,6 +5,8 @@ import { task } from 'ember-concurrency';
 import { Resource } from 'ember-resources';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/mu-search/agenda-item';
+import { parseMuSearchDateToDate } from 'frontend-burgernabije-besluitendatabank/utils/mu-search-data-format';
+import { cleanString } from 'frontend-burgernabije-besluitendatabank/utils/clean-string';
 import MuSearchService, {
   DataMapper,
   MuSearchData,
@@ -220,7 +222,8 @@ const agendaItemsQuery = ({
   request.index = index;
 
   // Ensure title and location_id fields are present
-  filters[':query:title'] = '_exists_:title AND _exists_:location_id';
+  filters[':query:title'] =
+    '_exists_:title AND (_exists_:location_id OR _exists_:abstract_location_id)';
 
   // Apply optional filter for planned start range
   if (plannedStartMin) {
@@ -233,7 +236,7 @@ const agendaItemsQuery = ({
 
   // Apply optional filter for locationIds
   if (locationIds) {
-    filters['location_id'] = locationIds;
+    filters['abstract_location_id,location_id'] = locationIds;
   }
 
   // Apply optional filter for keyword search
@@ -263,23 +266,21 @@ const dataMapping: DataMapper<AgendaItemMuSearchEntry, AgendaItem> = (
 
   // Map data attributes to AgendaItem properties
   dataResponse.id = Array.isArray(uuid) ? uuid[0] : uuid;
-  dataResponse.title = entry.title;
-  dataResponse.description = entry.description;
+  dataResponse.title = cleanString(entry.title);
+  dataResponse.description = cleanString(entry.description);
   dataResponse.locationId = entry.location_id;
   dataResponse.abstractGoverningBodyLocationName =
     entry.abstract_governing_body_location_name;
   dataResponse.governingBodyLocationName = entry.governing_body_location_name;
   dataResponse.abstractGoverningBodyName = entry.abstract_governing_body_name;
   dataResponse.governingBodyName = entry.governing_body_name;
-  dataResponse.sessionPlannedStart = entry.session_planned_start
-    ? new Date(entry.session_planned_start)
-    : undefined;
-  dataResponse.sessionEndedAt = entry.session_ended_at
-    ? new Date(entry.session_ended_at)
-    : undefined;
-  dataResponse.sessionStartedAt = entry.session_started_at
-    ? new Date(entry.session_started_at)
-    : undefined;
+  dataResponse.sessionPlannedStart = parseMuSearchDateToDate(
+    entry.session_planned_start
+  );
+  dataResponse.sessionEndedAt = parseMuSearchDateToDate(entry.session_ended_at);
+  dataResponse.sessionStartedAt = parseMuSearchDateToDate(
+    entry.session_started_at
+  );
 
   return dataResponse;
 };

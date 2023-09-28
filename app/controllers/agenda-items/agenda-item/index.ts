@@ -1,7 +1,7 @@
 import Controller from '@ember/controller';
-import { service } from '@ember/service';
-import { ModelFrom } from '../../lib/type-utils';
 import { tracked } from '@glimmer/tracking';
+import { service } from '@ember/service';
+import { ModelFrom } from '../../../lib/type-utils';
 import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
 import AgendaItemRoute from 'frontend-burgernabije-besluitendatabank/routes/agenda-items/agenda-item';
 
@@ -12,8 +12,8 @@ export default class AgendaItemController extends Controller {
   /** Data quality modal */
   @tracked modalOpen = false;
 
-  get hasVotes() {
-    return !!this.model.vote;
+  get hasArticles() {
+    return !!this.model.articles?.length;
   }
 
   get wasHandled() {

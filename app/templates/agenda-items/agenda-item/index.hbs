@@ -28,13 +28,6 @@
               @title="Dit werd behandeld"
               class="au-u-margin-bottom-none"
             />
-          {{else}}
-            <AuAlert
-              @skin="warning"
-              @icon="three-dots"
-              @title="Dit werd nog niet behandeld"
-              class="au-u-margin-bottom-none"
-            />
           {{/if}}
         </div>
         <article
@@ -118,7 +111,11 @@
                     as |resolution|
                   }}
                     {{#if resolution.value}}
-                      <AuAlert @skin="success" @icon="sign" class="au-u-margin-top au-u-margin-bottom">
+                      <AuAlert
+                        @skin="success"
+                        @icon="sign"
+                        class="au-u-margin-top au-u-margin-bottom"
+                      >
                         {{#if (is-pdf-url resolution.value)}}
                           <AuLinkExternal
                             href={{resolution.value}}
@@ -142,9 +139,50 @@
                         class="au-u-margin-top au-u-margin-bottom"
                       />
                     {{/if}}
+                    {{#if resolution.motivation}}
+                      <div class="c-accordion-holder c-accordion-holder--top">
+                        <AuAccordion
+                          @reverse={{true}}
+                          @iconOpen={{"nav-down"}}
+                          @iconClosed={{"nav-right"}}
+                          @buttonLabel={{"Motivering"}}
+                        >
+                          <AuContent @skin="small" class="au-u-padding">
+                            <p class="au-u-muted">
+                              {{resolution.motivation}}
+                            </p>
+                          </AuContent>
+                        </AuAccordion>
+                      </div>
+                    {{/if}}
                   {{/let}}
                 </AuAccordion>
               </section>
+
+              {{#if this.hasArticles}}
+                <section class="c-accordion-holder">
+                  <AuBadge @icon="book" @skin="brand" />
+                  <AuAccordion
+                    @reverse={{true}}
+                    @iconOpen={{"nav-down"}}
+                    @iconClosed={{"nav-right"}}
+                    @buttonLabel={{"Artikel"}}
+                  >
+                    <AuAlert
+                      @skin="success"
+                      @icon="sign"
+                      class="au-u-margin-top au-u-margin-bottom"
+                    >
+                      {{#each this.model.articles as |article|}}
+                        <section class="au-u-margin-bottom">
+                          <h6>{{article.number}}</h6>
+                          <p>{{article.value}}</p>
+                        </section>
+                      {{/each}}
+                    </AuAlert>
+                  </AuAccordion>
+                </section>
+              {{/if}}
 
               <section class="c-accordion-holder">
                 <AuBadge @icon="vote" @skin="brand" />
@@ -163,7 +201,7 @@
                       @title={{if
                         this.wasHandled
                         "Stemming niet beschikbaar"
-                        "Dit agendapunt werd nog niet behandeld"
+                        "Dit agendapunt is niet beschikbaar"
                       }}
                       class="au-u-margin-top au-u-margin-bottom"
                     />
@@ -204,8 +242,7 @@
               <c.footer>
                 <AuLink
                   @skin="button"
-                  @route="sessions.session"
-                  @model={{this.model.agendaItem.session.id}}
+                  @route="agenda-items.agenda-item.session"
                 >
                   Volledige agenda
                 </AuLink>
