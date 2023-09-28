@@ -5,7 +5,10 @@ import { task } from 'ember-concurrency';
 import { Resource } from 'ember-resources';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/mu-search/agenda-item';
-import { parseMuSearchDateToDate } from 'frontend-burgernabije-besluitendatabank/utils/mu-search-data-format';
+import {
+  parseMuSearchAttributeToDate,
+  parseMuSearchAttributeToString,
+} from 'frontend-burgernabije-besluitendatabank/utils/mu-search-data-format';
 import { cleanString } from 'frontend-burgernabije-besluitendatabank/utils/clean-string';
 import MuSearchService, {
   DataMapper,
@@ -168,6 +171,7 @@ type AgendaItemsQueryArguments = {
 
 type AgendaItemMuSearchEntry = {
   uuid: string[] | string;
+  abstract_location_id?: string;
   location_id?: string;
   abstract_governing_body_location_name?: string;
   governing_body_location_name?: string;
@@ -247,19 +251,29 @@ const dataMapping: DataMapper<AgendaItemMuSearchEntry, AgendaItem> = (
 
   // Map data attributes to AgendaItem properties
   dataResponse.id = Array.isArray(uuid) ? uuid[0] : uuid;
-  dataResponse.title = cleanString(entry.title);
-  dataResponse.description = cleanString(entry.description);
-  dataResponse.locationId = entry.location_id;
+  dataResponse.title = cleanString(parseMuSearchAttributeToString(entry.title));
+  dataResponse.description = cleanString(
+    parseMuSearchAttributeToString(entry.description)
+  );
+  dataResponse.locationId = entry.location_id || entry.abstract_location_id;
   dataResponse.abstractGoverningBodyLocationName =
-    entry.abstract_governing_body_location_name;
-  dataResponse.governingBodyLocationName = entry.governing_body_location_name;
-  dataResponse.abstractGoverningBodyName = entry.abstract_governing_body_name;
-  dataResponse.governingBodyName = entry.governing_body_name;
-  dataResponse.sessionPlannedStart = parseMuSearchDateToDate(
+    parseMuSearchAttributeToString(entry.abstract_governing_body_location_name);
+  dataResponse.governingBodyLocationName = parseMuSearchAttributeToString(
+    entry.governing_body_location_name
+  );
+  dataResponse.abstractGoverningBodyName = parseMuSearchAttributeToString(
+    entry.abstract_governing_body_name
+  );
+  dataResponse.governingBodyName = parseMuSearchAttributeToString(
+    entry.governing_body_name
+  );
+  dataResponse.sessionPlannedStart = parseMuSearchAttributeToDate(
     entry.session_planned_start
   );
-  dataResponse.sessionEndedAt = parseMuSearchDateToDate(entry.session_ended_at);
-  dataResponse.sessionStartedAt = parseMuSearchDateToDate(
+  dataResponse.sessionEndedAt = parseMuSearchAttributeToDate(
+    entry.session_ended_at
+  );
+  dataResponse.sessionStartedAt = parseMuSearchAttributeToDate(
     entry.session_started_at
   );
 
