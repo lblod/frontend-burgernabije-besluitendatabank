@@ -31,6 +31,20 @@
             class="au-o-flow au-o-flow--small"
             {{did-insert this.resetLoading}}
           >
+
+            <AuInput
+              id="keyword"
+              @queryParam="trefwoord"
+              @value={{this.keyword}}
+              {{on "input" this.handleChange}}
+              @label="Zoeken"
+              @labelHidden={{true}}
+              placeholder="Zoek in alle lokale agendas en besluiten"
+              @icon="search"
+              class="au-c-form-row--button au-o-layout--large"
+              @width="block"
+            />
+
             <PowerSelectMultiple
               @onChange={{this.handleMunicipalityChange}}
               @selected={{this.selectedMunicipalities}}

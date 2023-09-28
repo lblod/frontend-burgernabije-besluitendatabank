@@ -1,6 +1,6 @@
-import FilterComponent from './filter';
 import { action } from '@ember/object';
 import { localCopy } from 'tracked-toolbox';
+import FilterComponent from './filter';
 
 export interface Signature {
   Args: {

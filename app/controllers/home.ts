@@ -28,11 +28,20 @@ export default class HomeController extends Controller {
   ) {
     this.selectedMunicipalities = selectedMunicipalities;
   }
+  /** Handles keyword search on homepage */
+  @tracked value = '';
+
+  @action
+  handleChange(event: Event) {
+    this.value = (event.target as HTMLInputElement).value;
+  }
 
   @action handleMunicipalitySelect() {
     this.loading = true;
+    console.log(this.value);
     this.router.transitionTo('agenda-items', {
       queryParams: {
+        trefwoord: this.value,
         gemeentes: serializeArray(
           this.selectedMunicipalities.map((municipality) => municipality.label)
         ),
