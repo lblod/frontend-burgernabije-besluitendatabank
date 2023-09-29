@@ -1,4 +1,7 @@
 .feedback-widget {
+  // override the external link styles
+  display: inline-block !important;
+  color: var(--au-white) !important;
   position: fixed;
   width: 5rem;
   height: 15rem;
@@ -6,16 +9,11 @@
   right: 0;
   writing-mode: vertical-lr;
   text-orientation: mixed;
-  text-align: center;
   padding: 1rem;
-  cursor: pointer;
   transform: rotate(-180deg);
-  border-radius: 0 10px 10px 0;
-  background-color: var(--au-blue-700);
-  color: var(--au-white);
+  border-radius: 0 5px 5px 0;
+
   z-index: 9999;
-  text-decoration: none;
-  font-weight: var(--au-medium);
 
   @include au-font-size(var(--au-h4));
 }
