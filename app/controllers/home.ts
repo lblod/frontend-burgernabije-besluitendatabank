@@ -31,6 +31,12 @@ export default class HomeController extends Controller {
   /** Handles keyword search on homepage */
   @tracked value = '';
 
+  @action handleKeyUp(event: KeyboardEvent) {
+    if (event.code === 'Enter') {
+      this.handleMunicipalitySelect();
+    }
+  }
+
   @action
   handleChange(event: Event) {
     this.value = (event.target as HTMLInputElement).value;

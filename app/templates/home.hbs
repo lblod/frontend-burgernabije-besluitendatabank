@@ -48,16 +48,17 @@
             </PowerSelectMultiple>
 
             <AuInput
-              id="keyword"
               @queryParam="trefwoord"
               @value={{this.keyword}}
-              {{on "input" this.handleChange}}
               @label="Zoeken"
               @labelHidden={{true}}
-              placeholder="Zoek in alle lokale agendaputen"
               @icon="search"
-              class="au-c-form-row--button au-o-layout--large"
               @width="block"
+              id="keyword"
+              placeholder="Zoek in alle lokale agendaputen"
+              class="au-c-form-row--button au-o-layout--large"
+              {{on "input" this.handleChange}}
+              {{on "keyup" this.handleKeyUp}}
             />
             <AuButton
               @loading={{this.loading}}
