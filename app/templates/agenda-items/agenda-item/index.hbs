@@ -123,11 +123,7 @@
                     {{else}}
                       <AuAlert
                         @skin="warning"
-                        @title={{if
-                          this.wasHandled
-                          "Agendapunt niet beschikbaar"
-                          "Besluit niet beschikbaar"
-                        }}
+                        @title={{"Besluit niet beschikbaar"}}
                         class="au-u-margin-top au-u-margin-bottom"
                       />
                     {{/if}}
