@@ -118,6 +118,17 @@
             @queryParam="gemeentes"
             @placeholder="Alle gemeentes"
           />
+          {{!-- {{#if this.filters.municipalityLabels}} --}}
+          <Filters::SelectMultipleFilter
+            @id="governingBody"
+            @label="Kies één of meer bestuursorganen"
+            @options={{this.governingBodies}}
+            @searchField="label"
+            @queryParam="bestuursorganen"
+            @placeholder="Alle bestuursorganen"
+          />
+          {{!-- {{/if}} --}}
+
           <Filters::DateRangeFilter
             @startQueryParam="begin"
             @endQueryParam="eind"

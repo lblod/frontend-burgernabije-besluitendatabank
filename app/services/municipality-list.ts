@@ -1,5 +1,5 @@
-import Service, { service } from '@ember/service';
 import Store from '@ember-data/store';
+import Service, { service } from '@ember/service';
 import LocationModel from 'frontend-burgernabije-besluitendatabank/models/location';
 import { deserializeArray } from 'frontend-burgernabije-besluitendatabank/utils/query-params';
 
@@ -22,6 +22,33 @@ export default class MunicipalityListService extends Service {
     }
 
     return this._municipalities;
+  }
+
+  async governingBodies(municipalityId: string) {
+    console.log(municipalityId);
+    const governingBodies = await this.store.query('governing-body', {
+      page: { size: 600 },
+      filter: {
+        ':gt:name': 'Gemeente',
+
+        'is-time-specialization-of': {
+          'administrative-unit': {
+            location: {
+              label: municipalityId || undefined,
+            },
+          },
+        },
+      },
+      sort: 'name',
+      include: [
+        'is-time-specialization-of.administrative-unit.location',
+        'administrative-unit.location',
+      ].join(','),
+    });
+    return governingBodies.map((governingBody) => ({
+      id: governingBody.id,
+      label: governingBody.name,
+    }));
   }
 
   /**
@@ -78,5 +105,31 @@ export default class MunicipalityListService extends Service {
     }
 
     return locationIds.join(',');
+  }
+
+  async getGoverningBodyLabelsFromLocationIds(
+    locationIds?: Array<string> | string
+  ): Promise<string | undefined> {
+    if (typeof locationIds === 'string') {
+      locationIds = deserializeArray(locationIds);
+    } else if (!locationIds) {
+      return undefined;
+    }
+
+    const governingBodyLabels: Array<string> = [];
+    const municipalities = await this.municipalities();
+
+    if (municipalities) {
+      for (let i = 0; i < locationIds.length; i++) {
+        const locationId = locationIds[i];
+        const municipality = municipalities.find(
+          (municipality) => municipality.id === locationId
+        );
+        if (municipality) {
+          governingBodyLabels.push(municipality.label);
+        }
+      }
+    }
+    return governingBodyLabels.join(',');
   }
 }

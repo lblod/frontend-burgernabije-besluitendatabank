@@ -3,22 +3,23 @@ import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { task } from 'ember-concurrency';
 import { Resource } from 'ember-resources';
-import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/mu-search/agenda-item';
-import { parseMuSearchDateToDate } from 'frontend-burgernabije-besluitendatabank/utils/mu-search-data-format';
-import { cleanString } from 'frontend-burgernabije-besluitendatabank/utils/clean-string';
 import MuSearchService, {
   DataMapper,
   MuSearchData,
   MuSearchResponse,
   PageableRequest,
 } from 'frontend-burgernabije-besluitendatabank/services/mu-search';
+import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
+import { cleanString } from 'frontend-burgernabije-besluitendatabank/utils/clean-string';
+import { parseMuSearchDateToDate } from 'frontend-burgernabije-besluitendatabank/utils/mu-search-data-format';
 
 interface AgendaItemsParams {
   keyword: string;
   municipalityLabels: string;
   plannedStartMin: string;
   plannedStartMax: string;
+  governingBodyLabels: string;
 }
 
 interface AgendaItemsLoaderArgs {
@@ -75,7 +76,13 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
         this.#filters.municipalityLabels
       );
 
-      const { keyword, plannedStartMin, plannedStartMax } = this.#filters;
+      // const governingBodyLabels =
+      //   (await this.municipalityList.getGoverningBodyLabelsFromLocationIds(
+      //     locationIds
+      //   )) || '';
+
+      const { keyword, plannedStartMin, plannedStartMax, governingBodyLabels } =
+        this.#filters;
 
       const agendaItems: MuSearchResponse<AgendaItem> =
         await this.muSearch.search(
@@ -83,6 +90,7 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
             index: 'agenda-items',
             page,
             locationIds,
+            governingBodyLabels,
             keyword,
             plannedStartMin,
             plannedStartMax,
@@ -116,6 +124,7 @@ export default class AgendaItemsIndexController extends Controller {
   @tracked municipalityLabels = '';
   @tracked plannedStartMin = '';
   @tracked plannedStartMax = '';
+  @tracked governingBodyLabels = '';
 
   /** Controls the loading animation of the "load more" button */
   @tracked isLoadingMore = false;
@@ -130,6 +139,10 @@ export default class AgendaItemsIndexController extends Controller {
 
   get municipalities() {
     return this.municipalityList.municipalities();
+  }
+
+  get governingBodies() {
+    return this.municipalityList.governingBodies(this.municipalityLabels);
   }
 
   updateKeyword = (value: string) => {
@@ -153,6 +166,7 @@ export default class AgendaItemsIndexController extends Controller {
       municipalityLabels: this.municipalityLabels,
       plannedStartMin: this.plannedStartMin,
       plannedStartMax: this.plannedStartMax,
+      governingBodyLabels: this.governingBodyLabels,
     };
   }
 }
@@ -164,6 +178,7 @@ type AgendaItemsQueryArguments = {
   locationIds?: string;
   plannedStartMin?: string;
   plannedStartMax?: string;
+  governingBodyLabels?: string;
 };
 
 type AgendaItemMuSearchEntry = {
@@ -192,6 +207,7 @@ const agendaItemsQuery = ({
   locationIds,
   plannedStartMin,
   plannedStartMax,
+  governingBodyLabels,
 }: AgendaItemsQueryArguments): AgendaItemsQueryResult => {
   // Initialize filters and request objects
   const filters = {} as { [key: string]: string };
@@ -220,6 +236,12 @@ const agendaItemsQuery = ({
     filters['abstract_location_id,location_id'] = locationIds;
   }
 
+  // Apply optional filter for governing body labels
+  if (governingBodyLabels) {
+    filters['abstract_governing_body_name,governing_body_name'] =
+      governingBodyLabels;
+  }
+
   // Apply optional filter for keyword search
   if (keyword) {
     filters[
@@ -235,6 +257,7 @@ const agendaItemsQuery = ({
   // Set dataMapping function in the request
   request.dataMapping = dataMapping;
 
+  console.log(request);
   return request;
 };
 

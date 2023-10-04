@@ -1,13 +1,15 @@
 import Model, {
+  AsyncBelongsTo,
+  AsyncHasMany,
   attr,
   belongsTo,
   hasMany,
-  AsyncHasMany,
-  AsyncBelongsTo,
 } from '@ember-data/model';
 import GoverningBodyModel from './governing-body';
-import AdministrativeUnitClasssificationCodeModel from './location';
-import LocationModel from './location';
+import {
+  default as AdministrativeUnitClasssificationCodeModel,
+  default as LocationModel,
+} from './location';
 
 export default class AdministrativeUnitModel extends Model {
   @attr('string', { defaultValue: 'Ontbrekende gemeente' })

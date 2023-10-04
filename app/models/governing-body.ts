@@ -1,12 +1,12 @@
 import Model, {
+  AsyncBelongsTo,
+  AsyncHasMany,
   attr,
   belongsTo,
   hasMany,
-  AsyncHasMany,
-  AsyncBelongsTo,
 } from '@ember-data/model';
-import SessionModel from './session';
 import AdministrativeUnitModel from './administrative-unit';
+import SessionModel from './session';
 
 /**
  * There are two types of governing bodies
