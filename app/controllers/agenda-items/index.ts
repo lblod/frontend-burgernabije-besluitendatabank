@@ -228,7 +228,7 @@ const agendaItemsQuery = ({
   if (keyword) {
     filters[
       ':query:title'
-    ] = `(title:${keyword})  OR (description:${keyword}) `;
+    ] = `(title:*${keyword}*) OR (description:*${keyword}*)`;
   }
 
   // Set page size and filters in the request
