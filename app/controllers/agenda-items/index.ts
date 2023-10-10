@@ -221,7 +221,11 @@ const agendaItemsQuery = ({
 
   // Apply optional filter for locationIds
   if (locationIds) {
-    filters['abstract_location_id,location_id'] = locationIds;
+    const queryIds = locationIds
+      .split(',')
+      .map((id) => `(abstract_location_id:${id} OR location_id:${id})`)
+      .join(' OR ');
+    filters[':query:abstract_location_id'] = queryIds;
   }
 
   // Apply optional filter for keyword search
