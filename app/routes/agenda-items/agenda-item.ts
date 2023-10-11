@@ -65,30 +65,20 @@ export default class AgendaItemRoute extends Route {
       .flat()
       .sort((a, b) => (a.number || '').localeCompare(b.number || ''));
 
+    const locationId = agendaItem.session?.municipalityId;
+
     const similiarAgendaItems = await this.store.query('agenda-item', {
       page: {
         size: 4,
       },
-      municipality: agendaItem.session?.municipality,
+      'filter[:or:][sessions][governing-body][is-time-specialization-of][administrative-unit][location][:id:]':
+        locationId,
+      'filter[:or:][sessions][governing-body][administrative-unit][location][:id:]':
+        locationId,
       filter: {
-        sessions: {
-          'governing-body': {
-            'is-time-specialization-of': {
-              'administrative-unit': {
-                location: {
-                  label: agendaItem.session?.municipality,
-                },
-              },
-            },
-          },
-        },
         ':or:': {
-          title: this.keywordStore.keyword
-            ? this.keywordStore.keyword
-            : undefined,
-          description: this.keywordStore.keyword
-            ? this.keywordStore.keyword
-            : undefined,
+          title: this.keywordStore.keyword || undefined,
+          description: this.keywordStore.keyword || undefined,
         },
       },
     });
