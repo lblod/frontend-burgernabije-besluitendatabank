@@ -1,29 +1,25 @@
 <Filters::Filter @id={{@id}} @label={{@label}} @labelHidden={{@labelHidden}}>
-    <PowerSelectMultiple
-      {{!template-lint-disable no-duplicate-id}}
-      id={{@id}}
+  <PowerSelectMultiple
+    {{!template-lint-disable no-duplicate-id}}
+    id={{@id}}
+    @onChange={{this.selectChange}}
+    class="au-u-1-1"
+    @selected={{this.selected}}
+    @options={{@options}}
+    @allowClear={{true}}
+    @searchField={{@searchField}}
+    @placeholder={{@placeholder}}
+    @noMatchesMessage={{if
+      @noMatchesMessage
+      @noMatchesMessage
+      "Geen resultaten gevonden"
+    }}
+    @searchMessage="Aan het zoeken..."
+    @searchEnabled={{true}}
+    {{did-insert this.inserted}}
+    as |value|
+  >
+    {{get value @searchField}}
 
-      @onChange={{this.selectChange}}
-
-      class="au-u-1-1"
-
-      @selected= {{this.selected}}
-
-      @options={{@options}}
-
-      @allowClear={{true}}
-      @searchField={{@searchField}}
-
-      @placeholder={{@placeholder}}
-      @noMatchesMessage={{concat "Geen " @label " gevonden"}}
-      @searchMessage="Aan het zoeken..."
-      @searchEnabled={{true}}
-
-      {{did-insert this.inserted}}
-
-      as |value|
-    >
-      {{get value @searchField}}
-
-    </PowerSelectMultiple>
+  </PowerSelectMultiple>
 </Filters::Filter>
