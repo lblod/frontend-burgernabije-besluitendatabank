@@ -24,6 +24,7 @@
   <AuFormRow>
     <AuLabel for="date-from">Startdatum</AuLabel>
     <Filters::DateRangeFilter::DateInput
+      @onBlur={{this.handleBlur}}
       @value={{this.start}}
       @onChange={{this.handleStartDateChange}}
       id="date-from"
@@ -34,7 +35,9 @@
       <AuLabel for="date-until">Einddatum</AuLabel>
       <Filters::DateRangeFilter::DateInput
         @value={{this.end}}
+        @onBlur={{this.handleBlur}}
         @onChange={{this.handleEndDateChange}}
+        @onError={{this.isInvalidDateRange}}
         id="date-until"
       />
     </AuFormRow>
@@ -46,4 +49,9 @@
       Bestaande periodes
     </Filters::DateRangeFilter::ToggleButton>
   </div>
+  {{#if this.isInvalidDateRange}}
+    <AuPill @skin="error" @size="small" @icon="info-circle">
+      De einddatum moet na de startdatum liggen.
+    </AuPill>
+  {{/if}}
 {{/if}}

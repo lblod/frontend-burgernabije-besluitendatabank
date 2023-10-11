@@ -1,7 +1,9 @@
 <input
-  class="au-c-input au-c-input--block"
+  {{! class="au-c-input au-c-input--block" }}
+  class="au-c-input au-c-input--block {{if @onError 'au-c-input--error'}}"
   type="date"
   value={{@value}}
   {{on "change" this.handleChange}}
+  {{on "blur" this.handleBlur}}
   ...attributes
 />
