@@ -67,21 +67,26 @@ export default class AgendaItemRoute extends Route {
 
     const locationId = agendaItem.session?.municipalityId;
 
-    const similiarAgendaItems = await this.store.query('agenda-item', {
-      page: {
-        size: 4,
-      },
-      'filter[:or:][sessions][governing-body][is-time-specialization-of][administrative-unit][location][:id:]':
-        locationId,
-      'filter[:or:][sessions][governing-body][administrative-unit][location][:id:]':
-        locationId,
-      filter: {
-        ':or:': {
-          title: this.keywordStore.keyword || undefined,
-          description: this.keywordStore.keyword || undefined,
+    // load 5 similiar agenda items in order to filter out the current agenda item
+    const similiarAgendaItems = (
+      await this.store.query('agenda-item', {
+        page: {
+          size: 5,
         },
-      },
-    });
+        'filter[:or:][sessions][governing-body][is-time-specialization-of][administrative-unit][location][:id:]':
+          locationId,
+        'filter[:or:][sessions][governing-body][administrative-unit][location][:id:]':
+          locationId,
+        filter: {
+          ':or:': {
+            title: this.keywordStore.keyword || undefined,
+            description: this.keywordStore.keyword || undefined,
+          },
+        },
+      })
+    )
+      .filter((item) => item.id !== agendaItem.id)
+      .slice(0, 4);
 
     return {
       agendaItem,
