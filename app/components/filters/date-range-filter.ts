@@ -124,10 +124,6 @@ export default class DateRangeFilterComponent extends Component<Signature> {
   @action handleStartDateChange(newDate: string | null): void {
     this.start = newDate;
 
-    // if (this.isInvalidDateRange) {
-    //   this.end = null;
-    // }
-
     if (this.isDateComplete(newDate)) {
       this.updateQueryParamsIfValid();
     }
@@ -135,18 +131,6 @@ export default class DateRangeFilterComponent extends Component<Signature> {
 
   @action handleEndDateChange(newDate: string | null): void {
     this.end = newDate;
-
-    // if (this.isInvalidDateRange) {
-    //   this.start = null;
-    // }
-
-    if (this.isDateComplete(newDate)) {
-      this.updateQueryParamsIfValid();
-    }
-  }
-
-  @action handleBlur(event: any) {
-    const newDate = event.target.value;
 
     if (this.isDateComplete(newDate)) {
       this.updateQueryParamsIfValid();
