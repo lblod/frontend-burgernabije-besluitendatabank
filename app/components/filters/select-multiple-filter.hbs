@@ -9,7 +9,11 @@
     @allowClear={{true}}
     @searchField={{@searchField}}
     @placeholder={{@placeholder}}
-    @noMatchesMessage={{concat "Geen " @label " gevonden"}}
+    @noMatchesMessage={{if
+      @noMatchesMessage
+      @noMatchesMessage
+      "Geen resultaten gevonden"
+    }}
     @searchMessage="Aan het zoeken..."
     @searchEnabled={{true}}
     {{did-insert this.inserted}}
