@@ -6,9 +6,9 @@ import Model, {
   belongsTo,
   hasMany,
 } from '@ember-data/model';
+import { sortSessions } from 'frontend-burgernabije-besluitendatabank/utils/sort-sessions';
 import AgendaItemHandlingModel from './agenda-item-handling';
 import SessionModel from './session';
-import { sortSessions } from 'frontend-burgernabije-besluitendatabank/utils/sort-sessions';
 
 export default class AgendaItemModel extends Model {
   @attr('string', { defaultValue: 'Ontbrekende titel' }) declare title: string;
@@ -48,6 +48,26 @@ export default class AgendaItemModel extends Model {
 
   get dateFormatted() {
     return this.session?.dateFormatted;
+  }
+
+  get agendaItemQuality() {
+    let quality = 0;
+
+    // check if agenda item has a title, description, a municipality and a session, max quality is 100. every missing field is -25
+    if (this.title) {
+      quality += 25;
+    }
+    if (this.description) {
+      quality += 25;
+    }
+    if (this.session) {
+      quality += 25;
+    }
+    if (this.session?.municipality) {
+      quality += 25;
+    }
+
+    return quality;
   }
 }
 

@@ -36,15 +36,30 @@
         >
           <AuCard class="u-color-top-border" as |c|>
             <c.header>
-              <div class="au-u-flex au-u-flex--vertical-center au-u-flex--between">
+              <div
+                class="au-u-flex au-u-flex--vertical-center au-u-flex--between"
+              >
                 <AuHeading @level="1" @skin="3">
                   {{#if this.model.agendaItem.title}}
                     {{this.model.agendaItem.title}}
                   {{/if}}
                 </AuHeading>
                 <p class="au-u-margin-left au-u-margin-top-small">
-                  <AuPill @skin="warning" class="au-c-pill--hover au-u-word-nowrap" {{on "click" this.showModal}}>
-                    <svg role="img" aria-hidden="true" class="au-c-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M19,1 L13,1 C11.897,1 11,1.898 11,3 L11,21 C11,22.103 11.897,23 13,23 L19,23 C20.103,23 21,22.103 21,21 L21,3 C21,1.898 20.103,1 19,1 Z M13,21 L13,18 L16,18 L16,16 L13,16 L13,13 L16,13 L16,11 L13,11 L13,8 L16,8 L16,6 L13,6 L13,3 L19,3 L19.001,21 L13,21 Z M3,7 C3,5.346 4.346,4 6,4 C7.654,4 9,5.346 9,7 L9,18.303 L6,22.803 L3,18.303 L3,7 Z M6,19.197 L7,17.697 L7,10 L5,10 L5,17.697 L6,19.197 Z M5,8 L5,7 C5,6.448 5.449,6 6,6 C6.551,6 7,6.448 7,7 L7,8 L5,8 Z"/></svg>
+                  <AuPill
+                    @skin="warning"
+                    class="au-c-pill--hover au-u-word-nowrap"
+                    {{on "click" this.showModal}}
+                  >
+                    <svg
+                      role="img"
+                      aria-hidden="true"
+                      class="au-c-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                    ><path
+                        fill-rule="evenodd"
+                        d="M19,1 L13,1 C11.897,1 11,1.898 11,3 L11,21 C11,22.103 11.897,23 13,23 L19,23 C20.103,23 21,22.103 21,21 L21,3 C21,1.898 20.103,1 19,1 Z M13,21 L13,18 L16,18 L16,16 L13,16 L13,13 L16,13 L16,11 L13,11 L13,8 L16,8 L16,6 L13,6 L13,3 L19,3 L19.001,21 L13,21 Z M3,7 C3,5.346 4.346,4 6,4 C7.654,4 9,5.346 9,7 L9,18.303 L6,22.803 L3,18.303 L3,7 Z M6,19.197 L7,17.697 L7,10 L5,10 L5,17.697 L6,19.197 Z M5,8 L5,7 C5,6.448 5.449,6 6,6 C6.551,6 7,6.448 7,7 L7,8 L5,8 Z"
+                      /></svg>
                     Data kwaliteit
                   </AuPill>
                 </p>
@@ -300,7 +315,7 @@
   </div>
 </LayoutDetail>
 
-{{!-- Data quality modal --}}
+{{! Data quality modal }}
 <AuModal
   @modalOpen={{this.modalOpen}}
   @closeModal={{this.closeModal}}
@@ -308,48 +323,168 @@
 >
   <:title>
     <div class="au-u-flex au-u-flex--vertical-center au-u-flex--spaced-tiny">
-      <svg role="img" aria-hidden="true" class="au-c-icon au-c-icon--large" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M19,1 L13,1 C11.897,1 11,1.898 11,3 L11,21 C11,22.103 11.897,23 13,23 L19,23 C20.103,23 21,22.103 21,21 L21,3 C21,1.898 20.103,1 19,1 Z M13,21 L13,18 L16,18 L16,16 L13,16 L13,13 L16,13 L16,11 L13,11 L13,8 L16,8 L16,6 L13,6 L13,3 L19,3 L19.001,21 L13,21 Z M3,7 C3,5.346 4.346,4 6,4 C7.654,4 9,5.346 9,7 L9,18.303 L6,22.803 L3,18.303 L3,7 Z M6,19.197 L7,17.697 L7,10 L5,10 L5,17.697 L6,19.197 Z M5,8 L5,7 C5,6.448 5.449,6 6,6 C6.551,6 7,6.448 7,7 L7,8 L5,8 Z"/></svg> 
-      Data kwaliteit: <AuPill @skin="warning">Gemiddeld</AuPill>
+      <svg
+        role="img"
+        aria-hidden="true"
+        class="au-c-icon au-c-icon--large"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+      ><path
+          fill-rule="evenodd"
+          d="M19,1 L13,1 C11.897,1 11,1.898 11,3 L11,21 C11,22.103 11.897,23 13,23 L19,23 C20.103,23 21,22.103 21,21 L21,3 C21,1.898 20.103,1 19,1 Z M13,21 L13,18 L16,18 L16,16 L13,16 L13,13 L16,13 L16,11 L13,11 L13,8 L16,8 L16,6 L13,6 L13,3 L19,3 L19.001,21 L13,21 Z M3,7 C3,5.346 4.346,4 6,4 C7.654,4 9,5.346 9,7 L9,18.303 L6,22.803 L3,18.303 L3,7 Z M6,19.197 L7,17.697 L7,10 L5,10 L5,17.697 L6,19.197 Z M5,8 L5,7 C5,6.448 5.449,6 6,6 C6.551,6 7,6.448 7,7 L7,8 L5,8 Z"
+        /></svg>
+      Data kwaliteit:
+      {{! if the agendaitemquality is between 0 and 25 it is "Zeer slecht", between 25 and 40 is "Slecht", 40 and 60 is "Gemiddeld", 60 and 75 "Goed", 75 and 100 "Zeer Goed" }}
+      {{#if this.model.agendaItem.agendaItemQuality}}
+        {{#if (lt this.model.agendaItem.agendaItemQuality 25)}}
+          <AuPill @skin="error">Zeer slecht</AuPill>
+        {{/if}}
+        {{#if
+          (and
+            (gte this.model.agendaItem.agendaItemQuality 25)
+            (lt this.model.agendaItem.agendaItemQuality 40)
+          )
+        }}
+          <AuPill @skin="error">Slecht</AuPill>
+        {{/if}}
+        {{#if
+          (and
+            (gte this.model.agendaItem.agendaItemQuality 40)
+            (lt this.model.agendaItem.agendaItemQuality 60)
+          )
+        }}
+          <AuPill @skin="warning">Gemiddeld</AuPill>
+        {{/if}}
+        {{#if
+          (and
+            (gte this.model.agendaItem.agendaItemQuality 60)
+            (lt this.model.agendaItem.agendaItemQuality 75)
+          )
+        }}
+          <AuPill @skin="success">Goed</AuPill>
+        {{/if}}
+        {{#if (gt this.model.agendaItem.agendaItemQuality 75)}}
+          <AuPill @skin="success">Zeer goed</AuPill>
+        {{/if}}
+      {{/if}}
     </div>
   </:title>
   <:body>
     <div class="au-c-content">
       <AuHeading @level="2" @skin="4">Ontbrekende elementen op deze pagina</AuHeading>
-      <AuList
-        @divider={{true}}
-        as |Item|
-      >
+      <AuList @divider={{true}} as |Item|>
         <Item>
-          <div class="au-u-flex au-u-flex--spaced-small au-u-flex--vertical-center">
-            <AuBadge
-              @icon="cross"
-              @skin="error"
-              @size="small"
-            />
-            <p>
-              De titel is niet aanwezig
-            </p>
+          <div
+            class="au-u-flex au-u-flex--spaced-small au-u-flex--vertical-center"
+          >
+            {{#if this.model.agendaItem.title}}
+              <AuBadge @icon="check" @skin="success" @size="small" />
+              <p>
+                De titel is aanwezig
+              </p>
+            {{else}}
+              <AuBadge @icon="cross" @skin="error" @size="small" />
+              <p>
+                De titel is niet aanwezig
+              </p>
+            {{/if}}
+          </div>
+        </Item>
+        <Item>
+          <div
+            class="au-u-flex au-u-flex--spaced-small au-u-flex--vertical-center"
+          >
+            {{#if this.model.agendaItem.session.hasMunicipality}}
+              <AuBadge @icon="check" @skin="success" @size="small" />
+              <p>
+                De gemeente is aanwezig
+              </p>
+            {{else}}
+              <AuBadge @icon="cross" @skin="error" @size="small" />
+              <p>
+                De gemeente is niet aanwezig
+              </p>
+            {{/if}}
+          </div>
+        </Item>
+        <Item>
+          <div
+            class="au-u-flex au-u-flex--spaced-small au-u-flex--vertical-center"
+          >
+            {{#if this.model.agendaItem.session.dateFormatted}}
+              <AuBadge @icon="check" @skin="success" @size="small" />
+              <p>
+                De datum is aanwezig
+              </p>
+            {{else}}
+              <AuBadge @icon="cross" @skin="error" @size="small" />
+              <p>
+                De datum is niet aanwezig
+              </p>
+            {{/if}}
+          </div>
+        </Item>
+        <Item>
+          <div
+            class="au-u-flex au-u-flex--spaced-small au-u-flex--vertical-center"
+          >
+            {{#if this.model.agendaItem.description}}
+              <AuBadge @icon="check" @skin="success" @size="small" />
+              <p>
+                De beschrijving is aanwezig
+              </p>
+            {{else}}
+              <AuBadge @icon="cross" @skin="error" @size="small" />
+              <p>
+                De beschrijving is niet aanwezig
+              </p>
+            {{/if}}
+          </div>
+        </Item>
+        <Item>
+          <div
+            class="au-u-flex au-u-flex--spaced-small au-u-flex--vertical-center"
+          >
+            {{#if this.model.agendaItem.alternateLink}}
+              <AuBadge @icon="check" @skin="success" @size="small" />
+              <p>
+                De externe link is aanwezig
+              </p>
+            {{else}}
+              <AuBadge @icon="cross" @skin="error" @size="small" />
+              <p>
+                De externe link is niet aanwezig
+              </p>
+            {{/if}}
+          </div>
+        </Item>
+        <Item>
+          <div
+            class="au-u-flex au-u-flex--spaced-small au-u-flex--vertical-center"
+          >
+            {{#if this.model.agendaItem.handledBy.resolutions}}
+              <AuBadge @icon="check" @skin="success" @size="small" />
+              <p>
+                Het besluit is aanwezig
+              </p>
+            {{else}}
+              <AuBadge @icon="cross" @skin="error" @size="small" />
+              <p>
+                Het besluit is niet aanwezig
+              </p>
+            {{/if}}
           </div>
         </Item>
       </AuList>
-      {{!-- The data quality percentage: not ready for implementation --}}
-      {{!-- <AuHeading @level="2" @skin="4">Algemene data kwaliteit voor deze gemeente</AuHeading>
-      <div class="au-u-flex au-u-flex--spaced-small au-u-flex--vertical-center">
-        <AuBadge
-          @icon="check"
-          @skin="success"
-          @size="small"
-        />
-        <p>
-          Essen: <strong>70%</strong><br>
-          <small class="au-u-muted au-u-h-functional">Alle gevonden documenten of meldingen bevatten dit verplicht in te vullen attribuut.</small>
-        </p>
-      </div> --}}
     </div>
   </:body>
   <:footer>
     <div class="au-c-content au-c-content--small">
-      <p>Om na te gaan of besturen voldoen aan de gelinkte publicatieplicht, heeft ABB enkel gekeken naar de webtoepassing waarop besturen gelinkte publicaties publiceren. Enkel de documenten die gelinkt gepubliceerd zijn en automatisch van de webtoepassing gehaald konden worden, zijn verder bekeken.</p>
+      <p>Om na te gaan of besturen voldoen aan de gelinkte publicatieplicht,
+        heeft ABB enkel gekeken naar de webtoepassing waarop besturen gelinkte
+        publicaties publiceren. Enkel de documenten die gelinkt gepubliceerd
+        zijn en automatisch van de webtoepassing gehaald konden worden, zijn
+        verder bekeken.</p>
       <p><AuLink @route="data-quality">Meer informatie</AuLink></p>
     </div>
   </:footer>
