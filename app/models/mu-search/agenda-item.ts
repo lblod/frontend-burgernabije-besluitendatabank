@@ -39,24 +39,4 @@ export default class AgendaItemModel {
       'Ontbrekende bestuurseenheid'
     );
   }
-
-  get agendaItemQuality() {
-    let quality = 0;
-
-    // check if agenda item has a title, description, a municipality and a session, max quality is 100. every missing field is -25
-    if (this.title) {
-      quality += 25;
-    }
-    if (this.description) {
-      quality += 25;
-    }
-    if (this.dateFormatted) {
-      quality += 25;
-    }
-    if (this.municipality) {
-      quality += 25;
-    }
-
-    return quality;
-  }
 }

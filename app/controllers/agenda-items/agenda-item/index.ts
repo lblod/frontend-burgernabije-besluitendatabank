@@ -29,6 +29,7 @@ export default class AgendaItemController extends Controller {
 
   showModal = () => {
     this.modalOpen = true;
+    console.log(this.model.agendaItem.agendaItemQuality.qualityMetrics);
   };
 
   closeModal = () => {

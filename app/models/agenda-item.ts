@@ -50,24 +50,59 @@ export default class AgendaItemModel extends Model {
     return this.session?.dateFormatted;
   }
 
-  get agendaItemQuality() {
+  get agendaItemQuality(): {
+    qualityMetrics: { label: string; value: boolean }[];
+    qualityValue: number;
+  } {
+    const properties = [
+      {
+        property: 'title',
+        formattedProperty: 'Titel',
+      },
+      {
+        property: 'description',
+        formattedProperty: 'Beschrijving',
+      },
+      {
+        property: 'dateFormatted',
+        formattedProperty: 'Datum',
+      },
+      {
+        property: 'municipality',
+        formattedProperty: 'Bestuurseenheid',
+      },
+      {
+        property: 'session',
+        formattedProperty: 'Zitting',
+      },
+      {
+        property: 'governingBodyNameResolved',
+        formattedProperty: 'Bestuursorgaan',
+      },
+      {
+        property: 'handledBy',
+        formattedProperty: 'Behandeling',
+      },
+    ];
+
+    const maxQuality = 100;
+    const propertyCount = properties.length;
     let quality = 0;
+    const qualityMetrics: { label: string; value: boolean }[] = [];
 
-    // check if agenda item has a title, description, a municipality and a session, max quality is 100. every missing field is -25
-    if (this.title) {
-      quality += 25;
-    }
-    if (this.description) {
-      quality += 25;
-    }
-    if (this.session) {
-      quality += 25;
-    }
-    if (this.session?.municipality) {
-      quality += 25;
-    }
+    properties.forEach((property) => {
+      const value = this[property.property as keyof AgendaItemModel];
+      quality += (value ? maxQuality : 0) / propertyCount;
+      qualityMetrics.push({
+        label: property.formattedProperty,
+        value: !!value,
+      });
+    });
 
-    return quality;
+    return {
+      qualityMetrics,
+      qualityValue: quality,
+    };
   }
 }
 
