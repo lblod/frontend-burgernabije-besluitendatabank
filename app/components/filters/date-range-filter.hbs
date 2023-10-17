@@ -49,9 +49,10 @@
       Bestaande periodes
     </Filters::DateRangeFilter::ToggleButton>
   </div>
-  {{#if this.isInvalidDateRange}}
+
+  {{#each this.errorMessages as |message|}}
     <AuPill @skin="error" @size="small" @icon="info-circle">
-      De einddatum moet na de startdatum liggen.
+      {{message}}
     </AuPill>
-  {{/if}}
+  {{/each}}
 {{/if}}

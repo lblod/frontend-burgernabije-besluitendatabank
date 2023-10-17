@@ -1,3 +1,4 @@
+import { A } from '@ember/array';
 import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { service } from '@ember/service';
@@ -13,7 +14,6 @@ import {
   startOfYear,
   sub,
 } from 'date-fns';
-
 type ISODateString = string;
 
 interface Signature {
@@ -125,6 +125,8 @@ export default class DateRangeFilterComponent extends Component<Signature> {
     this.start = newDate;
 
     if (this.isDateComplete(newDate)) {
+      // if the start is before 2015 don't update the query params
+
       this.updateQueryParamsIfValid();
     }
   }
@@ -200,9 +202,36 @@ export default class DateRangeFilterComponent extends Component<Signature> {
     }
   }
 
+  errorMessages = A<string>([]);
+
   updateQueryParamsIfValid() {
+    // if the start is before 2015 or the end after today + 100 years
     if (this.hasBothDates || this.hasNoDates) {
+      if (this.start && new Date(this.start) < new Date('2015-01-01')) {
+        return this.pushUniqueErrorMessage(
+          'Datums kunnen niet voor 2015 liggen'
+        );
+      }
+
+      if (this.end && new Date(this.end) > new Date('2100-01-01')) {
+        return this.pushUniqueErrorMessage(
+          'Datums kunnen niet voor 2100 liggen'
+        );
+      }
+      if (this.isInvalidDateRange) {
+        return this.pushUniqueErrorMessage(
+          'De einddatum moet na de startdatum liggen'
+        );
+      }
       this.updateQueryParams();
+      this.errorMessages.clear();
+    }
+  }
+
+  pushUniqueErrorMessage(errorMessage: string) {
+    // Check if the error message is not already in the array before pushing
+    if (!this.errorMessages.includes(errorMessage)) {
+      this.errorMessages.pushObject(errorMessage);
     }
   }
 
