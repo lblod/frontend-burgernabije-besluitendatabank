@@ -3,16 +3,16 @@ import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { task } from 'ember-concurrency';
 import { Resource } from 'ember-resources';
-import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/mu-search/agenda-item';
-import { parseMuSearchDateToDate } from 'frontend-burgernabije-besluitendatabank/utils/mu-search-data-format';
-import { cleanString } from 'frontend-burgernabije-besluitendatabank/utils/clean-string';
 import MuSearchService, {
   DataMapper,
   MuSearchData,
   MuSearchResponse,
   PageableRequest,
 } from 'frontend-burgernabije-besluitendatabank/services/mu-search';
+import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
+import { cleanString } from 'frontend-burgernabije-besluitendatabank/utils/clean-string';
+import { parseMuSearchDateToDate } from 'frontend-burgernabije-besluitendatabank/utils/mu-search-data-format';
 
 interface AgendaItemsParams {
   keyword: string;
