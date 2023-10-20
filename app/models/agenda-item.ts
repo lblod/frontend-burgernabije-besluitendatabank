@@ -50,10 +50,7 @@ export default class AgendaItemModel extends Model {
     return this.session?.dateFormatted;
   }
 
-  get agendaItemQuality(): {
-    qualityMetrics: { label: string; value: boolean }[];
-    qualityValue: number;
-  } {
+  get agendaItemQualityMetrics(): { label: string; value: boolean }[] {
     const properties = [
       {
         property: 'title',
@@ -85,24 +82,17 @@ export default class AgendaItemModel extends Model {
       },
     ];
 
-    const maxQuality = 100;
-    const propertyCount = properties.length;
-    let quality = 0;
     const qualityMetrics: { label: string; value: boolean }[] = [];
 
     properties.forEach((property) => {
       const value = this[property.property as keyof AgendaItemModel];
-      quality += (value ? maxQuality : 0) / propertyCount;
       qualityMetrics.push({
         label: property.formattedProperty,
         value: !!value,
       });
     });
 
-    return {
-      qualityMetrics,
-      qualityValue: quality,
-    };
+    return qualityMetrics;
   }
 }
 
