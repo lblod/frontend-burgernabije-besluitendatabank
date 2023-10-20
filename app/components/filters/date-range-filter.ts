@@ -214,9 +214,7 @@ export default class DateRangeFilterComponent extends Component<Signature> {
       }
 
       if (this.end && new Date(this.end) > new Date('2100-01-01')) {
-        return this.pushUniqueErrorMessage(
-          'Datums kunnen niet voor 2100 liggen'
-        );
+        return this.pushUniqueErrorMessage('Datums kunnen niet na 2100 liggen');
       }
       if (this.isInvalidDateRange) {
         return this.pushUniqueErrorMessage(
