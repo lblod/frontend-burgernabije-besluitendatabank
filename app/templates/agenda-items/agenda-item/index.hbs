@@ -348,13 +348,13 @@
           <Item>
             {{#if qualityMetric.value}}
               <AuBadge @icon="check" @skin="success" @size="small" />
-              <p>
+              <p class="au-u-flex--inline">
                 {{qualityMetric.label}}
                 is aanwezig
               </p>
             {{else}}
               <AuBadge @icon="cross" @skin="error" @size="small" />
-              <p>
+              <p class="au-u-flex--inline">
                 {{qualityMetric.label}}
                 is niet aanwezig
               </p>
