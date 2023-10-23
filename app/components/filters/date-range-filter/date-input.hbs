@@ -3,8 +3,8 @@
   class="au-c-input au-c-input--block {{if @onError 'au-c-input--error'}}"
   type="date"
   value={{@value}}
-  min="2000-01-01"
-  max="2099-12-31"
+  min={{@min}}
+  max={{@max}}
   {{on "change" this.handleChange}}
   ...attributes
 />
