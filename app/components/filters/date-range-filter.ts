@@ -38,6 +38,8 @@ export default class DateRangeFilterComponent extends Component<Signature> {
   @service declare router: RouterService;
   @tracked start: string | null;
   @tracked end: string | null;
+  @tracked min = '2015-01-01';
+  @tracked max = '2100-12-31';
   @tracked selectedPreset: Preset | null = null;
   @tracked isChoosingPresets = true;
 
@@ -202,34 +204,44 @@ export default class DateRangeFilterComponent extends Component<Signature> {
     }
   }
 
-  errorMessages = A<string>([]);
+  @tracked errorMessages = A<string>([]);
 
-  updateQueryParamsIfValid() {
-    // if the start is before 2015 or the end after today + 100 years
-    if (this.hasBothDates || this.hasNoDates) {
-      if (this.start && new Date(this.start) < new Date('2015-01-01')) {
-        return this.pushUniqueErrorMessage(
-          'Datums kunnen niet voor 2015 liggen'
-        );
-      }
+  updateQueryParamsIfValid(): void {
+    const startDate = this.start ? new Date(this.start) : new Date();
+    const endDate = this.end ? new Date(this.end) : new Date();
+    const minDate = new Date(this.min);
+    const maxDate = new Date(this.max);
 
-      if (this.end && new Date(this.end) > new Date('2100-01-01')) {
-        return this.pushUniqueErrorMessage('Datums kunnen niet na 2100 liggen');
+    if (
+      startDate < minDate ||
+      endDate < minDate ||
+      startDate > maxDate ||
+      endDate > maxDate ||
+      this.isInvalidDateRange
+    ) {
+      this.errorMessages.clear(); // Clear existing error messages
+      if (
+        startDate < minDate ||
+        endDate < minDate ||
+        startDate > maxDate ||
+        endDate > maxDate
+      ) {
+        this.pushUniqueErrorMessage('De datum moet tussen 2015 en 2100 liggen');
       }
       if (this.isInvalidDateRange) {
-        return this.pushUniqueErrorMessage(
+        this.pushUniqueErrorMessage(
           'De einddatum moet na de startdatum liggen'
         );
       }
+    } else {
+      this.errorMessages.clear(); // Clear existing error messages when dates are valid
       this.updateQueryParams();
-      this.errorMessages.clear();
     }
   }
-
   pushUniqueErrorMessage(errorMessage: string) {
     // Check if the error message is not already in the array before pushing
     if (!this.errorMessages.includes(errorMessage)) {
-      this.errorMessages.pushObject(errorMessage);
+      this.errorMessages.push(errorMessage);
     }
   }
 
