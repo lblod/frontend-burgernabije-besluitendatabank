@@ -204,7 +204,7 @@ type AgendaItemsQueryResult = PageableRequest<
   AgendaItem
 >;
 
-const agendaItemsQuery = ({
+export const agendaItemsQuery = ({
   index,
   page,
   keyword,

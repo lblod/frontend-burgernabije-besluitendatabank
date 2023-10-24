@@ -65,6 +65,23 @@
             </div>
           </Item>
         </AuList>
+
+        <AuHeading @level="2" @skin="2">Statistieken</AuHeading>
+        {{! use totalAgendaItems, totalAgendaItemsTreated,... from the controller }}
+        <AuList @divider={{true}} as |Item|>
+          <Item>
+            <div
+              class="au-u-flex au-u-flex--spaced-small au-u-flex--vertical-center"
+            >
+
+              <p>
+                {{this.totalAgendaItems}}
+                agendapunten gevonden
+              </p>
+            </div>
+          </Item>
+
+        </AuList>
       </AuContent>
     </div>
   </div>
