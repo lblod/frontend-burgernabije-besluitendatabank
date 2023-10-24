@@ -1,3 +1,4 @@
+import ToasterService from '@appuniversum/ember-appuniversum/addon/services/toaster';
 import { A } from '@ember/array';
 import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
@@ -36,12 +37,35 @@ enum Preset {
 
 export default class DateRangeFilterComponent extends Component<Signature> {
   @service declare router: RouterService;
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  @service declare toaster: ToasterService;
   @tracked start: string | null;
   @tracked end: string | null;
   @tracked min = '2015-01-01';
   @tracked max = '2100-12-31';
   @tracked selectedPreset: Preset | null = null;
   @tracked isChoosingPresets = true;
+  @tracked errorMessages = A<string>([]);
+  @tracked clearableToast: unknown | null = null;
+
+  @action
+  triggerClearableToast() {
+    console.log(this.errorMessages);
+    this.clearableToast = this.toaster.error(
+      this.errorMessages.toArray().join('\n'),
+      'Er is een probleem'
+    );
+  }
+
+  @action
+  triggerClearToast() {
+    if (this.clearableToast) {
+      console.log(this.clearableToast);
+      this.toaster.close(this.clearableToast);
+    }
+  }
 
   presets = [
     Preset.ThisWeek,
@@ -204,13 +228,13 @@ export default class DateRangeFilterComponent extends Component<Signature> {
     }
   }
 
-  @tracked errorMessages = A<string>([]);
-
   updateQueryParamsIfValid(): void {
     const startDate = this.start ? new Date(this.start) : new Date();
     const endDate = this.end ? new Date(this.end) : new Date();
     const minDate = new Date(this.min);
     const maxDate = new Date(this.max);
+    this.triggerClearToast();
+    this.errorMessages.clear(); // Clear existing error messages
 
     if (
       startDate < minDate ||
@@ -219,7 +243,6 @@ export default class DateRangeFilterComponent extends Component<Signature> {
       endDate > maxDate ||
       this.isInvalidDateRange
     ) {
-      this.errorMessages.clear(); // Clear existing error messages
       if (
         startDate < minDate ||
         endDate < minDate ||
@@ -233,7 +256,10 @@ export default class DateRangeFilterComponent extends Component<Signature> {
           'De einddatum moet na de startdatum liggen'
         );
       }
+      this.triggerClearableToast();
     } else {
+      // clear toasters
+      this.triggerClearToast();
       this.errorMessages.clear(); // Clear existing error messages when dates are valid
       this.updateQueryParams();
     }
