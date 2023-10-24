@@ -15,7 +15,7 @@
               @value={{this.keyword}}
               @label="Zoeken"
               @labelHidden={{true}}
-              @placeholder="Zoek in alle lokale agendas en besluiten"
+              @placeholder="Zoek in alle lokale agendaputen"
               @buttonText="Zoeken"
               @icon="search"
               @rowClass="au-c-form-row--button"
@@ -126,6 +126,7 @@
             @id="municipality"
             @label="Kies één of meer gemeentes"
             @options={{this.municipalities}}
+            @noMatchesMessage="Geen gemeentes gevonden"
             @searchField="label"
             @queryParam="gemeentes"
             @placeholder="Alle gemeentes"
@@ -157,94 +158,3 @@
     </div>
   </AuBodyContainer>
 </LayoutList>
-
-{{! Data quality modal }}
-<AuModal
-  @modalOpen={{this.modalOpen}}
-  @closeModal={{this.closeModal}}
-  @size="default"
->
-  <:title>
-    <div class="au-u-flex au-u-flex--vertical-center au-u-flex--spaced-tiny">
-      <svg
-        role="img"
-        aria-hidden="true"
-        class="au-c-icon au-c-icon--large"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-      ><path
-          fill-rule="evenodd"
-          d="M19,1 L13,1 C11.897,1 11,1.898 11,3 L11,21 C11,22.103 11.897,23 13,23 L19,23 C20.103,23 21,22.103 21,21 L21,3 C21,1.898 20.103,1 19,1 Z M13,21 L13,18 L16,18 L16,16 L13,16 L13,13 L16,13 L16,11 L13,11 L13,8 L16,8 L16,6 L13,6 L13,3 L19,3 L19.001,21 L13,21 Z M3,7 C3,5.346 4.346,4 6,4 C7.654,4 9,5.346 9,7 L9,18.303 L6,22.803 L3,18.303 L3,7 Z M6,19.197 L7,17.697 L7,10 L5,10 L5,17.697 L6,19.197 Z M5,8 L5,7 C5,6.448 5.449,6 6,6 C6.551,6 7,6.448 7,7 L7,8 L5,8 Z"
-        /></svg>
-      Data kwaliteit
-    </div>
-  </:title>
-  <:body>
-    <div class="au-c-content">
-      {{#if this.hasMunicipalityFilter}}
-        <AuList @divider={{true}} as |Item|>
-          {{#each this.filters.dataQualityList as |item index|}}
-            {{#if (eq index 0)}}
-              <Item>
-                <div
-                  class="au-u-flex au-u-flex--spaced-small au-u-flex--vertical-center"
-                >
-                  <AuBadge @icon="check" @skin="success" @size="small" />
-                  <p>
-                    {{item}}:
-                    <strong>70%</strong><br />
-                    <small class="au-u-muted au-u-h-functional">Alle gevonden
-                      documenten of meldingen bevatten dit verplicht in te
-                      vullen attribuut.</small>
-                  </p>
-                </div>
-              </Item>
-            {{else if (eq index 1)}}
-              <Item>
-                <div
-                  class="au-u-flex au-u-flex--spaced-small au-u-flex--vertical-center"
-                >
-                  <AuBadge @icon="dash" @skin="warning" @size="small" />
-                  <p>
-                    {{item}}:
-                    <strong>50%</strong><br />
-                    <small class="au-u-muted au-u-h-functional">Er zijn
-                      documenten gevonden of meldingen ontvangen met dit
-                      optioneel in te vullen attribuut.</small>
-                  </p>
-                </div>
-              </Item>
-            {{else}}
-              <Item>
-                <div
-                  class="au-u-flex au-u-flex--spaced-small au-u-flex--vertical-center"
-                >
-                  <AuBadge @icon="cross" @skin="error" @size="small" />
-                  <p>
-                    {{item}}:
-                    <strong>25%</strong><br />
-                    <small class="au-u-muted au-u-h-functional">Er zijn geen
-                      documenten gevonden of geen melding ontvangen met dit
-                      verplicht in te vullen attribuut.</small>
-                  </p>
-                </div>
-              </Item>
-            {{/if}}
-          {{/each}}
-        </AuList>
-      {{else}}
-        <p>Selecteer één of meerdere gemeentes om de data kwaliteit te zien.</p>
-      {{/if}}
-    </div>
-  </:body>
-  <:footer>
-    <div class="au-c-content au-c-content--small">
-      <p>Om na te gaan of besturen voldoen aan de gelinkte publicatieplicht,
-        heeft ABB enkel gekeken naar de webtoepassing waarop besturen gelinkte
-        publicaties publiceren. Enkel de documenten die gelinkt gepubliceerd
-        zijn en automatisch van de webtoepassing gehaald konden worden, zijn
-        verder bekeken.</p>
-      <p><AuLink @route="data-quality">Meer informatie</AuLink></p>
-    </div>
-  </:footer>
-</AuModal>

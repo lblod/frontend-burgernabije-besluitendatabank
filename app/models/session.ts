@@ -36,29 +36,31 @@ export default class SessionModel extends Model {
    *
    * This naming scheme is in relation to the app/back-end
    */
-  get governingBodyNameResolved() {
+  get governingBodyResolved() {
     return (
-      this.governingBodyValue?.isTimeSpecializationOfValue?.name ||
-      this.governingBodyValue?.name ||
-      'Ontbrekend bestuursorgaan'
+      this.governingBodyValue?.isTimeSpecializationOfValue ||
+      this.governingBodyValue
     );
+  }
+
+  get governingBodyNameResolved() {
+    return this.governingBodyResolved?.name || 'Ontbrekend bestuursorgaan';
+  }
+
+  get municipalityId() {
+    return this.governingBodyResolved?.administrativeUnitValue?.locationValue
+      ?.id;
   }
 
   get municipality() {
     return (
-      this.governingBodyValue?.isTimeSpecializationOfValue
-        ?.administrativeUnitValue?.locationValue?.label ||
-      this.governingBodyValue?.administrativeUnitValue?.locationValue?.label ||
-      'Ontbrekende bestuurseenheid'
+      this.governingBodyResolved?.administrativeUnitValue?.locationValue
+        ?.label || 'Ontbrekende bestuurseenheid'
     );
   }
 
   get hasMunicipality() {
-    return (
-      !!this.governingBodyValue?.isTimeSpecializationOfValue
-        ?.administrativeUnitValue ||
-      !!this.governingBodyValue?.administrativeUnitValue
-    );
+    return !!this.governingBodyResolved?.administrativeUnitValue?.locationValue;
   }
 
   get dateFormatted() {

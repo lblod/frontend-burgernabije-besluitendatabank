@@ -12,7 +12,10 @@ import MuSearchService, {
 } from 'frontend-burgernabije-besluitendatabank/services/mu-search';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 import { cleanString } from 'frontend-burgernabije-besluitendatabank/utils/clean-string';
-import { parseMuSearchDateToDate } from 'frontend-burgernabije-besluitendatabank/utils/mu-search-data-format';
+import {
+  parseMuSearchAttributeToDate,
+  parseMuSearchAttributeToString,
+} from 'frontend-burgernabije-besluitendatabank/utils/mu-search-data-format';
 
 interface AgendaItemsParams {
   keyword: string;
@@ -187,6 +190,7 @@ type AgendaItemsQueryArguments = {
 
 type AgendaItemMuSearchEntry = {
   uuid: string[] | string;
+  abstract_location_id?: string;
   location_id?: string;
   abstract_governing_body_location_name?: string;
   governing_body_location_name?: string;
@@ -236,14 +240,18 @@ const agendaItemsQuery = ({
 
   // Apply optional filter for locationIds
   if (locationIds) {
-    filters['abstract_location_id,location_id'] = locationIds;
+    const queryIds = locationIds
+      .split(',')
+      .map((id) => `(abstract_location_id:${id} OR location_id:${id})`)
+      .join(' OR ');
+    filters[':query:abstract_location_id'] = queryIds;
   }
 
   // Apply optional filter for keyword search
   if (keyword) {
     filters[
       ':query:title'
-    ] = `(title:${keyword})  OR (description:${keyword}) `;
+    ] = `(title:*${keyword}*) OR (description:*${keyword}*)`;
   }
 
   // Set page size and filters in the request
@@ -266,19 +274,29 @@ const dataMapping: DataMapper<AgendaItemMuSearchEntry, AgendaItem> = (
 
   // Map data attributes to AgendaItem properties
   dataResponse.id = Array.isArray(uuid) ? uuid[0] : uuid;
-  dataResponse.title = cleanString(entry.title);
-  dataResponse.description = cleanString(entry.description);
-  dataResponse.locationId = entry.location_id;
+  dataResponse.title = cleanString(parseMuSearchAttributeToString(entry.title));
+  dataResponse.description = cleanString(
+    parseMuSearchAttributeToString(entry.description)
+  );
+  dataResponse.locationId = entry.location_id || entry.abstract_location_id;
   dataResponse.abstractGoverningBodyLocationName =
-    entry.abstract_governing_body_location_name;
-  dataResponse.governingBodyLocationName = entry.governing_body_location_name;
-  dataResponse.abstractGoverningBodyName = entry.abstract_governing_body_name;
-  dataResponse.governingBodyName = entry.governing_body_name;
-  dataResponse.sessionPlannedStart = parseMuSearchDateToDate(
+    parseMuSearchAttributeToString(entry.abstract_governing_body_location_name);
+  dataResponse.governingBodyLocationName = parseMuSearchAttributeToString(
+    entry.governing_body_location_name
+  );
+  dataResponse.abstractGoverningBodyName = parseMuSearchAttributeToString(
+    entry.abstract_governing_body_name
+  );
+  dataResponse.governingBodyName = parseMuSearchAttributeToString(
+    entry.governing_body_name
+  );
+  dataResponse.sessionPlannedStart = parseMuSearchAttributeToDate(
     entry.session_planned_start
   );
-  dataResponse.sessionEndedAt = parseMuSearchDateToDate(entry.session_ended_at);
-  dataResponse.sessionStartedAt = parseMuSearchDateToDate(
+  dataResponse.sessionEndedAt = parseMuSearchAttributeToDate(
+    entry.session_ended_at
+  );
+  dataResponse.sessionStartedAt = parseMuSearchAttributeToDate(
     entry.session_started_at
   );
 
