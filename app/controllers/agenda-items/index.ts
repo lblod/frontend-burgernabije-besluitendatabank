@@ -3,25 +3,26 @@ import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { task } from 'ember-concurrency';
 import { Resource } from 'ember-resources';
-import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/mu-search/agenda-item';
-import {
-  parseMuSearchAttributeToDate,
-  parseMuSearchAttributeToString,
-} from 'frontend-burgernabije-besluitendatabank/utils/mu-search-data-format';
-import { cleanString } from 'frontend-burgernabije-besluitendatabank/utils/clean-string';
 import MuSearchService, {
   DataMapper,
   MuSearchData,
   MuSearchResponse,
   PageableRequest,
 } from 'frontend-burgernabije-besluitendatabank/services/mu-search';
+import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
+import { cleanString } from 'frontend-burgernabije-besluitendatabank/utils/clean-string';
+import {
+  parseMuSearchAttributeToDate,
+  parseMuSearchAttributeToString,
+} from 'frontend-burgernabije-besluitendatabank/utils/mu-search-data-format';
 
 interface AgendaItemsParams {
   keyword: string;
   municipalityLabels: string;
   plannedStartMin: string;
   plannedStartMax: string;
+  dataQualityList: Array<string>;
 }
 
 interface AgendaItemsLoaderArgs {
@@ -129,6 +130,9 @@ export default class AgendaItemsIndexController extends Controller {
   /** Mobile filter */
   @tracked hasFilter = false;
 
+  /** Data quality modal */
+  @tracked modalOpen = false;
+
   AgendaItemsLoader = AgendaItemsLoader;
 
   get municipalities() {
@@ -150,13 +154,28 @@ export default class AgendaItemsIndexController extends Controller {
     }
   };
 
+  showModal = () => {
+    this.modalOpen = true;
+  };
+
+  closeModal = () => {
+    if (this.modalOpen) {
+      this.modalOpen = false;
+    }
+  };
+
   get filters(): AgendaItemsParams {
     return {
       keyword: this.keyword,
       municipalityLabels: this.municipalityLabels,
       plannedStartMin: this.plannedStartMin,
       plannedStartMax: this.plannedStartMax,
+      dataQualityList: this.municipalityLabels.split('+'),
     };
+  }
+
+  get hasMunicipalityFilter() {
+    return this.filters.municipalityLabels.length > 0;
   }
 }
 
