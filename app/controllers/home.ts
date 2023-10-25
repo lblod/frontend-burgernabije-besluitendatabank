@@ -28,11 +28,25 @@ export default class HomeController extends Controller {
   ) {
     this.selectedMunicipalities = selectedMunicipalities;
   }
+  /** Handles keyword search on homepage */
+  @tracked keywordValue = '';
+
+  @action handleKeyUp(event: KeyboardEvent) {
+    if (event.code === 'Enter') {
+      this.handleMunicipalitySelect();
+    }
+  }
+
+  @action
+  handleChange(event: Event) {
+    this.keywordValue = (event.target as HTMLInputElement).value;
+  }
 
   @action handleMunicipalitySelect() {
     this.loading = true;
     this.router.transitionTo('agenda-items', {
       queryParams: {
+        trefwoord: this.keywordValue,
         gemeentes: serializeArray(
           this.selectedMunicipalities.map((municipality) => municipality.label)
         ),
