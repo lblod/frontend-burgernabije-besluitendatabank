@@ -36,15 +36,13 @@
         >
           <AuCard class="u-color-top-border" as |c|>
             <c.header>
-              <div
-                class="au-u-flex au-u-flex--vertical-center au-u-flex--between"
-              >
+              <div class="au-u-flex au-u-flex--between">
                 <AuHeading @level="1" @skin="3">
                   {{#if this.model.agendaItem.title}}
                     {{this.model.agendaItem.title}}
                   {{/if}}
                 </AuHeading>
-                <p class="au-u-margin-left au-u-margin-top-small">
+                <p class="au-u-margin-left au-u-margin-top-tiny">
                   <AuPill
                     @skin="warning"
                     class="au-c-pill--hover au-u-word-nowrap"
@@ -146,11 +144,7 @@
                     {{else}}
                       <AuAlert
                         @skin="warning"
-                        @title={{if
-                          this.wasHandled
-                          "Dit agendapunt werd nog niet behandeld"
-                          "Besluit niet beschikbaar"
-                        }}
+                        @title={{"Besluit niet beschikbaar"}}
                         class="au-u-margin-top au-u-margin-bottom"
                       />
                     {{/if}}
@@ -213,11 +207,7 @@
                   {{else}}
                     <AuAlert
                       @skin="warning"
-                      @title={{if
-                        this.wasHandled
-                        "Stemming niet beschikbaar"
-                        "Dit agendapunt is niet beschikbaar"
-                      }}
+                      @title={{"Stemming niet beschikbaar"}}
                       class="au-u-margin-top au-u-margin-bottom"
                     />
                   {{/if}}
@@ -342,19 +332,19 @@
       <AuList @divider={{true}} as |Item|>
 
         {{#each
-          this.model.agendaItem.agendaItemQuality.qualityMetrics
+          this.model.agendaItem.agendaItemQualityMetrics
           as |qualityMetric|
         }}
           <Item>
             {{#if qualityMetric.value}}
               <AuBadge @icon="check" @skin="success" @size="small" />
-              <p>
+              <p class="au-u-flex--inline">
                 {{qualityMetric.label}}
                 is aanwezig
               </p>
             {{else}}
               <AuBadge @icon="cross" @skin="error" @size="small" />
-              <p>
+              <p class="au-u-flex--inline">
                 {{qualityMetric.label}}
                 is niet aanwezig
               </p>

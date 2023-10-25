@@ -31,6 +31,7 @@
             class="au-o-flow au-o-flow--small"
             {{did-insert this.resetLoading}}
           >
+
             <PowerSelectMultiple
               @onChange={{this.handleMunicipalityChange}}
               @selected={{this.selectedMunicipalities}}
@@ -38,13 +39,27 @@
               @allowClear={{true}}
               @searchField="label"
               @placeholder={{"Alle gemeentes"}}
-              @noMatchesMessage={{"Geen gemeente gevonden"}}
+              @noMatchesMessage={{"Geen gemeentes gevonden"}}
               @searchMessage="Aan het zoeken..."
               @searchEnabled={{true}}
               as |municipality|
             >
               {{municipality.label}}
             </PowerSelectMultiple>
+
+            <AuInput
+              @queryParam="trefwoord"
+              @value={{this.keywordValue}}
+              @label="Zoeken"
+              @labelHidden={{true}}
+              @icon="search"
+              @width="block"
+              id="keyword"
+              placeholder="Zoek in alle lokale agendaputen"
+              class="au-c-form-row--button au-o-layout--large"
+              {{on "input" this.handleChange}}
+              {{on "keyup" this.handleKeyUp}}
+            />
             <AuButton
               @loading={{this.loading}}
               @width="block"
