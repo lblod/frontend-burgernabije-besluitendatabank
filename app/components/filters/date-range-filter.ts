@@ -4,6 +4,7 @@ import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { service } from '@ember/service';
 import Component from '@glimmer/component';
+
 import { cached, tracked } from '@glimmer/tracking';
 import {
   endOfMonth,
@@ -52,9 +53,13 @@ export default class DateRangeFilterComponent extends Component<Signature> {
 
   @action
   triggerClearableToast() {
-    console.log(this.errorMessages);
+    this.errorMessages.forEach((errorMessage, index) => {
+      if (index !== 0) {
+        this.errorMessages[index] = errorMessage.toLowerCase();
+      }
+    });
     this.clearableToast = this.toaster.error(
-      this.errorMessages.toArray().join('\n'),
+      this.errorMessages.toArray().join(' & '),
       'Er is een probleem'
     );
   }
@@ -62,7 +67,6 @@ export default class DateRangeFilterComponent extends Component<Signature> {
   @action
   triggerClearToast() {
     if (this.clearableToast) {
-      console.log(this.clearableToast);
       this.toaster.close(this.clearableToast);
     }
   }
