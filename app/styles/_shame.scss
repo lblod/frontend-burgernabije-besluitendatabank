@@ -43,6 +43,10 @@ cursor {
   }
 }
 
+.au-c-main-header__title {
+  max-width: fit-content;
+}
+
 // Sticky utility
 .u-top-sticky {
   @include mq(small) {
