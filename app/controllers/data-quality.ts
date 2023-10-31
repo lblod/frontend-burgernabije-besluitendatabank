@@ -1,5 +1,10 @@
 import Controller from '@ember/controller';
+import { action } from '@ember/object';
+import RouterService from '@ember/routing/router-service';
+import { service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
 import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
+import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 
 export default class DataQualityController extends Controller {
   // add statistics that calculate the following:
@@ -9,6 +14,36 @@ export default class DataQualityController extends Controller {
   // - total number of agenda items that don't have a title and a description
   // - top 10 governing bodies with the most agenda items
   // add a computed property that returns the percentage of agenda items that have been treated
+
+  @service declare municipalityList: MunicipalityListService;
+  @service declare router: RouterService;
+
+  /** Controls the loading animation of the "locatie's opslaan" button */
+  @tracked loading = false;
+  @tracked selectedMunicipalities: Array<{ label: string; id: string }> = [];
+
+  get municipalities() {
+    return this.municipalityList.municipalities();
+  }
+
+  /** Resets the button loading animation */
+  @action resetLoading() {
+    this.loading = false;
+  }
+
+  @action handleMunicipalityChange(
+    selectedMunicipalities: Array<{ label: string; id: string }>
+  ) {
+    // add query param for location ids
+    this.router.transitionTo('data-quality', {
+      queryParams: {
+        gemeentes: selectedMunicipalities.map(
+          (municipality) => municipality.label
+        ),
+      },
+    });
+    this.selectedMunicipalities = selectedMunicipalities;
+  }
 
   get totalAgendaItems(): number {
     const model = this.model as AgendaItem[];

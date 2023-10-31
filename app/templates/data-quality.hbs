@@ -68,6 +68,20 @@
 
         <AuHeading @level="2" @skin="2">Statistieken</AuHeading>
         {{! use totalAgendaItems, totalAgendaItemsTreated,... from the controller }}
+        <PowerSelectMultiple
+          @onChange={{this.handleMunicipalityChange}}
+          @selected={{this.selectedMunicipalities}}
+          @options={{this.municipalities}}
+          @allowClear={{true}}
+          @searchField="label"
+          @placeholder={{"Alle gemeentes"}}
+          @noMatchesMessage={{"Geen gemeentes gevonden"}}
+          @searchMessage="Aan het zoeken..."
+          @searchEnabled={{true}}
+          as |municipality|
+        >
+          {{municipality.label}}
+        </PowerSelectMultiple>
         <AuList @divider={{true}} as |Item|>
           <Item>
             <div class="au-u-flex au-u-flex--column au-u-flex--spaced-small">
@@ -85,6 +99,21 @@
                 {{this.model.totalCountAgendaItemsTreated}}
               </p>
             </div>
+          </Item>
+          <Item>
+            {{#each
+              this.model.agendaItemsPerGoverningBodyClassification
+              as |item|
+            }}
+              <div class="au-u-flex au-u-flex--spaced-small">
+                <p>
+                  {{item.classification}}:
+                </p>
+                <p>
+                  {{item.count}}
+                </p>
+              </div>
+            {{/each}}
           </Item>
 
         </AuList>
