@@ -70,13 +70,19 @@
         {{! use totalAgendaItems, totalAgendaItemsTreated,... from the controller }}
         <AuList @divider={{true}} as |Item|>
           <Item>
-            <div
-              class="au-u-flex au-u-flex--spaced-small au-u-flex--vertical-center"
-            >
+            <div class="au-u-flex au-u-flex--column au-u-flex--spaced-small">
 
               <p>
-                {{this.totalAgendaItems}}
-                agendapunten gevonden
+                Totaal aantal agendapunten:
+                {{this.model.totalCountAgendaItems}}
+              </p>
+              <p>
+                Met titel en omschrijving:
+                {{this.model.totalCountAgendaItemsWithTitleAndDescription}}
+              </p>
+              <p>
+                Behandeld:
+                {{this.model.totalCountAgendaItemsTreated}}
               </p>
             </div>
           </Item>
