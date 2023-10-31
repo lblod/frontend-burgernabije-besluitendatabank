@@ -1,4 +1,3 @@
-import ToasterService from '@appuniversum/ember-appuniversum/addon/services/toaster';
 import { A } from '@ember/array';
 import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
@@ -38,38 +37,15 @@ enum Preset {
 
 export default class DateRangeFilterComponent extends Component<Signature> {
   @service declare router: RouterService;
-
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  @service declare toaster: ToasterService;
   @tracked start: string | null;
   @tracked end: string | null;
   @tracked min = '2015-01-01';
   @tracked max = '2100-12-31';
   @tracked selectedPreset: Preset | null = null;
   @tracked isChoosingPresets = true;
-  @tracked errorMessages = A<string>([]);
-  @tracked clearableToast: unknown | null = null;
-
-  @action
-  triggerClearableToast() {
-    this.errorMessages.forEach((errorMessage, index) => {
-      if (index !== 0) {
-        this.errorMessages[index] = errorMessage.toLowerCase();
-      }
-    });
-    this.clearableToast = this.toaster.error(
-      this.errorMessages.toArray().join(' & '),
-      'Er is een probleem'
-    );
-  }
-
-  @action
-  triggerClearToast() {
-    if (this.clearableToast) {
-      this.toaster.close(this.clearableToast);
-    }
-  }
+  // ember array of strings
+  @tracked endDateError = A<string>([]);
+  @tracked startDateError = A<string>([]);
 
   presets = [
     Preset.ThisWeek,
@@ -237,8 +213,6 @@ export default class DateRangeFilterComponent extends Component<Signature> {
     const endDate = this.end ? new Date(this.end) : new Date();
     const minDate = new Date(this.min);
     const maxDate = new Date(this.max);
-    this.triggerClearToast();
-    this.errorMessages.clear(); // Clear existing error messages
 
     if (
       startDate < minDate ||
@@ -247,32 +221,49 @@ export default class DateRangeFilterComponent extends Component<Signature> {
       endDate > maxDate ||
       this.isInvalidDateRange
     ) {
-      if (
-        startDate < minDate ||
-        endDate < minDate ||
-        startDate > maxDate ||
-        endDate > maxDate
-      ) {
-        this.pushUniqueErrorMessage('De datum moet tussen 2015 en 2100 liggen');
-      }
-      if (this.isInvalidDateRange) {
+      if (startDate < minDate) {
         this.pushUniqueErrorMessage(
-          'De einddatum moet na de startdatum liggen'
+          this.startDateError,
+          'De startdatum moet na 1 januari 2015 liggen'
         );
       }
-      this.triggerClearableToast();
+      if (endDate < minDate) {
+        this.pushUniqueErrorMessage(
+          this.endDateError,
+          'De einddatum moet na 1 januari 2015 liggen'
+        );
+      }
+      if (startDate > maxDate) {
+        this.pushUniqueErrorMessage(
+          this.startDateError,
+          'De startdatum moet voor 31 december 2100 liggen'
+        );
+      }
+      if (endDate > maxDate) {
+        this.pushUniqueErrorMessage(
+          this.endDateError,
+          'De einddatum moet voor 31 december 2100 liggen'
+        );
+      }
+
+      if (this.isInvalidDateRange) {
+        this.pushUniqueErrorMessage(
+          this.endDateError,
+          'De startdatum moet voor de einddatum liggen'
+        );
+      }
     } else {
-      // clear toasters
-      this.triggerClearToast();
-      this.errorMessages.clear(); // Clear existing error messages when dates are valid
+      this.startDateError.clear();
+      this.endDateError.clear();
       this.updateQueryParams();
     }
   }
-  pushUniqueErrorMessage(errorMessage: string) {
-    // Check if the error message is not already in the array before pushing
-    if (!this.errorMessages.includes(errorMessage)) {
-      this.errorMessages.push(errorMessage);
+
+  pushUniqueErrorMessage(errorArray: any, errorMessage: string): string[] {
+    if (!errorArray.includes(errorMessage)) {
+      errorArray.pushObject(errorMessage);
     }
+    return errorArray;
   }
 
   resetQueryParams(): void {

@@ -24,12 +24,11 @@
   <AuFormRow>
     <AuLabel for="date-from">Startdatum</AuLabel>
     <Filters::DateRangeFilter::DateInput
-      @onBlur={{this.handleBlur}}
       @value={{this.start}}
       @max={{this.max}}
       @min={{this.min}}
       @onChange={{this.handleStartDateChange}}
-      @onError={{this.isInvalidDateRange}}
+      @errorMessage={{this.startDateError}}
       id="date-from"
     />
   </AuFormRow>
@@ -38,11 +37,10 @@
       <AuLabel for="date-until">Einddatum</AuLabel>
       <Filters::DateRangeFilter::DateInput
         @value={{this.end}}
-        @onBlur={{this.handleBlur}}
         @onChange={{this.handleEndDateChange}}
         @max={{this.max}}
         @min={{this.min}}
-        @onError={{this.isInvalidDateRange}}
+        @errorMessage={{this.endDateError}}
         id="date-until"
       />
     </AuFormRow>
