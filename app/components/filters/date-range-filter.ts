@@ -221,28 +221,16 @@ export default class DateRangeFilterComponent extends Component<Signature> {
       endDate > maxDate ||
       this.isInvalidDateRange
     ) {
-      if (startDate < minDate) {
+      if (startDate > maxDate || startDate < minDate) {
         this.pushUniqueErrorMessage(
           this.startDateError,
-          'De startdatum moet na 1 januari 2015 liggen'
+          'De startdatum moet tussen 1 januari 2015 en 31 december 2100 liggen'
         );
       }
-      if (endDate < minDate) {
+      if (endDate > maxDate || endDate < minDate) {
         this.pushUniqueErrorMessage(
           this.endDateError,
-          'De einddatum moet na 1 januari 2015 liggen'
-        );
-      }
-      if (startDate > maxDate) {
-        this.pushUniqueErrorMessage(
-          this.startDateError,
-          'De startdatum moet voor 31 december 2100 liggen'
-        );
-      }
-      if (endDate > maxDate) {
-        this.pushUniqueErrorMessage(
-          this.endDateError,
-          'De einddatum moet voor 31 december 2100 liggen'
+          'De einddatum moet tussen 1 januari 2015 en 31 december 2100 liggen'
         );
       }
 
