@@ -126,13 +126,13 @@ export default class DataQualityRoute extends Route {
       agendaItemsPerGoverningBodyClassification.map((item) => ({
         ...item,
         percentage:
-          ((item.count || 0) / (getCount(totalCountAgendaItems) || 1)) * 100,
+          ((item.count || 0) / (getCount(totalCountAgendaItems) || 1)) * 50,
       }));
 
     agendaItemsPerGoverningBodyClassification.push({
       classification: 'Totaal',
       count: getCount(totalCountAgendaItems) || 0,
-      percentage: 100,
+      percentage: 50,
     });
 
     return {
