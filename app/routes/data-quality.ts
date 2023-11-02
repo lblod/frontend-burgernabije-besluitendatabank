@@ -153,12 +153,13 @@ export default class DataQualityRoute extends Route {
       totalCountAgendaItemsWithTitleAndDescription:
         getCount(totalCountAgendaItemsWithTitleAndDescription) || 0,
       agendaItemsPerGoverningBodyClassification:
-        // first sort by label then sort by count descending set total at the begining
+        // first sort by label then sort by count descending set total at the begining of the array
         agendaItemsPerGoverningBodyClassification
           .sort((a, b) =>
             (a.classification || '').localeCompare(b.classification || '')
           )
-          .sort((a, b) => (b.count || 0) - (a.count || 0)),
+          .sort((a, b) => (b.count || 0) - (a.count || 0))
+          .sort((a, b) => (a.classification === 'Totaal' ? -1 : 0)),
     };
   }
 }
