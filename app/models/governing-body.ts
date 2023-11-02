@@ -6,6 +6,7 @@ import Model, {
   hasMany,
 } from '@ember-data/model';
 import AdministrativeUnitModel from './administrative-unit';
+import GoverningBodyClasssificationCodeModel from './governing-body-classification-code';
 import SessionModel from './session';
 
 /**
@@ -38,6 +39,12 @@ export default class GoverningBodyModel extends Model {
       .belongsTo('administrativeUnit')
       ?.value() as AdministrativeUnitModel | null;
   }
+
+  @belongsTo('governing-body-classification-code', {
+    async: true,
+    inverse: null,
+  })
+  declare classification: AsyncBelongsTo<GoverningBodyClasssificationCodeModel>;
 
   @hasMany('session', { async: true, inverse: 'governingBody' })
   declare sessions: AsyncHasMany<SessionModel>;
