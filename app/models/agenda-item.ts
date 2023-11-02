@@ -38,6 +38,10 @@ export default class AgendaItemModel extends Model {
     return session;
   }
 
+  get wasHandled() {
+    return Boolean(this.session?.startedAt) || Boolean(this.session?.endedAt);
+  }
+
   get municipality() {
     return this.session?.municipality;
   }
@@ -77,7 +81,7 @@ export default class AgendaItemModel extends Model {
         formattedProperty: 'Bestuursorgaan',
       },
       {
-        property: 'handledBy',
+        property: 'wasHandled',
         formattedProperty: 'Behandeling',
       },
     ];
@@ -94,7 +98,6 @@ export default class AgendaItemModel extends Model {
         });
         return;
       }
-      //TODO: Fix handledBy
       qualityMetrics.push({
         label: property.formattedProperty,
         value: !!value,
