@@ -86,6 +86,15 @@ export default class AgendaItemModel extends Model {
 
     properties.forEach((property) => {
       const value = this[property.property as keyof AgendaItemModel];
+      // check if title is not "Ontbrekende titel"
+      if (property.property === 'title' && value === 'Ontbrekende titel') {
+        qualityMetrics.push({
+          label: property.formattedProperty,
+          value: false,
+        });
+        return;
+      }
+      //TODO: Fix handledBy
       qualityMetrics.push({
         label: property.formattedProperty,
         value: !!value,
