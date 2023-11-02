@@ -122,13 +122,26 @@ export default class DataQualityRoute extends Route {
       agendaItemsPromises
     );
 
+    agendaItemsPerGoverningBodyClassification =
+      agendaItemsPerGoverningBodyClassification.map((item) => ({
+        ...item,
+        percentage:
+          ((item.count || 0) / (getCount(totalCountAgendaItems) || 1)) * 100,
+      }));
+
+    agendaItemsPerGoverningBodyClassification.push({
+      classification: 'Totaal',
+      count: getCount(totalCountAgendaItems) || 0,
+      percentage: 100,
+    });
+
     return {
       totalCountAgendaItems: getCount(totalCountAgendaItems) || 0,
       totalCountAgendaItemsTreated: getCount(totalCountAgendaItemsTreated) || 0,
       totalCountAgendaItemsWithTitleAndDescription:
         getCount(totalCountAgendaItemsWithTitleAndDescription) || 0,
       agendaItemsPerGoverningBodyClassification:
-        // first sort by label then sort by count descending
+        // first sort by label then sort by count descending set total at the begining
         agendaItemsPerGoverningBodyClassification
           .sort((a, b) =>
             (a.classification || '').localeCompare(b.classification || '')
