@@ -85,19 +85,30 @@
         <AuList @divider={{true}} as |Item|>
           <Item>
             <div class="au-u-flex au-u-flex--column au-u-flex--spaced-small">
-
-              <p>
-                Totaal aantal agendapunten:
-                {{this.model.totalCountAgendaItems}}
-              </p>
-              <p>
-                Met titel en omschrijving:
-                {{this.model.totalCountAgendaItemsWithTitleAndDescription}}
-              </p>
-              <p>
-                Behandeld:
-                {{this.model.totalCountAgendaItemsTreated}}
-              </p>
+              <section class="au-u-flex">
+                <p class="au-u-bold">
+                  Totaal aantal agendapunten:&nbsp;
+                </p>
+                <p>
+                  {{this.model.totalCountAgendaItems}}
+                </p>
+              </section>
+              <section class="au-u-flex">
+                <p class="au-u-bold">
+                  Met titel en omschrijving:&nbsp;
+                </p>
+                <p>
+                  {{this.model.totalCountAgendaItemsWithTitleAndDescription}}
+                </p>
+              </section>
+              <section class="au-u-flex">
+                <p class="au-u-bold">
+                  Behandeld:&nbsp;
+                </p>
+                <p>
+                  {{this.model.totalCountAgendaItemsTreated}}
+                </p>
+              </section>
             </div>
           </Item>
           <Item>
@@ -106,7 +117,7 @@
               as |item|
             }}
               <div class="au-u-flex au-u-flex--spaced-small">
-                <p>
+                <p class="au-u-bold">
                   {{item.classification}}:
                 </p>
                 <p>
