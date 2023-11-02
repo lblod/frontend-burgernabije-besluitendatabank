@@ -17,6 +17,7 @@ export default class DataQualityController extends Controller {
 
   @service declare municipalityList: MunicipalityListService;
   @service declare router: RouterService;
+  @tracked currentlyLoading = false;
 
   /** Controls the loading animation of the "locatie's opslaan" button */
   @tracked loading = false;

@@ -1,5 +1,7 @@
 import Store from '@ember-data/store';
+import { action } from '@ember/object';
 import Route from '@ember/routing/route';
+import Transition from '@ember/routing/transition';
 import { service } from '@ember/service';
 import AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
 import MuSearchService from 'frontend-burgernabije-besluitendatabank/services/mu-search';
@@ -11,6 +13,16 @@ import {
 export default class DataQualityRoute extends Route {
   @service declare muSearch: MuSearchService;
   @service declare store: Store;
+
+  @action
+  loading(transition: Transition) {
+    // eslint-disable-next-line ember/no-controller-access-in-routes
+    const controller: any = this.controllerFor('data-quality');
+    controller.set('currentlyLoading', true);
+    transition.promise.finally(function () {
+      controller.set('currentlyLoading', false);
+    });
+  }
 
   queryParams = {
     municipalityLabel: {

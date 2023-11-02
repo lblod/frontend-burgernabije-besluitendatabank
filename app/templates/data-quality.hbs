@@ -68,6 +68,7 @@
 
         <AuHeading @level="2" @skin="2">Statistieken</AuHeading>
         {{! use totalAgendaItems, totalAgendaItemsTreated,... from the controller }}
+
         <PowerSelect
           @onChange={{this.handleMunicipalityChange}}
           @selected={{this.selectedMunicipality}}
@@ -83,79 +84,83 @@
           {{municipality.label}}
         </PowerSelect>
         <AuList @divider={{true}} as |Item|>
-          <Item>
-            <div class="au-u-flex au-u-flex--spaced-small au-u-flex--between">
-              <section
-                class="au-u-flex au-u-flex--column au-u-1-1 au-u-text-center"
-              >
-                <p class="au-u-bold">
-                  Totaal aantal agendapunten
-                </p>
-                <p class="au-c-heading au-c-heading--3">
-                  {{this.model.totalCountAgendaItems}}
-                </p>
-              </section>
-              <section
-                class="au-u-flex au-u-flex--column au-u-1-1 au-u-text-center au-u-margin-bottom-large"
-              >
-                <p class="au-u-bold">
-                  Met titel en omschrijving
-                </p>
-                <p class="au-c-heading au-c-heading--3">
-                  {{this.model.totalCountAgendaItemsWithTitleAndDescription}}
-                </p>
-              </section>
-              <section
-                class="au-u-flex au-u-flex--column au-u-1-1 au-u-text-center"
-              >
-                <p class="au-u-bold">
-                  Behandeld
-                </p>
-                <p class="au-c-heading au-c-heading--3">
-                  {{this.model.totalCountAgendaItemsTreated}}
-                </p>
-              </section>
-            </div>
-          </Item>
-          {{! template-lint-disable no-inline-styles }}
-          <div
-            class="au-u-flex au-u-flex--column au-u-flex--spaced-small au-u-1-1"
-          >
-            <AuHeading
-              class="au-u-margin-bottom-tiny"
-              @level="3"
-              @skin="3"
-            >Aantal agendapunten per bestuursorgaan classificatie</AuHeading>
-            <p>
+          {{#if this.currentlyLoading}}
+            <AuLoader />
 
-            </p>
-            {{#each
-              this.model.agendaItemsPerGoverningBodyClassification
-              as |item|
-            }}
-
-              <div
-                class="au-u-flex au-u-flex--spaced-small au-u-1-1 graph-bar-container"
-              >
-                <section class="graph-bar-text">
-                  <p>
-                    {{item.classification}}
+          {{else}}
+            <Item>
+              <div class="au-u-flex au-u-flex--spaced-small au-u-flex--between">
+                <section
+                  class="au-u-flex au-u-flex--column au-u-1-1 au-u-text-center"
+                >
+                  <p class="au-u-bold">
+                    Totaal aantal agendapunten
+                  </p>
+                  <p class="au-c-heading au-c-heading--3">
+                    {{this.model.totalCountAgendaItems}}
                   </p>
                 </section>
-                <div
-                  class="au-u-flex au-u-flex--spaced-small graph-bar"
-                  {{! template-lint-disable style-concatenation }}
-                  style="width: {{item.percentage}}%;"
+                <section
+                  class="au-u-flex au-u-flex--column au-u-1-1 au-u-text-center au-u-margin-bottom-large"
                 >
-                  <p class="graph-bar-count">
-                    {{item.count}}
+                  <p class="au-u-bold">
+                    Met titel en omschrijving
                   </p>
-                </div>
-
+                  <p class="au-c-heading au-c-heading--3">
+                    {{this.model.totalCountAgendaItemsWithTitleAndDescription}}
+                  </p>
+                </section>
+                <section
+                  class="au-u-flex au-u-flex--column au-u-1-1 au-u-text-center"
+                >
+                  <p class="au-u-bold">
+                    Behandeld
+                  </p>
+                  <p class="au-c-heading au-c-heading--3">
+                    {{this.model.totalCountAgendaItemsTreated}}
+                  </p>
+                </section>
               </div>
-            {{/each}}
-          </div>
+            </Item>
+            {{! template-lint-disable no-inline-styles }}
+            <div
+              class="au-u-flex au-u-flex--column au-u-flex--spaced-small au-u-1-1"
+            >
+              <AuHeading
+                class="au-u-margin-bottom-tiny"
+                @level="3"
+                @skin="3"
+              >Aantal agendapunten per bestuursorgaan classificatie</AuHeading>
+              <p>
 
+              </p>
+              {{#each
+                this.model.agendaItemsPerGoverningBodyClassification
+                as |item|
+              }}
+
+                <div
+                  class="au-u-flex au-u-flex--spaced-small au-u-1-1 graph-bar-container"
+                >
+                  <section class="graph-bar-text">
+                    <p>
+                      {{item.classification}}
+                    </p>
+                  </section>
+                  <div
+                    class="au-u-flex au-u-flex--spaced-small graph-bar"
+                    {{! template-lint-disable style-concatenation }}
+                    style="width: {{item.percentage}}%;"
+                  >
+                    <p class="graph-bar-count">
+                      {{item.count}}
+                    </p>
+                  </div>
+
+                </div>
+              {{/each}}
+            </div>
+          {{/if}}
         </AuList>
       </AuContent>
     </div>
