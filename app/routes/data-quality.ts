@@ -12,27 +12,28 @@ export default class DataQualityRoute extends Route {
   @service declare muSearch: MuSearchService;
   @service declare store: Store;
 
-  // add location ids as a query param
   queryParams = {
-    municipalityLabels: {
+    municipalityLabel: {
       as: 'gemeentes',
       refreshModel: true,
     },
   };
 
-  async model(params: { municipalityLabels: string[] }) {
+  async model(params: { municipalityLabel: string[] }) {
     let agendaItemsPerGoverningBodyClassification = [];
 
     const totalCountAgendaItems: AdapterPopulatedRecordArrayWithMeta<AgendaItemModel> =
       await this.store.query('agenda-item', {
         filter: {
-          // sessions: {
-          //   'governing-body': {
-          //     location: {
-          //       label: params.municipalityLabels || '',
-          //     },
-          //   },
-          // },
+          sessions: {
+            'governing-body': {
+              'administrative-unit': {
+                location: {
+                  label: params.municipalityLabel || undefined,
+                },
+              },
+            },
+          },
         },
         size: 1,
       });
@@ -42,13 +43,15 @@ export default class DataQualityRoute extends Route {
         filter: {
           ':has:title': true,
           ':has:description': true,
-          // sessions: {
-          //   'governing-body': {
-          //     location: {
-          //       label: params.municipalityLabels || '',
-          //     },
-          //   },
-          // },
+          sessions: {
+            'governing-body': {
+              'administrative-unit': {
+                location: {
+                  label: params.municipalityLabel || undefined,
+                },
+              },
+            },
+          },
         },
         size: 1,
       });
@@ -60,33 +63,48 @@ export default class DataQualityRoute extends Route {
             sessions: {
               ':has:started-at': true,
               ':has:ended-at': true,
-              // 'governing-body': {
-              //   location: {
-              //     label: params.municipalityLabels || '',
-              //   },
-              // },
+            },
+          },
+          sessions: {
+            'governing-body': {
+              'administrative-unit': {
+                location: {
+                  label: params.municipalityLabel || undefined,
+                },
+              },
             },
           },
         },
         size: 1,
       });
 
-    // get all classifications (governing bodies) from the store
-    //TODO: replace the test query with an actual query for the classifications
+    // get all classifications (governing bodies) from the store and dont get duplicates
     const allGoverningBodyClassifications = await this.store.findAll(
       'governing-body-classification-code'
     );
 
     // put all of the classifications through a loop to get the count of agenda items per classification
-    //TODO: replace name with id of the classification
-    const agendaItemsPromises = allGoverningBodyClassifications.map(
-      async (governingBody) => {
+
+    const agendaItemsPromises = allGoverningBodyClassifications
+      .filter(
+        // filter out duplicates
+        (classification, index, self) =>
+          self.findIndex((c) => c.label === classification.label) === index
+      )
+      .map(async (governingBody) => {
         const agendaItems: AdapterPopulatedRecordArrayWithMeta<AgendaItemModel> =
           await this.store.query('agenda-item', {
             filter: {
               sessions: {
                 'governing-body': {
-                  'governing-body-classification-code': governingBody.label,
+                  'administrative-unit': {
+                    location: {
+                      label: params.municipalityLabel || undefined,
+                    },
+                  },
+                  classification: {
+                    label: governingBody.label,
+                  },
                 },
               },
             },
@@ -97,8 +115,7 @@ export default class DataQualityRoute extends Route {
           classification: governingBody.label,
           count: getCount(agendaItems) || 0,
         };
-      }
-    );
+      });
 
     // resolve the promises
     agendaItemsPerGoverningBodyClassification = await Promise.all(
@@ -106,11 +123,10 @@ export default class DataQualityRoute extends Route {
     );
 
     return {
-      totalCountAgendaItems: getCount(totalCountAgendaItems),
-      totalCountAgendaItemsTreated: getCount(totalCountAgendaItemsTreated),
-      totalCountAgendaItemsWithTitleAndDescription: getCount(
-        totalCountAgendaItemsWithTitleAndDescription
-      ),
+      totalCountAgendaItems: getCount(totalCountAgendaItems) || 0,
+      totalCountAgendaItemsTreated: getCount(totalCountAgendaItemsTreated) || 0,
+      totalCountAgendaItemsWithTitleAndDescription:
+        getCount(totalCountAgendaItemsWithTitleAndDescription) || 0,
       agendaItemsPerGoverningBodyClassification:
         // sort by count descending
         agendaItemsPerGoverningBodyClassification.sort(

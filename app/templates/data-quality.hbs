@@ -68,9 +68,9 @@
 
         <AuHeading @level="2" @skin="2">Statistieken</AuHeading>
         {{! use totalAgendaItems, totalAgendaItemsTreated,... from the controller }}
-        <PowerSelectMultiple
+        <PowerSelect
           @onChange={{this.handleMunicipalityChange}}
-          @selected={{this.selectedMunicipalities}}
+          @selected={{this.selectedMunicipality}}
           @options={{this.municipalities}}
           @allowClear={{true}}
           @searchField="label"
@@ -81,7 +81,7 @@
           as |municipality|
         >
           {{municipality.label}}
-        </PowerSelectMultiple>
+        </PowerSelect>
         <AuList @divider={{true}} as |Item|>
           <Item>
             <div class="au-u-flex au-u-flex--column au-u-flex--spaced-small">

@@ -20,7 +20,7 @@ export default class DataQualityController extends Controller {
 
   /** Controls the loading animation of the "locatie's opslaan" button */
   @tracked loading = false;
-  @tracked selectedMunicipalities: Array<{ label: string; id: string }> = [];
+  @tracked selectedMunicipality: { label: string; id: string } | null = null;
 
   get municipalities() {
     return this.municipalityList.municipalities();
@@ -31,18 +31,17 @@ export default class DataQualityController extends Controller {
     this.loading = false;
   }
 
-  @action handleMunicipalityChange(
-    selectedMunicipalities: Array<{ label: string; id: string }>
-  ) {
+  @action handleMunicipalityChange(selectedMunicipality: {
+    label: string;
+    id: string;
+  }) {
     // add query param for location ids
+    this.selectedMunicipality = selectedMunicipality;
     this.router.transitionTo('data-quality', {
       queryParams: {
-        gemeentes: selectedMunicipalities.map(
-          (municipality) => municipality.label
-        ),
+        gemeentes: selectedMunicipality ? selectedMunicipality.label : '',
       },
     });
-    this.selectedMunicipalities = selectedMunicipalities;
   }
 
   get totalAgendaItems(): number {
