@@ -2,7 +2,6 @@ import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
 import AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
-import GoverningBodyClasssificationCodeModel from 'frontend-burgernabije-besluitendatabank/models/governing-body-classification-code';
 import MuSearchService from 'frontend-burgernabije-besluitendatabank/services/mu-search';
 import {
   AdapterPopulatedRecordArrayWithMeta,
@@ -74,18 +73,9 @@ export default class DataQualityRoute extends Route {
 
     // get all classifications (governing bodies) from the store
     //TODO: replace the test query with an actual query for the classifications
-    const allGoverningBodyClassifications: AdapterPopulatedRecordArrayWithMeta<GoverningBodyClasssificationCodeModel> =
-      await this.store.query('governing-body-classification-code', {
-        filter: {
-          // name: 'Knokke',
-          'administrative-unit': {
-            location: {
-              label: params.municipalityLabels || 'Knokke',
-            },
-          },
-        },
-        size: 600,
-      });
+    const allGoverningBodyClassifications = await this.store.findAll(
+      'governing-body-classification-code'
+    );
 
     // put all of the classifications through a loop to get the count of agenda items per classification
     //TODO: replace name with id of the classification
