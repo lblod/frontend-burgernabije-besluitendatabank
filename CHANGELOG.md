@@ -1,4 +1,17 @@
 
+
+## v0.2.0 (2023-11-03)
+
+#### :rocket: Enhancement
+* [#148](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/148) Daterange update ([@snenenenenenene](https://github.com/snenenenenenene))
+
+#### :bug: Bug Fix
+* [#154](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/154) fix: :bug: fixed footer on stats page ([@snenenenenenene](https://github.com/snenenenenenene))
+
+#### Committers: 2
+- Laurent Deketelaere ([@aliokan](https://github.com/aliokan))
+- Senne Bels ([@snenenenenenene](https://github.com/snenenenenenene))
+
 ## v0.1.0 (2023-11-02)
 
 #### :rocket: Enhancement
