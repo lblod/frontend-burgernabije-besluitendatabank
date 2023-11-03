@@ -11,52 +11,80 @@
         vragen</AuHeading>
 
       <div class="au-o-flow au-u-margin-bottom-large">
-        <FaqCard
-          @heading="Hoe vind je een agendapunt? "
-          @subheading="Je weet op welke datum het agendapunt behandeld werd of wordt? •
-          Gebruik ‘Selecteer een periode’ om de juiste vergadering te vinden. •
-          Selecteer de juiste datum of periode met de knop ‘eigen periode
-          kiezen’ of gebruik het drop- downmenu om in een voorgestelde periode
-          te zoeken. Je weet niet op welke datum het agendapunt behandeld werd
-          of wordt? • Klik op ‘Bekijk agendapunten’ en geef een zoekterm in bij
-          ‘Wat zoek je?'. • Filter eventueel op gemeente (bij ‘Kies één of meer
-          gemeentes’), om de zoekopdrachten te verfijnen en de resultaten te
-          beperken."
-        />
+        <FaqCard @heading="Hoe vind je een agendapunt? ">
+          Je weet op welke datum het agendapunt behandeld werd of wordt?
+          <ul>
+            <li>
+              Gebruik ‘Selecteer een periode’ om de juiste vergadering te
+              vinden.
+              <li>
+                Selecteer de juiste datum of periode met de knop ‘eigen periode
+                kiezen’ of gebruik het drop- downmenu om in een voorgestelde
+                periode te zoeken.
+              </li>
+            </li>
+          </ul>
+          Je weet niet op welke datum het agendapunt behandeld werd of wordt?
+          <ul>
+            <li>
+              Klik op ‘Bekijk agendapunten’ en geef een zoekterm in bij ‘Wat
+              zoek je?'.
+            </li>
+            <li>
+              Filter eventueel op gemeente (bij ‘Kies één of meer gemeentes’),
+              om de zoekopdrachten te verfijnen en de resultaten te beperken.
+            </li>
+          </ul>
+        </FaqCard>
 
-        <FaqCard
-          @heading="Hoe werkt de zoekfunctie?"
-          @subheading="Hanteer meerdere regels om jouw zoekresultaat te verfijnen. • Gebruik een plusteken als je wil dat jouw zoekresultaat beide
-          woorden bevat, bijvoorbeeld ‘regen + zonneschijn’ • Gebruik een
-          sluisteken (verticaal streepje) als je wil dat jouw zoekresultaat
-          minstens 1 van de woorden bevat, bijvoorbeeld ‘regen | zonneschijn’ •
-          Gebruik dubbele aanhalingstekens om te zoeken op een specifieke zin,
-          bijvoorbeeld “regen en zonneschijn”"
-        />
+        <FaqCard @heading="Hoe werkt de zoekfunctie?">
+          Hanteer meerdere regels om jouw zoekresultaat te verfijnen.
 
-        <FaqCard
-          @heading="De data zijn soms onvolledig. Hoe komt dat?"
-          @subheading="De applicatie verzamelt de gegevens volgens het principe van gelinkte
-          open data. Sinds 30 juni 2021 publiceren zo goed als alle lokale
-          besturen in Vlaanderen specifieke agendapunten, besluitenlijsten en
-          notulen volgens eenzelfde digitale standaard. Mensen en (zoek)machines
-          kunnen zo de beschikbare informatie gemakkelijk vinden en
-          hergebruiken. De applicatie haalt de beschikbare gegevens op. Dat kan
-          leiden tot onvolledige informatie in de applicatie als er fouten
-          optreden tijdens het gelinkt publiceren van deze gegevens."
-        />
+          <ul>
+            <li>
+              Gebruik een plusteken als je wil dat jouw zoekresultaat beide
+              woorden bevat, bijvoorbeeld ‘regen + zonneschijn’
+            </li>
+            <li>Gebruik een sluisteken (verticaal streepje) als je wil dat jouw
+              zoekresultaat minstens 1 van de woorden bevat, bijvoorbeeld ‘regen
+              | zonneschijn’
+            </li>
+            <li>
 
-        <FaqCard
-          @heading="Wil je een klacht indienen tegen een beslissing?"
-          @subheading="Op de webpagina Klachtenprocedure | Vlaanderen.be vind je hoe je een klacht correct indient. Kijk
-zeker na of je klacht ontvankelijk is want voor bepaalde beslissingen gelden specifieke
-toezichtprocedures."
-        />
+              Gebruik dubbele aanhalingstekens om te zoeken op een specifieke
+              zin, bijvoorbeeld “regen en zonneschijn”
+            </li>
+          </ul>
+        </FaqCard>
+
+        <FaqCard @heading="De data zijn soms onvolledig. Hoe komt dat?">
+          <p>
+            De applicatie verzamelt de gegevens volgens het principe van
+            gelinkte open data. Sinds 30 juni 2021 publiceren zo goed als alle
+            lokale besturen in Vlaanderen specifieke agendapunten,
+            besluitenlijsten en notulen volgens eenzelfde digitale standaard.
+            Mensen en (zoek)machines kunnen zo de beschikbare informatie
+            gemakkelijk vinden en hergebruiken. De applicatie haalt de
+            beschikbare gegevens op. Dat kan leiden tot onvolledige informatie
+            in de applicatie als er fouten optreden tijdens het gelinkt
+            publiceren van deze gegevens.
+          </p></FaqCard>
+
+        <FaqCard @heading="Wil je een klacht indienen tegen een beslissing?">
+          <p>
+            Op de webpagina Klachtenprocedure | Vlaanderen.be vind je hoe je een
+            klacht correct indient. Kijk zeker na of je klacht ontvankelijk is
+            want voor bepaalde beslissingen gelden specifieke
+            toezichtprocedures.
+          </p>
+        </FaqCard>
         <FaqCard
           @heading="Wil je een voorstel doen of vraag stellen aan een gemeentebestuur. Hoe doe ik dat?"
-          @subheading="Alle informatie over participatie vind je onder de rubriek ‘Burgerparticipatie’ op de webpagina
-Verkiezingen, democratie en participatie | Vlaanderen.be"
-        />
+        >
+          Alle informatie over participatie vind je onder de rubriek
+          ‘Burgerparticipatie’ op de webpagina Verkiezingen, democratie en
+          participatie | Vlaanderen.be
+        </FaqCard>
       </div>
 
       <div class="au-o-region">
