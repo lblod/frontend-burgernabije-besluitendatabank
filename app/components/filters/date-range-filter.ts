@@ -1,4 +1,3 @@
-import { A } from '@ember/array';
 import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { service } from '@ember/service';
@@ -36,16 +35,18 @@ enum Preset {
 }
 
 export default class DateRangeFilterComponent extends Component<Signature> {
+  readonly MIN = '2015-01-01';
+  readonly MAX = '2100-12-31';
+  readonly MIN_DATE = new Date(this.MIN);
+  readonly MAX_DATE = new Date(this.MAX);
+
   @service declare router: RouterService;
   @tracked start: string | null;
   @tracked end: string | null;
-  @tracked min = '2015-01-01';
-  @tracked max = '2100-12-31';
   @tracked selectedPreset: Preset | null = null;
   @tracked isChoosingPresets = true;
-  // ember array of strings
-  @tracked endDateError = A<string>([]);
-  @tracked startDateError = A<string>([]);
+  @tracked endDateError?: string[];
+  @tracked startDateError?: string[];
 
   presets = [
     Preset.ThisWeek,
@@ -131,8 +132,6 @@ export default class DateRangeFilterComponent extends Component<Signature> {
     this.start = newDate;
 
     if (this.isDateComplete(newDate)) {
-      // if the start is before 2015 don't update the query params
-
       this.updateQueryParamsIfValid();
     }
   }
@@ -146,7 +145,7 @@ export default class DateRangeFilterComponent extends Component<Signature> {
   }
 
   isDateComplete(date: string | null): boolean {
-    return date !== null && date.length === 10;
+    return date === null || date.length === 10;
   }
 
   @action chooseCustomRange() {
@@ -211,47 +210,25 @@ export default class DateRangeFilterComponent extends Component<Signature> {
   updateQueryParamsIfValid(): void {
     const startDate = this.start ? new Date(this.start) : new Date();
     const endDate = this.end ? new Date(this.end) : new Date();
-    const minDate = new Date(this.min);
-    const maxDate = new Date(this.max);
+    this.startDateError = [];
+    this.endDateError = [];
+    let isBlocked = false;
 
-    if (
-      startDate < minDate ||
-      endDate < minDate ||
-      startDate > maxDate ||
-      endDate > maxDate ||
-      this.isInvalidDateRange
-    ) {
-      if (startDate > maxDate || startDate < minDate) {
-        this.pushUniqueErrorMessage(
-          this.startDateError,
-          'De startdatum moet tussen 1 januari 2015 en 31 december 2100 liggen'
-        );
-      }
-      if (endDate > maxDate || endDate < minDate) {
-        this.pushUniqueErrorMessage(
-          this.endDateError,
-          'De einddatum moet tussen 1 januari 2015 en 31 december 2100 liggen'
-        );
-      }
-
-      if (this.isInvalidDateRange) {
-        this.pushUniqueErrorMessage(
-          this.endDateError,
-          'De startdatum moet voor de einddatum liggen'
-        );
-      }
-    } else {
-      this.startDateError.clear();
-      this.endDateError.clear();
-      this.updateQueryParams();
+    if (startDate > this.MAX_DATE || startDate < this.MIN_DATE) {
+      this.startDateError.push(
+        'De startdatum moet tussen 1 januari 2015 en 31 december 2100 liggen'
+      );
     }
-  }
-
-  pushUniqueErrorMessage(errorArray: any, errorMessage: string): string[] {
-    if (!errorArray.includes(errorMessage)) {
-      errorArray.pushObject(errorMessage);
+    if (endDate > this.MAX_DATE || endDate < this.MIN_DATE) {
+      this.endDateError.push(
+        'De einddatum moet tussen 1 januari 2015 en 31 december 2100 liggen'
+      );
     }
-    return errorArray;
+    if (this.isInvalidDateRange) {
+      this.endDateError.push('De startdatum moet voor de einddatum liggen');
+      isBlocked = true;
+    }
+    if (!isBlocked) this.updateQueryParams();
   }
 
   resetQueryParams(): void {
@@ -263,8 +240,12 @@ export default class DateRangeFilterComponent extends Component<Signature> {
   updateQueryParams(): void {
     this.router.transitionTo({
       queryParams: {
-        [this.args.startQueryParam]: this.start,
-        [this.args.endQueryParam]: this.end,
+        [this.args.startQueryParam || 'start']: !this.startDateError?.length
+          ? this.start
+          : null,
+        [this.args.endQueryParam || 'end']: !this.endDateError?.length
+          ? this.end
+          : null,
       },
     });
   }
