@@ -1,77 +1,74 @@
-<Layout>
-  <AuBodyContainer class="au-u-background-gray-100">
-    <section class="c-home">
-      <div class="au-o-flow">
-        <AuContent>
-          <AuHeading @level="1" @skin="2">Welkom bij Lokaal Beslist, jouw
-            centrale bron voor het ontdekken van agendapunten van lokale
-            besturen.</AuHeading>
-          <div class="c-home__visual">
-            <img
-              src="/assets/homepage-visual.svg"
-              class="c-home-visual"
-              alt=""
-              {{!template-lint-disable require-valid-alt-text}}
-            />
-          </div>
-          <p>Blijf op de hoogte van waar lokale besturen mee bezig zijn en wat
-            er leeft in en rond je omgeving. Start eenvoudig door een gemeente
-            te selecteren of een zoekwoord in te voeren en krijg direct toegang
-            tot relevante informatie.</p>
-        </AuContent>
-        <div class="au-c-home__form au-o-flow">
-          <AuLabel
-            for={{"municipality"}}
-            class="au-u-hidden-visually"
-            @inline={{true}}
-          >
-            In welke gemeente(s) wil je zoeken?
-          </AuLabel>
-          <div
-            class="au-o-flow au-o-flow--small"
-            {{did-insert this.resetLoading}}
-          >
-
-            <PowerSelectMultiple
-              @onChange={{this.handleMunicipalityChange}}
-              @selected={{this.selectedMunicipalities}}
-              @options={{this.municipalities}}
-              @allowClear={{true}}
-              @searchField="label"
-              @placeholder={{"Alle gemeentes"}}
-              @noMatchesMessage={{"Geen gemeentes gevonden"}}
-              @searchMessage="Aan het zoeken..."
-              @searchEnabled={{true}}
-              as |municipality|
-            >
-              {{municipality.label}}
-            </PowerSelectMultiple>
-
-            <AuInput
-              @queryParam="trefwoord"
-              @value={{this.keywordValue}}
-              @label="Zoeken"
-              @labelHidden={{true}}
-              @icon="search"
-              @width="block"
-              id="keyword"
-              placeholder="Zoek in alle lokale agendaputen"
-              class="au-c-form-row--button au-o-layout--large"
-              {{on "input" this.handleChange}}
-              {{on "keyup" this.handleKeyUp}}
-            />
-            <AuButton
-              @loading={{this.loading}}
-              @width="block"
-              {{on "click" this.handleMunicipalitySelect}}
-            >Bekijk agendapunten</AuButton>
-          </div>
-          <p class="au-u-text-center">
-            <AuLink @route="help">Meer informatie over agendapunten en
-              beslissingen</AuLink>
-          </p>
+<AuBodyContainer class="au-u-background-gray-100">
+  <section class="c-home">
+    <div class="au-o-flow">
+      <AuContent>
+        <AuHeading @level="1" @skin="2">Welkom bij Lokaal Beslist, jouw centrale
+          bron voor het ontdekken van agendapunten van lokale besturen.</AuHeading>
+        <div class="c-home__visual">
+          <img
+            src="/assets/homepage-visual.svg"
+            class="c-home-visual"
+            alt=""
+            {{!template-lint-disable require-valid-alt-text}}
+          />
         </div>
+        <p>Blijf op de hoogte van waar lokale besturen mee bezig zijn en wat er
+          leeft in en rond je omgeving. Start eenvoudig door een gemeente te
+          selecteren of een zoekwoord in te voeren en krijg direct toegang tot
+          relevante informatie.</p>
+      </AuContent>
+      <div class="au-c-home__form au-o-flow">
+        <AuLabel
+          for={{"municipality"}}
+          class="au-u-hidden-visually"
+          @inline={{true}}
+        >
+          In welke gemeente(s) wil je zoeken?
+        </AuLabel>
+        <div
+          class="au-o-flow au-o-flow--small"
+          {{did-insert this.resetLoading}}
+        >
+
+          <PowerSelectMultiple
+            @onChange={{this.handleMunicipalityChange}}
+            @selected={{this.selectedMunicipalities}}
+            @options={{this.municipalities}}
+            @allowClear={{true}}
+            @searchField="label"
+            @placeholder={{"Alle gemeentes"}}
+            @noMatchesMessage={{"Geen gemeentes gevonden"}}
+            @searchMessage="Aan het zoeken..."
+            @searchEnabled={{true}}
+            as |municipality|
+          >
+            {{municipality.label}}
+          </PowerSelectMultiple>
+
+          <AuInput
+            @queryParam="trefwoord"
+            @value={{this.keywordValue}}
+            @label="Zoeken"
+            @labelHidden={{true}}
+            @icon="search"
+            @width="block"
+            id="keyword"
+            placeholder="Zoek in alle lokale agendaputen"
+            class="au-c-form-row--button au-o-layout--large"
+            {{on "input" this.handleChange}}
+            {{on "keyup" this.handleKeyUp}}
+          />
+          <AuButton
+            @loading={{this.loading}}
+            @width="block"
+            {{on "click" this.handleMunicipalitySelect}}
+          >Bekijk agendapunten</AuButton>
+        </div>
+        <p class="au-u-text-center">
+          <AuLink @route="help">Meer informatie over agendapunten en
+            beslissingen</AuLink>
+        </p>
       </div>
-    </section>
-  </AuBodyContainer>
-</Layout>
+    </div>
+  </section>
+</AuBodyContainer>

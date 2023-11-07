@@ -1,43 +1,40 @@
 {{page-title this.model.name}}
+<AuBodyContainer id="route-municipality">
+  <AuToolbar @size="medium" @skin="tint" @border="bottom" as |Group|>
+    <Group>
+      <ul class="au-c-list-horizontal au-c-list-horizontal--small">
+        <li class="au-c-list-horizontal__item">
+          <AuLink @route="agenda-items" @icon="arrow-left">
+            Alle Agendapunten
+          </AuLink>
+        </li>
+        <li class="au-c-list-horizontal__item">
+          <span class="u-truncate">{{this.model.title}}</span>
+        </li>
+      </ul>
+    </Group>
+  </AuToolbar>
 
-<Layout>
-  <AuBodyContainer id="route-municipality">
-    <AuToolbar @size="medium" @skin="tint" @border="bottom" as |Group|>
-      <Group>
-        <ul class="au-c-list-horizontal au-c-list-horizontal--small">
-          <li class="au-c-list-horizontal__item">
-            <AuLink @route="agenda-items" @icon="arrow-left">
-              Alle Agendapunten
-            </AuLink>
-          </li>
-          <li class="au-c-list-horizontal__item">
-            <span class="u-truncate">{{this.model.title}}</span>
-          </li>
+  <AuBodyContainer @scroll={{true}}>
+    <div class="au-o-box">
+      {{#if this.model.agenda_items}}
+        <ul class="c-infinite-list">
+          {{#each this.model.agenda_items as |item|}}
+            <li>
+              <AgendaItemCard
+                @id={{item.id}}
+                @title={{item.title}}
+                @description={{item.description}}
+                @date={{item.dateFormatted}}
+                @governingBodyName={{item.governingBodyNameResolved}}
+                @municipality={{item.municipality}}
+              />
+            </li>
+          {{/each}}
         </ul>
-      </Group>
-    </AuToolbar>
-
-    <AuBodyContainer @scroll={{true}}>
-      <div class="au-o-box">
-        {{#if this.model.agenda_items}}
-          <ul class="c-infinite-list">
-            {{#each this.model.agenda_items as |item|}}
-              <li>
-                <AgendaItemCard
-                  @id={{item.id}}
-                  @title={{item.title}}
-                  @description={{item.description}}
-                  @date={{item.dateFormatted}}
-                  @governingBodyName={{item.governingBodyNameResolved}}
-                  @municipality={{item.municipality}}
-                />
-              </li>
-            {{/each}}
-          </ul>
-        {{else}}
-          <p>Geen Data</p>
-        {{/if}}
-      </div>
-    </AuBodyContainer>
+      {{else}}
+        <p>Geen Data</p>
+      {{/if}}
+    </div>
   </AuBodyContainer>
-</Layout>
+</AuBodyContainer>
