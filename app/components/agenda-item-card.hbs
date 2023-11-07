@@ -1,17 +1,13 @@
-<article class="c-agenda-iten-card">
+<article>
   <AuHeading @level="2" @skin="5">
-    <AuLink
-      class="c-agenda-iten-card__link"
-      @route="agenda-items.agenda-item"
-      @model={{@id}}
-    >
+    <AuLink @route="agenda-items.agenda-item" @model={{@id}}>
       {{@title}}
     </AuLink>
   </AuHeading>
   {{#if @description}}
-    <p class="au-u-base c-agenda-iten-card__content">{{@description}}</p>
+    <p class="au-u-base">{{@description}}</p>
   {{/if}}
-  <div class="c-agenda-iten-card__footer au-u-margin-top-tiny">
+  <div class="au-u-margin-top-tiny">
     {{@date}}
     -
     {{@governingBodyName}}

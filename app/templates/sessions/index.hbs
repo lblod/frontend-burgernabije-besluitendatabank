@@ -1,64 +1,62 @@
 {{page-title "Zittingen"}}
 
-<LayoutList>
-  <AuBodyContainer>
-    <div class="c-interface">
-      <div class="c-interface__content c-interface__content--fixed">
-        {{#if this.isEmpty}}
-          <AuAlert
-            @size="small"
-            @skin="warning"
-            @icon="info-circle"
-            @title="Er werden geen zoekresultaten gevonden."
-          />
-        {{else}}
-          <InfiniteList
-            @loadMore={{this.loadMore}}
-            @isLoading={{this.isLoadingMore}}
-            @itemsShown={{this.sessions.length}}
-            @itemsAmount={{@model.count}}
-          >
-            {{#each this.sessions as |session|}}
-              <li>
-                <article class="c-agenda-item-card">
-                  <AuHeading @level="1" @skin="5">
-                    <AuLink
-                      @route="sessions.session"
-                      @model={{session.id}}
-                      class="c-agenda-item-card__link"
-                    >
-                      {{session.governingBodyNameResolved}}
-                      {{session.dateFormatted}}
-                    </AuLink>
-                  </AuHeading>
-                  <div class="c-agenda-item-card__footer">
-                    {{session.municipality}}
-                    -
-                    {{session.agendaItemCount}}
-                  </div>
-                </article>
-              </li>
-            {{/each}}
-          </InfiniteList>
-        {{/if}}
-      </div>
-      <FilterSidebar @class="c-interface__sidebar au-o-flow">
-        <h3 class="au-u-h4 au-u-medium">Verfijn de zoekresultaten</h3>
-        <Filters::SelectMultipleFilter
-          @id="municipality"
-          @label="Kies één of meer gemeentes"
-          @options={{this.municipalities}}
-          @searchField="label"
-          @queryParam="gemeentes"
-          @placeholder="Alle gemeentes"
+<AuBodyContainer>
+  <div class="c-interface">
+    <div class="c-interface__content c-interface__content--fixed">
+      {{#if this.isEmpty}}
+        <AuAlert
+          @size="small"
+          @skin="warning"
+          @icon="info-circle"
+          @title="Er werden geen zoekresultaten gevonden."
         />
-        <Filters::DateRangeFilter
-          @startQueryParam="begin"
-          @endQueryParam="eind"
-          @start={{this.plannedStartMin}}
-          @end={{this.plannedStartMax}}
-        />
-      </FilterSidebar>
+      {{else}}
+        <InfiniteList
+          @loadMore={{this.loadMore}}
+          @isLoading={{this.isLoadingMore}}
+          @itemsShown={{this.sessions.length}}
+          @itemsAmount={{@model.count}}
+        >
+          {{#each this.sessions as |session|}}
+            <li>
+              <article class="c-agenda-item-card">
+                <AuHeading @level="1" @skin="5">
+                  <AuLink
+                    @route="sessions.session"
+                    @model={{session.id}}
+                    class="c-agenda-item-card__link"
+                  >
+                    {{session.governingBodyNameResolved}}
+                    {{session.dateFormatted}}
+                  </AuLink>
+                </AuHeading>
+                <div class="c-agenda-item-card__footer">
+                  {{session.municipality}}
+                  -
+                  {{session.agendaItemCount}}
+                </div>
+              </article>
+            </li>
+          {{/each}}
+        </InfiniteList>
+      {{/if}}
     </div>
-  </AuBodyContainer>
-</LayoutList>
+    <FilterSidebar @class="c-interface__sidebar au-o-flow">
+      <h3 class="au-u-h4 au-u-medium">Verfijn de zoekresultaten</h3>
+      <Filters::SelectMultipleFilter
+        @id="municipality"
+        @label="Kies één of meer gemeentes"
+        @options={{this.municipalities}}
+        @searchField="label"
+        @queryParam="gemeentes"
+        @placeholder="Alle gemeentes"
+      />
+      <Filters::DateRangeFilter
+        @startQueryParam="begin"
+        @endQueryParam="eind"
+        @start={{this.plannedStartMin}}
+        @end={{this.plannedStartMax}}
+      />
+    </FilterSidebar>
+  </div>
+</AuBodyContainer>

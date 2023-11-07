@@ -1,160 +1,155 @@
 <AuModalContainer />
-<LayoutList>
-  <AuBodyContainer>
-    <div class="c-interface">
-      <div
-        id="filtercontent"
-        class="c-interface__content c-interface__content--fixed au-u-flex au-u-flex--column"
-      >
-        <div class="au-o-flow au-o-flow--small au-u-padding">
-          <AuHeading @level="1" @skin="2">Wat zoek je?</AuHeading>
-          <div class="au-u-max-width-xsmall@small">
-            <Filters::TextFilter
-              @id="keyword"
-              @queryParam="trefwoord"
-              @value={{this.keyword}}
-              @label="Zoeken"
-              @labelHidden={{true}}
-              @placeholder="Zoek in alle lokale agendaputen"
-              @buttonText="Zoeken"
-              @icon="search"
-              @rowClass="au-c-form-row--button"
-            />
-          </div>
-          <a href="#filtersidebar" class="au-c-interface__filter-link">
-            Ga naar filters
-          </a>
-          <a
-            href="#filtersidebar"
-            class="au-c-button au-c-button--secondary au-c-button--block c-interface__filter-button"
-            {{on "click" this.showFilter}}
-          >
-            <AuIcon @icon="filter" />
-            Toon filters
-          </a>
+
+<AuBodyContainer>
+  <div class="c-interface">
+    <div
+      id="filtercontent"
+      class="c-interface__content c-interface__content--fixed au-u-flex au-u-flex--column"
+    >
+      <div class="au-o-flow au-o-flow--small au-u-padding">
+        <AuHeading @level="1" @skin="2">Wat zoek je?</AuHeading>
+        <div class="au-u-max-width-xsmall@small">
+          <Filters::TextFilter
+            @id="keyword"
+            @queryParam="trefwoord"
+            @value={{this.keyword}}
+            @label="Zoeken"
+            @labelHidden={{true}}
+            @placeholder="Zoek in alle lokale agendaputen"
+            @buttonText="Zoeken"
+            @icon="search"
+            @rowClass="au-c-form-row--button"
+          />
         </div>
-        {{#let (this.AgendaItemsLoader filters=this.filters) as |loader|}}
-          {{#if loader.hasErrored}}
-            <Oops @title="Oeps!" @content="Er is iets fout gelopen!" />
+        <a href="#filtersidebar" class="au-c-interface__filter-link">
+          Ga naar filters
+        </a>
+        <a
+          href="#filtersidebar"
+          class="au-c-button au-c-button--secondary au-c-button--block c-interface__filter-button"
+          {{on "click" this.showFilter}}
+        >
+          <AuIcon @icon="filter" />
+          Toon filters
+        </a>
+      </div>
+      {{#let (this.AgendaItemsLoader filters=this.filters) as |loader|}}
+        {{#if loader.hasErrored}}
+          <Oops @title="Oeps!" @content="Er is iets fout gelopen!" />
+        {{else}}
+          {{#if (and loader.isLoading (not loader.hasResults))}}
+            <LoaderFullPage @content="Agendapunten aan het laden" />
           {{else}}
-            {{#if (and loader.isLoading (not loader.hasResults))}}
-              <LoaderFullPage @content="Agendapunten aan het laden" />
-            {{else}}
-              {{#if loader.hasResults}}
-                {{#if loader.total}}
-                  <div
-                    class="au-u-flex au-u-flex--vertical-center au-u-flex--between"
+            {{#if loader.hasResults}}
+              {{#if loader.total}}
+                <div
+                  class="au-u-flex au-u-flex--vertical-center au-u-flex--between"
+                >
+                  <p
+                    class="au-u-margin-left au-u-margin-top-small au-u-h4 au-u-medium"
                   >
-                    <p
-                      class="au-u-margin-left au-u-margin-top-small au-u-h4 au-u-medium"
-                    >
-                      {{loader.total}}
-                      {{#if (eq loader.total 1)}}
-                        Zoekresultaat
-                      {{else}}
-                        Zoekresultaten
-                      {{/if}}
-                    </p>
-                    {{! The global data quality indicator: not ready for implementation }}
-                    {{!-- <p class="au-u-margin-left au-u-margin-top-small au-u-margin-right">
+                    {{loader.total}}
+                    {{#if (eq loader.total 1)}}
+                      Zoekresultaat
+                    {{else}}
+                      Zoekresultaten
+                    {{/if}}
+                  </p>
+                  {{! The global data quality indicator: not ready for implementation }}
+                  {{!-- <p class="au-u-margin-left au-u-margin-top-small au-u-margin-right">
                       <AuPill @skin="link" class="au-c-pill--hover" {{on "click" this.showModal}}>
                         <svg role="img" aria-hidden="true" class="au-c-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M19,1 L13,1 C11.897,1 11,1.898 11,3 L11,21 C11,22.103 11.897,23 13,23 L19,23 C20.103,23 21,22.103 21,21 L21,3 C21,1.898 20.103,1 19,1 Z M13,21 L13,18 L16,18 L16,16 L13,16 L13,13 L16,13 L16,11 L13,11 L13,8 L16,8 L16,6 L13,6 L13,3 L19,3 L19.001,21 L13,21 Z M3,7 C3,5.346 4.346,4 6,4 C7.654,4 9,5.346 9,7 L9,18.303 L6,22.803 L3,18.303 L3,7 Z M6,19.197 L7,17.697 L7,10 L5,10 L5,17.697 L6,19.197 Z M5,8 L5,7 C5,6.448 5.449,6 6,6 C6.551,6 7,6.448 7,7 L7,8 L5,8 Z"/></svg>
                         Data kwaliteit
                       </AuPill>
                     </p> --}}
-                  </div>
-                {{/if}}
-
-                <InfiniteList
-                  @loadMore={{loader.loadMore}}
-                  @isLoading={{loader.isLoading}}
-                  @itemsShown={{loader.data.length}}
-                  @itemsAmount={{loader.total}}
-                >
-                  {{#each loader.data as |item|}}
-                    <li>
-                      <AgendaItemCard
-                        @id={{item.id}}
-                        @title={{item.title}}
-                        @description={{item.description}}
-                        @date={{item.dateFormatted}}
-                        @governingBodyName={{item.governingBodyNameResolved}}
-                        @municipality={{item.municipality}}
-                      />
-                    </li>
-                  {{/each}}
-                </InfiniteList>
-              {{else}}
-                <div class="au-o-box">
-                  <AuAlert
-                    @size="small"
-                    @skin="warning"
-                    @icon="info-circle"
-                    @title="Er werden geen zoekresultaten gevonden."
-                  />
                 </div>
               {{/if}}
+
+              <InfiniteList
+                @loadMore={{loader.loadMore}}
+                @isLoading={{loader.isLoading}}
+                @itemsShown={{loader.data.length}}
+                @itemsAmount={{loader.total}}
+              >
+                {{#each loader.data as |item|}}
+                  <li>
+                    <AgendaItemCard
+                      @id={{item.id}}
+                      @title={{item.title}}
+                      @description={{item.description}}
+                      @date={{item.dateFormatted}}
+                      @governingBodyName={{item.governingBodyNameResolved}}
+                      @municipality={{item.municipality}}
+                    />
+                  </li>
+                {{/each}}
+              </InfiniteList>
+            {{else}}
+              <div class="au-o-box">
+                <AuAlert
+                  @size="small"
+                  @skin="warning"
+                  @icon="info-circle"
+                  @title="Er werden geen zoekresultaten gevonden."
+                />
+              </div>
             {{/if}}
           {{/if}}
-        {{/let}}
-      </div>
-      <FilterSidebar
-        @id="filtersidebar"
-        @class="c-interface__sidebar c-interface__sidebar--dialog {{if
-          this.hasFilter
-          'is-visible'
-        }}"
-        {{focus-trap
-          isActive=this.hasFilter
-          shouldSelfFocus=true
-          additionalElements=(array "#ember-basic-dropdown-wormhole")
-          focusTrapOptions=(hash onDeactivate=this.hideFilter)
-        }}
-      >
-        <div class="c-interface__sidebar-close-button">
-          <a
-            href="#filtercontent"
-            class="au-c-button au-c-button--naked"
-            {{on "click" this.hideFilter}}
-          >
-            Terug
-          </a>
-        </div>
-        <div class="c-interface__sidebar-main">
-          <h3 class="au-u-h4 au-u-medium">Verfijn de zoekresultaten</h3>
-          <Filters::SelectMultipleFilter
-            @id="municipality"
-            @label="Kies één of meer gemeentes"
-            @options={{this.municipalities}}
-            @noMatchesMessage="Geen gemeentes gevonden"
-            @searchField="label"
-            @queryParam="gemeentes"
-            @placeholder="Alle gemeentes"
-          />
-          <Filters::DateRangeFilter
-            @startQueryParam="begin"
-            @endQueryParam="eind"
-            @start={{this.plannedStartMin}}
-            @end={{this.plannedStartMax}}
-          />
-        </div>
-        <div class="c-interface__sidebar-submit-buttons">
-          <AuButton
-            @skin="primary"
-            @width="block"
-            {{on "click" this.hideFilter}}
-          >
-            Zoeken
-          </AuButton>
-          <a
-            href="#filtercontent"
-            class="au-c-button au-c-button--naked au-c-button--block"
-            {{on "click" this.hideFilter}}
-          >
-            Annuleer
-          </a>
-        </div>
-      </FilterSidebar>
+        {{/if}}
+      {{/let}}
     </div>
-  </AuBodyContainer>
-</LayoutList>
+    <FilterSidebar
+      @id="filtersidebar"
+      @class="c-interface__sidebar c-interface__sidebar--dialog {{if
+        this.hasFilter
+        'is-visible'
+      }}"
+      {{focus-trap
+        isActive=this.hasFilter
+        shouldSelfFocus=true
+        additionalElements=(array "#ember-basic-dropdown-wormhole")
+        focusTrapOptions=(hash onDeactivate=this.hideFilter)
+      }}
+    >
+      <div class="c-interface__sidebar-close-button">
+        <a
+          href="#filtercontent"
+          class="au-c-button au-c-button--naked"
+          {{on "click" this.hideFilter}}
+        >
+          Terug
+        </a>
+      </div>
+      <div class="c-interface__sidebar-main">
+        <h3 class="au-u-h4 au-u-medium">Verfijn de zoekresultaten</h3>
+        <Filters::SelectMultipleFilter
+          @id="municipality"
+          @label="Kies één of meer gemeentes"
+          @options={{this.municipalities}}
+          @noMatchesMessage="Geen gemeentes gevonden"
+          @searchField="label"
+          @queryParam="gemeentes"
+          @placeholder="Alle gemeentes"
+        />
+        <Filters::DateRangeFilter
+          @startQueryParam="begin"
+          @endQueryParam="eind"
+          @start={{this.plannedStartMin}}
+          @end={{this.plannedStartMax}}
+        />
+      </div>
+      <div class="c-interface__sidebar-submit-buttons">
+        <AuButton @skin="primary" @width="block" {{on "click" this.hideFilter}}>
+          Zoeken
+        </AuButton>
+        <a
+          href="#filtercontent"
+          class="au-c-button au-c-button--naked au-c-button--block"
+          {{on "click" this.hideFilter}}
+        >
+          Annuleer
+        </a>
+      </div>
+    </FilterSidebar>
+  </div>
+</AuBodyContainer>
