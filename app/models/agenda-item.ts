@@ -73,16 +73,8 @@ export default class AgendaItemModel extends Model {
         formattedProperty: 'Bestuurseenheid',
       },
       {
-        property: 'session',
-        formattedProperty: 'Zitting',
-      },
-      {
         property: 'governingBodyNameResolved',
         formattedProperty: 'Bestuursorgaan',
-      },
-      {
-        property: 'wasHandled',
-        formattedProperty: 'Behandeling',
       },
     ];
 
