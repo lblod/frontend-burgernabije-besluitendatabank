@@ -1,5 +1,25 @@
 
 
+
+## v0.3.0 (2023-11-08)
+
+#### :rocket: Enhancement
+* [#161](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/161) Clean municipality list ([@aliokan](https://github.com/aliokan))
+* [#162](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/162) Update data-quality text + remove zitting and behandeling ([@snenenenenenene](https://github.com/snenenenenenene))
+* [#159](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/159) Remove search description in help page ([@aliokan](https://github.com/aliokan))
+* [#160](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/160) Remove "Feedback" button ([@aliokan](https://github.com/aliokan))
+* [#155](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/155) Help page - update text ([@snenenenenenene](https://github.com/snenenenenenene))
+
+#### :bug: Bug Fix
+* [#158](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/158) Fix footer overhaul + refactor pages template ([@snenenenenenene](https://github.com/snenenenenenene))
+
+#### :memo: Documentation
+* [#157](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/157) Add release workflow ([@aliokan](https://github.com/aliokan))
+
+#### Committers: 2
+- Laurent Deketelaere ([@aliokan](https://github.com/aliokan))
+- Senne Bels ([@snenenenenenene](https://github.com/snenenenenenene))
+
 ## v0.2.0 (2023-11-03)
 
 #### :rocket: Enhancement
