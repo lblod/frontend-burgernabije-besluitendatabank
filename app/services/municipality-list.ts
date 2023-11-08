@@ -56,26 +56,18 @@ export default class MunicipalityListService extends Service {
   async getLocationIdsFromLabels(
     labels?: Array<string> | string
   ): Promise<string | undefined> {
+    const municipalities = await this.municipalities();
     if (typeof labels === 'string') {
       labels = deserializeArray(labels);
-    } else if (!labels) {
+    }
+
+    if (!labels || !municipalities) {
       return undefined;
     }
 
-    const locationIds: Array<string> = [];
-    const municipalities = await this.municipalities();
-
-    if (municipalities) {
-      for (let i = 0; i < labels.length; i++) {
-        const label = labels[i];
-        const municipality = municipalities.find(
-          (municipality) => municipality.label === label
-        );
-        if (municipality) {
-          locationIds.push(municipality.id);
-        }
-      }
-    }
+    const locationIds: Array<string> = municipalities
+      .filter(({ label }) => labels?.includes(label))
+      .map(({ id }) => id);
 
     return locationIds.join(',');
   }
