@@ -15,7 +15,7 @@ export default class HomeController extends Controller {
   @tracked selectedMunicipalities: Array<{ label: string; id: string }> = [];
 
   get municipalities() {
-    return this.municipalityList.municipalities();
+    return this.municipalityList.municipalityLabels();
   }
 
   /** Resets the button loading animation */
