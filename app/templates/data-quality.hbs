@@ -157,7 +157,7 @@
                     Met titel en omschrijving
                   </p>
                   <p class="au-c-heading au-c-heading--3">
-                    {{this.model.totalCountAgendaItemsWithTitleAndDescription}}
+                    {{this.model.percentageAgendaItemsWithTitleAndDescriptionToTotal}}%
                   </p>
                 </section>
                 <section
@@ -167,7 +167,17 @@
                     Behandeld
                   </p>
                   <p class="au-c-heading au-c-heading--3">
-                    {{this.model.totalCountAgendaItemsTreated}}
+                    {{this.model.percentageAgendaItemsTreatedToTotal}}%
+                  </p>
+                </section>
+                <section
+                  class="au-u-flex au-u-flex--column au-u-1-1 au-u-text-center au-u-margin-bottom-large"
+                >
+                  <p class="au-u-bold">
+                    Met stemmingen
+                  </p>
+                  <p class="au-c-heading au-c-heading--3">
+                    {{this.model.percentageAgendaItemsWithVoteOrVotersToTotal}}%
                   </p>
                 </section>
               </div>

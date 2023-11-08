@@ -4,6 +4,7 @@ import Route from '@ember/routing/route';
 import Transition from '@ember/routing/transition';
 import { service } from '@ember/service';
 import AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
+import VoteModel from 'frontend-burgernabije-besluitendatabank/models/vote';
 import MuSearchService from 'frontend-burgernabije-besluitendatabank/services/mu-search';
 import {
   AdapterPopulatedRecordArrayWithMeta,
@@ -147,11 +148,26 @@ export default class DataQualityRoute extends Route {
       percentage: 50,
     });
 
+    // get the total count of agenda items which have a vote or voters
+
+    const agendaItemsWithVoteOrVoters: AdapterPopulatedRecordArrayWithMeta<VoteModel> =
+      await this.store.query('vote', {
+        filter: {},
+        size: 1,
+      });
+
     return {
       totalCountAgendaItems: getCount(totalCountAgendaItems) || 0,
-      totalCountAgendaItemsTreated: getCount(totalCountAgendaItemsTreated) || 0,
-      totalCountAgendaItemsWithTitleAndDescription:
-        getCount(totalCountAgendaItemsWithTitleAndDescription) || 0,
+      percentageAgendaItemsTreatedToTotal: Math.round(
+        ((getCount(totalCountAgendaItemsTreated) || 0) /
+          (getCount(totalCountAgendaItems) || 1)) *
+          100
+      ),
+      percentageAgendaItemsWithTitleAndDescriptionToTotal: Math.round(
+        ((getCount(totalCountAgendaItemsWithTitleAndDescription) || 0) /
+          (getCount(totalCountAgendaItems) || 1)) *
+          100
+      ),
       agendaItemsPerGoverningBodyClassification:
         // first sort by label then sort by count descending set total at the begining of the array
         agendaItemsPerGoverningBodyClassification
@@ -160,6 +176,11 @@ export default class DataQualityRoute extends Route {
           )
           .sort((a, b) => (b.count || 0) - (a.count || 0))
           .sort((a, b) => (a.classification === 'Totaal' ? -1 : 0)),
+      percentageAgendaItemsWithVoteOrVotersToTotal: Math.round(
+        ((getCount(agendaItemsWithVoteOrVoters) || 0) /
+          (getCount(totalCountAgendaItems) || 1)) *
+          100
+      ),
     };
   }
 }
