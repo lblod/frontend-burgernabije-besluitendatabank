@@ -4,6 +4,7 @@ import RouterService from '@ember/routing/router-service';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
+import FeaturesService from 'frontend-burgernabije-besluitendatabank/services/features';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 
 export default class DataQualityController extends Controller {
@@ -18,6 +19,7 @@ export default class DataQualityController extends Controller {
   @service declare municipalityList: MunicipalityListService;
   @service declare router: RouterService;
   @tracked currentlyLoading = false;
+  @service declare features: FeaturesService;
 
   /** Controls the loading animation of the "locatie's opslaan" button */
   @tracked loading = false;
@@ -25,6 +27,10 @@ export default class DataQualityController extends Controller {
 
   get municipalities() {
     return this.municipalityList.municipalities();
+  }
+
+  get statisticsFeatureFlagEnabled() {
+    return this.features.isEnabled('statistics-page-feature');
   }
 
   /** Resets the button loading animation */
