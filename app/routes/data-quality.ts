@@ -6,14 +6,12 @@ import { service } from '@ember/service';
 import AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
 import VoteModel from 'frontend-burgernabije-besluitendatabank/models/vote';
 import FeaturesService from 'frontend-burgernabije-besluitendatabank/services/features';
-import MuSearchService from 'frontend-burgernabije-besluitendatabank/services/mu-search';
 import {
   AdapterPopulatedRecordArrayWithMeta,
   getCount,
 } from 'frontend-burgernabije-besluitendatabank/utils/ember-data';
 
 export default class DataQualityRoute extends Route {
-  @service declare muSearch: MuSearchService;
   @service declare store: Store;
   @service declare features: FeaturesService;
 
@@ -155,7 +153,10 @@ export default class DataQualityRoute extends Route {
 
       const agendaItemsWithVoteOrVoters: AdapterPopulatedRecordArrayWithMeta<VoteModel> =
         await this.store.query('vote', {
-          filter: {},
+          'filter[:or:][handled-by][subject][sessions][governing-body][is-time-specialization-of][administrative-unit][location][label]':
+            params.municipalityLabel || undefined,
+          'filter[:or:][handled-by][subject][sessions][governing-body][administrative-unit][location][label]':
+            params.municipalityLabel || undefined,
           size: 1,
         });
 
