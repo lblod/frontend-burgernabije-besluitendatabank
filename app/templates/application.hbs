@@ -1,7 +1,10 @@
 {{page-title "Lokaal Beslist"}}
-
 <AuApp>
   <AppHeader />
-  {{outlet}}
-  <FeedbackWidget />
+  <AuMainContainer as |m|>
+    <m.content @scroll={{true}}>
+      {{outlet}}
+    </m.content>
+  </AuMainContainer>
+  <Footer />
 </AuApp>

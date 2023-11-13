@@ -25,7 +25,7 @@ export default class SessionsIndexController extends Controller {
   municipalityLabels?: string;
 
   get municipalities() {
-    return this.municipalityList.municipalities();
+    return this.municipalityList.municipalityLabels();
   }
 
   setup() {

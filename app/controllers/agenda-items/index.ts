@@ -136,7 +136,7 @@ export default class AgendaItemsIndexController extends Controller {
   AgendaItemsLoader = AgendaItemsLoader;
 
   get municipalities() {
-    return this.municipalityList.municipalities();
+    return this.municipalityList.municipalityLabels();
   }
 
   updateKeyword = (value: string) => {
