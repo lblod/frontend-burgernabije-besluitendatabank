@@ -1,6 +1,20 @@
 
 
 
+
+## v0.4.0 (2023-11-13)
+
+#### :rocket: Enhancement
+* [#164](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/164) Add search feature description ([@aliokan](https://github.com/aliokan))
+
+#### :bug: Bug Fix
+* [#165](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/165) Fix helpage page contact email ([@aliokan](https://github.com/aliokan))
+* [#163](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/163) fix: :bug: added overflow class to safeguard small home component ([@snenenenenenene](https://github.com/snenenenenenene))
+
+#### Committers: 2
+- Laurent Deketelaere ([@aliokan](https://github.com/aliokan))
+- Senne Bels ([@snenenenenenene](https://github.com/snenenenenenene))
+
 ## v0.3.0 (2023-11-08)
 
 #### :rocket: Enhancement
