@@ -1,13 +1,20 @@
 .c-home-text {
   width: 600px;
-  height: 100%;
+  //Expected "context" media feature range notation  media-feature-range-notation
+  @media (max-height: 580px) {
+    height: 100%;
+  }
+
+  @media (min-height: 580px) {
+    height: auto;
+  }
 }
 
 .c-home-text-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow-y: scroll;
+  overflow-y: auto;
   height: 100%;
   width: 100%;
 }
