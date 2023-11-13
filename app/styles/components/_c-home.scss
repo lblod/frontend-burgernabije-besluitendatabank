@@ -1,6 +1,6 @@
 .c-home-text {
   width: 600px;
-  //Expected "context" media feature range notation  media-feature-range-notation
+
   @media (max-height: 580px) {
     height: 100%;
   }
