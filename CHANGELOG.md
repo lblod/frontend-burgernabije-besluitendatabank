@@ -2,6 +2,15 @@
 
 
 
+
+## v0.4.1 (2023-11-14)
+
+#### :bug: Bug Fix
+* [#166](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/166) fix: :bug: fixed home scrolling through adding a container ([@snenenenenenene](https://github.com/snenenenenenene))
+
+#### Committers: 1
+- Senne Bels ([@snenenenenenene](https://github.com/snenenenenenene))
+
 ## v0.4.0 (2023-11-13)
 
 #### :rocket: Enhancement
