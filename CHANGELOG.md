@@ -3,6 +3,15 @@
 
 
 
+
+## v0.5.0 (2023-11-15)
+
+#### :rocket: Enhancement
+* [#167](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/167) Improve help and data-quality text ([@aliokan](https://github.com/aliokan))
+
+#### Committers: 1
+- Laurent Deketelaere ([@aliokan](https://github.com/aliokan))
+
 ## v0.4.1 (2023-11-14)
 
 #### :bug: Bug Fix
