@@ -36,7 +36,7 @@ export default class DataQualityRoute extends Route {
     if (this.features.isEnabled('statistics-page-feature')) {
       let agendaItemsPerGoverningBodyClassification = [];
 
-      const totalCountAgendaItems: AdapterPopulatedRecordArrayWithMeta<AgendaItemModel> =
+      const totalAgendaItems: AdapterPopulatedRecordArrayWithMeta<AgendaItemModel> =
         await this.store.query('agenda-item', {
           filter: {
             sessions: {
@@ -51,6 +51,8 @@ export default class DataQualityRoute extends Route {
           },
           size: 1,
         });
+
+      const totalCountAgendaItems = getCount(totalAgendaItems) || 0;
 
       const totalCountAgendaItemsWithTitleAndDescription: AdapterPopulatedRecordArrayWithMeta<AgendaItemModel> =
         await this.store.query('agenda-item', {
@@ -69,6 +71,12 @@ export default class DataQualityRoute extends Route {
           },
           size: 1,
         });
+
+      const percentageAgendaItemsWithTitleAndDescriptionToTotal = Math.round(
+        ((getCount(totalCountAgendaItemsWithTitleAndDescription) || 0) /
+          (totalCountAgendaItems || 1)) *
+          100
+      );
 
       const totalCountAgendaItemsTreated: AdapterPopulatedRecordArrayWithMeta<AgendaItemModel> =
         await this.store.query('agenda-item', {
@@ -91,6 +99,12 @@ export default class DataQualityRoute extends Route {
           },
           size: 1,
         });
+
+      const percentageAgendaItemsTreatedToTotal = Math.round(
+        ((getCount(totalCountAgendaItemsTreated) || 0) /
+          (totalCountAgendaItems || 1)) *
+          100
+      );
 
       // get all classifications (governing bodies) from the store and dont get duplicates
       const allGoverningBodyClassifications = await this.store.findAll(
@@ -139,18 +153,23 @@ export default class DataQualityRoute extends Route {
       agendaItemsPerGoverningBodyClassification =
         agendaItemsPerGoverningBodyClassification.map((item) => ({
           ...item,
-          percentage:
-            ((item.count || 0) / (getCount(totalCountAgendaItems) || 1)) * 50,
+          percentage: ((item.count || 0) / (totalCountAgendaItems || 1)) * 50,
         }));
 
       agendaItemsPerGoverningBodyClassification.push({
         classification: 'Totaal',
-        count: getCount(totalCountAgendaItems) || 0,
+        count: totalCountAgendaItems || 0,
         percentage: 50,
       });
+      // first sort by label then sort by count descending set total at the begining of the array
+      agendaItemsPerGoverningBodyClassification
+        .sort((a, b) =>
+          (a.classification || '').localeCompare(b.classification || '')
+        )
+        .sort((a, b) => (b.count || 0) - (a.count || 0))
+        .sort((a, b) => (a.classification === 'Totaal' ? -1 : 0));
 
       // get the total count of agenda items which have a vote or voters
-
       const agendaItemsWithVoteOrVoters: AdapterPopulatedRecordArrayWithMeta<VoteModel> =
         await this.store.query('vote', {
           'filter[:or:][handled-by][subject][sessions][governing-body][is-time-specialization-of][administrative-unit][location][label]':
@@ -160,31 +179,18 @@ export default class DataQualityRoute extends Route {
           size: 1,
         });
 
+      const percentageAgendaItemsWithVoteOrVotersToTotal = Math.round(
+        ((getCount(agendaItemsWithVoteOrVoters) || 0) /
+          (totalCountAgendaItems || 1)) *
+          100
+      );
+
       return {
-        totalCountAgendaItems: getCount(totalCountAgendaItems) || 0,
-        percentageAgendaItemsTreatedToTotal: Math.round(
-          ((getCount(totalCountAgendaItemsTreated) || 0) /
-            (getCount(totalCountAgendaItems) || 1)) *
-            100
-        ),
-        percentageAgendaItemsWithTitleAndDescriptionToTotal: Math.round(
-          ((getCount(totalCountAgendaItemsWithTitleAndDescription) || 0) /
-            (getCount(totalCountAgendaItems) || 1)) *
-            100
-        ),
-        agendaItemsPerGoverningBodyClassification:
-          // first sort by label then sort by count descending set total at the begining of the array
-          agendaItemsPerGoverningBodyClassification
-            .sort((a, b) =>
-              (a.classification || '').localeCompare(b.classification || '')
-            )
-            .sort((a, b) => (b.count || 0) - (a.count || 0))
-            .sort((a, b) => (a.classification === 'Totaal' ? -1 : 0)),
-        percentageAgendaItemsWithVoteOrVotersToTotal: Math.round(
-          ((getCount(agendaItemsWithVoteOrVoters) || 0) /
-            (getCount(totalCountAgendaItems) || 1)) *
-            100
-        ),
+        totalCountAgendaItems,
+        percentageAgendaItemsTreatedToTotal,
+        percentageAgendaItemsWithTitleAndDescriptionToTotal,
+        agendaItemsPerGoverningBodyClassification,
+        percentageAgendaItemsWithVoteOrVotersToTotal,
       };
     }
   }
