@@ -33,13 +33,13 @@
       <article id="detail-left-section" class="au-o-grid__item au-u-4-6@medium">
         <AuCard class="u-color-top-border" as |c|>
           <c.header>
-            <div class="au-u-flex au-u-flex--between">
+            <div class="au-u-flex au-u-flex--between au-u-flex--column@small">
               <AuHeading @level="1" @skin="3">
                 {{#if this.model.agendaItem.title}}
                   {{this.model.agendaItem.title}}
                 {{/if}}
               </AuHeading>
-              <p class="au-u-margin-left au-u-margin-top-tiny">
+              <p class="au-u-margin-left@large au-u-margin-top-tiny">
                 <AuPill
                   @skin="warning"
                   class="au-c-pill--hover au-u-word-nowrap"
