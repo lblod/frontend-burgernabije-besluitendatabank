@@ -4,6 +4,15 @@
 
 
 
+
+## v0.5.1 (2023-11-16)
+
+#### :bug: Bug Fix
+* [#168](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/168) Fix agenda item link text. ([@aliokan](https://github.com/aliokan))
+
+#### Committers: 1
+- Laurent Deketelaere ([@aliokan](https://github.com/aliokan))
+
 ## v0.5.0 (2023-11-15)
 
 #### :rocket: Enhancement
