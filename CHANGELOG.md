@@ -5,6 +5,19 @@
 
 
 
+
+## v0.6.0 (2023-11-17)
+
+#### :rocket: Enhancement
+* [#171](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/171) Update meta description ([@aliokan](https://github.com/aliokan))
+
+#### :bug: Bug Fix
+* [#170](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/170) Fix data-quality button position on mobile ([@aliokan](https://github.com/aliokan))
+* [#169](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/169) Typo in search placeholder ([@aliokan](https://github.com/aliokan))
+
+#### Committers: 1
+- Laurent Deketelaere ([@aliokan](https://github.com/aliokan))
+
 ## v0.5.1 (2023-11-16)
 
 #### :bug: Bug Fix
