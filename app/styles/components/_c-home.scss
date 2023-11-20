@@ -1,11 +1,13 @@
+.c-home-text {
+  overflow-y: auto;
+  width: 100%;
+}
+
 .c-home {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-left: auto;
-  margin-right: auto;
   width: 100%;
-  overflow: auto;
 
   > * {
     padding: $au-unit;
@@ -19,8 +21,7 @@
 
   @include mq(medium) {
     > * {
-      padding: $au-unit-large;
-      max-width: 600px;
+      padding: $au-unit-huge * 2;
       margin-left: auto;
       margin-right: auto;
     }
