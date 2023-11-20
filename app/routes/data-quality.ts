@@ -156,20 +156,17 @@ export default class DataQualityRoute extends Route {
           percentage: ((item.count || 0) / (totalCountAgendaItems || 1)) * 50,
         }));
 
-      agendaItemsPerGoverningBodyClassification.push({
-        classification: 'Totaal',
-        count: totalCountAgendaItems || 0,
-        percentage: 50,
-      });
       // first sort by label then sort by count descending set total at the begining of the array
-      agendaItemsPerGoverningBodyClassification
-        .sort((a, b) =>
-          (a.classification || '').localeCompare(b.classification || '')
-        )
-        .sort((a, b) => (b.count || 0) - (a.count || 0))
-        .sort((a, b) => (a.classification === 'Totaal' ? -1 : 0));
+      agendaItemsPerGoverningBodyClassification.sort((a, b) => {
+        const countComparison = (b.count || 0) - (a.count || 0);
+        if (countComparison !== 0) {
+          return countComparison;
+        }
+        return (a.classification || '').localeCompare(b.classification || '');
+      });
 
       // get the total count of agenda items which have a vote or voters
+
       const agendaItemsWithVoteOrVoters: AdapterPopulatedRecordArrayWithMeta<VoteModel> =
         await this.store.query('vote', {
           'filter[:or:][handled-by][subject][sessions][governing-body][is-time-specialization-of][administrative-unit][location][label]':
