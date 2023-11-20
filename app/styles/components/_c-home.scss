@@ -1,5 +1,21 @@
 .c-home-text {
+  width: 600px;
+
+  @media (max-height: 580px) {
+    height: 100%;
+  }
+
+  @media (min-height: 580px) {
+    height: auto;
+  }
+}
+
+.c-home-text-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   overflow-y: auto;
+  height: 100%;
   width: 100%;
 }
 
@@ -21,7 +37,7 @@
 
   @include mq(medium) {
     > * {
-      padding: $au-unit-huge * 2;
+      padding-top: $au-unit-large;
       margin-left: auto;
       margin-right: auto;
     }

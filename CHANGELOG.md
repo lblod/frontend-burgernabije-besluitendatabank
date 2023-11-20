@@ -2,6 +2,46 @@
 
 
 
+
+
+
+
+## v0.6.0 (2023-11-17)
+
+#### :rocket: Enhancement
+* [#171](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/171) Update meta description ([@aliokan](https://github.com/aliokan))
+
+#### :bug: Bug Fix
+* [#170](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/170) Fix data-quality button position on mobile ([@aliokan](https://github.com/aliokan))
+* [#169](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/169) Typo in search placeholder ([@aliokan](https://github.com/aliokan))
+
+#### Committers: 1
+- Laurent Deketelaere ([@aliokan](https://github.com/aliokan))
+
+## v0.5.1 (2023-11-16)
+
+#### :bug: Bug Fix
+* [#168](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/168) Fix agenda item link text. ([@aliokan](https://github.com/aliokan))
+
+#### Committers: 1
+- Laurent Deketelaere ([@aliokan](https://github.com/aliokan))
+
+## v0.5.0 (2023-11-15)
+
+#### :rocket: Enhancement
+* [#167](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/167) Improve help and data-quality text ([@aliokan](https://github.com/aliokan))
+
+#### Committers: 1
+- Laurent Deketelaere ([@aliokan](https://github.com/aliokan))
+
+## v0.4.1 (2023-11-14)
+
+#### :bug: Bug Fix
+* [#166](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/166) fix: :bug: fixed home scrolling through adding a container ([@snenenenenenene](https://github.com/snenenenenenene))
+
+#### Committers: 1
+- Senne Bels ([@snenenenenenene](https://github.com/snenenenenenene))
+
 ## v0.4.0 (2023-11-13)
 
 #### :rocket: Enhancement
