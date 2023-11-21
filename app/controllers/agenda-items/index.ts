@@ -150,7 +150,7 @@ export default class AgendaItemsIndexController extends Controller {
   }
 
   get governingBodies() {
-    return this.municipalityList.governingBodies(this.municipalityLabels);
+    return this.municipalityList.governingBodies();
   }
 
   updateKeyword = (value: string) => {
