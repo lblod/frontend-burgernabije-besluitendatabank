@@ -13,6 +13,12 @@ export default class AgendaItemRoute extends Route {
   @service declare keywordStore: KeywordStoreService;
 
   async model(params: DetailParams) {
+    // eslint-disable-next-line ember/no-controller-access-in-routes
+    const controller: any = this.controllerFor(
+      'agenda-items.agenda-item.index'
+    );
+    controller.set('modalOpen', false);
+
     const agendaItem = await this.store.findRecord('agenda-item', params.id);
 
     // wait until sessions are loaded
