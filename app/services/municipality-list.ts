@@ -3,10 +3,13 @@ import Service, { service } from '@ember/service';
 import LocationModel from 'frontend-burgernabije-besluitendatabank/models/location';
 import { deserializeArray } from 'frontend-burgernabije-besluitendatabank/utils/query-params';
 
+type Municipality = { label: string; id: string };
+
 export default class MunicipalityListService extends Service {
   @service declare store: Store;
 
-  private _municipalities?: Array<{ label: string; id: string }>;
+  private _municipalities?: Array<Municipality>;
+  private _municipalityCleanedLabels?: Array<{ label: string }>;
 
   /**
    * Get all municipalities
@@ -52,6 +55,46 @@ export default class MunicipalityListService extends Service {
   }
 
   /**
+   * Get all municipalities, filtered on the following criteria:
+   * - no duplicate labels
+   * - remove 'Kruishoutem' (because it's not a municipality anymore) #BNB-402
+   *
+   * Filtering is managed frontend as a temporary solution ^^
+   * TODO: move this to the backend
+   *
+   * @returns A promise for an array of municipality labels
+   **/
+
+  async municipalityLabels() {
+    if (!this._municipalityCleanedLabels) {
+      this._municipalityCleanedLabels = this._filteredMunicipalities(
+        await this.municipalities()
+      );
+    }
+
+    return this._municipalityCleanedLabels;
+  }
+
+  private _filteredMunicipalities(municipalities?: Array<Municipality>) {
+    if (!municipalities) {
+      return [];
+    }
+
+    const uniqueLabels = [
+      ...new Set(
+        municipalities
+          .filter(
+            (municipality) =>
+              municipality.label && municipality.label !== 'Kruishoutem'
+          )
+          .map(({ label }) => label)
+      ),
+    ].map((label) => ({ label }));
+
+    return uniqueLabels;
+  }
+
+  /**
    * Requests & parses municipalities from Ember-Data
    *
    * @returns An promise for an array of municipalities, parsed into objects with an id & label property
@@ -83,26 +126,18 @@ export default class MunicipalityListService extends Service {
   async getLocationIdsFromLabels(
     labels?: Array<string> | string
   ): Promise<string | undefined> {
+    const municipalities = await this.municipalities();
     if (typeof labels === 'string') {
       labels = deserializeArray(labels);
-    } else if (!labels) {
+    }
+
+    if (!labels || !municipalities) {
       return undefined;
     }
 
-    const locationIds: Array<string> = [];
-    const municipalities = await this.municipalities();
-
-    if (municipalities) {
-      for (let i = 0; i < labels.length; i++) {
-        const label = labels[i];
-        const municipality = municipalities.find(
-          (municipality) => municipality.label === label
-        );
-        if (municipality) {
-          locationIds.push(municipality.id);
-        }
-      }
-    }
+    const locationIds: Array<string> = municipalities
+      .filter(({ label }) => labels?.includes(label))
+      .map(({ id }) => id);
 
     return locationIds.join(',');
   }

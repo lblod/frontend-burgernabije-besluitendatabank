@@ -24,6 +24,7 @@ interface AgendaItemsParams {
   plannedStartMin: string;
   plannedStartMax: string;
   governingBodyLabels: string;
+  dataQualityList: Array<string>;
 }
 
 interface AgendaItemsLoaderArgs {
@@ -139,10 +140,13 @@ export default class AgendaItemsIndexController extends Controller {
   /** Mobile filter */
   @tracked hasFilter = false;
 
+  /** Data quality modal */
+  @tracked modalOpen = false;
+
   AgendaItemsLoader = AgendaItemsLoader;
 
   get municipalities() {
-    return this.municipalityList.municipalities();
+    return this.municipalityList.municipalityLabels();
   }
 
   get governingBodies() {
@@ -164,6 +168,16 @@ export default class AgendaItemsIndexController extends Controller {
     }
   };
 
+  showModal = () => {
+    this.modalOpen = true;
+  };
+
+  closeModal = () => {
+    if (this.modalOpen) {
+      this.modalOpen = false;
+    }
+  };
+
   get filters(): AgendaItemsParams {
     return {
       keyword: this.keyword,
@@ -171,7 +185,12 @@ export default class AgendaItemsIndexController extends Controller {
       plannedStartMin: this.plannedStartMin,
       plannedStartMax: this.plannedStartMax,
       governingBodyLabels: this.governingBodyLabels,
+      dataQualityList: this.municipalityLabels.split('+'),
     };
+  }
+
+  get hasMunicipalityFilter() {
+    return this.filters.municipalityLabels.length > 0;
   }
 }
 

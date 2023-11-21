@@ -1,3 +1,5 @@
+$au-flex-utilities-responsive: true;
+
 // Ember appuniversum
 @import "ember-appuniversum/a-settings";
 @import "ember-appuniversum/a-tools";
@@ -16,7 +18,6 @@
 @import "components/c-chart";
 @import "components/c-responsive-tables";
 @import "components/c-home";
-@import "components/c-feedback-widget";
 
 // Overrides
 @import "shame";

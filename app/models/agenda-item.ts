@@ -6,9 +6,9 @@ import Model, {
   belongsTo,
   hasMany,
 } from '@ember-data/model';
+import { sortSessions } from 'frontend-burgernabije-besluitendatabank/utils/sort-sessions';
 import AgendaItemHandlingModel from './agenda-item-handling';
 import SessionModel from './session';
-import { sortSessions } from 'frontend-burgernabije-besluitendatabank/utils/sort-sessions';
 
 export default class AgendaItemModel extends Model {
   @attr('string', { defaultValue: 'Ontbrekende titel' }) declare title: string;
@@ -48,6 +48,43 @@ export default class AgendaItemModel extends Model {
 
   get dateFormatted() {
     return this.session?.dateFormatted;
+  }
+
+  get agendaItemQualityMetrics(): { label: string; value: boolean }[] {
+    const properties = [
+      {
+        property: 'title',
+        formattedProperty: 'Titel',
+      },
+      {
+        property: 'description',
+        formattedProperty: 'Beschrijving',
+      },
+      {
+        property: 'dateFormatted',
+        formattedProperty: 'Datum',
+      },
+      {
+        property: 'municipality',
+        formattedProperty: 'Bestuurseenheid',
+      },
+      {
+        property: 'governingBodyNameResolved',
+        formattedProperty: 'Bestuursorgaan',
+      },
+    ];
+
+    const qualityMetrics: { label: string; value: boolean }[] = [];
+
+    properties.forEach((property) => {
+      const value = this[property.property as keyof AgendaItemModel];
+      qualityMetrics.push({
+        label: property.formattedProperty,
+        value: !!value,
+      });
+    });
+
+    return qualityMetrics;
   }
 }
 
