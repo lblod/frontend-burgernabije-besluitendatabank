@@ -27,30 +27,21 @@ export default class MunicipalityListService extends Service {
     return this._municipalities;
   }
 
-  async governingBodies(municipalityId: string) {
-    console.log(municipalityId);
-    const governingBodies = await this.store.query('governing-body', {
-      page: { size: 600 },
-      filter: {
-        ':gt:name': 'Gemeente',
+  async governingBodies() {
+    const GoverningBodyClasssificationCodes = await this.store.query(
+      'governing-body-classification-code',
+      {
+        page: { size: 600 },
+        sort: 'label',
+      }
+    );
 
-        'is-time-specialization-of': {
-          'administrative-unit': {
-            location: {
-              label: municipalityId || undefined,
-            },
-          },
-        },
-      },
-      sort: 'name',
-      include: [
-        'is-time-specialization-of.administrative-unit.location',
-        'administrative-unit.location',
-      ].join(','),
-    });
-    return governingBodies.map((governingBody) => ({
-      id: governingBody.id,
-      label: governingBody.name,
+    return GoverningBodyClasssificationCodes.filter(
+      (classificationCode, index, self) =>
+        self.findIndex((t) => t.label === classificationCode.label) === index
+    ).map((governingBody) => ({
+      id: governingBody.label,
+      label: governingBody.label,
     }));
   }
 
