@@ -23,7 +23,7 @@ interface AgendaItemsParams {
   municipalityLabels: string;
   plannedStartMin: string;
   plannedStartMax: string;
-  governingBodyLabels: string;
+  governingBodyClassifications: string;
   dataQualityList: Array<string>;
 }
 
@@ -86,8 +86,12 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
       //     locationIds
       //   )) || '';
 
-      const { keyword, plannedStartMin, plannedStartMax, governingBodyLabels } =
-        this.#filters;
+      const {
+        keyword,
+        plannedStartMin,
+        plannedStartMax,
+        governingBodyClassifications,
+      } = this.#filters;
 
       const agendaItems: MuSearchResponse<AgendaItem> =
         await this.muSearch.search(
@@ -95,7 +99,7 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
             index: 'agenda-items',
             page,
             locationIds,
-            governingBodyLabels,
+            governingBodyClassifications,
             keyword,
             plannedStartMin,
             plannedStartMax,
@@ -129,7 +133,7 @@ export default class AgendaItemsIndexController extends Controller {
   @tracked municipalityLabels = '';
   @tracked plannedStartMin = '';
   @tracked plannedStartMax = '';
-  @tracked governingBodyLabels = '';
+  @tracked governingBodyClassifications = '';
 
   /** Controls the loading animation of the "load more" button */
   @tracked isLoadingMore = false;
@@ -184,7 +188,7 @@ export default class AgendaItemsIndexController extends Controller {
       municipalityLabels: this.municipalityLabels,
       plannedStartMin: this.plannedStartMin,
       plannedStartMax: this.plannedStartMax,
-      governingBodyLabels: this.governingBodyLabels,
+      governingBodyClassifications: this.governingBodyClassifications,
       dataQualityList: this.municipalityLabels.split('+'),
     };
   }
@@ -201,7 +205,7 @@ type AgendaItemsQueryArguments = {
   locationIds?: string;
   plannedStartMin?: string;
   plannedStartMax?: string;
-  governingBodyLabels?: string;
+  governingBodyClassifications?: string;
 };
 
 type AgendaItemMuSearchEntry = {
@@ -231,7 +235,7 @@ const agendaItemsQuery = ({
   locationIds,
   plannedStartMin,
   plannedStartMax,
-  governingBodyLabels,
+  governingBodyClassifications,
 }: AgendaItemsQueryArguments): AgendaItemsQueryResult => {
   // Initialize filters and request objects
   const filters = {} as { [key: string]: string };
@@ -265,9 +269,9 @@ const agendaItemsQuery = ({
   }
 
   // Apply optional filter for governing body labels
-  if (governingBodyLabels) {
+  if (governingBodyClassifications) {
     filters['abstract_governing_body_name,governing_body_name'] =
-      governingBodyLabels;
+      governingBodyClassifications;
   }
 
   // Apply optional filter for keyword search
