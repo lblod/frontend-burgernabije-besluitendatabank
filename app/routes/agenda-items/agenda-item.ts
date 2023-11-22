@@ -1,6 +1,8 @@
 import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
+import Transition from '@ember/routing/transition';
 import { service } from '@ember/service';
+import AgendaItemController from 'frontend-burgernabije-besluitendatabank/controllers/agenda-items/agenda-item';
 import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
 import { sortObjectsByTitle } from 'frontend-burgernabije-besluitendatabank/utils/array-utils';
 
@@ -13,12 +15,6 @@ export default class AgendaItemRoute extends Route {
   @service declare keywordStore: KeywordStoreService;
 
   async model(params: DetailParams) {
-    // eslint-disable-next-line ember/no-controller-access-in-routes
-    const controller: any = this.controllerFor(
-      'agenda-items.agenda-item.index'
-    );
-    controller.set('modalOpen', false);
-
     const agendaItem = await this.store.findRecord('agenda-item', params.id);
 
     // wait until sessions are loaded
@@ -101,5 +97,16 @@ export default class AgendaItemRoute extends Route {
       agendaItemOnSameSession,
       similiarAgendaItems,
     };
+  }
+
+  resetController(
+    controller: AgendaItemController,
+    isExiting: boolean,
+    transition: Transition
+  ) {
+    super.resetController(controller, isExiting, transition);
+    if (isExiting) {
+      controller.closeModal();
+    }
   }
 }
