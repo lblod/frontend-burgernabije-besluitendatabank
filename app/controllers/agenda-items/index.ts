@@ -270,7 +270,7 @@ const agendaItemsQuery = ({
 
   // Apply optional filter for governing body labels
   if (governingBodyClassifications) {
-    filters['abstract_governing_body_name,governing_body_name'] =
+    filters['governing-body-classification-code'] =
       governingBodyClassifications;
   }
 
