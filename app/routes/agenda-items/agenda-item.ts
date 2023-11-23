@@ -1,6 +1,8 @@
 import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
+import Transition from '@ember/routing/transition';
 import { service } from '@ember/service';
+import AgendaItemController from 'frontend-burgernabije-besluitendatabank/controllers/agenda-items/agenda-item';
 import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
 import { sortObjectsByTitle } from 'frontend-burgernabije-besluitendatabank/utils/array-utils';
 
@@ -95,5 +97,16 @@ export default class AgendaItemRoute extends Route {
       agendaItemOnSameSession,
       similiarAgendaItems,
     };
+  }
+
+  resetController(
+    controller: AgendaItemController,
+    isExiting: boolean,
+    transition: Transition
+  ) {
+    super.resetController(controller, isExiting, transition);
+    if (isExiting) {
+      controller.closeModal();
+    }
   }
 }
