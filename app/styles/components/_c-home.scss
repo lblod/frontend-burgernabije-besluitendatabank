@@ -1,11 +1,29 @@
+.c-home-text {
+  width: 600px;
+
+  @media (max-height: 580px) {
+    height: 100%;
+  }
+
+  @media (min-height: 580px) {
+    height: auto;
+  }
+}
+
+.c-home-text-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+  height: 100%;
+  width: 100%;
+}
+
 .c-home {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-left: auto;
-  margin-right: auto;
   width: 100%;
-  overflow: auto;
 
   > * {
     padding: $au-unit;
@@ -19,8 +37,7 @@
 
   @include mq(medium) {
     > * {
-      padding: $au-unit-large;
-      max-width: 600px;
+      padding-top: $au-unit-large;
       margin-left: auto;
       margin-right: auto;
     }
