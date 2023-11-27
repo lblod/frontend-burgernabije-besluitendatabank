@@ -8,7 +8,7 @@
     >
       <div class="au-o-flow au-o-flow--small au-u-padding">
         <AuHeading @level="1" @skin="2">Wat zoek je?</AuHeading>
-        <div class="au-u-flex au-u-flex--spaced-small au-u-flex--between">
+        <div class="au-u-flex au-u-flex--spaced-small">
           <Filters::TextFilter
             @id="keyword"
             @queryParam="trefwoord"
@@ -20,10 +20,6 @@
             @icon="search"
             @rowClass="au-c-form-row--button"
           />
-
-          <AuToggleSwitch class="" {{on "click" this.toggleAdvancedFilters}}>
-            Geavanceerde filters
-          </AuToggleSwitch>
 
         </div>
         <a href="#filtersidebar" class="au-c-interface__filter-link">
@@ -153,6 +149,10 @@
           @start={{this.plannedStartMin}}
           @end={{this.plannedStartMax}}
         />
+
+        <AuToggleSwitch class="" {{on "click" this.toggleAdvancedFilters}}>
+          Geavanceerde filters
+        </AuToggleSwitch>
 
       </div>
       <div class="c-interface__sidebar-submit-buttons">
