@@ -1,4 +1,5 @@
 import Controller from '@ember/controller';
+import { action } from '@ember/object';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { task } from 'ember-concurrency';
@@ -127,6 +128,13 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
 
 export default class AgendaItemsIndexController extends Controller {
   @service declare municipalityList: MunicipalityListService;
+
+  @tracked showAdvancedFilters = false;
+
+  @action toggleAdvancedFilters() {
+    console.log(this.showAdvancedFilters);
+    this.showAdvancedFilters = !this.showAdvancedFilters;
+  }
 
   // QueryParameters
   @tracked keyword = '';
