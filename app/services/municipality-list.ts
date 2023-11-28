@@ -27,24 +27,6 @@ export default class MunicipalityListService extends Service {
     return this._municipalities;
   }
 
-  async governingBodies() {
-    const GoverningBodyClasssificationCodes = await this.store.query(
-      'governing-body-classification-code',
-      {
-        page: { size: 600 },
-        sort: 'label',
-      }
-    );
-
-    return GoverningBodyClasssificationCodes.filter(
-      (classificationCode, index, self) =>
-        self.findIndex((t) => t.label === classificationCode.label) === index
-    ).map((governingBody) => ({
-      id: governingBody.label,
-      label: governingBody.label,
-    }));
-  }
-
   /**
    * Get all municipalities, filtered on the following criteria:
    * - no duplicate labels
@@ -131,31 +113,5 @@ export default class MunicipalityListService extends Service {
       .map(({ id }) => id);
 
     return locationIds.join(',');
-  }
-
-  async getGoverningBodyLabelsFromLocationIds(
-    locationIds?: Array<string> | string
-  ): Promise<string | undefined> {
-    if (typeof locationIds === 'string') {
-      locationIds = deserializeArray(locationIds);
-    } else if (!locationIds) {
-      return undefined;
-    }
-
-    const governingBodyLabels: Array<string> = [];
-    const municipalities = await this.municipalities();
-
-    if (municipalities) {
-      for (let i = 0; i < locationIds.length; i++) {
-        const locationId = locationIds[i];
-        const municipality = municipalities.find(
-          (municipality) => municipality.id === locationId
-        );
-        if (municipality) {
-          governingBodyLabels.push(municipality.label);
-        }
-      }
-    }
-    return governingBodyLabels.join(',');
   }
 }

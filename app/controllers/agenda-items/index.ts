@@ -5,6 +5,7 @@ import { tracked } from '@glimmer/tracking';
 import { task } from 'ember-concurrency';
 import { Resource } from 'ember-resources';
 import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/mu-search/agenda-item';
+import GoverningBodyListService from 'frontend-burgernabije-besluitendatabank/services/governing-body-list';
 
 import MuSearchService, {
   DataMapper,
@@ -36,6 +37,7 @@ interface AgendaItemsLoaderArgs {
 
 class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
   @service declare municipalityList: MunicipalityListService;
+  @service declare governingBodyList: GoverningBodyListService;
   @service declare muSearch: MuSearchService;
 
   @tracked data: AgendaItem[] = [];
@@ -82,17 +84,12 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
         this.#filters.municipalityLabels
       );
 
-      // const governingBodyLabels =
-      //   (await this.municipalityList.getGoverningBodyLabelsFromLocationIds(
-      //     locationIds
-      //   )) || '';
+      const governingBodyClassificationIds =
+        await this.governingBodyList.getGoverningBodyClassificationIdsFromLabels(
+          this.#filters.governingBodyClassifications
+        );
 
-      const {
-        keyword,
-        plannedStartMin,
-        plannedStartMax,
-        governingBodyClassifications,
-      } = this.#filters;
+      const { keyword, plannedStartMin, plannedStartMax } = this.#filters;
 
       const agendaItems: MuSearchResponse<AgendaItem> =
         await this.muSearch.search(
@@ -100,7 +97,7 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
             index: 'agenda-items',
             page,
             locationIds,
-            governingBodyClassifications,
+            governingBodyClassificationIds,
             keyword,
             plannedStartMin,
             plannedStartMax,
@@ -128,11 +125,11 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
 
 export default class AgendaItemsIndexController extends Controller {
   @service declare municipalityList: MunicipalityListService;
+  @service declare governingBodyList: GoverningBodyListService;
 
   @tracked showAdvancedFilters = false;
 
   @action toggleAdvancedFilters() {
-    console.log(this.showAdvancedFilters);
     this.showAdvancedFilters = !this.showAdvancedFilters;
   }
 
@@ -162,7 +159,7 @@ export default class AgendaItemsIndexController extends Controller {
   }
 
   get governingBodies() {
-    return this.municipalityList.governingBodies();
+    return this.governingBodyList.governingBodies();
   }
 
   updateKeyword = (value: string) => {
@@ -213,7 +210,7 @@ type AgendaItemsQueryArguments = {
   locationIds?: string;
   plannedStartMin?: string;
   plannedStartMax?: string;
-  governingBodyClassifications?: string;
+  governingBodyClassificationIds?: string;
 };
 
 type AgendaItemMuSearchEntry = {
@@ -243,7 +240,7 @@ const agendaItemsQuery = ({
   locationIds,
   plannedStartMin,
   plannedStartMax,
-  governingBodyClassifications,
+  governingBodyClassificationIds,
 }: AgendaItemsQueryArguments): AgendaItemsQueryResult => {
   // Initialize filters and request objects
   const filters = {} as { [key: string]: string };
@@ -277,8 +274,9 @@ const agendaItemsQuery = ({
   }
 
   // Apply optional filter for governing body labels
-  if (governingBodyClassifications) {
-    filters['governing_body_classification'] = governingBodyClassifications;
+  if (governingBodyClassificationIds) {
+    filters['governing_body_classification_id'] =
+      governingBodyClassificationIds;
   }
 
   // Apply optional filter for keyword search
