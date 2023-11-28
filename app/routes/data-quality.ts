@@ -153,7 +153,7 @@ export default class DataQualityRoute extends Route {
       agendaItemsPerGoverningBodyClassification =
         agendaItemsPerGoverningBodyClassification.map((item) => ({
           ...item,
-          percentage: ((item.count || 0) / (totalCountAgendaItems || 1)) * 50,
+          percentage: ((item.count || 0) / (totalCountAgendaItems || 1)) * 100,
         }));
 
       // first sort by label then sort by count descending set total at the begining of the array

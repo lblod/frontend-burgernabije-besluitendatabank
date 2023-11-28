@@ -93,14 +93,14 @@
           Publicatieplicht
         </AuLinkExternal>
       </p>
-      
+
       <p>
         Naast de verplichte publicatieplicht zijn lokale besturen vrij om extra
         informatie te publiceren die niet wettelijk verplicht is. Daarom zie je
         bij sommige gemeenten soms meer informatie verschijnen zoals stemmingen
         en artikels dan bij andere gemeenten.
       </p>
-           <p>
+      <p>
         Lokaal Beslist haalt de beschikbare informatie automatisch op bij het
         lokaal bestuur. Dat wil zeggen dat we enkel de informatie kunnen tonen
         die het bestuur correct heeft gepubliceerd én die onze applicatie ook
@@ -112,7 +112,7 @@
         uitbreiding van de gegevensverzameling. Door als gebruiker feedback te
         geven, kan je hieraan ook meewerken.
       </p>
-      
+
       {{#if this.statisticsFeatureFlagEnabled}}
 
         <AuHeading @level="2" @skin="2">Statistieken</AuHeading>
@@ -209,7 +209,8 @@
                 <div
                   class="au-u-flex au-u-flex--spaced-small graph-bar"
                   {{! template-lint-disable style-concatenation }}
-                  style="width: 50%;"
+                  {{! Divide percentages by 2 in order to improve visibility on smaller screens}}
+                  style="width: {{divide 100 2}}%;"
                 >
                   <p class="graph-bar-count">
                     {{this.model.totalCountAgendaItems}}
@@ -233,7 +234,8 @@
                   <div
                     class="au-u-flex au-u-flex--spaced-small graph-bar"
                     {{! template-lint-disable style-concatenation }}
-                    style="width: {{item.percentage}}%;"
+                    {{! Divide percentages by 2 in order to improve visibility on smaller screens}}
+                    style="width: {{divide item.percentage 2}}%;"
                   >
                     <p class="graph-bar-count">
                       {{item.count}}
