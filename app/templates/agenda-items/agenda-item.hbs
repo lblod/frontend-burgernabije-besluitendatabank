@@ -21,7 +21,7 @@
   <div class="au-o-box">
     <div class="au-o-grid au-o-grid--small">
       <div class="au-o-grid__item au-u-hidden-from@medium">
-        {{#if this.wasHandled}}
+        {{#if this.model.agendaItem.wasHandled}}
           <AuAlert
             @skin="info"
             @icon="decided"
@@ -252,7 +252,7 @@
       <aside class="au-o-grid__item au-u-2-6@medium">
         <div class="u-top-sticky">
           <div class="au-u-visible-from@medium">
-            {{#if this.wasHandled}}
+            {{#if this.model.agendaItem.wasHandled}}
               <AuAlert
                 @skin="info"
                 @icon="decided"

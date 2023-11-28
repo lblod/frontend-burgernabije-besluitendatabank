@@ -1,15 +1,15 @@
 import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
+import Transition from '@ember/routing/transition';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
-import Transition from '@ember/routing/transition';
 import SessionsIndexController from 'frontend-burgernabije-besluitendatabank/controllers/sessions';
+import SessionModel from 'frontend-burgernabije-besluitendatabank/models/session';
+import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 import {
   AdapterPopulatedRecordArrayWithMeta,
   getCount,
 } from 'frontend-burgernabije-besluitendatabank/utils/ember-data';
-import SessionModel from 'frontend-burgernabije-besluitendatabank/models/session';
 
 interface sessionsIndexParams {
   plannedStartMin?: string;
@@ -84,8 +84,6 @@ export default class SessionsIndexRoute extends Route {
     const locationIds = await this.municipalityList.getLocationIdsFromLabels(
       this.municipalityLabels
     );
-
-    console.log(locationIds);
 
     const currentPage = 0;
     const sessions: AdapterPopulatedRecordArrayWithMeta<SessionModel> =
