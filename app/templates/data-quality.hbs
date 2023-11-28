@@ -189,7 +189,7 @@
                 </section>
               </div>
             </Item>
-            {{! template-lint-disable no-inline-styles }}
+
             <div
               class="au-u-flex au-u-flex--column au-u-flex--spaced-small au-u-1-1"
             >
@@ -198,51 +198,21 @@
                 @level="3"
                 @skin="3"
               >Aantal agendapunten per bestuursorgaan classificatie</AuHeading>
-              <div
-                class="au-u-flex au-u-flex--spaced-small au-u-1-1 graph-bar-container"
-              >
-                <section class="graph-bar-text">
-                  <p>
-                    Totaal
-                  </p>
-                </section>
-                <div
-                  class="au-u-flex au-u-flex--spaced-small graph-bar"
-                  {{! template-lint-disable style-concatenation }}
-                  {{! Divide percentages by 2 in order to improve visibility on smaller screens}}
-                  style="width: {{divide 100 2}}%;"
-                >
-                  <p class="graph-bar-count">
-                    {{this.model.totalCountAgendaItems}}
-                  </p>
-                </div>
 
-              </div>
+              <GraphBarRow
+                @name="Totaal"
+                @percentage={{100}}
+                @count={{this.model.totalCountAgendaItems}}
+              />
               {{#each
                 this.model.agendaItemsPerGoverningBodyClassification
                 as |item|
               }}
-
-                <div
-                  class="au-u-flex au-u-flex--spaced-small au-u-1-1 graph-bar-container"
-                >
-                  <section class="graph-bar-text">
-                    <p>
-                      {{item.classification}}
-                    </p>
-                  </section>
-                  <div
-                    class="au-u-flex au-u-flex--spaced-small graph-bar"
-                    {{! template-lint-disable style-concatenation }}
-                    {{! Divide percentages by 2 in order to improve visibility on smaller screens}}
-                    style="width: {{divide item.percentage 2}}%;"
-                  >
-                    <p class="graph-bar-count">
-                      {{item.count}}
-                    </p>
-                  </div>
-
-                </div>
+                <GraphBarRow
+                  @name={{item.classification}}
+                  @percentage={{item.percentage}}
+                  @count={{item.count}}
+                />
               {{/each}}
             </div>
           {{/if}}
