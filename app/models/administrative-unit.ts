@@ -5,11 +5,9 @@ import Model, {
   belongsTo,
   hasMany,
 } from '@ember-data/model';
+import AdministrativeUnitClasssificationCodeModel from './administrative-unit-classification-code';
 import GoverningBodyModel from './governing-body';
-import {
-  default as AdministrativeUnitClasssificationCodeModel,
-  default as LocationModel,
-} from './location';
+import LocationModel from './location';
 
 export default class AdministrativeUnitModel extends Model {
   @attr('string', { defaultValue: 'Ontbrekende gemeente' })
