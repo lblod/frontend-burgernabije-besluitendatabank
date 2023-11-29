@@ -1,4 +1,4 @@
-import { sortSessions } from 'frontend-burgernabije-besluitendatabank/utils/sort-sessions';
+import { sortSessions } from 'frontend-lokaalbeslist/utils/sort-sessions';
 import { module, test } from 'qunit';
 
 module('Unit | Utility | sort-sessions', function () {

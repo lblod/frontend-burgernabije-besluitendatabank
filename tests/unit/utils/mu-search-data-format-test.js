@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import {
   parseMuSearchAttributeToDate,
   parseMuSearchAttributeToString,
-} from 'frontend-burgernabije-besluitendatabank/utils/mu-search-data-format';
+} from 'frontend-lokaalbeslist/utils/mu-search-data-format';
 
 module('Unit | Utility | mu-search-data-format', function () {
   module('parseMuSearchAttributeToDate', function () {

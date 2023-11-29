@@ -3,8 +3,8 @@ import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
-import { serializeArray } from 'frontend-burgernabije-besluitendatabank/utils/query-params';
+import MunicipalityListService from 'frontend-lokaalbeslist/services/municipality-list';
+import { serializeArray } from 'frontend-lokaalbeslist/utils/query-params';
 
 export default class HomeController extends Controller {
   @service declare router: RouterService;

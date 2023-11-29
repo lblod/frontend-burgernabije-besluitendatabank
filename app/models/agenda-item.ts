@@ -6,7 +6,7 @@ import Model, {
   belongsTo,
   hasMany,
 } from '@ember-data/model';
-import { sortSessions } from 'frontend-burgernabije-besluitendatabank/utils/sort-sessions';
+import { sortSessions } from 'frontend-lokaalbeslist/utils/sort-sessions';
 import AgendaItemHandlingModel from './agenda-item-handling';
 import SessionModel from './session';
 

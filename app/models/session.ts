@@ -5,8 +5,8 @@ import Model, {
   AsyncHasMany,
   AsyncBelongsTo,
 } from '@ember-data/model';
-import { getFormattedDateRange } from 'frontend-burgernabije-besluitendatabank/utils/get-formatted-date-range';
-import { getFormattedDate } from 'frontend-burgernabije-besluitendatabank/utils/get-formatted-date';
+import { getFormattedDateRange } from 'frontend-lokaalbeslist/utils/get-formatted-date-range';
+import { getFormattedDate } from 'frontend-lokaalbeslist/utils/get-formatted-date';
 import AgendaItemModel from './agenda-item';
 import GoverningBodyModel from './governing-body';
 

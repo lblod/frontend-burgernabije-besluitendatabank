@@ -5,7 +5,7 @@ import { tracked } from '@glimmer/tracking';
 import {
   deserializeArray,
   serializeArray,
-} from 'frontend-burgernabije-besluitendatabank/utils/query-params';
+} from 'frontend-lokaalbeslist/utils/query-params';
 
 type Option = Record<string, string>;
 

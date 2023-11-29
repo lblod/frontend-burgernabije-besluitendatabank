@@ -1,8 +1,8 @@
-# BurgerNabijeBesluitendatabank (front-end)
+# Lokaal Beslist (front-end)
 
-[The front-end for BNB](https://burgernabije-besluitendatabank-dev.s.redhost.be/), a site that uses linked data to empower everyone in Flanders to consult the decisions made by their local authorities.
+[The front-end for Lokaal Beslist](https://lokaalbeslist-dev.s.redhost.be/), a site that uses linked data to empower everyone in Flanders to consult the decisions made by their local authorities.
 
-You can check out more info on besluitendatabanken [here](https://lokaalbestuur.vlaanderen.be/besluitendatabank), and the [app repo](https://github.com/lblod/app-burgernabije-besluitendatabank) here. The app repo will also contain general project information; this repo should only contain information needed specifically for the front-end itself.
+You can check out more info on besluitendatabanken [here](https://lokaalbestuur.vlaanderen.be/besluitendatabank), and the [app repo](https://github.com/lblod/app-lokaalbeslist) here. The app repo will also contain general project information; this repo should only contain information needed specifically for the front-end itself.
 
 ## Tutorial: Getting Started
 
@@ -14,8 +14,8 @@ You can check out more info on besluitendatabanken [here](https://lokaalbestuur.
 ### Installation
 
 ```bash
-git clone https://github.com/lblod/frontend-burgernabije-besluitendatabank
-cd frontend-burgernabije-besluitendatabank
+git clone https://github.com/lblod/frontend-lokaalbeslist
+cd frontend-lokaalbeslist
 npm install
 ```
 
@@ -28,18 +28,18 @@ From there, you can use `npm run dev:proxy`, or any of the following npm scripts
 | lint                 | Runs the linter and returns any errors/warnings. _Is run automatically before committing, cancelling the commit on error_                                                        |
 | lint:fix             | Runs the linter, attempting to automatically fix any errors                                                                                                                      |
 | dev                  | Run a development server with the mock api                                                                                                                                       |
-| dev:proxy            | Run a development server with a proxy to [the external dev server](https://burgernabije-besluitendatabank-dev.s.redhost.be/)                                                     |
+| dev:proxy            | Run a development server with a proxy to [the external dev server](https://lokaalbeslist-dev.s.redhost.be/)                                                                      |
 | start                | Run a development server with the mock api                                                                                                                                       |
 | prod                 | Run a production server                                                                                                                                                          |
 | test                 | Run the linter and then ember tests                                                                                                                                              |
 
 ### Automated builds
 
-The project uses woodpecker to automate builds. The configuration files can be found in the `.woodpecker` folder. Builds are available [here](https://build.redpencil.io/lblod/frontend-burgernabije-besluitendatabank/).
+The project uses woodpecker to automate builds. The configuration files can be found in the `.woodpecker` folder. Builds are available [here](https://build.redpencil.io/lblod/frontend-lokaalbeslist/).
 
-- Latest master build : `lblod/frontend-burgernabije-besluitendatabank:latest`
-- Feature branch build : `lblod/frontend-burgernabije-besluitendatabank:feature-<branch-name>`
-- Version tag build : `lblod/frontend-burgernabije-besluitendatabank:<version-tag>` tag like v1.2.3 would be published as 1.2.3 (so the v is dropped)
+- Latest master build : `lblod/frontend-lokaalbeslist:latest`
+- Feature branch build : `lblod/frontend-lokaalbeslist:feature-<branch-name>`
+- Version tag build : `lblod/frontend-lokaalbeslist:<version-tag>` tag like v1.2.3 would be published as 1.2.3 (so the v is dropped)
 
 ### Release
 
@@ -153,7 +153,7 @@ The levels are as follows:
 - Administrative Unit (Bestuurseenheid) (Boom Plus)
 - Location (Boom)
 
-![Data Alignment Analysis]("./../docs/analysis-bnb.png)
+![Data Alignment Analysis]("./../docs/analysis-lokaalbeslist.png)
 
 ### Filtering
 
@@ -167,7 +167,7 @@ _\*: only agenda-items_
 
 These filters are powered by two important moving parts
 
-1. [mu-cl-resources](https://github.com/mu-semtech/mu-cl-resources): this is the JSON:API our [back-end uses](https://github.com/lblod/app-burgernabije-besluitendatabank) (because JSON:API leaves some freedom of implementation, mentioning this is important! There are a few features and quirks that come from mu-cl-resources itself)
+1. [mu-cl-resources](https://github.com/mu-semtech/mu-cl-resources): this is the JSON:API our [back-end uses](https://github.com/lblod/app-lokaalbeslist) (because JSON:API leaves some freedom of implementation, mentioning this is important! There are a few features and quirks that come from mu-cl-resources itself)
 2. [Ember-Data](https://guides.emberjs.com/release/models/): this is the JSON:API-to-JavaScript our front-end uses
 
 #### Default filters

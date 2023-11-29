@@ -1,8 +1,8 @@
 import Controller from '@ember/controller';
 import { ModelFrom } from '../../lib/type-utils';
 import SessionSessionRoute from '../../routes/sessions/session';
-import { sortObjectsByTitle } from 'frontend-burgernabije-besluitendatabank/utils/array-utils';
-import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
+import { sortObjectsByTitle } from 'frontend-lokaalbeslist/utils/array-utils';
+import AgendaItem from 'frontend-lokaalbeslist/models/agenda-item';
 
 export default class SessionsSessionController extends Controller {
   /** Used to fetch agenda items from the model */

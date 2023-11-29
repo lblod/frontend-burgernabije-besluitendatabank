@@ -1,7 +1,7 @@
-import { module, test } from 'qunit';
-import { setupRenderingTest } from 'frontend-burgernabije-besluitendatabank/tests/helpers';
 import { click, fillIn, find, render } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
+import { setupRenderingTest } from 'frontend-lokaalbeslist/tests/helpers';
+import { module, test } from 'qunit';
 import sinon from 'sinon';
 
 module('Integration | Component | filters/date-range-filter', function (hooks) {
