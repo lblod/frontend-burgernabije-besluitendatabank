@@ -1,8 +1,16 @@
 # Lokaal Beslist (front-end)
 
-[The front-end for Lokaal Beslist](https://lokaalbeslist-dev.s.redhost.be/), a site that uses linked data to empower everyone in Flanders to consult the decisions made by their local authorities.
+[The front-end for Lokaal Beslist](https://lokaalbeslist.vlaanderen.be/), a site that uses linked data to empower everyone in Flanders to consult the decisions made by their local authorities.
 
 You can check out more info on besluitendatabanken [here](https://lokaalbestuur.vlaanderen.be/besluitendatabank), and the [app repo](https://github.com/lblod/app-lokaalbeslist) here. The app repo will also contain general project information; this repo should only contain information needed specifically for the front-end itself.
+
+## Environments & URLs
+
+| Environment | URL                                                                   |
+| ----------- | --------------------------------------------------------------------- |
+| DEV         | [dev.lokaalbeslist.lblod.info](https://dev.lokaalbeslist.lblod.info/) |
+| QA          | [lokaalbeslist.lblod.info](https://lokaalbeslist.lblod.info/)         |
+| PROD        | [lokaalbeslist.vlaanderen.be](https://lokaalbeslist.vlaanderen.be/)   |
 
 ## Tutorial: Getting Started
 
