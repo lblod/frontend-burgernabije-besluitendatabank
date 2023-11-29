@@ -130,6 +130,9 @@ export default class AgendaItemsIndexController extends Controller {
   @tracked showAdvancedFilters = false;
 
   @action toggleAdvancedFilters() {
+    if (this.showAdvancedFilters && this.governingBodyClassifications !== '') {
+      this.governingBodyClassifications = '';
+    }
     this.showAdvancedFilters = !this.showAdvancedFilters;
   }
 
