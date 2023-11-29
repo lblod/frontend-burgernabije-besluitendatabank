@@ -85,8 +85,6 @@ export default class SessionsIndexRoute extends Route {
       this.municipalityLabels
     );
 
-    console.log(locationIds);
-
     const currentPage = 0;
     const sessions: AdapterPopulatedRecordArrayWithMeta<SessionModel> =
       await this.store.query(

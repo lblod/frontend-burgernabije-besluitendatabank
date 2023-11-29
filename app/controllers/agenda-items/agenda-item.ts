@@ -16,13 +16,6 @@ export default class AgendaItemController extends Controller {
     return !!this.model.articles?.length;
   }
 
-  get wasHandled() {
-    return (
-      Boolean(this.model.agendaItem?.session?.startedAt) ||
-      Boolean(this.model.agendaItem?.session?.endedAt)
-    );
-  }
-
   get municipalityQuery() {
     return { gemeentes: this.model.agendaItem.session?.municipality };
   }
