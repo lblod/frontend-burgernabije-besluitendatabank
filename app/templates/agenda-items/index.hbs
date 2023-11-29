@@ -8,7 +8,7 @@
     >
       <div class="au-o-flow au-o-flow--small au-u-padding">
         <AuHeading @level="1" @skin="2">Wat zoek je?</AuHeading>
-        <div class="au-u-max-width-xsmall@small">
+        <div class="au-u-flex au-u-flex--between au-u-1-1">
           <Filters::TextFilter
             @id="keyword"
             @queryParam="trefwoord"
@@ -20,6 +20,21 @@
             @icon="search"
             @rowClass="au-c-form-row--button"
           />
+          {{! sort by date }}
+          <label>
+            Sorteer datum:
+            <select
+              {{! set dateSort equal to the value using the handleDateSortChange}}
+              {{on "change" this.handleDateSortChange}}
+              class="ember-view ember-basic-dropdown-trigger ember-power-select-trigger"
+            >
+              <option value="desc">Afdalend</option>
+              <option value="asc">
+                Oplopend
+              </option>
+            </select>
+          </label>
+
         </div>
         <a href="#filtersidebar" class="au-c-interface__filter-link">
           Ga naar filters

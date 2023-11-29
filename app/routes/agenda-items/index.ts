@@ -18,5 +18,8 @@ export default class AgendaItemsIndexRoute extends Route {
     keyword: {
       as: 'trefwoord',
     },
+    dateSort: {
+      as: 'datumsortering',
+    },
   };
 }
