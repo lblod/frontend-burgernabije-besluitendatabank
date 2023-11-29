@@ -16,7 +16,7 @@ export default class GoverningBodyListService extends Service {
 
     const governingBodyIdsArray = Array.isArray(governingBodyIds)
       ? governingBodyIds
-      : [governingBodyIds];
+      : governingBodyIds.split('+');
 
     const governingBodyClassificationIds = governingBodies.reduce(
       (acc, governingBody) => {
