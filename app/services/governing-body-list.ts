@@ -4,23 +4,27 @@ import Service, { service } from '@ember/service';
 export default class GoverningBodyListService extends Service {
   @service declare store: Store;
 
+  /**
+   * Get the governing body classification ids from the given labels.
+   * @returns The governing body classifcation ids.
+   **/
+
   async getGoverningBodyClassificationIdsFromLabels(
-    governingBodyIds?: Array<string> | string
+    governingBodyLabels?: Array<string> | string
   ): Promise<string | undefined> {
-    // return either the string or a string of comma separated ids
-    if (!governingBodyIds) {
+    if (!governingBodyLabels) {
       return undefined;
     }
 
     const governingBodies = await this.governingBodies();
 
-    const governingBodyIdsArray = Array.isArray(governingBodyIds)
-      ? governingBodyIds
-      : governingBodyIds.split('+');
+    const governingBodyLabelsArray = Array.isArray(governingBodyLabels)
+      ? governingBodyLabels
+      : governingBodyLabels.split('+');
 
     const governingBodyClassificationIds = governingBodies.reduce(
       (acc, governingBody) => {
-        if (governingBodyIdsArray.includes(governingBody.label)) {
+        if (governingBodyLabelsArray.includes(governingBody.label)) {
           acc.push(governingBody.id);
         }
         return acc;
