@@ -133,7 +133,8 @@
           @placeholder="Alle gemeentes"
         />
         {{#if this.showAdvancedFilters}}
-          <Filters::SelectMultipleFilter
+          <Filters::SelectFilter
+            @value={{this.governingBodyClassifications}}
             @id="governingBody"
             @label="Kies één of meer bestuursorganen"
             @noMatchesMessage="Geen bestuursorganen gevonden"
