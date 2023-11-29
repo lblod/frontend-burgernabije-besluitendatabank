@@ -63,6 +63,9 @@ The release process is as follows:
 
 The repo was renamed from `frontend-burgernabije-besluitendatabank` to `frontend-lokaalbeslist` this was done after the rebrand of the project. If you encounter an error it may be because your local repo is still pointing to the old repo.
 
+When reffering to the application in code, use `lokaalbeslist` as the name.
+In text use `Lokaal Beslist`.
+
 ### Feature flags
 
 Feature flags are used to enable/disable features in the application. They are defined in [config/environment.js](config/environment.js).
