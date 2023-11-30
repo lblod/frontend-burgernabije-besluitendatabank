@@ -11,6 +11,7 @@
         <div class="au-u-flex au-u-flex--between au-u-1-1">
           <Filters::TextFilter
             @id="keyword"
+            @class="au-u-max-width-xsmall@small"
             @queryParam="trefwoord"
             @value={{this.keyword}}
             @label="Zoeken"
@@ -20,20 +21,26 @@
             @icon="search"
             @rowClass="au-c-form-row--button"
           />
-          {{! sort by date }}
-          <label>
-            Sorteer datum:
-            <select
-              {{! set dateSort equal to the value using the handleDateSortChange}}
-              {{on "change" this.handleDateSortChange}}
-              class="ember-view ember-basic-dropdown-trigger ember-power-select-trigger"
-            >
-              <option value="desc">Afdalend</option>
-              <option value="asc">
-                Oplopend
-              </option>
-            </select>
-          </label>
+
+          <AuFormRow
+            @alignment="inline"
+            class="au-u-margin-bottom au-u-padding-right-large au-u-padding-left-large"
+          >
+            <section class="au-u-flex">
+              <AuLabel for="sort-on" class="au-u-hidden-visually" />
+              <select
+                id="sort-on"
+                type="select"
+                {{on "change" this.handleDateSortChange}}
+                class="au-c-input"
+              >
+                <option value="desc">Sorteer van nieuw naar oud</option>
+                <option value="asc">
+                  Sorteer van oud naar nieuw
+                </option>
+              </select>
+            </section>
+          </AuFormRow>
 
         </div>
         <a href="#filtersidebar" class="au-c-interface__filter-link">
