@@ -132,7 +132,21 @@
           @queryParam="gemeentes"
           @placeholder="Alle gemeentes"
         />
-        {{#if this.showAdvancedFilters}}
+        <Filters::DateRangeFilter
+          @startQueryParam="begin"
+          @endQueryParam="eind"
+          @start={{this.plannedStartMin}}
+          @end={{this.plannedStartMax}}
+        />
+        {{! <section class="c-accordion-holder"> }}
+        <AuAccordion
+          @open={{this.showAdvancedFilters}}
+          @iconOpen="nav-up"
+          @iconClosed="nav-down"
+          @buttonLabel="Geavanceerde filters"
+        >
+
+          {{!-- {{#if this.showAdvancedFilters}} --}}
           <Filters::SelectFilter
             @value={{this.governingBodyClassifications}}
             @id="governingBody"
@@ -143,17 +157,9 @@
             @queryParam="bestuursorganen"
             @placeholder="Alle bestuursorganen"
           />
-        {{/if}}
-        <Filters::DateRangeFilter
-          @startQueryParam="begin"
-          @endQueryParam="eind"
-          @start={{this.plannedStartMin}}
-          @end={{this.plannedStartMax}}
-        />
-
-        <AuToggleSwitch class="" {{on "click" this.toggleAdvancedFilters}}>
-          Geavanceerde filters
-        </AuToggleSwitch>
+          {{!-- {{/if}} --}}
+        </AuAccordion>
+        {{! </section> }}
 
       </div>
       <div class="c-interface__sidebar-submit-buttons">
