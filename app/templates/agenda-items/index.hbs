@@ -8,7 +8,7 @@
     >
       <div class="au-o-flow au-o-flow--small au-u-padding">
         <AuHeading @level="1" @skin="2">Wat zoek je?</AuHeading>
-        <div class="au-u-flex au-u-flex--spaced-small">
+        <div class="au-u-max-width-xsmall@small">
           <Filters::TextFilter
             @id="keyword"
             @queryParam="trefwoord"
@@ -138,28 +138,26 @@
           @start={{this.plannedStartMin}}
           @end={{this.plannedStartMax}}
         />
-        {{! <section class="c-accordion-holder"> }}
-        <AuAccordion
-          @open={{this.showAdvancedFilters}}
-          @iconOpen="nav-up"
-          @iconClosed="nav-down"
-          @buttonLabel="Geavanceerde filters"
-        >
+        <section class="c-advanced-filter-holder">
+          <AuAccordion
+            @open={{this.showAdvancedFilters}}
+            @iconOpen="nav-up"
+            @iconClosed="nav-down"
+            @buttonLabel="Geavanceerde filters"
+          >
+            <Filters::SelectFilter
+              @value={{this.governingBodyClassifications}}
+              @id="governingBody"
+              @label="Kies één of meer bestuursorganen"
+              @noMatchesMessage="Geen bestuursorganen gevonden"
+              @options={{this.governingBodies}}
+              @searchField="label"
+              @queryParam="bestuursorganen"
+              @placeholder="Alle bestuursorganen"
+            />
 
-          {{!-- {{#if this.showAdvancedFilters}} --}}
-          <Filters::SelectFilter
-            @value={{this.governingBodyClassifications}}
-            @id="governingBody"
-            @label="Kies één of meer bestuursorganen"
-            @noMatchesMessage="Geen bestuursorganen gevonden"
-            @options={{this.governingBodies}}
-            @searchField="label"
-            @queryParam="bestuursorganen"
-            @placeholder="Alle bestuursorganen"
-          />
-          {{!-- {{/if}} --}}
-        </AuAccordion>
-        {{! </section> }}
+          </AuAccordion>
+        </section>
 
       </div>
       <div class="c-interface__sidebar-submit-buttons">
