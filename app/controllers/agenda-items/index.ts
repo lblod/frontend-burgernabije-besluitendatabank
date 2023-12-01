@@ -267,12 +267,15 @@ const agendaItemsQuery = ({
   }
 
   // Apply optional filter for provinceIds
-  if (provinceIds && provinceIds.length > 0) {
+  if (provinceIds) {
     const queryIds = provinceIds
       .split(',')
-      .map((id) => `(administrative_unit_id:${id})`)
+      .map(
+        (id) =>
+          `(abstract_administrative_unit_id:${id} OR administrative_unit_id:${id})`
+      )
       .join(' OR ');
-    filters['administrative_unit_id'] = queryIds;
+    filters[':query:administrative_unit_id'] = queryIds;
   }
 
   // Apply optional filter for keyword search
