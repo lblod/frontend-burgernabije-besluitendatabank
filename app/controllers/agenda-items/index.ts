@@ -278,8 +278,11 @@ const agendaItemsQuery = ({
 
   // Apply optional filter for governing body labels
   if (governingBodyClassificationIds) {
-    filters['governing_body_classification_id'] =
-      governingBodyClassificationIds;
+    const queryIds = governingBodyClassificationIds
+      .split(',')
+      .map((id) => `(governing_body_classification_id:${id})`)
+      .join(' OR ');
+    filters[':query:governing_body_classification_id'] = queryIds;
   }
 
   // Apply optional filter for keyword search
