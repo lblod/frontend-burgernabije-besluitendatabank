@@ -299,8 +299,6 @@ const agendaItemsQuery = ({
 
   // Set dataMapping function in the request
   request.dataMapping = dataMapping;
-
-  console.log(request);
   return request;
 };
 
