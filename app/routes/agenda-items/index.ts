@@ -9,6 +9,9 @@ export default class AgendaItemsIndexRoute extends Route {
     municipalityLabels: {
       as: 'gemeentes',
     },
+    provinceLabels: {
+      as: 'provincies',
+    },
     plannedStartMin: {
       as: 'begin',
     },

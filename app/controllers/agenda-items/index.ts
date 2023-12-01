@@ -11,6 +11,7 @@ import MuSearchService, {
   PageableRequest,
 } from 'frontend-burgernabije-besluitendatabank/services/mu-search';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
+import ProvinceListService from 'frontend-burgernabije-besluitendatabank/services/province-list';
 import { cleanString } from 'frontend-burgernabije-besluitendatabank/utils/clean-string';
 import {
   parseMuSearchAttributeToDate,
@@ -20,6 +21,7 @@ import {
 interface AgendaItemsParams {
   keyword: string;
   municipalityLabels: string;
+  provinceLabels: string;
   plannedStartMin: string;
   plannedStartMax: string;
   dataQualityList: Array<string>;
@@ -33,6 +35,7 @@ interface AgendaItemsLoaderArgs {
 
 class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
   @service declare municipalityList: MunicipalityListService;
+  @service declare provinceList: ProvinceListService;
   @service declare muSearch: MuSearchService;
 
   @tracked data: AgendaItem[] = [];
@@ -79,6 +82,10 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
         this.#filters.municipalityLabels
       );
 
+      const provinceIds = await this.provinceList.getProvinceIdsFromLabels(
+        this.#filters.provinceLabels
+      );
+
       const { keyword, plannedStartMin, plannedStartMax } = this.#filters;
 
       const agendaItems: MuSearchResponse<AgendaItem> =
@@ -87,6 +94,7 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
             index: 'agenda-items',
             page,
             locationIds,
+            provinceIds,
             keyword,
             plannedStartMin,
             plannedStartMax,
@@ -114,10 +122,12 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
 
 export default class AgendaItemsIndexController extends Controller {
   @service declare municipalityList: MunicipalityListService;
+  @service declare provinceList: ProvinceListService;
 
   // QueryParameters
   @tracked keyword = '';
   @tracked municipalityLabels = '';
+  @tracked provinceLabels = '';
   @tracked plannedStartMin = '';
   @tracked plannedStartMax = '';
 
@@ -137,6 +147,10 @@ export default class AgendaItemsIndexController extends Controller {
 
   get municipalities() {
     return this.municipalityList.municipalityLabels();
+  }
+
+  get provinces() {
+    return this.provinceList.provinceLabels();
   }
 
   updateKeyword = (value: string) => {
@@ -168,6 +182,7 @@ export default class AgendaItemsIndexController extends Controller {
     return {
       keyword: this.keyword,
       municipalityLabels: this.municipalityLabels,
+      provinceLabels: this.provinceLabels,
       plannedStartMin: this.plannedStartMin,
       plannedStartMax: this.plannedStartMax,
       dataQualityList: this.municipalityLabels.split('+'),
@@ -184,6 +199,7 @@ type AgendaItemsQueryArguments = {
   page: number;
   keyword?: string;
   locationIds?: string;
+  provinceIds?: string;
   plannedStartMin?: string;
   plannedStartMax?: string;
 };
@@ -213,6 +229,7 @@ const agendaItemsQuery = ({
   page,
   keyword,
   locationIds,
+  provinceIds,
   plannedStartMin,
   plannedStartMax,
 }: AgendaItemsQueryArguments): AgendaItemsQueryResult => {
@@ -224,6 +241,8 @@ const agendaItemsQuery = ({
   // Set default sorting
   request.sort = '-session_planned_start';
   request.index = index;
+
+  console.log(provinceIds);
 
   // Ensure title and location_id fields are present
   filters[':query:title'] =
@@ -245,6 +264,15 @@ const agendaItemsQuery = ({
       .map((id) => `(abstract_location_id:${id} OR location_id:${id})`)
       .join(' OR ');
     filters[':query:abstract_location_id'] = queryIds;
+  }
+
+  // Apply optional filter for provinceIds
+  if (provinceIds && provinceIds.length > 0) {
+    const queryIds = provinceIds
+      .split(',')
+      .map((id) => `(administrative_unit_id:${id})`)
+      .join(' OR ');
+    filters['administrative_unit_id'] = queryIds;
   }
 
   // Apply optional filter for keyword search

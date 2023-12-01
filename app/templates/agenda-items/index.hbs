@@ -123,6 +123,15 @@
       <div class="c-interface__sidebar-main">
         <h3 class="au-u-h4 au-u-medium">Verfijn de zoekresultaten</h3>
         <Filters::SelectMultipleFilter
+          @id="province"
+          @label="Kies één of meer provincies"
+          @options={{this.provinces}}
+          @noMatchesMessage="Geen provincies gevonden"
+          @searchField="label"
+          @queryParam="provincies"
+          @placeholder="Alle provincies"
+        />
+        <Filters::SelectMultipleFilter
           @id="municipality"
           @label="Kies één of meer gemeentes"
           @options={{this.municipalities}}
