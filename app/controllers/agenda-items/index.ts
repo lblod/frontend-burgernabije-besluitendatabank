@@ -124,6 +124,14 @@ export default class AgendaItemsIndexController extends Controller {
   @service declare municipalityList: MunicipalityListService;
   @service declare provinceList: ProvinceListService;
 
+  get localGovernmentGroupOptions() {
+    return Promise.all([this.municipalities, this.provinces]).then(
+      ([municipalities, provinces]) => [
+        { groupName: 'Gemeente', options: municipalities },
+        { groupName: 'Provincie', options: provinces },
+      ]
+    );
+  }
   // QueryParameters
   @tracked keyword = '';
   @tracked municipalityLabels = '';
