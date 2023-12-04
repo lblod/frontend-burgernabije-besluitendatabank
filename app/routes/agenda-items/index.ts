@@ -12,6 +12,9 @@ export default class AgendaItemsIndexRoute extends Route {
     provinceLabels: {
       as: 'provincies',
     },
+    governingBodyClassifications: {
+      as: 'bestuursorganen',
+    },
     plannedStartMin: {
       as: 'begin',
     },
