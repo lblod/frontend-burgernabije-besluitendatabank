@@ -254,6 +254,13 @@ cursor {
   background-color: var(--au-white);
 }
 
+.ember-power-select-group-name {
+  font-weight: var(--au-medium);
+  padding: $au-unit-small $au-unit;
+  color: var(--au-gray-900);
+  font-family: var(--au-font);
+}
+
 .au-c-input[type="date"] {
   appearance: none; // This ensures the datepicker fills the full width on iOS
   line-height: $au-input-height; // This vertical aligns the text in the middle
