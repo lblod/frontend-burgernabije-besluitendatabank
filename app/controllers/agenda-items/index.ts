@@ -27,6 +27,7 @@ interface AgendaItemsParams {
   plannedStartMax: string;
   governingBodyClassifications: string;
   dataQualityList: Array<string>;
+  dateSort: string;
 }
 
 interface AgendaItemsLoaderArgs {
@@ -84,12 +85,12 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
         this.#filters.municipalityLabels
       );
 
+      const { keyword, plannedStartMin, plannedStartMax, dateSort } =
+        this.#filters;
       const governingBodyClassificationIds =
         await this.governingBodyList.getGoverningBodyClassificationIdsFromLabels(
           this.#filters.governingBodyClassifications
         );
-
-      const { keyword, plannedStartMin, plannedStartMax } = this.#filters;
 
       const agendaItems: MuSearchResponse<AgendaItem> =
         await this.muSearch.search(
@@ -101,6 +102,7 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
             keyword,
             plannedStartMin,
             plannedStartMax,
+            dateSort,
           })
         );
 
@@ -142,6 +144,12 @@ export default class AgendaItemsIndexController extends Controller {
   @tracked plannedStartMin = '';
   @tracked plannedStartMax = '';
   @tracked governingBodyClassifications = '';
+
+  @action handleDateSortChange(event: { target: { value: string } }) {
+    this.dateSort = event?.target?.value;
+  }
+
+  @tracked dateSort = 'desc';
 
   /** Controls the loading animation of the "load more" button */
   @tracked isLoadingMore = false;
@@ -196,6 +204,7 @@ export default class AgendaItemsIndexController extends Controller {
       municipalityLabels: this.municipalityLabels,
       plannedStartMin: this.plannedStartMin,
       plannedStartMax: this.plannedStartMax,
+      dateSort: this.dateSort,
       governingBodyClassifications: this.governingBodyClassifications,
       dataQualityList: this.municipalityLabels.split('+'),
     };
@@ -213,6 +222,7 @@ type AgendaItemsQueryArguments = {
   locationIds?: string;
   plannedStartMin?: string;
   plannedStartMax?: string;
+  dateSort?: string;
   governingBodyClassificationIds?: string;
 };
 
@@ -243,6 +253,7 @@ const agendaItemsQuery = ({
   locationIds,
   plannedStartMin,
   plannedStartMax,
+  dateSort,
   governingBodyClassificationIds,
 }: AgendaItemsQueryArguments): AgendaItemsQueryResult => {
   // Initialize filters and request objects
@@ -250,8 +261,6 @@ const agendaItemsQuery = ({
   const request: PageableRequest<AgendaItemMuSearchEntry, AgendaItem> =
     {} as PageableRequest<AgendaItemMuSearchEntry, AgendaItem>;
 
-  // Set default sorting
-  request.sort = '-session_planned_start';
   request.index = index;
 
   // Ensure title and location_id fields are present
@@ -290,6 +299,13 @@ const agendaItemsQuery = ({
     filters[
       ':query:title'
     ] = `(title:*${keyword}*) OR (description:*${keyword}*)`;
+  }
+
+  // Apply optional filter for date sorting
+  if (dateSort === 'asc') {
+    request.sort = `+session_planned_start`;
+  } else {
+    request.sort = '-session_planned_start';
   }
 
   // Set page size and filters in the request
