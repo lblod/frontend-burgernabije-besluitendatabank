@@ -5,6 +5,8 @@ import { tracked } from '@glimmer/tracking';
 import { task } from 'ember-concurrency';
 import { Resource } from 'ember-resources';
 import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/mu-search/agenda-item';
+import GoverningBodyListService from 'frontend-burgernabije-besluitendatabank/services/governing-body-list';
+
 import MuSearchService, {
   DataMapper,
   MuSearchData,
@@ -23,6 +25,7 @@ interface AgendaItemsParams {
   municipalityLabels: string;
   plannedStartMin: string;
   plannedStartMax: string;
+  governingBodyClassifications: string;
   dataQualityList: Array<string>;
   dateSort: string;
 }
@@ -35,6 +38,7 @@ interface AgendaItemsLoaderArgs {
 
 class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
   @service declare municipalityList: MunicipalityListService;
+  @service declare governingBodyList: GoverningBodyListService;
   @service declare muSearch: MuSearchService;
 
   @tracked data: AgendaItem[] = [];
@@ -83,6 +87,10 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
 
       const { keyword, plannedStartMin, plannedStartMax, dateSort } =
         this.#filters;
+      const governingBodyClassificationIds =
+        await this.governingBodyList.getGoverningBodyClassificationIdsFromLabels(
+          this.#filters.governingBodyClassifications
+        );
 
       const agendaItems: MuSearchResponse<AgendaItem> =
         await this.muSearch.search(
@@ -90,6 +98,7 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
             index: 'agenda-items',
             page,
             locationIds,
+            governingBodyClassificationIds,
             keyword,
             plannedStartMin,
             plannedStartMax,
@@ -118,12 +127,23 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
 
 export default class AgendaItemsIndexController extends Controller {
   @service declare municipalityList: MunicipalityListService;
+  @service declare governingBodyList: GoverningBodyListService;
+
+  @tracked showAdvancedFilters = false;
+
+  @action toggleAdvancedFilters() {
+    if (this.showAdvancedFilters && this.governingBodyClassifications !== '') {
+      this.governingBodyClassifications = '';
+    }
+    this.showAdvancedFilters = !this.showAdvancedFilters;
+  }
 
   // QueryParameters
   @tracked keyword = '';
   @tracked municipalityLabels = '';
   @tracked plannedStartMin = '';
   @tracked plannedStartMax = '';
+  @tracked governingBodyClassifications = '';
 
   @action handleDateSortChange(event: { target: { value: string } }) {
     this.dateSort = event?.target?.value;
@@ -147,6 +167,10 @@ export default class AgendaItemsIndexController extends Controller {
 
   get municipalities() {
     return this.municipalityList.municipalityLabels();
+  }
+
+  get governingBodies() {
+    return this.governingBodyList.governingBodies();
   }
 
   updateKeyword = (value: string) => {
@@ -181,6 +205,7 @@ export default class AgendaItemsIndexController extends Controller {
       plannedStartMin: this.plannedStartMin,
       plannedStartMax: this.plannedStartMax,
       dateSort: this.dateSort,
+      governingBodyClassifications: this.governingBodyClassifications,
       dataQualityList: this.municipalityLabels.split('+'),
     };
   }
@@ -198,6 +223,7 @@ type AgendaItemsQueryArguments = {
   plannedStartMin?: string;
   plannedStartMax?: string;
   dateSort?: string;
+  governingBodyClassificationIds?: string;
 };
 
 type AgendaItemMuSearchEntry = {
@@ -228,6 +254,7 @@ const agendaItemsQuery = ({
   plannedStartMin,
   plannedStartMax,
   dateSort,
+  governingBodyClassificationIds,
 }: AgendaItemsQueryArguments): AgendaItemsQueryResult => {
   // Initialize filters and request objects
   const filters = {} as { [key: string]: string };
@@ -258,6 +285,15 @@ const agendaItemsQuery = ({
     filters[':query:abstract_location_id'] = queryIds;
   }
 
+  // Apply optional filter for governing body labels
+  if (governingBodyClassificationIds) {
+    const queryIds = governingBodyClassificationIds
+      .split(',')
+      .map((id) => `(governing_body_classification_id:${id})`)
+      .join(' OR ');
+    filters[':query:governing_body_classification_id'] = queryIds;
+  }
+
   // Apply optional filter for keyword search
   if (keyword) {
     filters[
@@ -279,7 +315,6 @@ const agendaItemsQuery = ({
 
   // Set dataMapping function in the request
   request.dataMapping = dataMapping;
-
   return request;
 };
 
