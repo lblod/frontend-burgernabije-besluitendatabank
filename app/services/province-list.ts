@@ -3,7 +3,7 @@ import Service, { service } from '@ember/service';
 
 export default class ProvinceListService extends Service {
   @service declare store: Store;
-  private _provinces?: Array<{ label: string }>;
+  private _provinces?: Array<{ label: string; id: string }>;
 
   async provinces() {
     if (!this._provinces) {
@@ -30,7 +30,7 @@ export default class ProvinceListService extends Service {
 
     const provinceIds = provinces
       .filter((province) => labels.includes(province.label))
-      .map(({ label }) => label);
+      .map(({ id }) => id);
 
     return provinceIds.join(',');
   }
@@ -43,6 +43,7 @@ export default class ProvinceListService extends Service {
     return provinces.map((province) => ({
       label: province.name,
       id: province.id,
+      type: 'Province',
     }));
   }
 }

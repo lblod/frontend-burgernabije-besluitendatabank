@@ -1,6 +1,5 @@
-import { action } from '@ember/object';
+import { action, get } from '@ember/object';
 import FilterComponent from './filter';
-import { get } from '@ember/object';
 
 export default class SelectFilterComponent extends FilterComponent {
   @action
