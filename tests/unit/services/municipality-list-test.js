@@ -1,5 +1,5 @@
-import { module, test } from 'qunit';
 import { setupTest } from 'frontend-burgernabije-besluitendatabank/tests/helpers';
+import { module, test } from 'qunit';
 import sinon from 'sinon';
 
 module('Unit | Service | municipality-list', function (hooks) {
@@ -58,9 +58,11 @@ module('Unit | Service | municipality-list', function (hooks) {
     assert.deepEqual(municipalityLabels, [
       {
         label: 'Aalst',
+        type: 'gemeentes',
       },
       {
         label: 'Aalter',
+        type: 'gemeentes',
       },
     ]);
   });
