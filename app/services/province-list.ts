@@ -43,7 +43,7 @@ export default class ProvinceListService extends Service {
     return provinces.map((province) => ({
       label: province.name,
       id: province.id,
-      type: 'Province',
+      type: 'provincies',
     }));
   }
 }

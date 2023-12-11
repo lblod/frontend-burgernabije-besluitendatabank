@@ -62,7 +62,7 @@ export default class MunicipalityListService extends Service {
           )
           .map(({ label }) => label)
       ),
-    ].map((label) => ({ label }));
+    ].map((label) => ({ label, type: 'gemeentes' }));
 
     return uniqueLabels;
   }
@@ -85,6 +85,7 @@ export default class MunicipalityListService extends Service {
     return municipalities.map((location: LocationModel) => ({
       id: location.id,
       label: location.label,
+      type: 'gemeentes',
     }));
   }
 

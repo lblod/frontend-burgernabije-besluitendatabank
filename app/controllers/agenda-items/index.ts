@@ -24,7 +24,7 @@ interface AgendaItemsParams {
   provinceLabels: string;
   plannedStartMin: string;
   plannedStartMax: string;
-  dataQualityList: Array<string>;
+  // dataQualityList: Array<string>;
 }
 
 interface AgendaItemsLoaderArgs {
@@ -193,7 +193,7 @@ export default class AgendaItemsIndexController extends Controller {
       provinceLabels: this.provinceLabels,
       plannedStartMin: this.plannedStartMin,
       plannedStartMax: this.plannedStartMax,
-      dataQualityList: this.municipalityLabels.split('+'),
+      // dataQualityList: this.municipalityLabels.split('+'),
     };
   }
 
