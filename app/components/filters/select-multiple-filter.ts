@@ -18,9 +18,39 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
   async inserted() {
     // The queryParam is an array of searchField values, joined by seperator
     // On the page load, we can use this to load in values
-    const queryParam = this.getQueryParam(this.args.queryParam);
-    console.log(queryParam);
-    if (queryParam) {
+    if (this.args.queryParam?.includes(',')) {
+      const queryParams = this.getQueryParam(this.args.queryParam) as string;
+      const needles = queryParams.split(/[+,]/);
+      const searchField = this.args.searchField;
+
+      const haystack = await this.args.options;
+      const results: Option[] = [];
+
+      const flattenedHaystack: Option[] = [];
+      if (haystack[0]!['groupName']) {
+        haystack.forEach((group: any) => {
+          group['options'].forEach((option: Option) => {
+            flattenedHaystack.push(option);
+          });
+        });
+      }
+
+      for (let i = 0; i < needles.length; i++) {
+        const needle = needles[i];
+        console.log('needle', needle);
+        const found = flattenedHaystack.find(
+          (value) => get(value, searchField) === needle
+        );
+        if (found) {
+          console.log('FOUND:', found);
+          results.push(found);
+        }
+      }
+
+      this.selected = results;
+    } else {
+      const queryParam = this.getQueryParam(this.args.queryParam) as string;
+
       const needles = deserializeArray(queryParam);
       const searchField = this.args.searchField;
 
