@@ -32,20 +32,18 @@
             class="au-o-flow au-o-flow--small"
             {{did-insert this.resetLoading}}
           >
-
             <PowerSelectMultiple
-              @onChange={{this.handleMunicipalityChange}}
-              @selected={{this.selectedMunicipalities}}
-              @options={{this.municipalities}}
-              @allowClear={{true}}
+              @id="municipality"
+              @label="Kies één of meer besturen"
+              @options={{this.localGovernmentGroupOptions}}
+              @noMatchesMessage="Geen besturen gevonden"
+              @selected={{this.selectedLocalGovernments}}
+              @onChange={{this.handleSelectLocalGovernmentsChange}}
               @searchField="label"
-              @placeholder={{"Alle gemeentes"}}
-              @noMatchesMessage={{"Geen gemeentes gevonden"}}
-              @searchMessage="Aan het zoeken..."
-              @searchEnabled={{true}}
-              as |municipality|
+              @placeholder="Alle besturen"
+              as |option|
             >
-              {{municipality.label}}
+              {{option.label}}
             </PowerSelectMultiple>
 
             <AuInput

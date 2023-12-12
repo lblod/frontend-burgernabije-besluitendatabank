@@ -4,15 +4,29 @@ import RouterService from '@ember/routing/router-service';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
+import ProvinceListService from 'frontend-burgernabije-besluitendatabank/services/province-list';
 import { serializeArray } from 'frontend-burgernabije-besluitendatabank/utils/query-params';
 
 export default class HomeController extends Controller {
   @service declare router: RouterService;
   @service declare municipalityList: MunicipalityListService;
+  @service declare provinceList: ProvinceListService;
 
   /** Controls the loading animation of the "locatie's opslaan" button */
   @tracked loading = false;
-  @tracked selectedMunicipalities: Array<{ label: string; id: string }> = [];
+
+  get localGovernmentGroupOptions() {
+    return Promise.all([this.municipalities, this.provinces]).then(
+      ([municipalities, provinces]) => [
+        { groupName: 'Gemeente', options: municipalities },
+        { groupName: 'Provincie', options: provinces },
+      ]
+    );
+  }
+
+  get provinces() {
+    return this.provinceList.provinceLabels();
+  }
 
   get municipalities() {
     return this.municipalityList.municipalityLabels();
@@ -21,12 +35,6 @@ export default class HomeController extends Controller {
   /** Resets the button loading animation */
   @action resetLoading() {
     this.loading = false;
-  }
-
-  @action handleMunicipalityChange(
-    selectedMunicipalities: Array<{ label: string; id: string }>
-  ) {
-    this.selectedMunicipalities = selectedMunicipalities;
   }
   /** Handles keyword search on homepage */
   @tracked keywordValue = '';
@@ -42,13 +50,31 @@ export default class HomeController extends Controller {
     this.keywordValue = (event.target as HTMLInputElement).value;
   }
 
+  @tracked selectedLocalGovernments: Array<{
+    label: string;
+    id: string;
+    type: 'gemeentes' | 'provincies';
+  }> = [];
+
+  @action handleSelectLocalGovernmentsChange(
+    selectedLocalGovernments: Array<{
+      label: string;
+      id: string;
+      type: 'gemeentes' | 'provincies';
+    }>
+  ) {
+    this.selectedLocalGovernments = selectedLocalGovernments;
+  }
+
   @action handleMunicipalitySelect() {
     this.loading = true;
     this.router.transitionTo('agenda-items', {
       queryParams: {
         trefwoord: this.keywordValue,
         gemeentes: serializeArray(
-          this.selectedMunicipalities.map((municipality) => municipality.label)
+          this.selectedLocalGovernments.map(
+            (municipality) => municipality.label
+          )
         ),
       },
     });
