@@ -5,8 +5,14 @@ import FilterComponent, { type FilterArgs } from './filter';
 
 type Option = Record<string, string>;
 
+type GroupedOptions = {
+  groupName: string;
+  options: Option[];
+};
+
 interface Signature {
   Args: {
+    route?: string;
     options: Promise<Option[]>;
   } & FilterArgs;
 }
@@ -16,19 +22,17 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
 
   @action
   async inserted() {
-    // The queryParam is an array of searchField values, joined by seperator
-    // On the page load, we can use this to load in values
     if (this.args.queryParam?.includes(',')) {
       const queryParams = this.getQueryParam(this.args.queryParam) as string;
       const needles = queryParams.split(/[+,]/);
       const searchField = this.args.searchField;
 
-      const haystack = await this.args.options;
+      const haystack = (await this.args.options) as unknown as GroupedOptions[];
       const results: Option[] = [];
 
       const flattenedHaystack: Option[] = [];
-      if (haystack[0]!['groupName']) {
-        haystack.forEach((group: any) => {
+      if (haystack[0]?.['groupName']) {
+        haystack.forEach((group) => {
           group['options'].forEach((option: Option) => {
             flattenedHaystack.push(option);
           });
@@ -37,12 +41,10 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
 
       for (let i = 0; i < needles.length; i++) {
         const needle = needles[i];
-        console.log('needle', needle);
         const found = flattenedHaystack.find(
           (value) => get(value, searchField) === needle
         );
         if (found) {
-          console.log('FOUND:', found);
           results.push(found);
         }
       }
@@ -85,7 +87,7 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
     this.selected = selectedOptions;
 
     if (this.args.queryParam.includes(',')) {
-      const queryParams: Record<string, any> = {};
+      const queryParams: Record<string, unknown> = {};
 
       selectedOptions.forEach((value) => {
         if (queryParams[value['type'] as string]) {
