@@ -71,10 +71,15 @@ export default class HomeController extends Controller {
     this.router.transitionTo('agenda-items', {
       queryParams: {
         trefwoord: this.keywordValue,
+        provincies: serializeArray(
+          this.selectedLocalGovernments
+            .filter((municipality) => municipality.type === 'provincies')
+            .map((municipality) => municipality.label)
+        ),
         gemeentes: serializeArray(
-          this.selectedLocalGovernments.map(
-            (municipality) => municipality.label
-          )
+          this.selectedLocalGovernments
+            .filter((municipality) => municipality.type === 'gemeentes')
+            .map((municipality) => municipality.label)
         ),
       },
     });
