@@ -53,14 +53,14 @@ export default class HomeController extends Controller {
   @tracked selectedLocalGovernments: Array<{
     label: string;
     id: string;
-    type: 'gemeentes' | 'provincies';
+    type: 'provincies' | 'gemeentes';
   }> = [];
 
   @action handleSelectLocalGovernmentsChange(
     selectedLocalGovernments: Array<{
       label: string;
       id: string;
-      type: 'gemeentes' | 'provincies';
+      type: 'provincies' | 'gemeentes';
     }>
   ) {
     this.selectedLocalGovernments = selectedLocalGovernments;
