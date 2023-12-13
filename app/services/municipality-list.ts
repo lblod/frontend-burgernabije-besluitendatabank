@@ -1,5 +1,5 @@
-import Service, { service } from '@ember/service';
 import Store from '@ember-data/store';
+import Service, { service } from '@ember/service';
 import LocationModel from 'frontend-lokaalbeslist/models/location';
 import { deserializeArray } from 'frontend-lokaalbeslist/utils/query-params';
 

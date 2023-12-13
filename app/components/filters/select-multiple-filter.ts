@@ -1,11 +1,10 @@
-import { action } from '@ember/object';
-import FilterComponent, { type FilterArgs } from './filter';
-import { get } from '@ember/object';
+import { action, get } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import {
   deserializeArray,
   serializeArray,
 } from 'frontend-lokaalbeslist/utils/query-params';
+import FilterComponent, { type FilterArgs } from './filter';
 
 type Option = Record<string, string>;
 
