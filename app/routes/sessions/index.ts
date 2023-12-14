@@ -3,13 +3,13 @@ import Route from '@ember/routing/route';
 import Transition from '@ember/routing/transition';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import SessionsIndexController from 'frontend-burgernabije-besluitendatabank/controllers/sessions';
-import SessionModel from 'frontend-burgernabije-besluitendatabank/models/session';
-import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
+import SessionsIndexController from 'frontend-lokaalbeslist/controllers/sessions';
+import SessionModel from 'frontend-lokaalbeslist/models/session';
+import MunicipalityListService from 'frontend-lokaalbeslist/services/municipality-list';
 import {
   AdapterPopulatedRecordArrayWithMeta,
   getCount,
-} from 'frontend-burgernabije-besluitendatabank/utils/ember-data';
+} from 'frontend-lokaalbeslist/utils/ember-data';
 
 interface sessionsIndexParams {
   plannedStartMin?: string;

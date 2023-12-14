@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { getFormattedDateRange } from 'frontend-burgernabije-besluitendatabank/utils/get-formatted-date-range';
+import { getFormattedDateRange } from 'frontend-lokaalbeslist/utils/get-formatted-date-range';
 
 module('Unit | Utility | get-formatted-date-range', function () {
   test('returns empty string when date are missing', function (assert) {

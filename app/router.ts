@@ -1,5 +1,5 @@
 import EmbroiderRouter from '@embroider/router';
-import config from 'frontend-burgernabije-besluitendatabank/config/environment';
+import config from 'frontend-lokaalbeslist/config/environment';
 
 export default class Router extends EmbroiderRouter {
   location = config.locationType;

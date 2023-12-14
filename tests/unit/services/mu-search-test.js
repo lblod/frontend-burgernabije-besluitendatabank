@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import sinon from 'sinon';
-import { setupTest } from 'frontend-burgernabije-besluitendatabank/tests/helpers';
+import { setupTest } from 'frontend-lokaalbeslist/tests/helpers';
 
 module('Unit | Service | mu-search', function (hooks) {
   setupTest(hooks);

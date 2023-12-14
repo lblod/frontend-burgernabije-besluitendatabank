@@ -2,9 +2,9 @@ import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
 import Transition from '@ember/routing/transition';
 import { service } from '@ember/service';
-import AgendaItemController from 'frontend-burgernabije-besluitendatabank/controllers/agenda-items/agenda-item';
-import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
-import { sortObjectsByTitle } from 'frontend-burgernabije-besluitendatabank/utils/array-utils';
+import AgendaItemController from 'frontend-lokaalbeslist/controllers/agenda-items/agenda-item';
+import KeywordStoreService from 'frontend-lokaalbeslist/services/keyword-store';
+import { sortObjectsByTitle } from 'frontend-lokaalbeslist/utils/array-utils';
 
 interface DetailParams {
   id: string;

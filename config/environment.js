@@ -2,7 +2,7 @@
 
 module.exports = function (environment) {
   const ENV = {
-    modulePrefix: 'frontend-burgernabije-besluitendatabank',
+    modulePrefix: 'frontend-lokaalbeslist',
     environment,
     rootURL: '/',
     locationType: 'history', // If updated to hash, change ember-plausible config

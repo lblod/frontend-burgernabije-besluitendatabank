@@ -1,4 +1,4 @@
-import { cleanString } from 'frontend-burgernabije-besluitendatabank/utils/clean-string';
+import { cleanString } from 'frontend-lokaalbeslist/utils/clean-string';
 import { module, test } from 'qunit';
 
 module('Unit | Utility | clean-string', function () {

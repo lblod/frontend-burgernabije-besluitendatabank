@@ -1,6 +1,6 @@
 import Service from '@ember/service';
 import { assert } from '@ember/debug';
-import config from 'frontend-burgernabije-besluitendatabank/config/environment';
+import config from 'frontend-lokaalbeslist/config/environment';
 
 export default class FeaturesService extends Service {
   static PREFIX = 'feature-';

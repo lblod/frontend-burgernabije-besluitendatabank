@@ -1,5 +1,5 @@
-import { getFormattedDate } from 'frontend-burgernabije-besluitendatabank/utils/get-formatted-date';
-import { getFormattedDateRange } from 'frontend-burgernabije-besluitendatabank/utils/get-formatted-date-range';
+import { getFormattedDate } from 'frontend-lokaalbeslist/utils/get-formatted-date';
+import { getFormattedDateRange } from 'frontend-lokaalbeslist/utils/get-formatted-date-range';
 
 export default class AgendaItemModel {
   declare id?: string;

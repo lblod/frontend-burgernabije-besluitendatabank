@@ -1,4 +1,4 @@
-import { sortObjectsByTitle } from 'frontend-burgernabije-besluitendatabank/utils/array-utils';
+import { sortObjectsByTitle } from 'frontend-lokaalbeslist/utils/array-utils';
 import { module, test } from 'qunit';
 
 module('Unit | Utility | array-utils', function () {

@@ -2,7 +2,7 @@ import JSONAPISerializer from '@ember-data/serializer/json-api';
 import Store from '@ember-data/store';
 // eslint-disable-next-line ember/use-ember-data-rfc-395-imports
 import { ModelSchema } from 'ember-data';
-import { cleanString } from 'frontend-burgernabije-besluitendatabank/utils/clean-string';
+import { cleanString } from 'frontend-lokaalbeslist/utils/clean-string';
 
 type Resolution = {
   attributes?: {

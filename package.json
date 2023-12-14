@@ -1,11 +1,11 @@
 {
-  "name": "frontend-burgernabije-besluitendatabank",
+  "name": "frontend-lokaalbeslist",
   "version": "0.6.0",
   "private": true,
   "description": "The front-end for BNB, a site that uses linked data to empower everyone in Flanders to consult the decisions made by their local authorities.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lblod/frontend-burgernabije-besluitendatabank"
+    "url": "git+https://github.com/lblod/frontend-lokaalbeslist"
   },
   "license": "MIT",
   "author": "redpencil.io",

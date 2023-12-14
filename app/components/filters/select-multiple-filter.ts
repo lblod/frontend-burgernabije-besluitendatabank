@@ -3,7 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import {
   deserializeArray,
   serializeArray,
-} from 'frontend-burgernabije-besluitendatabank/utils/query-params';
+} from 'frontend-lokaalbeslist/utils/query-params';
 import FilterComponent, { type FilterArgs } from './filter';
 
 type Option = Record<string, string>;

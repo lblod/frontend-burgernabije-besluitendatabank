@@ -5,8 +5,8 @@ import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
 import SessionIndexRoute from '../../routes/sessions/index';
 import { ModelFrom } from '../../lib/type-utils';
-import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
-import Session from 'frontend-burgernabije-besluitendatabank/models/session';
+import MunicipalityListService from 'frontend-lokaalbeslist/services/municipality-list';
+import Session from 'frontend-lokaalbeslist/models/session';
 
 export default class SessionsIndexController extends Controller {
   @service declare store: Store;

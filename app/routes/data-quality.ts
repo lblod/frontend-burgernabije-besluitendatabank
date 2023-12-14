@@ -3,13 +3,13 @@ import { action } from '@ember/object';
 import Route from '@ember/routing/route';
 import Transition from '@ember/routing/transition';
 import { service } from '@ember/service';
-import AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
-import VoteModel from 'frontend-burgernabije-besluitendatabank/models/vote';
-import FeaturesService from 'frontend-burgernabije-besluitendatabank/services/features';
+import AgendaItemModel from 'frontend-lokaalbeslist/models/agenda-item';
+import VoteModel from 'frontend-lokaalbeslist/models/vote';
+import FeaturesService from 'frontend-lokaalbeslist/services/features';
 import {
   AdapterPopulatedRecordArrayWithMeta,
   getCount,
-} from 'frontend-burgernabije-besluitendatabank/utils/ember-data';
+} from 'frontend-lokaalbeslist/utils/ember-data';
 
 export default class DataQualityRoute extends Route {
   @service declare store: Store;

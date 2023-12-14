@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { setupTest } from 'frontend-burgernabije-besluitendatabank/tests/helpers';
+import { setupTest } from 'frontend-lokaalbeslist/tests/helpers';
 import sinon from 'sinon';
 
 module('Unit | Service | municipality-list', function (hooks) {

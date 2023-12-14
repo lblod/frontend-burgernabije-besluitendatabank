@@ -1,7 +1,7 @@
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
 import type PlausibleService from 'ember-plausible/services/plausible';
-import config from 'frontend-burgernabije-besluitendatabank/config/environment';
+import config from 'frontend-lokaalbeslist/config/environment';
 
 export default class ApplicationRoute extends Route {
   @service declare plausible: PlausibleService;
