@@ -6,6 +6,7 @@ import { task } from 'ember-concurrency';
 import { Resource } from 'ember-resources';
 import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/mu-search/agenda-item';
 import GoverningBodyListService from 'frontend-burgernabije-besluitendatabank/services/governing-body-list';
+import GovernmentListService from 'frontend-burgernabije-besluitendatabank/services/government-list';
 
 import MuSearchService, {
   DataMapper,
@@ -42,6 +43,7 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
   @service declare municipalityList: MunicipalityListService;
   @service declare provinceList: ProvinceListService;
   @service declare governingBodyList: GoverningBodyListService;
+  @service declare governmentList: GovernmentListService;
   @service declare muSearch: MuSearchService;
 
   @tracked data: AgendaItem[] = [];
@@ -138,6 +140,18 @@ export default class AgendaItemsIndexController extends Controller {
   @service declare municipalityList: MunicipalityListService;
   @service declare provinceList: ProvinceListService;
   @service declare governingBodyList: GoverningBodyListService;
+  @service declare governmentList: GovernmentListService;
+
+  @action
+  updateSelectedGovernment(
+    newOptions: Array<{
+      label: string;
+      id: string;
+      type: 'provincies' | 'gemeentes';
+    }>
+  ) {
+    this.governmentList.selectedLocalGovernments = newOptions;
+  }
 
   @tracked showAdvancedFilters = false;
 

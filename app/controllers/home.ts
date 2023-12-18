@@ -3,6 +3,7 @@ import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import GovernmentListService from 'frontend-burgernabije-besluitendatabank/services/government-list';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 import ProvinceListService from 'frontend-burgernabije-besluitendatabank/services/province-list';
 import { serializeArray } from 'frontend-burgernabije-besluitendatabank/utils/query-params';
@@ -11,6 +12,7 @@ export default class HomeController extends Controller {
   @service declare router: RouterService;
   @service declare municipalityList: MunicipalityListService;
   @service declare provinceList: ProvinceListService;
+  @service declare governmentList: GovernmentListService;
 
   /** Controls the loading animation of the "locatie's opslaan" button */
   @tracked loading = false;
@@ -50,12 +52,6 @@ export default class HomeController extends Controller {
     this.keywordValue = (event.target as HTMLInputElement).value;
   }
 
-  @tracked selectedLocalGovernments: Array<{
-    label: string;
-    id: string;
-    type: 'provincies' | 'gemeentes';
-  }> = [];
-
   @action handleSelectLocalGovernmentsChange(
     selectedLocalGovernments: Array<{
       label: string;
@@ -63,7 +59,7 @@ export default class HomeController extends Controller {
       type: 'provincies' | 'gemeentes';
     }>
   ) {
-    this.selectedLocalGovernments = selectedLocalGovernments;
+    this.governmentList.selectedLocalGovernments = selectedLocalGovernments;
   }
 
   @action handleMunicipalitySelect() {
@@ -72,12 +68,12 @@ export default class HomeController extends Controller {
       queryParams: {
         trefwoord: this.keywordValue,
         provincies: serializeArray(
-          this.selectedLocalGovernments
+          this.governmentList.selectedLocalGovernments
             .filter((municipality) => municipality.type === 'provincies')
             .map((municipality) => municipality.label)
         ),
         gemeentes: serializeArray(
-          this.selectedLocalGovernments
+          this.governmentList.selectedLocalGovernments
             .filter((municipality) => municipality.type === 'gemeentes')
             .map((municipality) => municipality.label)
         ),

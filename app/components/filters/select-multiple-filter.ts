@@ -1,5 +1,4 @@
 import { action, get } from '@ember/object';
-import { tracked } from '@glimmer/tracking';
 import { deserializeArray } from 'frontend-burgernabije-besluitendatabank/utils/query-params';
 import FilterComponent, { type FilterArgs } from './filter';
 
@@ -12,13 +11,21 @@ type GroupedOptions = {
 
 interface Signature {
   Args: {
-    route?: string;
     options: Promise<Option[]>;
+    selected: Option[];
+    updateSelected: (selected: Option[]) => void;
   } & FilterArgs;
 }
 
 export default class SelectMultipleFilterComponent extends FilterComponent<Signature> {
-  @tracked selected?: Option[];
+  get selected() {
+    return this.args.selected;
+  }
+
+  @action
+  onSelectedChange(newOptions: Option[]) {
+    this.args.updateSelected(newOptions);
+  }
 
   @action
   async inserted() {
@@ -52,7 +59,7 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
         }
       }
 
-      this.selected = results;
+      this.onSelectedChange(results);
     } else {
       const queryParam = this.getQueryParam(this.args.queryParam) as string;
 
@@ -72,7 +79,7 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
         }
       }
 
-      this.selected = results;
+      this.onSelectedChange(results);
     }
   }
 
@@ -87,7 +94,7 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
         });
       });
 
-    this.selected = selectedOptions;
+    this.onSelectedChange(selectedOptions);
 
     if (this.args.queryParam.includes(',')) {
       const queryParams = selectedOptions.reduce((acc, { label, type }) => {

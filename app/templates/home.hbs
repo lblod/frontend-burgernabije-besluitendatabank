@@ -37,7 +37,7 @@
               @label="Kies één of meer besturen"
               @options={{this.localGovernmentGroupOptions}}
               @noMatchesMessage="Geen besturen gevonden"
-              @selected={{this.selectedLocalGovernments}}
+              @selected={{this.governmentList.selectedLocalGovernments}}
               @onChange={{this.handleSelectLocalGovernmentsChange}}
               @searchField="label"
               @placeholder="Alle besturen"
