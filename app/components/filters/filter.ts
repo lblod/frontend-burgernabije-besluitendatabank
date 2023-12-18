@@ -23,26 +23,7 @@ export default class FilterComponent<S = Signature> extends Component<S> {
    * @returns queryParameter value. Possibly undefined
    */
   getQueryParam(param: string): string | undefined {
-    // param can be gemeentes,provincies
-    // if the queryParam is delimited by a comma, we want to split it and map through this.router.currentRoute.queryParams
-    if (param.includes(',')) {
-      const params = param.split(',');
-      const queryParams = this.router.currentRoute.queryParams;
-      const values: string[] = [];
-
-      console.log(params);
-
-      params.map((param) => {
-        if (queryParams[param]) {
-          values.push(queryParams[param] as string);
-        }
-      });
-      console.log(values);
-      return values.join(',');
-    }
     return this.router.currentRoute.queryParams[param];
-
-    // return this.router.currentRoute.queryParams[param];
   }
 
   /**

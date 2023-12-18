@@ -23,8 +23,11 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
   @action
   async inserted() {
     if (this.args.queryParam?.includes(',')) {
-      const queryParams = this.getQueryParam(this.args.queryParam) as string;
-      const needles = queryParams.split(/[+,]/);
+      // forEach queryParam delimited by a , split it and do getQueryParam for each
+      const needles = this.args.queryParam.split(/[+,]/).map((queryParam) => {
+        return this.getQueryParam(queryParam);
+      });
+
       const searchField = this.args.searchField;
 
       const haystack = (await this.args.options) as unknown as GroupedOptions[];
@@ -87,15 +90,12 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
     this.selected = selectedOptions;
 
     if (this.args.queryParam.includes(',')) {
-      const queryParams: Record<string, unknown> = {};
-
-      selectedOptions.forEach((value) => {
-        if (queryParams[value['type'] as string]) {
-          queryParams[value['type'] as string] += '+' + value['label'];
-        } else {
-          queryParams[value['type'] as string] = value['label'];
-        }
-      });
+      const queryParams = selectedOptions.reduce((acc, { label, type }) => {
+        return {
+          ...acc,
+          ...(type && { [type]: acc[type] ? `${acc[type]}+${label}` : label }),
+        };
+      }, {} as Record<string, unknown>);
 
       this.updateQueryParams(queryParams);
     } else {
