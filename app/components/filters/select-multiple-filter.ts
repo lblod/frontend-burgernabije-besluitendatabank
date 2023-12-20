@@ -32,6 +32,7 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
     if (this.args.queryParam?.includes('+')) {
       const needles = deserializeArray(this.args.queryParam).map(
         (queryParam) => {
+          if (!queryParam) return [];
           return this.getQueryParam(queryParam);
         }
       );
@@ -63,6 +64,7 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
       this.onSelectedChange(results);
     } else {
       const queryParam = this.getQueryParam(this.args.queryParam) as string;
+      if (!queryParam) return [];
 
       const needles = deserializeArray(queryParam);
       const searchField = this.args.searchField;
