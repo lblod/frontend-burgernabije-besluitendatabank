@@ -1,16 +1,17 @@
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
-import ENV from 'frontend-burgernabije-besluitendatabank/config/environment';
+import CONSTANTS from 'frontend-burgernabije-besluitendatabank/config/constants';
 import FeaturesService from 'frontend-burgernabije-besluitendatabank/services/features';
+
 export default class AgendaItemsIndexRoute extends Route {
   @service declare features: FeaturesService;
 
   queryParams: any = {
     municipalityLabels: {
-      as: ENV.APP['municipalities'],
+      as: CONSTANTS['municipalities'],
     },
     provinceLabels: {
-      as: ENV.APP['provinces'],
+      as: CONSTANTS['provinces'],
     },
     governingBodyClassifications: {
       as: 'bestuursorganen',

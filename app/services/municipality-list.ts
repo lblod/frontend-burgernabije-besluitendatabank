@@ -1,6 +1,6 @@
 import Store from '@ember-data/store';
 import Service, { service } from '@ember/service';
-import ENV from 'frontend-burgernabije-besluitendatabank/config/environment';
+import CONSTANTS from 'frontend-burgernabije-besluitendatabank/config/constants';
 import LocationModel from 'frontend-burgernabije-besluitendatabank/models/location';
 import { deserializeArray } from 'frontend-burgernabije-besluitendatabank/utils/query-params';
 type Municipality = { label: string; id: string };
@@ -62,7 +62,7 @@ export default class MunicipalityListService extends Service {
           )
           .map(({ label }) => label)
       ),
-    ].map((label) => ({ label, type: ENV.APP['municipalities'] }));
+    ].map((label) => ({ label, type: CONSTANTS['municipalities'] }));
 
     return uniqueLabels;
   }
@@ -86,7 +86,7 @@ export default class MunicipalityListService extends Service {
       id: location.id,
       label: location.label,
       // look at the environment APP.municipalities for the type
-      type: ENV.APP['municipalities'],
+      type: CONSTANTS['municipalities'],
     }));
   }
 

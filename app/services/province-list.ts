@@ -1,6 +1,6 @@
 import Store from '@ember-data/store';
 import Service, { service } from '@ember/service';
-import ENV from 'frontend-burgernabije-besluitendatabank/config/environment';
+import CONSTANTS from 'frontend-burgernabije-besluitendatabank/config/constants';
 export default class ProvinceListService extends Service {
   @service declare store: Store;
   private _provinces?: Array<{ label: string; id: string }>;
@@ -45,7 +45,7 @@ export default class ProvinceListService extends Service {
     return provinces.map((province) => ({
       label: province.label,
       id: province.id,
-      type: ENV.APP['provinces'],
+      type: CONSTANTS['provinces'],
     }));
   }
 }
