@@ -36,12 +36,14 @@ export default class ProvinceListService extends Service {
   }
 
   private async _loadProvinces() {
-    const provinces = await this.store.query('administrative-unit', {
-      filter: { classification: 'Provincie' },
+    const provinces = await this.store.query('location', {
+      filter: {
+        niveau: 'Provincie',
+      },
       page: { size: 100 },
     });
     return provinces.map((province) => ({
-      label: province.name,
+      label: province.label,
       id: province.id,
       type: ENV.APP['provinces'],
     }));

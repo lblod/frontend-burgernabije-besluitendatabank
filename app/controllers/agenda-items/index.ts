@@ -328,12 +328,14 @@ const agendaItemsQuery = ({
   if (provinceIds) {
     const queryIds = provinceIds
       .split(',')
-      .map(
-        (id) =>
-          `(abstract_administrative_unit_id:${id} OR administrative_unit_id:${id})`
-      )
+      .map((id) => `(abstract_location_id:${id} OR location_id:${id})`)
       .join(' OR ');
-    filters[':query:administrative_unit_id'] = queryIds;
+    // append to existing query
+    filters[':query:abstract_location_id'] = filters[
+      ':query:abstract_location_id'
+    ]
+      ? filters[':query:abstract_location_id'] + ' OR ' + queryIds
+      : queryIds;
   }
   // Apply optional filter for governing body labels
   if (governingBodyClassificationIds) {
