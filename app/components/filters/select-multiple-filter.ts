@@ -51,15 +51,14 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
         });
       }
 
-      for (let i = 0; i < needles.length; i++) {
-        const needle = needles[i];
+      needles.forEach((needle) => {
         const found = flattenedHaystack.find(
           (value) => get(value, searchField) === needle
         );
         if (found) {
           results.push(found);
         }
-      }
+      });
 
       this.onSelectedChange(results);
     } else {
@@ -72,15 +71,14 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
       const haystack = await this.args.options;
       const results: Option[] = [];
 
-      for (let i = 0; i < needles.length; i++) {
-        const needle = needles[i];
+      needles.forEach((needle) => {
         const found = haystack.find(
           (value) => get(value, searchField) === needle
         );
         if (found) {
           results.push(found);
         }
-      }
+      });
 
       this.onSelectedChange(results);
     }
