@@ -29,11 +29,12 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
 
   @action
   async inserted() {
-    if (this.args.queryParam?.includes(',')) {
-      // forEach queryParam delimited by a , split it and do getQueryParam for each
-      const needles = this.args.queryParam.split(/[+,]/).map((queryParam) => {
-        return this.getQueryParam(queryParam);
-      });
+    if (this.args.queryParam?.includes('+')) {
+      const needles = deserializeArray(this.args.queryParam).map(
+        (queryParam) => {
+          return this.getQueryParam(queryParam);
+        }
+      );
 
       const searchField = this.args.searchField;
 
@@ -96,7 +97,7 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
 
     this.onSelectedChange(selectedOptions);
 
-    if (this.args.queryParam.includes(',')) {
+    if (this.args.queryParam.includes('+')) {
       const queryParams = selectedOptions.reduce((acc, { label, type }) => {
         return {
           ...acc,
