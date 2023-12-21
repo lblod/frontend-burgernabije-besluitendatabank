@@ -8,7 +8,9 @@
     >
       <div class="au-o-flow au-o-flow--small au-u-padding">
         <AuHeading @level="1" @skin="2">Wat zoek je?</AuHeading>
-        <div class="au-u-flex au-u-flex--between au-u-1-1">
+        <div
+          class="au-u-flex au-u-flex--between au-u-1-1 au-u-flex--column@small"
+        >
           <Filters::TextFilter
             @id="keyword"
             @class="au-u-max-width-xsmall@small"
@@ -22,14 +24,19 @@
             @rowClass="au-c-form-row--button"
           />
 
-          <AuFormRow @alignment="inline">
-            <section class="au-u-flex">
+          <AuFormRow
+            @alignment="inline"
+            class="au-u-1-1 au-u-flex au-u-flex--end au-u-margin-top-small@xsmall au-u-margin-top-none@small"
+          >
+            <section
+              class="au-u-flex au-u-1-2@large au-u-1-1 au-u-margin-left-small@small au-u-flex--end"
+            >
               <AuLabel for="sort-on" class="au-u-hidden-visually" />
               <select
                 id="sort-on"
                 type="select"
                 {{on "change" this.handleDateSortChange}}
-                class="au-c-input"
+                class="au-c-input au-u-1-2@small au-u-1-1 au-u-max-width-xsmall@small"
               >
                 <option value="desc">Sorteer van nieuw naar oud</option>
                 <option value="asc">
