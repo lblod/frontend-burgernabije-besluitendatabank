@@ -1,21 +1,21 @@
 import Store from '@ember-data/store';
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
-import AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
+
+interface Params {
+  id: string;
+}
 
 export default class AgendaItemsAgendaItemSessionRoute extends Route {
   @service declare store: Store;
 
-  async model() {
-    const agendaItem = (
-      this.modelFor('agenda-items.agenda-item') as {
-        agendaItem: AgendaItemModel;
-      }
-    ).agendaItem;
+  async model({ id }: Params) {
+    const agendaItem = await this.store.findRecord('agenda-item', id);
+    const sessions = await agendaItem.sessions;
 
     const session = await this.store.findRecord(
       'session',
-      agendaItem.session?.id as string,
+      sessions?.firstObject?.id as string,
       {
         include: [
           'governing-body.is-time-specialization-of.administrative-unit.location',
