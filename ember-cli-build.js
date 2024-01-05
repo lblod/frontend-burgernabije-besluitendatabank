@@ -12,6 +12,8 @@ module.exports = function (defaults) {
     },
   });
 
+  app.import('vendor/jsdWidgetScript.js');
+
   const { Webpack } = require('@embroider/webpack');
 
   const embroiderOptions = {
