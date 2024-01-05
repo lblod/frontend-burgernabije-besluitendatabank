@@ -1,5 +1,11 @@
 @use "sass:map";
 
+// with name JSD widget
+iframe[name*="JSD widget"] {
+  bottom: 100px !important;
+  right: 20px !important;
+}
+
 .graph-bar-container {
   height: 25px;
   position: relative;
