@@ -1,4 +1,4 @@
-{{page-title this.model.agendaItem.title}}
+{{page-title this.model.agendaItem.titleFormatted}}
 <AuModalContainer />
 
 <div id="route-detail">
@@ -10,12 +10,9 @@
             Lijst
           </AuLink>
         </li>
-        {{#if this.model.agendaItem.title}}
           <li class="au-c-list-horizontal__item">
-            <span class="u-truncate">{{this.model.agendaItem.title}}</span>
+            <span class="u-truncate">{{this.model.agendaItem.titleFormatted}}</span>
           </li>
-
-        {{/if}}
 
       </ul>
     </Group>
@@ -37,11 +34,7 @@
           <c.header>
             <div class="au-u-flex au-u-flex--between au-u-flex--column@small">
               <AuHeading @level="1" @skin="3">
-                {{#if this.model.agendaItem.title}}
-                  {{this.model.agendaItem.title}}
-                {{else}}
-                  Ontbrekende titel
-                {{/if}}
+                {{this.model.agendaItem.titleFormatted}}
               </AuHeading>
               <p class="au-u-margin-left@large au-u-margin-top-tiny">
                 <AuPill
@@ -237,11 +230,7 @@
                           @route="agenda-items.agenda-item"
                           @model={{agendaItem.id}}
                         >
-                          {{#if agendaItem.title}}
-                            {{agendaItem.title}}
-                          {{else}}
-                            Ontbrekende titel
-                          {{/if}}
+                          {{agendaItem.titleFormatted}}
                         </AuLink>
                       {{/if}}
                     </li>
@@ -293,11 +282,7 @@
                       @model={{agendaItem.id}}
                       @route="agenda-items.agenda-item"
                     >
-                      {{#if agendaItem.title}}
-                        {{agendaItem.title}}
-                      {{else}}
-                        Ontbrekende titel
-                      {{/if}}
+                      {{agendaItem.titleFormatted}}
                     </AuLink>
                   </li>
                 {{/each}}

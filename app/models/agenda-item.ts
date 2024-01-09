@@ -54,6 +54,10 @@ export default class AgendaItemModel extends Model {
     return this.session?.dateFormatted;
   }
 
+  get titleFormatted() {
+    return this.title ?? 'Ontbrekende titel';
+  }
+
   get agendaItemQualityMetrics(): { label: string; value: boolean }[] {
     const properties = [
       {
