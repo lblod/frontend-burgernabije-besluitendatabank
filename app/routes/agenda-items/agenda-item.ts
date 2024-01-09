@@ -48,7 +48,7 @@ export default class AgendaItemRoute extends Route {
       : [];
 
     const agendaItemOnSameSession = agendaItemOnSameSessionRaw
-      .filter((item) => item.id !== agendaItem.id)
+      .filter((item) => item.id !== agendaItem.id && !!item.title)
       .sort(sortObjectsByTitle)
       .slice(0, 4);
 
@@ -87,7 +87,7 @@ export default class AgendaItemRoute extends Route {
         },
       })
     )
-      .filter((item) => item.id !== agendaItem.id)
+      .filter((item) => item.id !== agendaItem.id && !!item.title)
       .slice(0, 4);
 
     return {

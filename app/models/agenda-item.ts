@@ -11,7 +11,7 @@ import AgendaItemHandlingModel from './agenda-item-handling';
 import SessionModel from './session';
 
 export default class AgendaItemModel extends Model {
-  @attr('string', { defaultValue: 'Ontbrekende titel' }) declare title: string;
+  @attr('string') declare title: string;
   @attr('string') declare description: string;
   @attr('string') declare alternateLink: string;
   @attr('boolean') declare plannedPublic: boolean;
@@ -54,6 +54,10 @@ export default class AgendaItemModel extends Model {
     return this.session?.dateFormatted;
   }
 
+  get titleFormatted() {
+    return this.title ?? 'Ontbrekende titel';
+  }
+
   get agendaItemQualityMetrics(): { label: string; value: boolean }[] {
     const properties = [
       {
@@ -82,14 +86,6 @@ export default class AgendaItemModel extends Model {
 
     properties.forEach((property) => {
       const value = this[property.property as keyof AgendaItemModel];
-      // check if title is not "Ontbrekende titel"
-      if (property.property === 'title' && value === 'Ontbrekende titel') {
-        qualityMetrics.push({
-          label: property.formattedProperty,
-          value: false,
-        });
-        return;
-      }
       qualityMetrics.push({
         label: property.formattedProperty,
         value: !!value,

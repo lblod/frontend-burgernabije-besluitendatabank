@@ -17,6 +17,9 @@ export default class SessionsSessionController extends Controller {
       agendaItems = [];
     }
 
-    return agendaItems.slice().sort(sortObjectsByTitle);
+    return agendaItems
+      .slice()
+      .filter(({ title }) => !!title)
+      .sort(sortObjectsByTitle);
   }
 }
