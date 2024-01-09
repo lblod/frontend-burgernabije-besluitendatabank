@@ -101,6 +101,16 @@ export default class ExampleComponent extends Component {
 }
 ```
 
+Or in template files by using the `is-feature-enabled` helper:
+
+```handlebars
+{{#if (is-feature-enabled "new-feature")}}
+  <p>New feature is enabled!</p>
+{{else}}
+  <p>New feature is disabled!</p>
+{{/if}}
+```
+
 ### List of feature flags
 
 | Name                    | Description                                                      |
