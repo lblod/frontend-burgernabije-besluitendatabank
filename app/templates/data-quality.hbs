@@ -113,7 +113,7 @@
         geven, kan je hieraan ook meewerken.
       </p>
 
-      {{#if this.statisticsFeatureFlagEnabled}}
+      {{#if (is-feature-enabled "statistics-page-feature")}}
 
         <AuHeading @level="2" @skin="2">Statistieken</AuHeading>
         <p>
