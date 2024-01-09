@@ -3,24 +3,18 @@ import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import FeaturesService from 'frontend-burgernabije-besluitendatabank/services/features';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 
 export default class DataQualityController extends Controller {
   @service declare municipalityList: MunicipalityListService;
   @service declare router: RouterService;
   @tracked currentlyLoading = false;
-  @service declare features: FeaturesService;
 
   @tracked loading = false;
   @tracked selectedMunicipality: { label: string; id: string } | null = null;
 
   get municipalities() {
     return this.municipalityList.municipalities();
-  }
-
-  get statisticsFeatureFlagEnabled() {
-    return this.features.isEnabled('statistics-page-feature');
   }
 
   @action resetLoading() {
