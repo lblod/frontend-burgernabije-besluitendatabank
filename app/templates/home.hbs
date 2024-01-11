@@ -16,9 +16,9 @@
             />
           </div>
           <p>Blijf op de hoogte van waar lokale besturen mee bezig zijn en wat
-            er leeft in en rond je omgeving. Start eenvoudig door een gemeente
-            te selecteren of een zoekwoord in te voeren en krijg direct toegang
-            tot relevante informatie.</p>
+            er leeft in en rond je omgeving. Start eenvoudig door één of
+            meerdere gemeentes of provincies te selecteren of een zoekwoord in
+            te voeren en krijg direct toegang tot relevante informatie.</p>
         </AuContent>
         <div class="au-c-home__form au-o-flow">
           <AuLabel
@@ -32,20 +32,18 @@
             class="au-o-flow au-o-flow--small"
             {{did-insert this.resetLoading}}
           >
-
             <PowerSelectMultiple
-              @onChange={{this.handleMunicipalityChange}}
-              @selected={{this.selectedMunicipalities}}
-              @options={{this.municipalities}}
-              @allowClear={{true}}
+              @id="municipality"
+              @label="Kies één of meer besturen"
+              @options={{this.localGovernmentGroupOptions}}
+              @noMatchesMessage="Geen besturen gevonden"
+              @selected={{this.governmentList.selectedLocalGovernments}}
+              @onChange={{this.handleSelectLocalGovernmentsChange}}
               @searchField="label"
-              @placeholder={{"Alle gemeentes"}}
-              @noMatchesMessage={{"Geen gemeentes gevonden"}}
-              @searchMessage="Aan het zoeken..."
-              @searchEnabled={{true}}
-              as |municipality|
+              @placeholder="Alle besturen"
+              as |option|
             >
-              {{municipality.label}}
+              {{option.label}}
             </PowerSelectMultiple>
 
             <AuInput

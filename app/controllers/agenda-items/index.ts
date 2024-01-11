@@ -6,6 +6,7 @@ import { task } from 'ember-concurrency';
 import { Resource } from 'ember-resources';
 import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/mu-search/agenda-item';
 import GoverningBodyListService from 'frontend-burgernabije-besluitendatabank/services/governing-body-list';
+import GovernmentListService from 'frontend-burgernabije-besluitendatabank/services/government-list';
 
 import MuSearchService, {
   DataMapper,
@@ -14,6 +15,7 @@ import MuSearchService, {
   PageableRequest,
 } from 'frontend-burgernabije-besluitendatabank/services/mu-search';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
+import ProvinceListService from 'frontend-burgernabije-besluitendatabank/services/province-list';
 import { cleanString } from 'frontend-burgernabije-besluitendatabank/utils/clean-string';
 import {
   parseMuSearchAttributeToDate,
@@ -23,6 +25,7 @@ import {
 interface AgendaItemsParams {
   keyword: string;
   municipalityLabels: string;
+  provinceLabels: string;
   plannedStartMin: string;
   plannedStartMax: string;
   governingBodyClassifications: string;
@@ -38,7 +41,9 @@ interface AgendaItemsLoaderArgs {
 
 class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
   @service declare municipalityList: MunicipalityListService;
+  @service declare provinceList: ProvinceListService;
   @service declare governingBodyList: GoverningBodyListService;
+  @service declare governmentList: GovernmentListService;
   @service declare muSearch: MuSearchService;
 
   @tracked data: AgendaItem[] = [];
@@ -85,8 +90,13 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
         this.#filters.municipalityLabels
       );
 
+      const provinceIds = await this.provinceList.getProvinceIdsFromLabels(
+        this.#filters.provinceLabels
+      );
+
       const { keyword, plannedStartMin, plannedStartMax, dateSort } =
         this.#filters;
+
       const governingBodyClassificationIds =
         await this.governingBodyList.getGoverningBodyClassificationIdsFromLabels(
           this.#filters.governingBodyClassifications
@@ -98,6 +108,7 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
             index: 'agenda-items',
             page,
             locationIds,
+            provinceIds,
             governingBodyClassificationIds,
             keyword,
             plannedStartMin,
@@ -127,7 +138,20 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
 
 export default class AgendaItemsIndexController extends Controller {
   @service declare municipalityList: MunicipalityListService;
+  @service declare provinceList: ProvinceListService;
   @service declare governingBodyList: GoverningBodyListService;
+  @service declare governmentList: GovernmentListService;
+
+  @action
+  updateSelectedGovernment(
+    newOptions: Array<{
+      label: string;
+      id: string;
+      type: 'provincies' | 'gemeentes';
+    }>
+  ) {
+    this.governmentList.selectedLocalGovernments = newOptions;
+  }
 
   @tracked showAdvancedFilters = false;
 
@@ -138,9 +162,18 @@ export default class AgendaItemsIndexController extends Controller {
     this.showAdvancedFilters = !this.showAdvancedFilters;
   }
 
+  get localGovernmentGroupOptions() {
+    return Promise.all([this.municipalities, this.provinces]).then(
+      ([municipalities, provinces]) => [
+        { groupName: 'Gemeente', options: municipalities },
+        { groupName: 'Provincie', options: provinces },
+      ]
+    );
+  }
   // QueryParameters
   @tracked keyword = '';
   @tracked municipalityLabels = '';
+  @tracked provinceLabels = '';
   @tracked plannedStartMin = '';
   @tracked plannedStartMax = '';
   @tracked governingBodyClassifications = '';
@@ -169,6 +202,9 @@ export default class AgendaItemsIndexController extends Controller {
     return this.municipalityList.municipalityLabels();
   }
 
+  get provinces() {
+    return this.provinceList.provinceLabels();
+  }
   get governingBodies() {
     return this.governingBodyList.governingBodies();
   }
@@ -202,11 +238,12 @@ export default class AgendaItemsIndexController extends Controller {
     return {
       keyword: this.keyword,
       municipalityLabels: this.municipalityLabels,
+      provinceLabels: this.provinceLabels,
       plannedStartMin: this.plannedStartMin,
       plannedStartMax: this.plannedStartMax,
       dateSort: this.dateSort,
       governingBodyClassifications: this.governingBodyClassifications,
-      dataQualityList: this.municipalityLabels.split('+'),
+      dataQualityList: [],
     };
   }
 
@@ -220,6 +257,7 @@ type AgendaItemsQueryArguments = {
   page: number;
   keyword?: string;
   locationIds?: string;
+  provinceIds?: string;
   plannedStartMin?: string;
   plannedStartMax?: string;
   dateSort?: string;
@@ -251,6 +289,7 @@ const agendaItemsQuery = ({
   page,
   keyword,
   locationIds,
+  provinceIds,
   plannedStartMin,
   plannedStartMax,
   dateSort,
@@ -285,6 +324,19 @@ const agendaItemsQuery = ({
     filters[':query:abstract_location_id'] = queryIds;
   }
 
+  // Apply optional filter for provinceIds
+  if (provinceIds) {
+    const queryIds = provinceIds
+      .split(',')
+      .map((id) => `(abstract_location_id:${id} OR location_id:${id})`)
+      .join(' OR ');
+    // append to existing query
+    filters[':query:abstract_location_id'] = filters[
+      ':query:abstract_location_id'
+    ]
+      ? filters[':query:abstract_location_id'] + ' OR ' + queryIds
+      : queryIds;
+  }
   // Apply optional filter for governing body labels
   if (governingBodyClassificationIds) {
     const queryIds = governingBodyClassificationIds

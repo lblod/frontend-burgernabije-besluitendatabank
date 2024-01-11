@@ -150,12 +150,14 @@
         <h3 class="au-u-h4 au-u-medium">Verfijn de zoekresultaten</h3>
         <Filters::SelectMultipleFilter
           @id="municipality"
-          @label="Kies één of meer gemeentes"
-          @options={{this.municipalities}}
-          @noMatchesMessage="Geen gemeentes gevonden"
+          @label="Kies één of meer besturen"
+          @options={{this.localGovernmentGroupOptions}}
+          @selected={{this.governmentList.selectedLocalGovernments}}
+          @updateSelected={{this.updateSelectedGovernment}}
+          @noMatchesMessage="Geen besturen gevonden"
           @searchField="label"
-          @queryParam="gemeentes"
-          @placeholder="Alle gemeentes"
+          @queryParam="gemeentes+provincies"
+          @placeholder="Alle besturen"
         />
         <Filters::DateRangeFilter
           @startQueryParam="begin"
@@ -183,7 +185,6 @@
 
           </AuAccordion>
         </section>
-
       </div>
       <div class="c-interface__sidebar-submit-buttons">
         <AuButton @skin="primary" @width="block" {{on "click" this.hideFilter}}>
