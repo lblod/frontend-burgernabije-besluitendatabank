@@ -10,9 +10,11 @@
             Lijst
           </AuLink>
         </li>
-          <li class="au-c-list-horizontal__item">
-            <span class="u-truncate">{{this.model.agendaItem.titleFormatted}}</span>
-          </li>
+        <li class="au-c-list-horizontal__item">
+          <span
+            class="u-truncate"
+          >{{this.model.agendaItem.titleFormatted}}</span>
+        </li>
 
       </ul>
     </Group>
@@ -239,7 +241,11 @@
               {{/if}}
             </c.content>
             <c.footer>
-              <AuLink @skin="button" @route="agenda-items.session" @model="{{this.model.agendaItem.id}}">
+              <AuLink
+                @skin="button"
+                @route="agenda-items.session"
+                @model="{{this.model.agendaItem.id}}"
+              >
                 Volledige agenda
               </AuLink>
             </c.footer>
@@ -257,7 +263,12 @@
               />
             {{/if}}
           </div>
-          {{#if this.model.agendaItem.session.hasMunicipality}}
+          {{#if
+            (and
+              this.model.agendaItem.session.hasMunicipality
+              this.model.similiarAgendaItems.length
+            )
+          }}
             <AuContent class="au-u-margin-top">
               <AuHeading @level="2" @skin="4">
                 {{#if this.keywordStore.keyword}}
