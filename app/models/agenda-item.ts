@@ -9,6 +9,7 @@ import Model, {
 import { sortSessions } from 'frontend-burgernabije-besluitendatabank/utils/sort-sessions';
 import AgendaItemHandlingModel from './agenda-item-handling';
 import SessionModel from './session';
+import ResolutionModel from './resolution';
 
 export default class AgendaItemModel extends Model {
   @attr('string') declare title: string;
@@ -55,7 +56,19 @@ export default class AgendaItemModel extends Model {
   }
 
   get titleFormatted() {
-    return this.title ?? 'Ontbrekende titel';
+    return (
+      this.title ||
+      (
+        (
+          (this as AgendaItemModel)
+            .belongsTo('handledBy')
+            .value() as AgendaItemHandlingModel
+        )
+          ?.hasMany('resolutions')
+          .value() as SyncHasMany<ResolutionModel>
+      )?.firstObject?.title ||
+      'Ontbrekende titel'
+    );
   }
 
   get agendaItemQualityMetrics(): { label: string; value: boolean }[] {
