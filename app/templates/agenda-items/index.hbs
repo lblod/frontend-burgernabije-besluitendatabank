@@ -166,8 +166,8 @@
           @end={{this.plannedStartMax}}
         />
         <section class="c-advanced-filter-holder">
-          <AuAccordion
-            @open={{this.showAdvancedFilters}}
+          <Accordion
+            @defaultOpen={{this.showAdvancedFilters}}
             @iconOpen="nav-up"
             @iconClosed="nav-down"
             @buttonLabel="Geavanceerde filters"
@@ -183,7 +183,7 @@
               @placeholder="Alle bestuursorganen"
             />
 
-          </AuAccordion>
+          </Accordion>
         </section>
       </div>
       <div class="c-interface__sidebar-submit-buttons">
