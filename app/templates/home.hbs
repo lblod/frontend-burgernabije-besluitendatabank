@@ -33,6 +33,7 @@
             {{did-insert this.resetLoading}}
           >
             <PowerSelectMultiple
+              @searchEnabled={{true}}
               @id="municipality"
               @label="Kies één of meer besturen"
               @options={{this.localGovernmentGroupOptions}}
