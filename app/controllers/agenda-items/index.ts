@@ -172,7 +172,6 @@ export default class AgendaItemsIndexController extends Controller {
   @tracked showAdvancedFilters = this.governingBodyClassifications.length > 0;
 
   @action handleDateSortChange(event: { target: { value: string } }) {
-    console.log(this.showAdvancedFilters);
     this.dateSort = event?.target?.value;
   }
 
