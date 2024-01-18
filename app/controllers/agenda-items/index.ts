@@ -153,15 +153,6 @@ export default class AgendaItemsIndexController extends Controller {
     this.governmentList.selectedLocalGovernments = newOptions;
   }
 
-  @tracked showAdvancedFilters = false;
-
-  @action toggleAdvancedFilters() {
-    if (this.showAdvancedFilters && this.governingBodyClassifications !== '') {
-      this.governingBodyClassifications = '';
-    }
-    this.showAdvancedFilters = !this.showAdvancedFilters;
-  }
-
   get localGovernmentGroupOptions() {
     return Promise.all([this.municipalities, this.provinces]).then(
       ([municipalities, provinces]) => [
@@ -177,6 +168,8 @@ export default class AgendaItemsIndexController extends Controller {
   @tracked plannedStartMin = '';
   @tracked plannedStartMax = '';
   @tracked governingBodyClassifications = '';
+
+  @tracked showAdvancedFilters = this.governingBodyClassifications.length > 0;
 
   @action handleDateSortChange(event: { target: { value: string } }) {
     this.dateSort = event?.target?.value;
