@@ -88,8 +88,8 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
 
       const municipalityIds =
         await this.municipalityList.getLocationIdsFromLabels(
-        this.#filters.municipalityLabels
-      );
+          this.#filters.municipalityLabels
+        );
 
       const provinceIds = await this.provinceList.getProvinceIdsFromLabels(
         this.#filters.provinceLabels
@@ -267,6 +267,8 @@ type AgendaItemMuSearchEntry = {
   governing_body_location_name?: string;
   abstract_governing_body_name?: string;
   governing_body_name?: string;
+  abstract_governing_body_classification_name?: string;
+  governing_body_classification_name?: string;
   session_planned_start?: string;
   session_started_at?: string;
   session_ended_at?: string;
@@ -366,6 +368,13 @@ const dataMapping: DataMapper<AgendaItemMuSearchEntry, AgendaItem> = (
   );
   dataResponse.governingBodyName = parseMuSearchAttributeToString(
     entry.governing_body_name
+  );
+  dataResponse.abstractGoverningBodyClassificationName =
+    parseMuSearchAttributeToString(
+      entry.abstract_governing_body_classification_name
+    );
+  dataResponse.governingBodyClassificationName = parseMuSearchAttributeToString(
+    entry.governing_body_classification_name
   );
   dataResponse.sessionPlannedStart = parseMuSearchAttributeToDate(
     entry.session_planned_start

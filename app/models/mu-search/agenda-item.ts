@@ -8,6 +8,8 @@ export default class AgendaItemModel {
   declare governingBodyLocationName?: string;
   declare abstractGoverningBodyName?: string;
   declare governingBodyName?: string;
+  declare abstractGoverningBodyClassificationName?: string;
+  declare governingBodyClassificationName?: string;
   declare sessionPlannedStart?: Date;
   declare sessionStartedAt?: Date;
   declare sessionEndedAt?: Date;
@@ -25,10 +27,10 @@ export default class AgendaItemModel {
 
     return 'Geen Datum';
   }
-  get governingBodyNameResolved() {
+  get governingBodyClassificationNameResolved() {
     return (
-      this.abstractGoverningBodyName ||
-      this.governingBodyName ||
+      this.abstractGoverningBodyClassificationName ||
+      this.governingBodyClassificationName ||
       'Ontbrekend bestuursorgaan'
     );
   }
