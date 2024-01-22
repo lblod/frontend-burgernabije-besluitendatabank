@@ -71,12 +71,9 @@ module('Unit | Service | municipality-list', function (hooks) {
     const service = this.subject();
     const ids = await service.getLocationIdsFromLabels('Aalter');
 
-    assert.strictEqual(
-      ids,
-      [
-        '7a7daa48e9e6449358cf96be6c7b30466648d31236e56b8958fae7d53e2308b8',
-        'a0e4508a-a20b-42e5-a40d-4d919d045fdd',
-      ].join()
-    );
+    assert.deepEqual(ids, [
+      '7a7daa48e9e6449358cf96be6c7b30466648d31236e56b8958fae7d53e2308b8',
+      'a0e4508a-a20b-42e5-a40d-4d919d045fdd',
+    ]);
   });
 });
