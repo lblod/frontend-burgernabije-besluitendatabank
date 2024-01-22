@@ -313,27 +313,21 @@ const agendaItemsQuery = ({
   if (locationIds) {
     filters[':terms:search_location_id'] = locationIds;
   }
+
+  // Apply optional filter for governing body ids
   if (governingBodyClassificationIds) {
-    const queryIds = governingBodyClassificationIds
-      .split(',')
-      .map((id) => `(governing_body_classification_id:${id})`)
-      .join(' OR ');
-    filters[':query:governing_body_classification_id'] = queryIds;
+    filters[':terms:search_governing_body_classification_id'] =
+      governingBodyClassificationIds;
   }
 
   // Apply optional filter for keyword search
   if (keyword) {
-    filters[
-      ':query:title'
-    ] = `(title:*${keyword}*) OR (description:*${keyword}*)`;
+    filters[':fuzzy:search_content'] = keyword;
   }
 
   // Apply optional filter for date sorting
-  if (dateSort === 'asc') {
-    request.sort = `+session_planned_start`;
-  } else {
-    request.sort = '-session_planned_start';
-  }
+  const order = dateSort === 'asc' ? '+' : '-';
+  request.sort = `${order}session_planned_start`;
 
   // Set page size and filters in the request
   request.page = page;
