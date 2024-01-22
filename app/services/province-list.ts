@@ -22,17 +22,17 @@ export default class ProvinceListService extends Service {
 
   async getProvinceIdsFromLabels(
     labels: Array<string> | string
-  ): Promise<string | undefined> {
+  ): Promise<Array<string>> {
     const provinces = await this.provinces();
     if (!labels || labels.length === 0) {
-      return;
+      return [];
     }
 
     const provinceIds = provinces
       .filter((province) => labels.includes(province.label))
       .map(({ id }) => id);
 
-    return provinceIds.join(',');
+    return provinceIds;
   }
 
   private async _loadProvinces() {

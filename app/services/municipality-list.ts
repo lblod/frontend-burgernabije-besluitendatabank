@@ -94,26 +94,24 @@ export default class MunicipalityListService extends Service {
    *
    * @param labels an array of location labels
    *               Alternatively, a string of location labels
-   * @param stringSeperator the seperator to split labels, if labels is a string
-   *                        Defaults to the seperator defined in helpers/constants.ts
-   * @returns a Promise for a joined string of those locations' id's, or undefined
+   * @returns a Promise for an array of location ids
    */
   async getLocationIdsFromLabels(
     labels?: Array<string> | string
-  ): Promise<string | undefined> {
+  ): Promise<Array<string>> {
     const municipalities = await this.municipalities();
     if (typeof labels === 'string') {
       labels = deserializeArray(labels);
     }
 
     if (!labels || !municipalities) {
-      return undefined;
+      return [];
     }
 
     const locationIds: Array<string> = municipalities
       .filter(({ label }) => labels?.includes(label))
       .map(({ id }) => id);
 
-    return locationIds.join(',');
+    return locationIds;
   }
 }

@@ -86,13 +86,16 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
         return;
       }
 
-      const locationIds = await this.municipalityList.getLocationIdsFromLabels(
+      const municipalityIds =
+        await this.municipalityList.getLocationIdsFromLabels(
         this.#filters.municipalityLabels
       );
 
       const provinceIds = await this.provinceList.getProvinceIdsFromLabels(
         this.#filters.provinceLabels
       );
+
+      const locationIds = [...municipalityIds, ...provinceIds].join(',');
 
       const { keyword, plannedStartMin, plannedStartMax, dateSort } =
         this.#filters;
@@ -108,7 +111,6 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
             index: 'agenda-items',
             page,
             locationIds,
-            provinceIds,
             governingBodyClassificationIds,
             keyword,
             plannedStartMin,
@@ -283,7 +285,6 @@ const agendaItemsQuery = ({
   page,
   keyword,
   locationIds,
-  provinceIds,
   plannedStartMin,
   plannedStartMax,
   dateSort,
@@ -310,27 +311,8 @@ const agendaItemsQuery = ({
 
   // Apply optional filter for locationIds
   if (locationIds) {
-    const queryIds = locationIds
-      .split(',')
-      .map((id) => `(abstract_location_id:${id} OR location_id:${id})`)
-      .join(' OR ');
-    filters[':query:abstract_location_id'] = queryIds;
+    filters[':terms:search_location_id'] = locationIds;
   }
-
-  // Apply optional filter for provinceIds
-  if (provinceIds) {
-    const queryIds = provinceIds
-      .split(',')
-      .map((id) => `(abstract_location_id:${id} OR location_id:${id})`)
-      .join(' OR ');
-    // append to existing query
-    filters[':query:abstract_location_id'] = filters[
-      ':query:abstract_location_id'
-    ]
-      ? filters[':query:abstract_location_id'] + ' OR ' + queryIds
-      : queryIds;
-  }
-  // Apply optional filter for governing body labels
   if (governingBodyClassificationIds) {
     const queryIds = governingBodyClassificationIds
       .split(',')
