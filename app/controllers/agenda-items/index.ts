@@ -296,9 +296,8 @@ const agendaItemsQuery = ({
 
   request.index = index;
 
-  // Ensure title and location_id fields are present
-  filters[':query:title'] =
-    '_exists_:title AND (_exists_:location_id OR _exists_:abstract_location_id)';
+  // Ensure search_location_id field is present
+  filters[':has:search_location_id'] = 't';
 
   // Apply optional filter for planned start range
   if (plannedStartMin) {
