@@ -270,6 +270,7 @@ type AgendaItemMuSearchEntry = {
   session_ended_at?: string;
   title?: string;
   description?: string;
+  resolution_title?: string;
 };
 
 type AgendaItemsQueryResult = PageableRequest<
@@ -373,6 +374,9 @@ const dataMapping: DataMapper<AgendaItemMuSearchEntry, AgendaItem> = (
   // Map data attributes to AgendaItem properties
   dataResponse.id = Array.isArray(uuid) ? uuid[0] : uuid;
   dataResponse.title = cleanString(parseMuSearchAttributeToString(entry.title));
+  dataResponse.resolutionTitle = cleanString(
+    parseMuSearchAttributeToString(entry.resolution_title)
+  );
   dataResponse.description = cleanString(
     parseMuSearchAttributeToString(entry.description)
   );

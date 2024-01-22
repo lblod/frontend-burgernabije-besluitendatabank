@@ -13,6 +13,7 @@ export default class AgendaItemModel {
   declare sessionEndedAt?: Date;
   declare title?: string;
   declare description?: string;
+  declare resolutionTitle?: string;
 
   get dateFormatted() {
     if (this.sessionStartedAt || this.sessionEndedAt) {
@@ -30,6 +31,10 @@ export default class AgendaItemModel {
       this.governingBodyName ||
       'Ontbrekend bestuursorgaan'
     );
+  }
+
+  get titleResolved() {
+    return this.title || this.resolutionTitle || 'Ontbrekende titel';
   }
 
   get municipality() {
