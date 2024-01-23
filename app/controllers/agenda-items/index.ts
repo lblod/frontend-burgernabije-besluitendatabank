@@ -86,13 +86,16 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
         return;
       }
 
-      const locationIds = await this.municipalityList.getLocationIdsFromLabels(
-        this.#filters.municipalityLabels
-      );
+      const municipalityIds =
+        await this.municipalityList.getLocationIdsFromLabels(
+          this.#filters.municipalityLabels
+        );
 
       const provinceIds = await this.provinceList.getProvinceIdsFromLabels(
         this.#filters.provinceLabels
       );
+
+      const locationIds = [...municipalityIds, ...provinceIds].join(',');
 
       const { keyword, plannedStartMin, plannedStartMax, dateSort } =
         this.#filters;
@@ -108,7 +111,6 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
             index: 'agenda-items',
             page,
             locationIds,
-            provinceIds,
             governingBodyClassificationIds,
             keyword,
             plannedStartMin,
@@ -265,11 +267,14 @@ type AgendaItemMuSearchEntry = {
   governing_body_location_name?: string;
   abstract_governing_body_name?: string;
   governing_body_name?: string;
+  abstract_governing_body_classification_name?: string;
+  governing_body_classification_name?: string;
   session_planned_start?: string;
   session_started_at?: string;
   session_ended_at?: string;
   title?: string;
   description?: string;
+  resolution_title?: string;
 };
 
 type AgendaItemsQueryResult = PageableRequest<
@@ -282,7 +287,6 @@ const agendaItemsQuery = ({
   page,
   keyword,
   locationIds,
-  provinceIds,
   plannedStartMin,
   plannedStartMax,
   dateSort,
@@ -295,9 +299,8 @@ const agendaItemsQuery = ({
 
   request.index = index;
 
-  // Ensure title and location_id fields are present
-  filters[':query:title'] =
-    '_exists_:title AND (_exists_:location_id OR _exists_:abstract_location_id)';
+  // Ensure search_location_id field is present
+  filters[':has:search_location_id'] = 't';
 
   // Apply optional filter for planned start range
   if (plannedStartMin) {
@@ -310,48 +313,23 @@ const agendaItemsQuery = ({
 
   // Apply optional filter for locationIds
   if (locationIds) {
-    const queryIds = locationIds
-      .split(',')
-      .map((id) => `(abstract_location_id:${id} OR location_id:${id})`)
-      .join(' OR ');
-    filters[':query:abstract_location_id'] = queryIds;
+    filters[':terms:search_location_id'] = locationIds;
   }
 
-  // Apply optional filter for provinceIds
-  if (provinceIds) {
-    const queryIds = provinceIds
-      .split(',')
-      .map((id) => `(abstract_location_id:${id} OR location_id:${id})`)
-      .join(' OR ');
-    // append to existing query
-    filters[':query:abstract_location_id'] = filters[
-      ':query:abstract_location_id'
-    ]
-      ? filters[':query:abstract_location_id'] + ' OR ' + queryIds
-      : queryIds;
-  }
-  // Apply optional filter for governing body labels
+  // Apply optional filter for governing body ids
   if (governingBodyClassificationIds) {
-    const queryIds = governingBodyClassificationIds
-      .split(',')
-      .map((id) => `(governing_body_classification_id:${id})`)
-      .join(' OR ');
-    filters[':query:governing_body_classification_id'] = queryIds;
+    filters[':terms:search_governing_body_classification_id'] =
+      governingBodyClassificationIds;
   }
 
   // Apply optional filter for keyword search
   if (keyword) {
-    filters[
-      ':query:title'
-    ] = `(title:*${keyword}*) OR (description:*${keyword}*)`;
+    filters[':fuzzy:search_content'] = keyword;
   }
 
   // Apply optional filter for date sorting
-  if (dateSort === 'asc') {
-    request.sort = `+session_planned_start`;
-  } else {
-    request.sort = '-session_planned_start';
-  }
+  const order = dateSort === 'asc' ? '+' : '-';
+  request.sort = `${order}session_planned_start`;
 
   // Set page size and filters in the request
   request.page = page;
@@ -373,6 +351,9 @@ const dataMapping: DataMapper<AgendaItemMuSearchEntry, AgendaItem> = (
   // Map data attributes to AgendaItem properties
   dataResponse.id = Array.isArray(uuid) ? uuid[0] : uuid;
   dataResponse.title = cleanString(parseMuSearchAttributeToString(entry.title));
+  dataResponse.resolutionTitle = cleanString(
+    parseMuSearchAttributeToString(entry.resolution_title)
+  );
   dataResponse.description = cleanString(
     parseMuSearchAttributeToString(entry.description)
   );
@@ -387,6 +368,13 @@ const dataMapping: DataMapper<AgendaItemMuSearchEntry, AgendaItem> = (
   );
   dataResponse.governingBodyName = parseMuSearchAttributeToString(
     entry.governing_body_name
+  );
+  dataResponse.abstractGoverningBodyClassificationName =
+    parseMuSearchAttributeToString(
+      entry.abstract_governing_body_classification_name
+    );
+  dataResponse.governingBodyClassificationName = parseMuSearchAttributeToString(
+    entry.governing_body_classification_name
   );
   dataResponse.sessionPlannedStart = parseMuSearchAttributeToDate(
     entry.session_planned_start

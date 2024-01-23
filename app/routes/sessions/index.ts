@@ -93,7 +93,7 @@ export default class SessionsIndexRoute extends Route {
           currentPage,
           this.plannedStartMin,
           this.plannedStartMax,
-          locationIds
+          locationIds.join(',')
         )
       );
 

@@ -49,7 +49,7 @@ export default class SessionsIndexController extends Controller {
           nextPage,
           this.plannedStartMin,
           this.plannedStartMax,
-          locationIds
+          locationIds.join(',')
         )
       )) as unknown as Session[];
 
