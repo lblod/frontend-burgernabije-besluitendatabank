@@ -6,6 +6,35 @@
 
 
 
+
+## v0.7.0-0 (2024-01-23)
+
+#### :rocket: Enhancement
+* [#188](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/188) Add resolution title as fallback + mu-search improvements ([@aliokan](https://github.com/aliokan))
+* [#186](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/186) fix: :bug: open accordion when a bestuursorgaan is being queried ([@snenenenenenene](https://github.com/snenenenenenene))
+* [#187](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/187) feat: :sparkles: search in home power select ([@snenenenenenene](https://github.com/snenenenenenene))
+* [#185](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/185) Use resolution title as fallback in titleFormatted ([@aliokan](https://github.com/aliokan))
+* [#184](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/184) Fix/agenda-items-no-name-list ([@snenenenenenene](https://github.com/snenenenenenene))
+* [#176](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/176) feat: :sparkles: province-filter ([@snenenenenenene](https://github.com/snenenenenenene))
+* [#182](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/182) feat: ✨ service-widget ([@snenenenenenene](https://github.com/snenenenenenene))
+* [#179](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/179) style: :lipstick: made sort responsive ([@snenenenenenene](https://github.com/snenenenenenene))
+* [#174](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/174) feat: ✨ added date sort ([@snenenenenenene](https://github.com/snenenenenenene))
+* [#173](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/173) feat: ✨ governing_body_classifcation_code filter ([@snenenenenenene](https://github.com/snenenenenenene))
+* [#151](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/151) Statistics page ([@snenenenenenene](https://github.com/snenenenenenene))
+
+#### :bug: Bug Fix
+* [#180](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/180) bug: 🐛 data quality modal title fix ([@snenenenenenene](https://github.com/snenenenenenene))
+* [#181](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/181) bug: 🐛 session route fix ([@aliokan](https://github.com/aliokan))
+* [#178](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/178) Fix typo in data-quality.hbs ([@snenenenenenene](https://github.com/snenenenenenene))
+* [#172](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/172) fix: :bug: added quick modal fix in route ([@snenenenenenene](https://github.com/snenenenenenene))
+
+#### :house: Internal
+* [#183](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/183) Refactor/add is feature enabled helper ([@aliokan](https://github.com/aliokan))
+
+#### Committers: 2
+- Laurent Deketelaere ([@aliokan](https://github.com/aliokan))
+- Senne Bels ([@snenenenenenene](https://github.com/snenenenenenene))
+
 ## v0.6.0 (2023-11-17)
 
 #### :rocket: Enhancement
