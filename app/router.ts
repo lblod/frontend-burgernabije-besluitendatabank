@@ -7,7 +7,6 @@ export default class Router extends EmbroiderRouter {
 }
 
 Router.map(function () {
-  this.route('municipality', { path: '/gemeente/:municipality' });
   this.route('home', { path: '/' });
 
   this.route('agenda-items', { path: '/agendapunten' }, function () {
