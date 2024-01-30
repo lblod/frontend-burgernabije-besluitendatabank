@@ -78,6 +78,13 @@
                   </AuLink>
                 </li>
               {{/if}}
+              {{#if this.model.agendaItem.governingBodyNameResolved}}
+                <li>
+                  <AuIcon @size="large" @icon="//TODO:choose icon" />
+                  <span class="au-u-hidden-visually">Bestuursorgaan:</span>
+                  {{this.model.agendaItem.governingBodyNameResolved}}
+                </li>
+              {{/if}}
               <li>
                 <AuIcon @size="large" @icon="calendar" />
                 <span class="au-u-hidden-visually">Planning:</span>
