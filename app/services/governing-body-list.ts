@@ -1,5 +1,6 @@
 import Store from '@ember-data/store';
 import Service, { service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
 
 export default class GoverningBodyListService extends Service {
   @service declare store: Store;
@@ -16,12 +17,15 @@ export default class GoverningBodyListService extends Service {
       return undefined;
     }
 
+    console.log(governingBodyLabels);
+
     const governingBodies = await this.governingBodies();
 
     const governingBodyLabelsArray = Array.isArray(governingBodyLabels)
       ? governingBodyLabels
-      : governingBodyLabels.split('+');
+      : governingBodyLabels.split(',');
 
+    console.log(governingBodyLabelsArray);
     const governingBodyClassificationIds = governingBodies.reduce(
       (acc, governingBody) => {
         if (governingBodyLabelsArray.includes(governingBody.label)) {
@@ -34,6 +38,12 @@ export default class GoverningBodyListService extends Service {
 
     return governingBodyClassificationIds.join(',');
   }
+
+  @tracked selectedGoverningBodyClassifications: Array<{
+    label: string;
+    id: string;
+    type: 'governing-body-classifications';
+  }> = [];
 
   async governingBodies() {
     const governingBodyClasssificationCodes = await this.store.query(
