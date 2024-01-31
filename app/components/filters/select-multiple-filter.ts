@@ -33,7 +33,10 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
       const needles = deserializeArray(this.args.queryParam).map(
         (queryParam) => {
           if (!queryParam) return [];
-          return this.getQueryParam(queryParam);
+          return {
+            queryParam: queryParam,
+            value: this.getQueryParam(queryParam),
+          };
         }
       );
 
@@ -52,11 +55,28 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
       }
 
       needles.forEach((needle) => {
-        const found = flattenedHaystack.find(
-          (value) => get(value, searchField) === needle
-        );
-        if (found) {
-          results.push(found);
+        if (
+          typeof needle === 'object' &&
+          'value' in needle &&
+          typeof needle.value === 'string'
+        ) {
+          const splitNeedles = needle.value.split('+').map((value) => {
+            return {
+              queryParam: needle.queryParam,
+              value: value,
+            };
+          });
+
+          splitNeedles.forEach((needle) => {
+            const found = flattenedHaystack.find(
+              (value) =>
+                get(value, searchField) === needle.value &&
+                value['type'] === needle.queryParam
+            );
+            if (found) {
+              results.push(found);
+            }
+          });
         }
       });
 
