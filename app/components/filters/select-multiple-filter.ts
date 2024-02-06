@@ -29,79 +29,70 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
 
   @action
   async inserted() {
-    if (this.args.queryParam?.includes('+')) {
-      const needles = deserializeArray(this.args.queryParam).map(
-        (queryParam) => {
-          if (!queryParam) return [];
-          return {
-            queryParam: queryParam,
-            value: this.getQueryParam(queryParam),
-          };
-        }
-      );
+    const searchField = this.args.searchField;
+    const haystack = (await this.args.options) as unknown as GroupedOptions[];
+    const results: Option[] = [];
 
-      const searchField = this.args.searchField;
-
-      const haystack = (await this.args.options) as unknown as GroupedOptions[];
-      const results: Option[] = [];
-
-      const flattenedHaystack: Option[] = [];
-      if (haystack[0]?.['groupName']) {
-        haystack.forEach((group) => {
-          group['options'].forEach((option: Option) => {
-            flattenedHaystack.push(option);
-          });
+    const flattenedHaystack: Option[] = [];
+    if (haystack[0]?.['groupName']) {
+      haystack.forEach((group) => {
+        group['options'].forEach((option: Option) => {
+          flattenedHaystack.push(option);
         });
-      }
+      });
+    }
 
-      needles.forEach((needle) => {
-        if (
-          typeof needle === 'object' &&
-          'value' in needle &&
-          typeof needle.value === 'string'
-        ) {
-          const splitNeedles = needle.value.split('+').map((value) => {
+    if (this.args.queryParam) {
+      const needles = deserializeArray(this.args.queryParam)
+        .map((queryParam) => {
+          if (!queryParam) return undefined;
+          const value = this.getQueryParam(queryParam);
+          if (typeof value === 'string') {
+            return value.split('+').map((splitValue) => {
+              return {
+                queryParam: queryParam,
+                value: splitValue,
+              };
+            });
+          } else {
             return {
-              queryParam: needle.queryParam,
+              queryParam: queryParam,
               value: value,
             };
-          });
+          }
+        })
+        .filter(Boolean)
+        .flat();
 
-          splitNeedles.forEach((needle) => {
-            const found = flattenedHaystack.find(
-              (value) =>
-                get(value, searchField) === needle.value &&
-                value['type'] === needle.queryParam
-            );
-            if (found) {
-              results.push(found);
-            }
-          });
+      needles.forEach((needle) => {
+        if (needle) {
+          const found = flattenedHaystack.find(
+            (value) =>
+              get(value, searchField) === needle.value &&
+              value['type'] === needle.queryParam
+          );
+          if (found) {
+            results.push(found);
+          }
         }
       });
-
-      this.onSelectedChange(results);
     } else {
       const queryParam = this.getQueryParam(this.args.queryParam) as string;
       if (!queryParam) return [];
 
       const needles = deserializeArray(queryParam);
-      const searchField = this.args.searchField;
-
-      const haystack = await this.args.options;
-      const results: Option[] = [];
 
       needles.forEach((needle) => {
         const found = haystack.find(
           (value) => get(value, searchField) === needle
         );
         if (found) {
-          results.push(found);
+          results.push(...found.options);
         }
       });
-
-      this.onSelectedChange(results);
     }
+
+    this.onSelectedChange(results);
   }
 
   @action
