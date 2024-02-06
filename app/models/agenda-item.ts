@@ -8,8 +8,8 @@ import Model, {
 } from '@ember-data/model';
 import { sortSessions } from 'frontend-burgernabije-besluitendatabank/utils/sort-sessions';
 import AgendaItemHandlingModel from './agenda-item-handling';
-import SessionModel from './session';
 import ResolutionModel from './resolution';
+import SessionModel from './session';
 
 export default class AgendaItemModel extends Model {
   @attr('string') declare title: string;

@@ -78,11 +78,11 @@
                   </AuLink>
                 </li>
               {{/if}}
-              {{#if this.model.agendaItem.governingBodyNameResolved}}
+              {{#if this.model.agendaItem.session.classification}}
                 <li>
                   <AuIcon @size="large" @icon="decided" />
                   <span class="au-u-hidden-visually">Bestuursorgaan:</span>
-                  {{this.model.agendaItem.governingBodyNameResolved}}
+                  {{this.model.agendaItem.session.classification}}
                 </li>
               {{/if}}
               <li>
