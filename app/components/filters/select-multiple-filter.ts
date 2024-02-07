@@ -1,4 +1,6 @@
 import { action, get } from '@ember/object';
+import RouterService from '@ember/routing/router-service';
+import { inject as service } from '@ember/service';
 import { deserializeArray } from 'frontend-burgernabije-besluitendatabank/utils/query-params';
 import FilterComponent, { type FilterArgs } from './filter';
 
@@ -18,6 +20,8 @@ interface Signature {
 }
 
 export default class SelectMultipleFilterComponent extends FilterComponent<Signature> {
+  @service declare router: RouterService;
+
   get selected() {
     return this.args.selected;
   }
@@ -30,11 +34,17 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
   @action
   async inserted() {
     const searchField = this.args.searchField;
-    const haystack = (await this.args.options) as unknown as GroupedOptions[];
+
+    if (!this.router.currentRoute) {
+      console.error('Current route is not available');
+      return;
+    }
+
     const results: Option[] = [];
+    const haystack = (await this.args.options) as unknown as GroupedOptions[];
 
     const flattenedHaystack: Option[] = [];
-    if (haystack[0]?.['groupName']) {
+    if (haystack?.[0]?.['groupName']) {
       haystack.forEach((group) => {
         group['options'].forEach((option: Option) => {
           flattenedHaystack.push(option);
@@ -42,55 +52,40 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
       });
     }
 
-    if (this.args.queryParam) {
-      const needles = deserializeArray(this.args.queryParam)
-        .map((queryParam) => {
-          if (!queryParam) return undefined;
-          const value = this.getQueryParam(queryParam);
-          if (typeof value === 'string') {
-            return value.split('+').map((splitValue) => {
-              return {
-                queryParam: queryParam,
-                value: splitValue,
-              };
-            });
-          } else {
+    const queryParam = this.args.queryParam;
+    const needles = deserializeArray(queryParam)
+      .map((queryParam) => {
+        if (!queryParam) return undefined;
+        const value = this.getQueryParam(queryParam);
+        if (typeof value === 'string') {
+          return value.split('+').map((splitValue) => {
             return {
               queryParam: queryParam,
-              value: value,
+              value: splitValue,
             };
-          }
-        })
-        .filter(Boolean)
-        .flat();
-
-      needles.forEach((needle) => {
-        if (needle) {
-          const found = flattenedHaystack.find(
-            (value) =>
-              get(value, searchField) === needle.value &&
-              value['type'] === needle.queryParam
-          );
-          if (found) {
-            results.push(found);
-          }
+          });
+        } else {
+          return {
+            queryParam: queryParam,
+            value: value,
+          };
         }
-      });
-    } else {
-      const queryParam = this.getQueryParam(this.args.queryParam) as string;
-      if (!queryParam) return [];
+      })
+      .filter(Boolean)
+      .flat();
 
-      const needles = deserializeArray(queryParam);
-
-      needles.forEach((needle) => {
-        const found = haystack.find(
-          (value) => get(value, searchField) === needle
+    needles.forEach((needle) => {
+      if (needle) {
+        const found = flattenedHaystack.find(
+          (value) =>
+            get(value, searchField) === needle.value &&
+            value['type'] === needle.queryParam
         );
         if (found) {
-          results.push(...found.options);
+          results.push(found);
         }
-      });
-    }
+      }
+    });
 
     this.onSelectedChange(results);
   }
