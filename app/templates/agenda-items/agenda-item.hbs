@@ -78,6 +78,13 @@
                   </AuLink>
                 </li>
               {{/if}}
+              {{#if this.model.agendaItem.session.classification}}
+                <li>
+                  <AuIcon @size="large" @icon="decided" />
+                  <span class="au-u-hidden-visually">Bestuursorgaan:</span>
+                  {{this.model.agendaItem.session.classification}}
+                </li>
+              {{/if}}
               <li>
                 <AuIcon @size="large" @icon="calendar" />
                 <span class="au-u-hidden-visually">Planning:</span>
