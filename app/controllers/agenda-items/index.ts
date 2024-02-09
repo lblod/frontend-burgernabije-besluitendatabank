@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 // eslint-disable-next-line ember/no-computed-properties-in-native-classes
-import { action, computed } from '@ember/object';
+import { action } from '@ember/object';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { task } from 'ember-concurrency';
@@ -172,7 +172,6 @@ export default class AgendaItemsIndexController extends Controller {
   @tracked plannedStartMax = '';
   @tracked governingBodyClassifications = '';
 
-  @computed('governingBodyClassifications.length')
   get showAdvancedFilters() {
     return this.governingBodyClassifications.length > 0;
   }
