@@ -3,6 +3,7 @@ import Route from '@ember/routing/route';
 import Transition from '@ember/routing/transition';
 import { service } from '@ember/service';
 import AgendaItemController from 'frontend-burgernabije-besluitendatabank/controllers/agenda-items/agenda-item';
+import { ModelFrom } from 'frontend-burgernabije-besluitendatabank/lib/type-utils';
 import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
 import { sortObjectsByTitle } from 'frontend-burgernabije-besluitendatabank/utils/array-utils';
 
@@ -11,6 +12,39 @@ interface DetailParams {
 }
 
 export default class AgendaItemRoute extends Route {
+  headTags: Array<{
+    type: string;
+    tagId: string;
+    attrs: any;
+  }> = [];
+
+  afterModel(model: ModelFrom<AgendaItemRoute>) {
+    this.setHeadTags(model);
+  }
+
+  setHeadTags(model: ModelFrom<AgendaItemRoute>) {
+    const headTags = [
+      {
+        type: 'meta',
+        tagId: 'meta-og-name',
+        attrs: {
+          property: 'og:name',
+          content: model.agendaItem.title,
+        },
+      },
+      {
+        type: 'meta',
+        tagId: 'meta-description-tag',
+        attrs: {
+          name: 'description',
+          content: model.agendaItem.description,
+        },
+      },
+    ];
+
+    this.headTags = headTags;
+  }
+
   @service declare store: Store;
   @service declare keywordStore: KeywordStoreService;
 
