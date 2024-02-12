@@ -40,10 +40,8 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
       return;
     }
 
-    const results: Option[] = [];
-    const haystack = (await this.args.options) as unknown as GroupedOptions[];
-
     const flattenedHaystack: Option[] = [];
+    const haystack = (await this.args.options) as unknown as GroupedOptions[];
     if (haystack?.[0]?.['groupName']) {
       haystack.forEach((group) => {
         group['options'].forEach((option: Option) => {
@@ -52,40 +50,22 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
       });
     }
 
-    const queryParam = this.args.queryParam;
-    const needles = deserializeArray(queryParam)
-      .map((queryParam) => {
-        if (!queryParam) return undefined;
-        const value = this.getQueryParam(queryParam);
-        if (typeof value === 'string') {
-          return value.split('+').map((splitValue) => {
-            return {
-              queryParam: queryParam,
-              value: splitValue,
-            };
-          });
-        } else {
-          return {
-            queryParam: queryParam,
-            value: value,
-          };
-        }
-      })
-      .filter(Boolean)
-      .flat();
-
-    needles.forEach((needle) => {
-      if (needle) {
-        const found = flattenedHaystack.find(
-          (value) =>
-            get(value, searchField) === needle.value &&
-            value['type'] === needle.queryParam
-        );
-        if (found) {
-          results.push(found);
-        }
+    const results = deserializeArray(this.args.queryParam).flatMap(
+      (queryParam) => {
+        if (!queryParam) return [];
+        const queryParamValue = this.getQueryParam(queryParam);
+        const values = queryParamValue ? deserializeArray(queryParamValue) : [];
+        return values
+          .map((value) => {
+            return flattenedHaystack.find(
+              (option) =>
+                get(option, searchField) === value &&
+                option['type'] === queryParam
+            );
+          })
+          .filter(Boolean) as Option[];
       }
-    });
+    );
 
     this.onSelectedChange(results);
   }
