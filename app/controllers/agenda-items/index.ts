@@ -1,5 +1,4 @@
 import Controller from '@ember/controller';
-// eslint-disable-next-line ember/no-computed-properties-in-native-classes
 import { action } from '@ember/object';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
