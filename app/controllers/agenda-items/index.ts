@@ -177,6 +177,16 @@ export default class AgendaItemsIndexController extends Controller {
     this.dateSort = event?.target?.value;
   }
 
+  @action updateSelectedGoverningBodyClassifications(
+    newOptions: Array<{
+      label: string;
+      id: string;
+      type: 'governing-body-classifications';
+    }>
+  ) {
+    this.governingBodyList.selectedGoverningBodyClassifications = newOptions;
+  }
+
   @tracked dateSort = 'desc';
 
   /** Controls the loading animation of the "load more" button */
