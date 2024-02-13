@@ -171,7 +171,9 @@ export default class AgendaItemsIndexController extends Controller {
   @tracked plannedStartMax = '';
   @tracked governingBodyClassifications = '';
 
-  @tracked showAdvancedFilters = this.governingBodyClassifications.length > 0;
+  get showAdvancedFilters() {
+    return this.governingBodyClassifications.length > 0;
+  }
 
   @action handleDateSortChange(event: { target: { value: string } }) {
     this.dateSort = event?.target?.value;
