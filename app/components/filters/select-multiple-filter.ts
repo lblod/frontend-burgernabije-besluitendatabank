@@ -41,17 +41,22 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
     }
 
     const flattenedHaystack: Option[] = [];
-    const haystack = (await this.args.options) as unknown as GroupedOptions[];
-    if (haystack?.[0]?.['groupName']) {
-      haystack.forEach((group) => {
-        group['options'].forEach((option: Option) => {
+    const haystack = await this.args.options;
+
+    if (this.isGroupedOptions(haystack)) {
+      haystack.forEach((group: GroupedOptions) => {
+        group.options.forEach((option: Option) => {
           flattenedHaystack.push(option);
         });
+      });
+    } else {
+      haystack.forEach((option: Option) => {
+        flattenedHaystack.push(option);
       });
     }
 
     const results = deserializeArray(this.args.queryParam).flatMap(
-      (queryParam) => {
+      (queryParam: string | null) => {
         if (!queryParam) return [];
         const queryParamValue = this.getQueryParam(queryParam);
         const values = queryParamValue ? deserializeArray(queryParamValue) : [];
@@ -60,7 +65,7 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
             return flattenedHaystack.find(
               (option) =>
                 get(option, searchField) === value &&
-                option['type'] === queryParam
+                (option['type'] ? option['type'] === queryParam : true)
             );
           })
           .filter(Boolean) as Option[];
@@ -68,6 +73,12 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
     );
 
     this.onSelectedChange(results);
+  }
+
+  isGroupedOptions(options: unknown): options is GroupedOptions[] {
+    return (
+      Array.isArray(options) && options.length > 0 && 'groupName' in options[0]
+    );
   }
 
   @action
