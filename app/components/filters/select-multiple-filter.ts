@@ -45,14 +45,19 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
 
     if (this.isGroupedOptions(haystack)) {
       haystack.forEach((group: GroupedOptions) => {
-        group.options.forEach((option: Option) => {
-          flattenedHaystack.push(option);
-        });
+        if (group.options) {
+          group.options.forEach((option: Option) => {
+            flattenedHaystack.push(option);
+          });
+        }
       });
-    } else {
+    } else if (Array.isArray(haystack)) {
       haystack.forEach((option: Option) => {
         flattenedHaystack.push(option);
       });
+    } else {
+      console.error('Unexpected format for options:', haystack);
+      return;
     }
 
     const results = deserializeArray(this.args.queryParam).flatMap(
@@ -61,6 +66,7 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
         const queryParamValue = this.getQueryParam(queryParam);
         const values = queryParamValue ? deserializeArray(queryParamValue) : [];
         return values
+          .flatMap((value) => value.split(','))
           .map((value) => {
             return flattenedHaystack.find(
               (option) =>
