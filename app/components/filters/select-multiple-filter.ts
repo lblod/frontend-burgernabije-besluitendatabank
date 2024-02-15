@@ -11,9 +11,11 @@ type GroupedOptions = {
   options: Option[];
 };
 
+type UnifiedOptions = Option | GroupedOptions;
+
 interface Signature {
   Args: {
-    options: Promise<Option[]>;
+    options: Promise<UnifiedOptions[]>;
     selected: Option[];
     updateSelected: (selected: Option[]) => void;
   } & FilterArgs;
@@ -33,22 +35,20 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
 
   @action
   async inserted() {
-    const searchField = this.args.searchField;
-
     if (!this.router.currentRoute) {
       console.error('Current route is not available');
       return;
     }
 
-    const flattenedHaystack: Option[] = [];
-    const haystack = (await this.args.options) as unknown as GroupedOptions[];
-    if (haystack?.[0]?.['groupName']) {
-      haystack.forEach((group) => {
-        group['options'].forEach((option: Option) => {
-          flattenedHaystack.push(option);
-        });
-      });
-    }
+    const searchField = this.args.searchField;
+    const haystack = await this.args.options;
+    const flattenedHaystack = haystack.reduce((acc, value) => {
+      if (Array.isArray(value.options)) {
+        return [...acc, ...value.options];
+      } else {
+        return [...acc, value as Option];
+      }
+    }, [] as Option[]);
 
     const results = deserializeArray(this.args.queryParam).flatMap(
       (queryParam) => {

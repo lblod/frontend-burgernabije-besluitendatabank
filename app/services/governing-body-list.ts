@@ -1,6 +1,7 @@
 import Store from '@ember-data/store';
 import Service, { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import { QueryParameterKeys } from 'frontend-burgernabije-besluitendatabank/constants/query-parameter-keys';
 
 export default class GoverningBodyListService extends Service {
   @service declare store: Store;
@@ -58,6 +59,7 @@ export default class GoverningBodyListService extends Service {
       .map((governingBody) => ({
         id: governingBody.id,
         label: governingBody.label,
+        type: QueryParameterKeys.governingBodies,
       }));
   }
 }
