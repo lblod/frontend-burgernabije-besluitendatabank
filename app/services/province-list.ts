@@ -1,6 +1,6 @@
 import Store from '@ember-data/store';
 import Service, { service } from '@ember/service';
-import CONSTANTS from 'frontend-burgernabije-besluitendatabank/config/constants';
+import { QueryParameterKeys } from 'frontend-burgernabije-besluitendatabank/constants/query-parameter-keys';
 export default class ProvinceListService extends Service {
   @service declare store: Store;
   private _provinces?: Array<{ label: string; id: string }>;
@@ -45,7 +45,7 @@ export default class ProvinceListService extends Service {
     return provinces.map((province) => ({
       label: province.label,
       id: province.id,
-      type: CONSTANTS['provinces'],
+      type: QueryParameterKeys.provinces,
     }));
   }
 }
