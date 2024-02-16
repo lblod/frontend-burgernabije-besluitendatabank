@@ -55,6 +55,7 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
         if (!queryParam) return [];
         const queryParamValue = this.getQueryParam(queryParam);
         const values = queryParamValue ? deserializeArray(queryParamValue) : [];
+
         return values
           .map((value) => {
             return flattenedHaystack.find(
@@ -72,32 +73,23 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
 
   @action
   async selectChange(selectedOptions: Option[]) {
-    // Remove deselected options from queryParam
-    this.selected
-      ?.filter((value) => !selectedOptions.includes(value))
-      .forEach((value) => {
-        this.updateQueryParams({
-          [value['type'] as string]: undefined,
-        });
-      });
-
     this.onSelectedChange(selectedOptions);
 
-    if (this.args.queryParam.includes('+')) {
-      const queryParams = selectedOptions.reduce((acc, { label, type }) => {
+    const emptyQueryParams: Record<string, string | undefined> =
+      deserializeArray(this.args.queryParam).reduce((acc, value) => {
         return {
           ...acc,
-          ...(type && { [type]: acc[type] ? `${acc[type]}+${label}` : label }),
+          [value]: undefined,
         };
-      }, {} as Record<string, unknown>);
+      }, {});
 
-      this.updateQueryParams(queryParams);
-    } else {
-      this.updateQueryParams({
-        [this.args.queryParam]: selectedOptions.map((value) =>
-          get(value, this.args.searchField)
-        ),
-      });
-    }
+    const queryParams = selectedOptions.reduce((acc, { label, type }) => {
+      return {
+        ...acc,
+        ...(type && { [type]: acc[type] ? `${acc[type]}+${label}` : label }),
+      };
+    }, emptyQueryParams);
+
+    this.updateQueryParams(queryParams);
   }
 }

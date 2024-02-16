@@ -172,7 +172,7 @@ export default class AgendaItemsIndexController extends Controller {
   @tracked governingBodyClassifications = '';
 
   get showAdvancedFilters() {
-    return this.governingBodyClassifications.length > 0;
+    return this.governingBodyClassifications?.length > 0;
   }
 
   @action handleDateSortChange(event: { target: { value: string } }) {
