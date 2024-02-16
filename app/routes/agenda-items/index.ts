@@ -1,32 +1,32 @@
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
-import CONSTANTS from 'frontend-burgernabije-besluitendatabank/config/constants';
+import { QueryParameterKeys } from 'frontend-burgernabije-besluitendatabank/constants/query-parameter-keys';
 import FeaturesService from 'frontend-burgernabije-besluitendatabank/services/features';
 
 export default class AgendaItemsIndexRoute extends Route {
   @service declare features: FeaturesService;
 
-  queryParams: any = {
+  queryParams = {
     municipalityLabels: {
-      as: CONSTANTS['municipalities'],
+      as: QueryParameterKeys.municipalities,
     },
     provinceLabels: {
-      as: CONSTANTS['provinces'],
+      as: QueryParameterKeys.provinces,
     },
     governingBodyClassifications: {
-      as: 'bestuursorganen',
+      as: QueryParameterKeys.governingBodies,
     },
     plannedStartMin: {
-      as: 'begin',
+      as: QueryParameterKeys.start,
     },
     plannedStartMax: {
-      as: 'eind',
+      as: QueryParameterKeys.end,
     },
     keyword: {
-      as: 'trefwoord',
+      as: QueryParameterKeys.keyword,
     },
     dateSort: {
-      as: 'datumsortering',
+      as: QueryParameterKeys.dateSort,
     },
   };
 }

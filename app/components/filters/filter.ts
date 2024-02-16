@@ -30,7 +30,7 @@ export default class FilterComponent<S = Signature> extends Component<S> {
    *
    * @param params object with {queryParameterName: newValue}
    */
-  updateQueryParams(params: { [key: string]: unknown }) {
+  updateQueryParams(params: { [key: string]: string | undefined }) {
     if (this.router) {
       this.router.transitionTo(this.router.currentRouteName, {
         queryParams: params,

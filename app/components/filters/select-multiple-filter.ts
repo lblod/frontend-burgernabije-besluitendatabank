@@ -11,9 +11,11 @@ type GroupedOptions = {
   options: Option[];
 };
 
+type UnifiedOptions = Option | GroupedOptions;
+
 interface Signature {
   Args: {
-    options: Promise<Option[]>;
+    options: Promise<UnifiedOptions[]>;
     selected: Option[];
     updateSelected: (selected: Option[]) => void;
   } & FilterArgs;
@@ -33,28 +35,27 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
 
   @action
   async inserted() {
-    const searchField = this.args.searchField;
-
     if (!this.router.currentRoute) {
       console.error('Current route is not available');
       return;
     }
 
-    const flattenedHaystack: Option[] = [];
-    const haystack = (await this.args.options) as unknown as GroupedOptions[];
-    if (haystack?.[0]?.['groupName']) {
-      haystack.forEach((group) => {
-        group['options'].forEach((option: Option) => {
-          flattenedHaystack.push(option);
-        });
-      });
-    }
+    const searchField = this.args.searchField;
+    const haystack = await this.args.options;
+    const flattenedHaystack = haystack.reduce((acc, value) => {
+      if (Array.isArray(value.options)) {
+        return [...acc, ...value.options];
+      } else {
+        return [...acc, value as Option];
+      }
+    }, [] as Option[]);
 
     const results = deserializeArray(this.args.queryParam).flatMap(
       (queryParam) => {
         if (!queryParam) return [];
         const queryParamValue = this.getQueryParam(queryParam);
         const values = queryParamValue ? deserializeArray(queryParamValue) : [];
+
         return values
           .map((value) => {
             return flattenedHaystack.find(
@@ -72,32 +73,23 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
 
   @action
   async selectChange(selectedOptions: Option[]) {
-    // Remove deselected options from queryParam
-    this.selected
-      ?.filter((value) => !selectedOptions.includes(value))
-      .forEach((value) => {
-        this.updateQueryParams({
-          [value['type'] as string]: undefined,
-        });
-      });
-
     this.onSelectedChange(selectedOptions);
 
-    if (this.args.queryParam.includes('+')) {
-      const queryParams = selectedOptions.reduce((acc, { label, type }) => {
+    const emptyQueryParams: Record<string, string | undefined> =
+      deserializeArray(this.args.queryParam).reduce((acc, value) => {
         return {
           ...acc,
-          ...(type && { [type]: acc[type] ? `${acc[type]}+${label}` : label }),
+          [value]: undefined,
         };
-      }, {} as Record<string, unknown>);
+      }, {});
 
-      this.updateQueryParams(queryParams);
-    } else {
-      this.updateQueryParams({
-        [this.args.queryParam]: selectedOptions.map((value) =>
-          get(value, this.args.searchField)
-        ),
-      });
-    }
+    const queryParams = selectedOptions.reduce((acc, { label, type }) => {
+      return {
+        ...acc,
+        ...(type && { [type]: acc[type] ? `${acc[type]}+${label}` : label }),
+      };
+    }, emptyQueryParams);
+
+    this.updateQueryParams(queryParams);
   }
 }
