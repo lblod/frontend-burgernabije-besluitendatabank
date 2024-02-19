@@ -8,6 +8,15 @@
 
 
 
+
+## v0.7.0-2 (2024-02-19)
+
+#### :bug: Bug Fix
+* [#197](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/197) Fix visibility dot issue in selected option ([@aliokan](https://github.com/aliokan))
+
+#### Committers: 1
+- Laurent Deketelaere ([@aliokan](https://github.com/aliokan))
+
 ## v0.7.0-1 (2024-02-16)
 
 #### :rocket: Enhancement
