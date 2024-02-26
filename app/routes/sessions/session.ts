@@ -10,7 +10,7 @@ export default class SessionRoute extends Route {
       include: [
         'governing-body.is-time-specialization-of.administrative-unit.location',
         'governing-body.administrative-unit.location',
-        'agenda-items',
+        'agenda-items.handled-by.resolutions',
       ].join(','),
     });
   }
