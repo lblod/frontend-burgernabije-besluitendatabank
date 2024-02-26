@@ -26,6 +26,7 @@ interface SessionsParams {
   provinceLabels: string;
   plannedStartMin: string;
   plannedStartMax: string;
+  keyword: string;
   governingBodyClassifications: string;
   dataQualityList: Array<string>;
   dateSort: string;
@@ -93,7 +94,8 @@ class SessionsLoader extends Resource<SessionsLoaderArgs> {
 
     const locationIds = [...municipalityIds, ...provinceIds].join(',');
 
-    const { plannedStartMin, plannedStartMax, dateSort } = this.#filters;
+    const { keyword, plannedStartMin, plannedStartMax, dateSort } =
+      this.#filters;
 
     const governingBodyClassificationIds =
       await this.governingBodyList.getGoverningBodyClassificationIdsFromLabels(
@@ -104,6 +106,7 @@ class SessionsLoader extends Resource<SessionsLoaderArgs> {
       sessionsQuery({
         index: 'sessions',
         page,
+        keyword,
         locationIds,
         governingBodyClassificationIds,
         plannedStartMin,
@@ -211,9 +214,7 @@ export default class SessionsIndexController extends Controller {
   }
 
   updateKeyword = (value: string) => {
-    this.router.transitionTo('agenda-items', {
-      queryParams: { trefwoord: value },
-    });
+    this.keyword = value;
   };
 
   showFilter = () => {
@@ -240,6 +241,7 @@ export default class SessionsIndexController extends Controller {
     return {
       municipalityLabels: this.municipalityLabels,
       provinceLabels: this.provinceLabels,
+      keyword: this.keyword,
       plannedStartMin: this.plannedStartMin,
       plannedStartMax: this.plannedStartMax,
       dateSort: this.dateSort,
@@ -289,6 +291,7 @@ type SessionsQueryResult = PageableRequest<SessionMuSearchEntry, Session>;
 const sessionsQuery = ({
   index,
   page,
+  keyword,
   plannedStartMin,
   plannedStartMax,
   dateSort,
@@ -321,6 +324,10 @@ const sessionsQuery = ({
   if (governingBodyClassificationIds) {
     filters[':terms:search_governing_body_classification_id'] =
       governingBodyClassificationIds;
+  }
+
+  if (keyword) {
+    filters[':fuzzy:search_content'] = keyword;
   }
 
   // Apply optional filter for date sorting
