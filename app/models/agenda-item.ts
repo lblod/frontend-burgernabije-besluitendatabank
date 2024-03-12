@@ -14,7 +14,7 @@ import SessionModel from './session';
 export default class AgendaItemModel extends Model {
   @attr('string') declare title: string;
   @attr('string') declare description: string;
-  @attr('string') declare alternateLink: string;
+  @attr('string') declare alternateLink: string[];
   @attr('boolean') declare plannedPublic: boolean;
 
   @hasMany('session', { async: true, inverse: 'agendaItems' })
