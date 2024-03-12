@@ -90,17 +90,6 @@
                 <span class="au-u-hidden-visually">Planning:</span>
                 {{this.model.agendaItem.session.dateFormatted}}
               </li>
-              {{#if this.model.agendaItem.alternateLink}}
-                <li>
-                  <AuIcon @size="large" @icon="link" />
-                  <span class="au-u-hidden-visually">Externe link</span>
-                  <AuLinkExternal
-                    href="{{this.model.agendaItem.alternateLink}}"
-                  >
-                    Bekijk agendapunt op de publicatieomgeving van de gemeente
-                  </AuLinkExternal>
-                </li>
-              {{/if}}
             </ul>
             <AuContent @skin="small">
               <p class="au-u-muted">
