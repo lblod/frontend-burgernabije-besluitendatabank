@@ -26,6 +26,7 @@ interface Signature {
 }
 
 enum Preset {
+  Future = 'Toekomst',
   ThisWeek = 'Deze week',
   LastWeek = 'Vorige week',
   ThisMonth = 'Deze maand',
@@ -49,6 +50,7 @@ export default class DateRangeFilterComponent extends Component<Signature> {
   @tracked startDateError?: string[];
 
   presets = [
+    Preset.Future,
     Preset.ThisWeek,
     Preset.LastWeek,
     Preset.ThisMonth,
@@ -61,6 +63,7 @@ export default class DateRangeFilterComponent extends Component<Signature> {
   get presetDateRanges() {
     const today = new Date();
     return {
+      [Preset.Future]: [toIsoDateString(today), this.MAX],
       [Preset.ThisWeek]: [
         toIsoDateString(startOfWeek(today)),
         toIsoDateString(endOfWeek(today)),

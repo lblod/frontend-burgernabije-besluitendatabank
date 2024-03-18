@@ -35,7 +35,6 @@ export default class AgendaItemRoute extends Route {
         await administrativeUnit?.location;
       }) || []
     );
-
     const sessionId = agendaItem.session?.id;
     const agendaItemOnSameSessionRaw = sessionId
       ? await this.store.query('agenda-item', {
