@@ -12,6 +12,13 @@ iframe[name*="JSD widget"] {
   justify-content: end;
 }
 
+.truncate {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .graph-bar-text {
   position: absolute;
   left: 0;
