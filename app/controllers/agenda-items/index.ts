@@ -24,6 +24,7 @@ import {
 
 interface AgendaItemsParams {
   keyword: string;
+  hasVote: boolean;
   municipalityLabels: string;
   provinceLabels: string;
   plannedStartMin: string;
@@ -144,6 +145,13 @@ export default class AgendaItemsIndexController extends Controller {
   @service declare governingBodyList: GoverningBodyListService;
   @service declare governmentList: GovernmentListService;
 
+  @action handleCheckboxChange(event: {
+    target: { checked: boolean; value: string };
+  }) {
+    console.log('checkbox changed', event);
+    this.hasVote = event.target.checked;
+  }
+
   @action
   updateSelectedGovernment(
     newOptions: Array<{
@@ -170,6 +178,7 @@ export default class AgendaItemsIndexController extends Controller {
   @tracked plannedStartMin = '';
   @tracked plannedStartMax = '';
   @tracked governingBodyClassifications = '';
+  @tracked hasVote = false;
 
   get showAdvancedFilters() {
     return this.governingBodyClassifications?.length > 0;
@@ -251,6 +260,7 @@ export default class AgendaItemsIndexController extends Controller {
       dateSort: this.dateSort,
       governingBodyClassifications: this.governingBodyClassifications,
       dataQualityList: [],
+      hasVote: this.hasVote,
     };
   }
 
@@ -269,6 +279,7 @@ type AgendaItemsQueryArguments = {
   plannedStartMax?: string;
   dateSort?: string;
   governingBodyClassificationIds?: string;
+  hasVote?: boolean;
 };
 
 type AgendaItemMuSearchEntry = {

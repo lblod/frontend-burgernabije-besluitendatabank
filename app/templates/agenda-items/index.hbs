@@ -183,7 +183,14 @@
               @queryParam="bestuursorganen"
               @placeholder="Alle bestuursorganen"
             />
-
+            <AuCheckboxGroup
+              @name={{"vote"}}
+              @selected={{this.selectedCheckboxes}}
+              @onChange={{this.handleCheckboxChange}}
+              as |Group|
+            >
+              <Group.Checkbox @value="hasVotes">Stemmingen</Group.Checkbox>
+            </AuCheckboxGroup>
           </Accordion>
         </section>
       </div>
