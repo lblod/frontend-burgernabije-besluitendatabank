@@ -356,3 +356,15 @@ cursor {
     padding-top: $au-unit-tiny * 0.3;
   }
 }
+
+#governing-body {
+  ul {
+    margin: 0 0.6rem;
+  }
+}
+
+// Remove extra dot visible at the end of selected option,
+// Related to BNB-452 CommentId=97815
+.ember-power-select-multiple-options li {
+  list-style: none;
+}

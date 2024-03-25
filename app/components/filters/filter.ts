@@ -30,9 +30,13 @@ export default class FilterComponent<S = Signature> extends Component<S> {
    *
    * @param params object with {queryParameterName: newValue}
    */
-  updateQueryParams(params: { [key: string]: unknown }) {
-    this.router.transitionTo(this.router.currentRouteName, {
-      queryParams: params,
-    });
+  updateQueryParams(params: { [key: string]: string | undefined }) {
+    if (this.router) {
+      this.router.transitionTo(this.router.currentRouteName, {
+        queryParams: params,
+      });
+    } else {
+      console.error('Router service is not available.');
+    }
   }
 }

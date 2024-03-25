@@ -1,5 +1,8 @@
 import Store from '@ember-data/store';
 import Service, { service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
+import { QueryParameterKeys } from 'frontend-burgernabije-besluitendatabank/constants/query-parameter-keys';
+import { deserializeArray } from 'frontend-burgernabije-besluitendatabank/utils/query-params';
 
 export default class GoverningBodyListService extends Service {
   @service declare store: Store;
@@ -20,8 +23,7 @@ export default class GoverningBodyListService extends Service {
 
     const governingBodyLabelsArray = Array.isArray(governingBodyLabels)
       ? governingBodyLabels
-      : governingBodyLabels.split('+');
-
+      : deserializeArray(governingBodyLabels);
     const governingBodyClassificationIds = governingBodies.reduce(
       (acc, governingBody) => {
         if (governingBodyLabelsArray.includes(governingBody.label)) {
@@ -34,6 +36,12 @@ export default class GoverningBodyListService extends Service {
 
     return governingBodyClassificationIds.join(',');
   }
+
+  @tracked selectedGoverningBodyClassifications: Array<{
+    label: string;
+    id: string;
+    type: 'governing-body-classifications';
+  }> = [];
 
   async governingBodies() {
     const governingBodyClasssificationCodes = await this.store.query(
@@ -52,6 +60,7 @@ export default class GoverningBodyListService extends Service {
       .map((governingBody) => ({
         id: governingBody.id,
         label: governingBody.label,
+        type: QueryParameterKeys.governingBodies,
       }));
   }
 }

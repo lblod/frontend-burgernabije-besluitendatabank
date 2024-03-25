@@ -7,6 +7,37 @@
 
 
 
+
+
+## v0.7.0 (2024-02-19)
+
+## v0.7.0-2 (2024-02-19)
+
+#### :bug: Bug Fix
+* [#197](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/197) Fix visibility dot issue in selected option ([@aliokan](https://github.com/aliokan))
+
+#### Committers: 1
+- Laurent Deketelaere ([@aliokan](https://github.com/aliokan))
+
+## v0.7.0-1 (2024-02-16)
+
+#### :rocket: Enhancement
+* [#194](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/194) feat: :sparkles: added multiselect functionality to the classification select ([@snenenenenenene](https://github.com/snenenenenenene))
+* [#191](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/191) feat: :sparkles: add governing body name to agenda item ([@snenenenenenene](https://github.com/snenenenenenene))
+
+#### :bug: Bug Fix
+* [#196](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/196) Fix governing body filter inital state ([@aliokan](https://github.com/aliokan))
+* [#192](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/192) fix: :recycle: "bestuursorgaan" filter still collapsing ([@snenenenenenene](https://github.com/snenenenenenene))
+* [#193](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/193) fix: 🐛 antwerpen-query-select-fix ([@snenenenenenene](https://github.com/snenenenenenene))
+* [#190](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/190) Update accessibility statement URL ([@aliokan](https://github.com/aliokan))
+
+#### :house: Internal
+* [#189](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/189) Refactor: Remove dead code ([@aliokan](https://github.com/aliokan))
+
+#### Committers: 2
+- Laurent Deketelaere ([@aliokan](https://github.com/aliokan))
+- Senne Bels ([@snenenenenenene](https://github.com/snenenenenenene))
+
 ## v0.7.0-0 (2024-01-23)
 
 #### :rocket: Enhancement

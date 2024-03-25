@@ -172,9 +172,10 @@
             @iconClosed="nav-down"
             @buttonLabel="Geavanceerde filters"
           >
-            <Filters::SelectFilter
-              @value={{this.governingBodyClassifications}}
-              @id="governingBody"
+            <Filters::SelectMultipleFilter
+              @selected={{this.governingBodyList.selectedGoverningBodyClassifications}}
+              @updateSelected={{this.updateSelectedGoverningBodyClassifications}}
+              @id="governing-body"
               @label="Kies één of meer bestuursorganen"
               @noMatchesMessage="Geen bestuursorganen gevonden"
               @options={{this.governingBodies}}
