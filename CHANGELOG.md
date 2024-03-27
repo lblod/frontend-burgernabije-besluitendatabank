@@ -1,13 +1,18 @@
 
+## v0.8.0 (2024-03-27)
 
+#### :rocket: Enhancement
+* [#201](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/201) Multiple sources + detail redesign ([@snenenenenenene](https://github.com/snenenenenenene))
+* [#202](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/202) Future dates in date picker ([@snenenenenenene](https://github.com/snenenenenenene))
+* [#200](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/200) Keyword search in session ([@snenenenenenene](https://github.com/snenenenenenene))
+* [#198](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/198) Session mu-search ([@snenenenenenene](https://github.com/snenenenenenene))
 
+#### :bug: Bug Fix
+* [#199](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/199) Display agendaItem without title in session page ([@aliokan](https://github.com/aliokan))
 
-
-
-
-
-
-
+#### Committers: 2
+- Laurent Deketelaere ([@aliokan](https://github.com/aliokan))
+- Senne Bels ([@snenenenenenene](https://github.com/snenenenenenene))
 
 ## v0.7.0 (2024-02-19)
 
