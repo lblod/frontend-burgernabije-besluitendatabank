@@ -71,16 +71,29 @@
                 <div
                   class="au-u-flex au-u-flex--vertical-center au-u-flex--between"
                 >
-                  <p
-                    class="au-u-margin-left au-u-margin-top-small au-u-h4 au-u-medium"
+                  <section
+                    class="au-u-margin-left au-u-margin-right au-u-margin-top-small au-u-h4 au-u-medium au-u-flex au-u-flex--between au-u-1-1"
                   >
-                    {{loader.total}}
-                    {{#if (eq loader.total 1)}}
-                      Zoekresultaat
-                    {{else}}
-                      Zoekresultaten
-                    {{/if}}
-                  </p>
+                    <p>
+                      {{loader.total}}
+                      {{#if (eq loader.total 1)}}
+                        Zoekresultaat
+                      {{else}}
+                        Zoekresultaten
+                      {{/if}}
+                    </p>
+                    <AuButton
+                      @icon="add"
+                      @skin="secondary"
+                      {{on "click" this.exportToCSV}}
+                    >
+                      {{#if this.isExporting}}
+                        <AuLoader />
+                      {{else}}
+                        Exporteer naar CSV
+                      {{/if}}
+                    </AuButton>
+                  </section>
                   {{! The global data quality indicator: not ready for implementation }}
                   {{!-- <p class="au-u-margin-left au-u-margin-top-small au-u-margin-right">
                       <AuPill @skin="link" class="au-c-pill--hover" {{on "click" this.showModal}}>

@@ -79,50 +79,47 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
   }
 
   // We can't use private (#) fields here because it conflicts with the ember-concurrency task transpiler
-  private loadAgendaItems = task(
-    { restartable: true },
-    async (page: number) => {
-      if (!this.#filters) {
-        return;
-      }
+  public loadAgendaItems = task({ restartable: true }, async (page: number) => {
+    if (!this.#filters) {
+      return;
+    }
 
-      const municipalityIds =
-        await this.municipalityList.getLocationIdsFromLabels(
-          this.#filters.municipalityLabels
-        );
-
-      const provinceIds = await this.provinceList.getProvinceIdsFromLabels(
-        this.#filters.provinceLabels
+    const municipalityIds =
+      await this.municipalityList.getLocationIdsFromLabels(
+        this.#filters.municipalityLabels
       );
 
-      const locationIds = [...municipalityIds, ...provinceIds].join(',');
+    const provinceIds = await this.provinceList.getProvinceIdsFromLabels(
+      this.#filters.provinceLabels
+    );
 
-      const { keyword, plannedStartMin, plannedStartMax, dateSort } =
-        this.#filters;
+    const locationIds = [...municipalityIds, ...provinceIds].join(',');
 
-      const governingBodyClassificationIds =
-        await this.governingBodyList.getGoverningBodyClassificationIdsFromLabels(
-          this.#filters.governingBodyClassifications
-        );
+    const { keyword, plannedStartMin, plannedStartMax, dateSort } =
+      this.#filters;
 
-      const agendaItems: MuSearchResponse<AgendaItem> =
-        await this.muSearch.search(
-          agendaItemsQuery({
-            index: 'agenda-items',
-            page,
-            locationIds,
-            governingBodyClassificationIds,
-            keyword,
-            plannedStartMin,
-            plannedStartMax,
-            dateSort,
-          })
-        );
+    const governingBodyClassificationIds =
+      await this.governingBodyList.getGoverningBodyClassificationIdsFromLabels(
+        this.#filters.governingBodyClassifications
+      );
 
-      this.total = agendaItems.count ?? 0;
-      this.data = [...this.data, ...agendaItems.items.slice()];
-    }
-  );
+    const agendaItems: MuSearchResponse<AgendaItem> =
+      await this.muSearch.search(
+        agendaItemsQuery({
+          index: 'agenda-items',
+          page,
+          locationIds,
+          governingBodyClassificationIds,
+          keyword,
+          plannedStartMin,
+          plannedStartMax,
+          dateSort,
+        })
+      );
+
+    this.total = agendaItems.count ?? 0;
+    this.data = [...this.data, ...agendaItems.items.slice()];
+  });
 
   #reset() {
     this.#currentPage = 0;
@@ -170,6 +167,80 @@ export default class AgendaItemsIndexController extends Controller {
   @tracked plannedStartMin = '';
   @tracked plannedStartMax = '';
   @tracked governingBodyClassifications = '';
+  @tracked isExporting = false;
+  @service declare muSearch: MuSearchService;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  @action jsonToCSV(json: any) {
+    const csvRows = [];
+    const headers = Object.keys(json[0]);
+    csvRows.push(headers.join(','));
+
+    for (const row of json) {
+      const values = headers.map((header) => row[header]);
+      csvRows.push(values.join(','));
+    }
+
+    return csvRows.join('\n');
+  }
+
+  @action async exportToCSV() {
+    this.isExporting = true;
+    const municipalityIds =
+      await this.municipalityList.getLocationIdsFromLabels(
+        this.municipalityLabels
+      );
+
+    const provinceIds = await this.provinceList.getProvinceIdsFromLabels(
+      this.provinceLabels
+    );
+
+    const locationIds = [...municipalityIds, ...provinceIds].join(',');
+
+    const governingBodyClassificationIds =
+      await this.governingBodyList.getGoverningBodyClassificationIdsFromLabels(
+        this.governingBodyClassifications
+      );
+
+    const agendaItemCount: MuSearchResponse<AgendaItem> =
+      await this.muSearch.search(
+        agendaItemsQuery({
+          index: 'agenda-items',
+          page: 1,
+          size: 1,
+          locationIds: locationIds,
+          governingBodyClassificationIds: governingBodyClassificationIds,
+          keyword: this.keyword,
+          plannedStartMin: this.plannedStartMin,
+          plannedStartMax: this.plannedStartMax,
+          dateSort: this.dateSort,
+        })
+      );
+
+    const agendaItems: MuSearchResponse<AgendaItem> =
+      await this.muSearch.search(
+        agendaItemsQuery({
+          index: 'agenda-items',
+          page: 1,
+          size: agendaItemCount.count > 5000 ? 5000 : agendaItemCount.count,
+          locationIds: '',
+          governingBodyClassificationIds: '',
+          keyword: this.keyword,
+          plannedStartMin: this.plannedStartMin,
+          plannedStartMax: this.plannedStartMax,
+          dateSort: this.dateSort,
+        })
+      );
+
+    this.isExporting = false;
+    const csv = this.jsonToCSV(agendaItems.items);
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const csvUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = csvUrl;
+    a.download = 'agenda-items.csv';
+    a.click();
+  }
 
   get showAdvancedFilters() {
     return this.governingBodyClassifications?.length > 0;
@@ -262,6 +333,7 @@ export default class AgendaItemsIndexController extends Controller {
 type AgendaItemsQueryArguments = {
   index: string;
   page: number;
+  size?: number;
   keyword?: string;
   locationIds?: string;
   provinceIds?: string;
@@ -297,6 +369,7 @@ type AgendaItemsQueryResult = PageableRequest<
 const agendaItemsQuery = ({
   index,
   page,
+  size = 10,
   keyword,
   locationIds,
   plannedStartMin,
@@ -345,7 +418,7 @@ const agendaItemsQuery = ({
 
   // Set page size and filters in the request
   request.page = page;
-  request.size = 10;
+  request.size = size;
   request.filters = filters;
 
   // Set dataMapping function in the request
