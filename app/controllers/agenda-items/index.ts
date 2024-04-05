@@ -174,7 +174,7 @@ export default class AgendaItemsIndexController extends Controller {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @action jsonToCSV(json: any) {
-    if (this.features.isEnabled('statistics-page-feature')) {
+    if (this.features.isEnabled('csv-export-feature')) {
       const csvRows = [];
       const headers = Object.keys(json[0]);
       csvRows.push(headers.join(','));
@@ -189,7 +189,7 @@ export default class AgendaItemsIndexController extends Controller {
   }
 
   @action async exportToCSV() {
-    if (this.features.isEnabled('statistics-page-feature')) {
+    if (this.features.isEnabled('csv-export-feature')) {
       this.isExporting = true;
       const municipalityIds =
         await this.municipalityList.getLocationIdsFromLabels(

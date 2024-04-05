@@ -23,6 +23,7 @@ module.exports = function (environment) {
     features: {
       // define feature flags here
       'statistics-page-feature': false,
+      'csv-export-feature': false,
     },
   };
 
