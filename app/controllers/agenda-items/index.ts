@@ -5,6 +5,7 @@ import { tracked } from '@glimmer/tracking';
 import { task } from 'ember-concurrency';
 import { Resource } from 'ember-resources';
 import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/mu-search/agenda-item';
+import FeaturesService from 'frontend-burgernabije-besluitendatabank/services/features';
 import GoverningBodyListService from 'frontend-burgernabije-besluitendatabank/services/governing-body-list';
 import GovernmentListService from 'frontend-burgernabije-besluitendatabank/services/government-list';
 
@@ -169,77 +170,82 @@ export default class AgendaItemsIndexController extends Controller {
   @tracked governingBodyClassifications = '';
   @tracked isExporting = false;
   @service declare muSearch: MuSearchService;
+  @service declare features: FeaturesService;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @action jsonToCSV(json: any) {
-    const csvRows = [];
-    const headers = Object.keys(json[0]);
-    csvRows.push(headers.join(','));
+    if (this.features.isEnabled('statistics-page-feature')) {
+      const csvRows = [];
+      const headers = Object.keys(json[0]);
+      csvRows.push(headers.join(','));
 
-    for (const row of json) {
-      const values = headers.map((header) => row[header]);
-      csvRows.push(values.join(','));
+      for (const row of json) {
+        const values = headers.map((header) => row[header]);
+        csvRows.push(values.join(','));
+      }
+
+      return csvRows.join('\n');
     }
-
-    return csvRows.join('\n');
   }
 
   @action async exportToCSV() {
-    this.isExporting = true;
-    const municipalityIds =
-      await this.municipalityList.getLocationIdsFromLabels(
-        this.municipalityLabels
+    if (this.features.isEnabled('statistics-page-feature')) {
+      this.isExporting = true;
+      const municipalityIds =
+        await this.municipalityList.getLocationIdsFromLabels(
+          this.municipalityLabels
+        );
+
+      const provinceIds = await this.provinceList.getProvinceIdsFromLabels(
+        this.provinceLabels
       );
 
-    const provinceIds = await this.provinceList.getProvinceIdsFromLabels(
-      this.provinceLabels
-    );
+      const locationIds = [...municipalityIds, ...provinceIds].join(',');
 
-    const locationIds = [...municipalityIds, ...provinceIds].join(',');
+      const governingBodyClassificationIds =
+        await this.governingBodyList.getGoverningBodyClassificationIdsFromLabels(
+          this.governingBodyClassifications
+        );
 
-    const governingBodyClassificationIds =
-      await this.governingBodyList.getGoverningBodyClassificationIdsFromLabels(
-        this.governingBodyClassifications
-      );
+      const agendaItemCount: MuSearchResponse<AgendaItem> =
+        await this.muSearch.search(
+          agendaItemsQuery({
+            index: 'agenda-items',
+            page: 1,
+            size: 1,
+            locationIds: locationIds,
+            governingBodyClassificationIds: governingBodyClassificationIds,
+            keyword: this.keyword,
+            plannedStartMin: this.plannedStartMin,
+            plannedStartMax: this.plannedStartMax,
+            dateSort: this.dateSort,
+          })
+        );
 
-    const agendaItemCount: MuSearchResponse<AgendaItem> =
-      await this.muSearch.search(
-        agendaItemsQuery({
-          index: 'agenda-items',
-          page: 1,
-          size: 1,
-          locationIds: locationIds,
-          governingBodyClassificationIds: governingBodyClassificationIds,
-          keyword: this.keyword,
-          plannedStartMin: this.plannedStartMin,
-          plannedStartMax: this.plannedStartMax,
-          dateSort: this.dateSort,
-        })
-      );
+      const agendaItems: MuSearchResponse<AgendaItem> =
+        await this.muSearch.search(
+          agendaItemsQuery({
+            index: 'agenda-items',
+            page: 1,
+            size: agendaItemCount.count > 5000 ? 5000 : agendaItemCount.count,
+            locationIds: '',
+            governingBodyClassificationIds: '',
+            keyword: this.keyword,
+            plannedStartMin: this.plannedStartMin,
+            plannedStartMax: this.plannedStartMax,
+            dateSort: this.dateSort,
+          })
+        );
 
-    const agendaItems: MuSearchResponse<AgendaItem> =
-      await this.muSearch.search(
-        agendaItemsQuery({
-          index: 'agenda-items',
-          page: 1,
-          size: agendaItemCount.count > 5000 ? 5000 : agendaItemCount.count,
-          locationIds: '',
-          governingBodyClassificationIds: '',
-          keyword: this.keyword,
-          plannedStartMin: this.plannedStartMin,
-          plannedStartMax: this.plannedStartMax,
-          dateSort: this.dateSort,
-        })
-      );
-
-    this.isExporting = false;
-    const csv = this.jsonToCSV(agendaItems.items);
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const csvUrl = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = csvUrl;
-    a.download = 'agenda-items.csv';
-    a.click();
+      this.isExporting = false;
+      const csv = this.jsonToCSV(agendaItems.items);
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const csvUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = csvUrl;
+      a.download = 'agenda-items.csv';
+      a.click();
+    }
   }
 
   get showAdvancedFilters() {

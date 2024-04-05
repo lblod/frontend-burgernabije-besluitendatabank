@@ -82,17 +82,19 @@
                         Zoekresultaten
                       {{/if}}
                     </p>
-                    <AuButton
-                      @icon="add"
-                      @skin="secondary"
-                      {{on "click" this.exportToCSV}}
-                    >
-                      {{#if this.isExporting}}
-                        <AuLoader />
-                      {{else}}
-                        Exporteer naar CSV
-                      {{/if}}
-                    </AuButton>
+                    {{#if (is-feature-enabled "csv-export-feature")}}
+                      <AuButton
+                        @icon="add"
+                        @skin="secondary"
+                        {{on "click" this.exportToCSV}}
+                      >
+                        {{#if this.isExporting}}
+                          <AuLoader />
+                        {{else}}
+                          Exporteer naar CSV
+                        {{/if}}
+                      </AuButton>
+                    {{/if}}
                   </section>
                   {{! The global data quality indicator: not ready for implementation }}
                   {{!-- <p class="au-u-margin-left au-u-margin-top-small au-u-margin-right">
