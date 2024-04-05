@@ -239,7 +239,9 @@ export default class AgendaItemsIndexController extends Controller {
 
       this.isExporting = false;
       const csv = this.jsonToCSV(agendaItems.items);
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const blob = new Blob([csv as BlobPart], {
+        type: 'text/csv;charset=utf-8;',
+      });
       const csvUrl = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = csvUrl;
