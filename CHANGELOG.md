@@ -1,4 +1,13 @@
 
+
+## v0.8.1 (2024-05-02)
+
+#### :rocket: Enhancement
+* [#204](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/204) Add a way to disable governing body via env variable ([@aliokan](https://github.com/aliokan))
+
+#### Committers: 1
+- Laurent Deketelaere ([@aliokan](https://github.com/aliokan))
+
 ## v0.8.0 (2024-03-27)
 
 #### :rocket: Enhancement
