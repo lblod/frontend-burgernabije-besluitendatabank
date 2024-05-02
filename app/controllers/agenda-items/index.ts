@@ -124,10 +124,6 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
 
       // remove disabled governing bodies from the response
       const items = agendaItems.items.filter((item) => {
-        console.log(
-          'item.governingBodyClassificationName',
-          item.governingBodyClassificationName
-        );
         return !this.governingBodyDisabledList.disabledList.some((disabled) =>
           item.governingBodyIdResolved.includes(disabled)
         );
@@ -231,7 +227,6 @@ export default class AgendaItemsIndexController extends Controller {
   }
 
   updateKeyword = (value: string) => {
-    console.log('updating keyword', value);
     this.keyword = value;
   };
 
