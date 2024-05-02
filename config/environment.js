@@ -24,6 +24,7 @@ module.exports = function (environment) {
       // define feature flags here
       'statistics-page-feature': false,
     },
+    'governing-body-disabled': '{{GOVERNING_BODY_DISABLED_LIST}}',
   };
 
   if (environment === 'test') {
