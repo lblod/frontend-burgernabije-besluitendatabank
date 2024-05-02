@@ -127,7 +127,7 @@ Or in template files by using the `is-feature-enabled` helper:
 
 ### Disabling governing bodies
 
-Time to time, it might be necessary to disable certain governing bodies. This can be done by setting the `GOVERNING_BODY_DISABLED_LIST` environment variable. The value should be a comma-separated list of URIs of the governing bodies that should be disabled.
+Time to time, it might be necessary to disable certain governing bodies. This can be done by setting the `GOVERNING_BODY_DISABLED_LIST` environment variable. The value should be a comma-separated list of `mu:uuid` of the governing bodies that should be disabled. The agenda items related to the disabled governing bodies will not be accessible in the application.
 
 ### styles/ naming scheme
 
