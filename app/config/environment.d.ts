@@ -14,6 +14,7 @@ declare const config: {
     domain: string;
   };
   features: Record<string, boolean | string>;
+  'governing-body-disabled': string;
 };
 
 export default config;

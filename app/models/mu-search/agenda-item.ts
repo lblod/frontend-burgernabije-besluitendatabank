@@ -6,6 +6,8 @@ export default class AgendaItemModel {
   declare locationId?: string;
   declare abstractGoverningBodyLocationName?: string;
   declare governingBodyLocationName?: string;
+  declare abstractGoverningBodyId: string[];
+  declare governingBodyId: string[];
   declare abstractGoverningBodyName?: string;
   declare governingBodyName?: string;
   declare abstractGoverningBodyClassificationName?: string;
@@ -33,6 +35,10 @@ export default class AgendaItemModel {
       this.governingBodyClassificationName ||
       'Ontbrekend bestuursorgaan'
     );
+  }
+
+  get governingBodyIdResolved() {
+    return [...this.governingBodyId, ...this.abstractGoverningBodyId];
   }
 
   get titleResolved() {

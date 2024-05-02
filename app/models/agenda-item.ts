@@ -47,6 +47,10 @@ export default class AgendaItemModel extends Model {
     return this.session?.municipality;
   }
 
+  get governingBodyIdResolved() {
+    return this.session?.governingBodyResolved?.id;
+  }
+
   get governingBodyNameResolved() {
     return this.session?.governingBodyNameResolved;
   }

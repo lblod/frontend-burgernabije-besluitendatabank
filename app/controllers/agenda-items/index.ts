@@ -5,6 +5,7 @@ import { tracked } from '@glimmer/tracking';
 import { task } from 'ember-concurrency';
 import { Resource } from 'ember-resources';
 import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/mu-search/agenda-item';
+import GoverningBodyDisabledList from 'frontend-burgernabije-besluitendatabank/services/governing-body-disabled-list';
 import GoverningBodyListService from 'frontend-burgernabije-besluitendatabank/services/governing-body-list';
 import GovernmentListService from 'frontend-burgernabije-besluitendatabank/services/government-list';
 
@@ -20,6 +21,7 @@ import { cleanString } from 'frontend-burgernabije-besluitendatabank/utils/clean
 import {
   parseMuSearchAttributeToDate,
   parseMuSearchAttributeToString,
+  parseMuSearchAttributeToArray,
 } from 'frontend-burgernabije-besluitendatabank/utils/mu-search-data-format';
 
 interface AgendaItemsParams {
@@ -45,6 +47,7 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
   @service declare governingBodyList: GoverningBodyListService;
   @service declare governmentList: GovernmentListService;
   @service declare muSearch: MuSearchService;
+  @service declare governingBodyDisabledList: GoverningBodyDisabledList;
 
   @tracked data: AgendaItem[] = [];
   @tracked total = 0;
@@ -119,8 +122,15 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
           })
         );
 
+      // remove disabled governing bodies from the response
+      const items = agendaItems.items.filter((item) => {
+        return !this.governingBodyDisabledList.disabledList.some((disabled) =>
+          item.governingBodyIdResolved.includes(disabled)
+        );
+      });
+
       this.total = agendaItems.count ?? 0;
-      this.data = [...this.data, ...agendaItems.items.slice()];
+      this.data = [...this.data, ...items.slice()];
     }
   );
 
@@ -217,7 +227,6 @@ export default class AgendaItemsIndexController extends Controller {
   }
 
   updateKeyword = (value: string) => {
-    console.log('updating keyword', value);
     this.keyword = value;
   };
 
@@ -277,6 +286,8 @@ type AgendaItemMuSearchEntry = {
   location_id?: string;
   abstract_governing_body_location_name?: string;
   governing_body_location_name?: string;
+  abstract_governing_body_id?: string;
+  governing_body_id?: string;
   abstract_governing_body_name?: string;
   governing_body_name?: string;
   abstract_governing_body_classification_name?: string;
@@ -374,6 +385,12 @@ const dataMapping: DataMapper<AgendaItemMuSearchEntry, AgendaItem> = (
     parseMuSearchAttributeToString(entry.abstract_governing_body_location_name);
   dataResponse.governingBodyLocationName = parseMuSearchAttributeToString(
     entry.governing_body_location_name
+  );
+  dataResponse.abstractGoverningBodyId = parseMuSearchAttributeToArray(
+    entry.abstract_governing_body_id
+  );
+  dataResponse.governingBodyId = parseMuSearchAttributeToArray(
+    entry.governing_body_id
   );
   dataResponse.abstractGoverningBodyName = parseMuSearchAttributeToString(
     entry.abstract_governing_body_name

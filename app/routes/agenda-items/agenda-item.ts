@@ -3,6 +3,10 @@ import Route from '@ember/routing/route';
 import Transition from '@ember/routing/transition';
 import { service } from '@ember/service';
 import AgendaItemController from 'frontend-burgernabije-besluitendatabank/controllers/agenda-items/agenda-item';
+import AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
+import ArticleModel from 'frontend-burgernabije-besluitendatabank/models/article';
+import VoteModel from 'frontend-burgernabije-besluitendatabank/models/vote';
+import GoverningBodyDisabledList from 'frontend-burgernabije-besluitendatabank/services/governing-body-disabled-list';
 import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
 import { sortObjectsByTitle } from 'frontend-burgernabije-besluitendatabank/utils/array-utils';
 
@@ -10,9 +14,19 @@ interface DetailParams {
   id: string;
 }
 
+interface AgendaItemRouteModel {
+  agendaItem: AgendaItemModel;
+  vote?: VoteModel;
+  articles: ArticleModel[];
+  agendaItemOnSameSession: AgendaItemModel[];
+  similiarAgendaItems: AgendaItemModel[];
+}
+
 export default class AgendaItemRoute extends Route {
+  @service declare router: Route;
   @service declare store: Store;
   @service declare keywordStore: KeywordStoreService;
+  @service declare governingBodyDisabledList: GoverningBodyDisabledList;
 
   async model(params: DetailParams) {
     const agendaItem = await this.store.findRecord('agenda-item', params.id);
@@ -96,6 +110,16 @@ export default class AgendaItemRoute extends Route {
       agendaItemOnSameSession,
       similiarAgendaItems,
     };
+  }
+
+  afterModel(model: AgendaItemRouteModel) {
+    if (
+      this.governingBodyDisabledList.list.includes(
+        model.agendaItem.governingBodyIdResolved || ''
+      )
+    ) {
+      this.router.transitionTo('agenda-items.index');
+    }
   }
 
   resetController(
