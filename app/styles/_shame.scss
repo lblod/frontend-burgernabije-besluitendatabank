@@ -1,5 +1,41 @@
 @use "sass:map";
 
+// with name JSD widget
+iframe[name*="JSD widget"] {
+  bottom: 100px !important;
+  right: 20px !important;
+}
+
+.graph-bar-container {
+  height: 25px;
+  position: relative;
+  justify-content: end;
+}
+
+.truncate {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.graph-bar-text {
+  position: absolute;
+  left: 0;
+}
+
+.graph-bar {
+  justify-content: end;
+  height: 25px;
+  background-color: var(--au-blue-300);
+}
+
+.graph-bar-count {
+  text-align: end;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
 // Add ol styles
 ol {
   counter-reset: item;
@@ -72,25 +108,25 @@ cursor {
 }
 
 // Accordion override
-.au-c-accordion {
-  .au-c-toolbar {
-    align-items: center;
-  }
-
-  .au-c-icon {
-    margin-top: 0 !important;
-  }
-
-  .au-c-button--link {
-    text-decoration: none;
-    font-weight: var(--au-medium);
-
-    @include au-font-size(var(--au-h4));
-  }
-}
-
 .c-accordion-holder {
   display: flex;
+
+  .au-c-accordion {
+    .au-c-toolbar {
+      align-items: center;
+    }
+
+    .au-c-icon {
+      margin-top: 0 !important;
+    }
+
+    .au-c-button--link {
+      text-decoration: none;
+      font-weight: var(--au-medium);
+
+      @include au-font-size(var(--au-h4));
+    }
+  }
 
   > .au-c-accordion {
     margin-top: 0.6rem;
@@ -131,16 +167,6 @@ cursor {
   }
 }
 
-// Truncate
-.u-truncate {
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  max-width: 50ch;
-}
-
 // Custom form row
 .au-c-form-row--button {
   --gap: #{$au-unit-small};
@@ -165,6 +191,34 @@ cursor {
       flex-basis: calc(100% - var(--gap) - var(--button));
     }
   }
+}
+
+.c-advanced-filter-holder {
+  .au-c-accordion {
+    .au-c-toolbar__group {
+      .au-c-icon {
+        color: var(--au-gray-900);
+      }
+    }
+
+    .au-c-button {
+      color: var(--au-gray-900);
+      text-decoration: none;
+      font-weight: var(--au-medium);
+
+      @include au-font-size(var(--au-h5));
+    }
+  }
+}
+
+// Truncate
+.u-truncate {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 50ch;
 }
 
 // Vote table colors
@@ -229,6 +283,13 @@ cursor {
 .au-c-input {
   // We don't set a background color, and safari uses a different one on iOS
   background-color: var(--au-white);
+}
+
+.ember-power-select-group-name {
+  font-weight: var(--au-medium);
+  padding: $au-unit-small $au-unit;
+  color: var(--au-gray-900);
+  font-family: var(--au-font);
 }
 
 .au-c-input[type="date"] {
@@ -301,4 +362,16 @@ cursor {
     flex-grow: 1;
     padding-top: $au-unit-tiny * 0.3;
   }
+}
+
+#governing-body {
+  ul {
+    margin: 0 0.6rem;
+  }
+}
+
+// Remove extra dot visible at the end of selected option,
+// Related to BNB-452 CommentId=97815
+.ember-power-select-multiple-options li {
+  list-style: none;
 }

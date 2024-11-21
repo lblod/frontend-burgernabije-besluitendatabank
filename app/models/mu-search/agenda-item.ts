@@ -6,13 +6,18 @@ export default class AgendaItemModel {
   declare locationId?: string;
   declare abstractGoverningBodyLocationName?: string;
   declare governingBodyLocationName?: string;
+  declare abstractGoverningBodyId: string[];
+  declare governingBodyId: string[];
   declare abstractGoverningBodyName?: string;
   declare governingBodyName?: string;
+  declare abstractGoverningBodyClassificationName?: string;
+  declare governingBodyClassificationName?: string;
   declare sessionPlannedStart?: Date;
   declare sessionStartedAt?: Date;
   declare sessionEndedAt?: Date;
   declare title?: string;
   declare description?: string;
+  declare resolutionTitle?: string;
 
   get dateFormatted() {
     if (this.sessionStartedAt || this.sessionEndedAt) {
@@ -24,12 +29,20 @@ export default class AgendaItemModel {
 
     return 'Geen Datum';
   }
-  get governingBodyNameResolved() {
+  get governingBodyClassificationNameResolved() {
     return (
-      this.abstractGoverningBodyName ||
-      this.governingBodyName ||
+      this.abstractGoverningBodyClassificationName ||
+      this.governingBodyClassificationName ||
       'Ontbrekend bestuursorgaan'
     );
+  }
+
+  get governingBodyIdResolved() {
+    return [...this.governingBodyId, ...this.abstractGoverningBodyId];
+  }
+
+  get titleResolved() {
+    return this.title || this.resolutionTitle || 'Ontbrekende titel';
   }
 
   get municipality() {

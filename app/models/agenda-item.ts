@@ -8,12 +8,13 @@ import Model, {
 } from '@ember-data/model';
 import { sortSessions } from 'frontend-burgernabije-besluitendatabank/utils/sort-sessions';
 import AgendaItemHandlingModel from './agenda-item-handling';
+import ResolutionModel from './resolution';
 import SessionModel from './session';
 
 export default class AgendaItemModel extends Model {
-  @attr('string', { defaultValue: 'Ontbrekende titel' }) declare title: string;
+  @attr('string') declare title: string;
   @attr('string') declare description: string;
-  @attr('string') declare alternateLink: string;
+  @attr() declare alternateLink: string[];
   @attr('boolean') declare plannedPublic: boolean;
 
   @hasMany('session', { async: true, inverse: 'agendaItems' })
@@ -38,8 +39,16 @@ export default class AgendaItemModel extends Model {
     return session;
   }
 
+  get wasHandled() {
+    return Boolean(this.session?.startedAt) || Boolean(this.session?.endedAt);
+  }
+
   get municipality() {
     return this.session?.municipality;
+  }
+
+  get governingBodyIdResolved() {
+    return this.session?.governingBodyResolved?.id;
   }
 
   get governingBodyNameResolved() {
@@ -48,6 +57,22 @@ export default class AgendaItemModel extends Model {
 
   get dateFormatted() {
     return this.session?.dateFormatted;
+  }
+
+  get titleFormatted() {
+    return (
+      this.title ||
+      (
+        (
+          (this as AgendaItemModel)
+            .belongsTo('handledBy')
+            .value() as AgendaItemHandlingModel
+        )
+          ?.hasMany('resolutions')
+          .value() as SyncHasMany<ResolutionModel>
+      )?.firstObject?.title ||
+      'Ontbrekende titel'
+    );
   }
 
   get agendaItemQualityMetrics(): { label: string; value: boolean }[] {
@@ -69,16 +94,8 @@ export default class AgendaItemModel extends Model {
         formattedProperty: 'Bestuurseenheid',
       },
       {
-        property: 'session',
-        formattedProperty: 'Zitting',
-      },
-      {
         property: 'governingBodyNameResolved',
         formattedProperty: 'Bestuursorgaan',
-      },
-      {
-        property: 'handledBy',
-        formattedProperty: 'Behandeling',
       },
     ];
 

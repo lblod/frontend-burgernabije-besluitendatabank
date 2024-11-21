@@ -1,7 +1,6 @@
 import Controller from '@ember/controller';
 import { ModelFrom } from '../../lib/type-utils';
 import SessionSessionRoute from '../../routes/sessions/session';
-import { sortObjectsByTitle } from 'frontend-burgernabije-besluitendatabank/utils/array-utils';
 import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
 
 export default class SessionsSessionController extends Controller {
@@ -17,6 +16,13 @@ export default class SessionsSessionController extends Controller {
       agendaItems = [];
     }
 
-    return agendaItems.slice().sort(sortObjectsByTitle);
+    return agendaItems
+      .slice()
+      .filter(({ titleFormatted }) => !!titleFormatted)
+      .sort((a, b) =>
+        a.titleFormatted.localeCompare(b.titleFormatted, undefined, {
+          numeric: true,
+        })
+      );
   }
 }

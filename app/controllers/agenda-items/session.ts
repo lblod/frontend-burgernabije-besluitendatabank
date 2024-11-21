@@ -1,8 +1,8 @@
 import Controller from '@ember/controller';
-import { ModelFrom } from '../../../lib/type-utils';
+import { ModelFrom } from '../../lib/type-utils';
 import { sortObjectsByTitle } from 'frontend-burgernabije-besluitendatabank/utils/array-utils';
 import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
-import AgendaItemsAgendaItemSessionRoute from 'frontend-burgernabije-besluitendatabank/routes/agenda-items/agenda-item/session';
+import AgendaItemsAgendaItemSessionRoute from 'frontend-burgernabije-besluitendatabank/routes/agenda-items/session';
 
 export default class AgendaItemsAgendaItemSessionController extends Controller {
   /** Used to fetch agenda items from the model */
@@ -17,6 +17,9 @@ export default class AgendaItemsAgendaItemSessionController extends Controller {
       agendaItems = [];
     }
 
-    return agendaItems.slice().sort(sortObjectsByTitle);
+    return agendaItems
+      .slice()
+      .filter(({ title }) => !!title)
+      .sort(sortObjectsByTitle);
   }
 }

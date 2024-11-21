@@ -1,12 +1,12 @@
 import Model, {
+  AsyncBelongsTo,
+  AsyncHasMany,
   attr,
   belongsTo,
   hasMany,
-  AsyncHasMany,
-  AsyncBelongsTo,
 } from '@ember-data/model';
-import { getFormattedDateRange } from 'frontend-burgernabije-besluitendatabank/utils/get-formatted-date-range';
 import { getFormattedDate } from 'frontend-burgernabije-besluitendatabank/utils/get-formatted-date';
+import { getFormattedDateRange } from 'frontend-burgernabije-besluitendatabank/utils/get-formatted-date-range';
 import AgendaItemModel from './agenda-item';
 import GoverningBodyModel from './governing-body';
 
@@ -50,6 +50,10 @@ export default class SessionModel extends Model {
   get municipalityId() {
     return this.governingBodyResolved?.administrativeUnitValue?.locationValue
       ?.id;
+  }
+
+  get classification() {
+    return this.governingBodyResolved?.classification?.get('label') || '';
   }
 
   get municipality() {

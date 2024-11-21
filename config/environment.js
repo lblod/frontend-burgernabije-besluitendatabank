@@ -22,7 +22,9 @@ module.exports = function (environment) {
     },
     features: {
       // define feature flags here
+      'statistics-page-feature': false,
     },
+    'governing-body-disabled': '{{GOVERNING_BODY_DISABLED_LIST}}',
   };
 
   if (environment === 'test') {

@@ -1,12 +1,15 @@
-import Service, { service } from '@ember/service';
 import Store from '@ember-data/store';
+import Service, { service } from '@ember/service';
+import { QueryParameterKeys } from 'frontend-burgernabije-besluitendatabank/constants/query-parameter-keys';
 import LocationModel from 'frontend-burgernabije-besluitendatabank/models/location';
 import { deserializeArray } from 'frontend-burgernabije-besluitendatabank/utils/query-params';
+type Municipality = { label: string; id: string };
 
 export default class MunicipalityListService extends Service {
   @service declare store: Store;
 
-  private _municipalities?: Array<{ label: string; id: string }>;
+  private _municipalities?: Array<Municipality>;
+  private _municipalityCleanedLabels?: Array<{ label: string }>;
 
   /**
    * Get all municipalities
@@ -22,6 +25,46 @@ export default class MunicipalityListService extends Service {
     }
 
     return this._municipalities;
+  }
+
+  /**
+   * Get all municipalities, filtered on the following criteria:
+   * - no duplicate labels
+   * - remove 'Kruishoutem' (because it's not a municipality anymore) #BNB-402
+   *
+   * Filtering is managed frontend as a temporary solution ^^
+   * TODO: move this to the backend
+   *
+   * @returns A promise for an array of municipality labels
+   **/
+
+  async municipalityLabels() {
+    if (!this._municipalityCleanedLabels) {
+      this._municipalityCleanedLabels = this._filteredMunicipalities(
+        await this.municipalities()
+      );
+    }
+
+    return this._municipalityCleanedLabels;
+  }
+
+  private _filteredMunicipalities(municipalities?: Array<Municipality>) {
+    if (!municipalities) {
+      return [];
+    }
+
+    const uniqueLabels = [
+      ...new Set(
+        municipalities
+          .filter(
+            (municipality) =>
+              municipality.label && municipality.label !== 'Kruishoutem'
+          )
+          .map(({ label }) => label)
+      ),
+    ].map((label) => ({ label, type: QueryParameterKeys.municipalities }));
+
+    return uniqueLabels;
   }
 
   /**
@@ -42,6 +85,8 @@ export default class MunicipalityListService extends Service {
     return municipalities.map((location: LocationModel) => ({
       id: location.id,
       label: location.label,
+      // look at the environment APP.municipalities for the type
+      type: QueryParameterKeys.municipalities,
     }));
   }
 
@@ -49,34 +94,24 @@ export default class MunicipalityListService extends Service {
    *
    * @param labels an array of location labels
    *               Alternatively, a string of location labels
-   * @param stringSeperator the seperator to split labels, if labels is a string
-   *                        Defaults to the seperator defined in helpers/constants.ts
-   * @returns a Promise for a joined string of those locations' id's, or undefined
+   * @returns a Promise for an array of location ids
    */
   async getLocationIdsFromLabels(
     labels?: Array<string> | string
-  ): Promise<string | undefined> {
+  ): Promise<Array<string>> {
+    const municipalities = await this.municipalities();
     if (typeof labels === 'string') {
       labels = deserializeArray(labels);
-    } else if (!labels) {
-      return undefined;
     }
 
-    const locationIds: Array<string> = [];
-    const municipalities = await this.municipalities();
-
-    if (municipalities) {
-      for (let i = 0; i < labels.length; i++) {
-        const label = labels[i];
-        const municipality = municipalities.find(
-          (municipality) => municipality.label === label
-        );
-        if (municipality) {
-          locationIds.push(municipality.id);
-        }
-      }
+    if (!labels || !municipalities) {
+      return [];
     }
 
-    return locationIds.join(',');
+    const locationIds: Array<string> = municipalities
+      .filter(({ label }) => labels?.includes(label))
+      .map(({ id }) => id);
+
+    return locationIds;
   }
 }

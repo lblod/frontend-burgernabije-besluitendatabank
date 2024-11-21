@@ -1,7 +1,8 @@
-<LayoutHome>
-  <AuBodyContainer class="au-u-background-gray-100">
-    <section class="c-home">
-      <div class="au-o-flow">
+<AuBodyContainer class="au-u-background-gray-100">
+  <section class="c-home">
+    <div class="c-home-text-container">
+
+      <div class="c-home-text">
         <AuContent>
           <AuHeading @level="1" @skin="2">Welkom bij Lokaal Beslist, jouw
             centrale bron voor het ontdekken van agendapunten van lokale
@@ -15,9 +16,9 @@
             />
           </div>
           <p>Blijf op de hoogte van waar lokale besturen mee bezig zijn en wat
-            er leeft in en rond je omgeving. Start eenvoudig door een gemeente
-            te selecteren of een zoekwoord in te voeren en krijg direct toegang
-            tot relevante informatie.</p>
+            er leeft in en rond je omgeving. Start eenvoudig door één of
+            meerdere gemeentes of provincies te selecteren of een zoekwoord in
+            te voeren en krijg direct toegang tot relevante informatie.</p>
         </AuContent>
         <div class="au-c-home__form au-o-flow">
           <AuLabel
@@ -31,20 +32,19 @@
             class="au-o-flow au-o-flow--small"
             {{did-insert this.resetLoading}}
           >
-
             <PowerSelectMultiple
-              @onChange={{this.handleMunicipalityChange}}
-              @selected={{this.selectedMunicipalities}}
-              @options={{this.municipalities}}
-              @allowClear={{true}}
-              @searchField="label"
-              @placeholder={{"Alle gemeentes"}}
-              @noMatchesMessage={{"Geen gemeentes gevonden"}}
-              @searchMessage="Aan het zoeken..."
               @searchEnabled={{true}}
-              as |municipality|
+              @id="municipality"
+              @label="Kies één of meer besturen"
+              @options={{this.localGovernmentGroupOptions}}
+              @noMatchesMessage="Geen besturen gevonden"
+              @selected={{this.governmentList.selectedLocalGovernments}}
+              @onChange={{this.handleSelectLocalGovernmentsChange}}
+              @searchField="label"
+              @placeholder="Alle besturen"
+              as |option|
             >
-              {{municipality.label}}
+              {{option.label}}
             </PowerSelectMultiple>
 
             <AuInput
@@ -55,7 +55,7 @@
               @icon="search"
               @width="block"
               id="keyword"
-              placeholder="Zoek in alle lokale agendaputen"
+              placeholder="Zoek in alle lokale agendapunten"
               class="au-c-form-row--button au-o-layout--large"
               {{on "input" this.handleChange}}
               {{on "keyup" this.handleKeyUp}}
@@ -72,6 +72,6 @@
           </p>
         </div>
       </div>
-    </section>
-  </AuBodyContainer>
-</LayoutHome>
+    </div>
+  </section>
+</AuBodyContainer>

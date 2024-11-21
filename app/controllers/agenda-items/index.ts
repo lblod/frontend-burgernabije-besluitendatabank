@@ -1,9 +1,14 @@
 import Controller from '@ember/controller';
+import { action } from '@ember/object';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { task } from 'ember-concurrency';
 import { Resource } from 'ember-resources';
 import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/mu-search/agenda-item';
+import GoverningBodyDisabledList from 'frontend-burgernabije-besluitendatabank/services/governing-body-disabled-list';
+import GoverningBodyListService from 'frontend-burgernabije-besluitendatabank/services/governing-body-list';
+import GovernmentListService from 'frontend-burgernabije-besluitendatabank/services/government-list';
+
 import MuSearchService, {
   DataMapper,
   MuSearchData,
@@ -11,18 +16,23 @@ import MuSearchService, {
   PageableRequest,
 } from 'frontend-burgernabije-besluitendatabank/services/mu-search';
 import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
+import ProvinceListService from 'frontend-burgernabije-besluitendatabank/services/province-list';
 import { cleanString } from 'frontend-burgernabije-besluitendatabank/utils/clean-string';
 import {
   parseMuSearchAttributeToDate,
   parseMuSearchAttributeToString,
+  parseMuSearchAttributeToArray,
 } from 'frontend-burgernabije-besluitendatabank/utils/mu-search-data-format';
 
 interface AgendaItemsParams {
   keyword: string;
   municipalityLabels: string;
+  provinceLabels: string;
   plannedStartMin: string;
   plannedStartMax: string;
+  governingBodyClassifications: string;
   dataQualityList: Array<string>;
+  dateSort: string;
 }
 
 interface AgendaItemsLoaderArgs {
@@ -33,7 +43,11 @@ interface AgendaItemsLoaderArgs {
 
 class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
   @service declare municipalityList: MunicipalityListService;
+  @service declare provinceList: ProvinceListService;
+  @service declare governingBodyList: GoverningBodyListService;
+  @service declare governmentList: GovernmentListService;
   @service declare muSearch: MuSearchService;
+  @service declare governingBodyDisabledList: GoverningBodyDisabledList;
 
   @tracked data: AgendaItem[] = [];
   @tracked total = 0;
@@ -75,11 +89,24 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
         return;
       }
 
-      const locationIds = await this.municipalityList.getLocationIdsFromLabels(
-        this.#filters.municipalityLabels
+      const municipalityIds =
+        await this.municipalityList.getLocationIdsFromLabels(
+          this.#filters.municipalityLabels
+        );
+
+      const provinceIds = await this.provinceList.getProvinceIdsFromLabels(
+        this.#filters.provinceLabels
       );
 
-      const { keyword, plannedStartMin, plannedStartMax } = this.#filters;
+      const locationIds = [...municipalityIds, ...provinceIds].join(',');
+
+      const { keyword, plannedStartMin, plannedStartMax, dateSort } =
+        this.#filters;
+
+      const governingBodyClassificationIds =
+        await this.governingBodyList.getGoverningBodyClassificationIdsFromLabels(
+          this.#filters.governingBodyClassifications
+        );
 
       const agendaItems: MuSearchResponse<AgendaItem> =
         await this.muSearch.search(
@@ -87,14 +114,23 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
             index: 'agenda-items',
             page,
             locationIds,
+            governingBodyClassificationIds,
             keyword,
             plannedStartMin,
             plannedStartMax,
+            dateSort,
           })
         );
 
+      // remove disabled governing bodies from the response
+      const items = agendaItems.items.filter((item) => {
+        return !this.governingBodyDisabledList.disabledList.some((disabled) =>
+          item.governingBodyIdResolved.includes(disabled)
+        );
+      });
+
       this.total = agendaItems.count ?? 0;
-      this.data = [...this.data, ...agendaItems.items.slice()];
+      this.data = [...this.data, ...items.slice()];
     }
   );
 
@@ -114,12 +150,56 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
 
 export default class AgendaItemsIndexController extends Controller {
   @service declare municipalityList: MunicipalityListService;
+  @service declare provinceList: ProvinceListService;
+  @service declare governingBodyList: GoverningBodyListService;
+  @service declare governmentList: GovernmentListService;
 
+  @action
+  updateSelectedGovernment(
+    newOptions: Array<{
+      label: string;
+      id: string;
+      type: 'provincies' | 'gemeentes';
+    }>
+  ) {
+    this.governmentList.selectedLocalGovernments = newOptions;
+  }
+
+  get localGovernmentGroupOptions() {
+    return Promise.all([this.municipalities, this.provinces]).then(
+      ([municipalities, provinces]) => [
+        { groupName: 'Gemeente', options: municipalities },
+        { groupName: 'Provincie', options: provinces },
+      ]
+    );
+  }
   // QueryParameters
   @tracked keyword = '';
   @tracked municipalityLabels = '';
+  @tracked provinceLabels = '';
   @tracked plannedStartMin = '';
   @tracked plannedStartMax = '';
+  @tracked governingBodyClassifications = '';
+
+  get showAdvancedFilters() {
+    return this.governingBodyClassifications?.length > 0;
+  }
+
+  @action handleDateSortChange(event: { target: { value: string } }) {
+    this.dateSort = event?.target?.value;
+  }
+
+  @action updateSelectedGoverningBodyClassifications(
+    newOptions: Array<{
+      label: string;
+      id: string;
+      type: 'governing-body-classifications';
+    }>
+  ) {
+    this.governingBodyList.selectedGoverningBodyClassifications = newOptions;
+  }
+
+  @tracked dateSort = 'desc';
 
   /** Controls the loading animation of the "load more" button */
   @tracked isLoadingMore = false;
@@ -136,11 +216,17 @@ export default class AgendaItemsIndexController extends Controller {
   AgendaItemsLoader = AgendaItemsLoader;
 
   get municipalities() {
-    return this.municipalityList.municipalities();
+    return this.municipalityList.municipalityLabels();
+  }
+
+  get provinces() {
+    return this.provinceList.provinceLabels();
+  }
+  get governingBodies() {
+    return this.governingBodyList.governingBodies();
   }
 
   updateKeyword = (value: string) => {
-    console.log('updating keyword', value);
     this.keyword = value;
   };
 
@@ -168,9 +254,12 @@ export default class AgendaItemsIndexController extends Controller {
     return {
       keyword: this.keyword,
       municipalityLabels: this.municipalityLabels,
+      provinceLabels: this.provinceLabels,
       plannedStartMin: this.plannedStartMin,
       plannedStartMax: this.plannedStartMax,
-      dataQualityList: this.municipalityLabels.split('+'),
+      dateSort: this.dateSort,
+      governingBodyClassifications: this.governingBodyClassifications,
+      dataQualityList: [],
     };
   }
 
@@ -184,8 +273,11 @@ type AgendaItemsQueryArguments = {
   page: number;
   keyword?: string;
   locationIds?: string;
+  provinceIds?: string;
   plannedStartMin?: string;
   plannedStartMax?: string;
+  dateSort?: string;
+  governingBodyClassificationIds?: string;
 };
 
 type AgendaItemMuSearchEntry = {
@@ -194,13 +286,18 @@ type AgendaItemMuSearchEntry = {
   location_id?: string;
   abstract_governing_body_location_name?: string;
   governing_body_location_name?: string;
+  abstract_governing_body_id?: string;
+  governing_body_id?: string;
   abstract_governing_body_name?: string;
   governing_body_name?: string;
+  abstract_governing_body_classification_name?: string;
+  governing_body_classification_name?: string;
   session_planned_start?: string;
   session_started_at?: string;
   session_ended_at?: string;
   title?: string;
   description?: string;
+  resolution_title?: string;
 };
 
 type AgendaItemsQueryResult = PageableRequest<
@@ -215,19 +312,18 @@ const agendaItemsQuery = ({
   locationIds,
   plannedStartMin,
   plannedStartMax,
+  dateSort,
+  governingBodyClassificationIds,
 }: AgendaItemsQueryArguments): AgendaItemsQueryResult => {
   // Initialize filters and request objects
   const filters = {} as { [key: string]: string };
   const request: PageableRequest<AgendaItemMuSearchEntry, AgendaItem> =
     {} as PageableRequest<AgendaItemMuSearchEntry, AgendaItem>;
 
-  // Set default sorting
-  request.sort = '-session_planned_start';
   request.index = index;
 
-  // Ensure title and location_id fields are present
-  filters[':query:title'] =
-    '_exists_:title AND (_exists_:location_id OR _exists_:abstract_location_id)';
+  // Ensure search_location_id field is present
+  filters[':has:search_location_id'] = 't';
 
   // Apply optional filter for planned start range
   if (plannedStartMin) {
@@ -240,19 +336,23 @@ const agendaItemsQuery = ({
 
   // Apply optional filter for locationIds
   if (locationIds) {
-    const queryIds = locationIds
-      .split(',')
-      .map((id) => `(abstract_location_id:${id} OR location_id:${id})`)
-      .join(' OR ');
-    filters[':query:abstract_location_id'] = queryIds;
+    filters[':terms:search_location_id'] = locationIds;
+  }
+
+  // Apply optional filter for governing body ids
+  if (governingBodyClassificationIds) {
+    filters[':terms:search_governing_body_classification_id'] =
+      governingBodyClassificationIds;
   }
 
   // Apply optional filter for keyword search
   if (keyword) {
-    filters[
-      ':query:title'
-    ] = `(title:*${keyword}*) OR (description:*${keyword}*)`;
+    filters[':fuzzy:search_content'] = keyword;
   }
+
+  // Apply optional filter for date sorting
+  const order = dateSort === 'asc' ? '+' : '-';
+  request.sort = `${order}session_planned_start`;
 
   // Set page size and filters in the request
   request.page = page;
@@ -261,7 +361,6 @@ const agendaItemsQuery = ({
 
   // Set dataMapping function in the request
   request.dataMapping = dataMapping;
-
   return request;
 };
 
@@ -275,6 +374,9 @@ const dataMapping: DataMapper<AgendaItemMuSearchEntry, AgendaItem> = (
   // Map data attributes to AgendaItem properties
   dataResponse.id = Array.isArray(uuid) ? uuid[0] : uuid;
   dataResponse.title = cleanString(parseMuSearchAttributeToString(entry.title));
+  dataResponse.resolutionTitle = cleanString(
+    parseMuSearchAttributeToString(entry.resolution_title)
+  );
   dataResponse.description = cleanString(
     parseMuSearchAttributeToString(entry.description)
   );
@@ -284,11 +386,24 @@ const dataMapping: DataMapper<AgendaItemMuSearchEntry, AgendaItem> = (
   dataResponse.governingBodyLocationName = parseMuSearchAttributeToString(
     entry.governing_body_location_name
   );
+  dataResponse.abstractGoverningBodyId = parseMuSearchAttributeToArray(
+    entry.abstract_governing_body_id
+  );
+  dataResponse.governingBodyId = parseMuSearchAttributeToArray(
+    entry.governing_body_id
+  );
   dataResponse.abstractGoverningBodyName = parseMuSearchAttributeToString(
     entry.abstract_governing_body_name
   );
   dataResponse.governingBodyName = parseMuSearchAttributeToString(
     entry.governing_body_name
+  );
+  dataResponse.abstractGoverningBodyClassificationName =
+    parseMuSearchAttributeToString(
+      entry.abstract_governing_body_classification_name
+    );
+  dataResponse.governingBodyClassificationName = parseMuSearchAttributeToString(
+    entry.governing_body_classification_name
   );
   dataResponse.sessionPlannedStart = parseMuSearchAttributeToDate(
     entry.session_planned_start

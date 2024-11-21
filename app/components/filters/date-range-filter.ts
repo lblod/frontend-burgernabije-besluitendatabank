@@ -2,6 +2,7 @@ import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { service } from '@ember/service';
 import Component from '@glimmer/component';
+
 import { cached, tracked } from '@glimmer/tracking';
 import {
   endOfMonth,
@@ -13,7 +14,6 @@ import {
   startOfYear,
   sub,
 } from 'date-fns';
-
 type ISODateString = string;
 
 interface Signature {
@@ -26,6 +26,7 @@ interface Signature {
 }
 
 enum Preset {
+  Future = 'Toekomst',
   ThisWeek = 'Deze week',
   LastWeek = 'Vorige week',
   ThisMonth = 'Deze maand',
@@ -35,13 +36,21 @@ enum Preset {
 }
 
 export default class DateRangeFilterComponent extends Component<Signature> {
+  readonly MIN = '2015-01-01';
+  readonly MAX = '2100-12-31';
+  readonly MIN_DATE = new Date(this.MIN);
+  readonly MAX_DATE = new Date(this.MAX);
+
   @service declare router: RouterService;
   @tracked start: string | null;
   @tracked end: string | null;
   @tracked selectedPreset: Preset | null = null;
   @tracked isChoosingPresets = true;
+  @tracked endDateError?: string[];
+  @tracked startDateError?: string[];
 
   presets = [
+    Preset.Future,
     Preset.ThisWeek,
     Preset.LastWeek,
     Preset.ThisMonth,
@@ -54,6 +63,7 @@ export default class DateRangeFilterComponent extends Component<Signature> {
   get presetDateRanges() {
     const today = new Date();
     return {
+      [Preset.Future]: [toIsoDateString(today), this.MAX],
       [Preset.ThisWeek]: [
         toIsoDateString(startOfWeek(today)),
         toIsoDateString(endOfWeek(today)),
@@ -124,21 +134,21 @@ export default class DateRangeFilterComponent extends Component<Signature> {
   @action handleStartDateChange(newDate: string | null): void {
     this.start = newDate;
 
-    if (this.isInvalidDateRange) {
-      this.end = null;
+    if (this.isDateComplete(newDate)) {
+      this.updateQueryParamsIfValid();
     }
-
-    this.updateQueryParamsIfValid();
   }
 
   @action handleEndDateChange(newDate: string | null): void {
     this.end = newDate;
 
-    if (this.isInvalidDateRange) {
-      this.start = null;
+    if (this.isDateComplete(newDate)) {
+      this.updateQueryParamsIfValid();
     }
+  }
 
-    this.updateQueryParamsIfValid();
+  isDateComplete(date: string | null): boolean {
+    return date === null || date.length === 10;
   }
 
   @action chooseCustomRange() {
@@ -200,10 +210,28 @@ export default class DateRangeFilterComponent extends Component<Signature> {
     }
   }
 
-  updateQueryParamsIfValid() {
-    if (this.hasBothDates || this.hasNoDates) {
-      this.updateQueryParams();
+  updateQueryParamsIfValid(): void {
+    const startDate = this.start ? new Date(this.start) : new Date();
+    const endDate = this.end ? new Date(this.end) : new Date();
+    this.startDateError = [];
+    this.endDateError = [];
+    let isBlocked = false;
+
+    if (startDate > this.MAX_DATE || startDate < this.MIN_DATE) {
+      this.startDateError.push(
+        'De startdatum moet tussen 1 januari 2015 en 31 december 2100 liggen'
+      );
     }
+    if (endDate > this.MAX_DATE || endDate < this.MIN_DATE) {
+      this.endDateError.push(
+        'De einddatum moet tussen 1 januari 2015 en 31 december 2100 liggen'
+      );
+    }
+    if (this.isInvalidDateRange) {
+      this.endDateError.push('De startdatum moet voor de einddatum liggen');
+      isBlocked = true;
+    }
+    if (!isBlocked) this.updateQueryParams();
   }
 
   resetQueryParams(): void {
@@ -215,8 +243,12 @@ export default class DateRangeFilterComponent extends Component<Signature> {
   updateQueryParams(): void {
     this.router.transitionTo({
       queryParams: {
-        [this.args.startQueryParam]: this.start,
-        [this.args.endQueryParam]: this.end,
+        [this.args.startQueryParam || 'start']: !this.startDateError?.length
+          ? this.start
+          : null,
+        [this.args.endQueryParam || 'end']: !this.endDateError?.length
+          ? this.end
+          : null,
       },
     });
   }
