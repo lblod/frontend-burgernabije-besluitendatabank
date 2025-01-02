@@ -62,7 +62,12 @@ export default class SessionModel extends Model {
         ?.label || 'Ontbrekende bestuurseenheid'
     );
   }
-
+  get locationLevel() {
+    return (
+      this.governingBodyResolved?.administrativeUnitValue?.locationValue
+        ?.niveau || 'Gemeente'
+    );
+  }
   get hasMunicipality() {
     return !!this.governingBodyResolved?.administrativeUnitValue?.locationValue;
   }
