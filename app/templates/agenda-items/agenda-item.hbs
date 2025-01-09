@@ -45,16 +45,19 @@
               {{#if this.model.agendaItem.session.hasMunicipality}}
                 <li>
                   <AuIcon @size="large" @icon="location" />
-                  <span class="au-u-hidden-visually">Gemeente:</span>
+                  <span
+                    class="au-u-hidden-visually"
+                  >{{this.model.agendaItem.session.locationLevel}}:</span>
                   <AuLink
                     @route="agenda-items"
                     @query={{this.municipalityQuery}}
                   >
                     {{#if this.model.agendaItem.session.municipality}}
-                      Gemeente
+                      {{this.model.agendaItem.session.locationLevel}}
                       {{this.model.agendaItem.session.municipality}}
                     {{else}}
-                      Geen Gemeente
+                      Geen
+                      {{lower-case this.model.agendaItem.session.locationLevel}}
                     {{/if}}
                   </AuLink>
                 </li>
@@ -206,8 +209,9 @@
                 </AuHeading>
               </div>
               <div class="au-c-content">
-                <p>De gemeente heeft dit agendapunt vermeld op de volgende
-                  URL's:</p>
+                <p>De
+                  {{lower-case this.model.agendaItem.session.locationLevel}}
+                  heeft dit agendapunt vermeld op de volgende URL's:</p>
                 <AuList @divider={{true}} as |Item|>
                   {{#each
                     this.model.agendaItem.alternateLink
