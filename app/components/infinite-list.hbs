@@ -1,5 +1,6 @@
 <div
-  class="{{@class}} u-overflow-padding u-overflow-y-scroll u-overflow-divider"
+  class="{{@class}}
+    u-overflow-padding u-overflow-y-scroll u-overflow-divider infinite-scroll-height"
   {{on "scroll" this.scroll}}
   tabindex="-1"
 >
@@ -10,7 +11,12 @@
     {{#if @isLoading}}
       <AuLoader />
     {{else if this.moreDataToLoad}}
-      <AuButton @icon="add" @skin="secondary" @width="block" {{on "click" this.loadMore}}>Laad meer</AuButton>
+      <AuButton
+        @icon="add"
+        @skin="secondary"
+        @width="block"
+        {{on "click" this.loadMore}}
+      >Laad meer</AuButton>
     {{/if}}
   </div>
 </div>
