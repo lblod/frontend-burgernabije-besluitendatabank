@@ -1,5 +1,6 @@
-import Model, { AsyncHasMany, attr, hasMany } from '@ember-data/model';
-import MandataryModel from './mandatary';
+import type { AsyncHasMany } from '@ember-data/model';
+import Model, { attr, hasMany } from '@ember-data/model';
+import type MandataryModel from './mandatary';
 
 export default class VoteModel extends Model {
   @attr('number') declare numberOfAbstentions: number;

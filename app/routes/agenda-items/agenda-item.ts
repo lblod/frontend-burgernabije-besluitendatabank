@@ -1,13 +1,13 @@
-import Store from '@ember-data/store';
+import type Store from '@ember-data/store';
 import Route from '@ember/routing/route';
-import Transition from '@ember/routing/transition';
+import type Transition from '@ember/routing/transition';
 import { service } from '@ember/service';
-import AgendaItemController from 'frontend-burgernabije-besluitendatabank/controllers/agenda-items/agenda-item';
-import AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
-import ArticleModel from 'frontend-burgernabije-besluitendatabank/models/article';
-import VoteModel from 'frontend-burgernabije-besluitendatabank/models/vote';
-import GoverningBodyDisabledList from 'frontend-burgernabije-besluitendatabank/services/governing-body-disabled-list';
-import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
+import type AgendaItemController from 'frontend-burgernabije-besluitendatabank/controllers/agenda-items/agenda-item';
+import type AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
+import type ArticleModel from 'frontend-burgernabije-besluitendatabank/models/article';
+import type VoteModel from 'frontend-burgernabije-besluitendatabank/models/vote';
+import type GoverningBodyDisabledList from 'frontend-burgernabije-besluitendatabank/services/governing-body-disabled-list';
+import type KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
 import { sortObjectsByTitle } from 'frontend-burgernabije-besluitendatabank/utils/array-utils';
 
 interface DetailParams {

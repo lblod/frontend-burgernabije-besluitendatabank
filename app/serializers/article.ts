@@ -1,7 +1,7 @@
 import JSONAPISerializer from '@ember-data/serializer/json-api';
-import Store from '@ember-data/store';
+import type Store from '@ember-data/store';
 // eslint-disable-next-line ember/use-ember-data-rfc-395-imports
-import { ModelSchema } from 'ember-data';
+import type { ModelSchema } from 'ember-data';
 import { cleanString } from 'frontend-burgernabije-besluitendatabank/utils/clean-string';
 
 type Article = {

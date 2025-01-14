@@ -1,7 +1,7 @@
 import Helper from '@ember/component/helper';
 import { assert } from '@ember/debug';
 import { service } from '@ember/service';
-import FeaturesService from 'frontend-burgernabije-besluitendatabank/services/features';
+import type FeaturesService from 'frontend-burgernabije-besluitendatabank/services/features';
 
 export default class IsFeatureEnabled extends Helper<string[]> {
   @service declare features: FeaturesService;

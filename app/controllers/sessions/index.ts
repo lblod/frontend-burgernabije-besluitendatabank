@@ -2,24 +2,25 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
-import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
+import type MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 import Session from 'frontend-burgernabije-besluitendatabank/models/mu-search/session';
-import MuSearchService, {
+import type {
   DataMapper,
   MuSearchData,
   MuSearchResponse,
   PageableRequest,
 } from 'frontend-burgernabije-besluitendatabank/services/mu-search';
+import type MuSearchService from 'frontend-burgernabije-besluitendatabank/services/mu-search';
 import { task } from 'ember-concurrency';
 import { Resource } from 'ember-resources';
-import GoverningBodyListService from 'frontend-burgernabije-besluitendatabank/services/governing-body-list';
-import GovernmentListService from 'frontend-burgernabije-besluitendatabank/services/government-list';
-import ProvinceListService from 'frontend-burgernabije-besluitendatabank/services/province-list';
+import type GoverningBodyListService from 'frontend-burgernabije-besluitendatabank/services/governing-body-list';
+import type GovernmentListService from 'frontend-burgernabije-besluitendatabank/services/government-list';
+import type ProvinceListService from 'frontend-burgernabije-besluitendatabank/services/province-list';
 import {
   parseMuSearchAttributeToString,
   parseMuSearchAttributeToDate,
 } from 'frontend-burgernabije-besluitendatabank/utils/mu-search-data-format';
-import RouterService from '@ember/routing/router-service';
+import type RouterService from '@ember/routing/router-service';
 
 interface SessionsParams {
   municipalityLabels: string;

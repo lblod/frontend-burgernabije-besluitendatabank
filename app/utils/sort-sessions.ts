@@ -1,4 +1,4 @@
-import SessionModel from 'frontend-burgernabije-besluitendatabank/models/session';
+import type SessionModel from 'frontend-burgernabije-besluitendatabank/models/session';
 
 // Sort sessions based on the presence of "municipality" and "startedAt"
 export const sortSessions = (a: SessionModel, b: SessionModel) => {

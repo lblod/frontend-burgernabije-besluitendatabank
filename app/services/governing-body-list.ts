@@ -1,4 +1,4 @@
-import Store from '@ember-data/store';
+import type Store from '@ember-data/store';
 import Service, { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { QueryParameterKeys } from 'frontend-burgernabije-besluitendatabank/constants/query-parameter-keys';

@@ -1,13 +1,8 @@
-import Model, {
-  AsyncBelongsTo,
-  AsyncHasMany,
-  attr,
-  belongsTo,
-  hasMany,
-} from '@ember-data/model';
-import AdministrativeUnitModel from './administrative-unit';
-import GoverningBodyClasssificationCodeModel from './governing-body-classification-code';
-import SessionModel from './session';
+import type { AsyncBelongsTo, AsyncHasMany } from '@ember-data/model';
+import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
+import type AdministrativeUnitModel from './administrative-unit';
+import type GoverningBodyClasssificationCodeModel from './governing-body-classification-code';
+import type SessionModel from './session';
 
 /**
  * There are two types of governing bodies

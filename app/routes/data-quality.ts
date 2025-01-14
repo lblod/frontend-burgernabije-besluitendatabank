@@ -1,16 +1,14 @@
-import Store from '@ember-data/store';
+import type Store from '@ember-data/store';
 import { action } from '@ember/object';
 import Route from '@ember/routing/route';
-import Transition from '@ember/routing/transition';
+import type Transition from '@ember/routing/transition';
 import { service } from '@ember/service';
-import DataQualityController from 'frontend-burgernabije-besluitendatabank/controllers/data-quality';
-import AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
-import VoteModel from 'frontend-burgernabije-besluitendatabank/models/vote';
-import FeaturesService from 'frontend-burgernabije-besluitendatabank/services/features';
-import {
-  AdapterPopulatedRecordArrayWithMeta,
-  getCount,
-} from 'frontend-burgernabije-besluitendatabank/utils/ember-data';
+import type DataQualityController from 'frontend-burgernabije-besluitendatabank/controllers/data-quality';
+import type AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
+import type VoteModel from 'frontend-burgernabije-besluitendatabank/models/vote';
+import type FeaturesService from 'frontend-burgernabije-besluitendatabank/services/features';
+import type { AdapterPopulatedRecordArrayWithMeta } from 'frontend-burgernabije-besluitendatabank/utils/ember-data';
+import { getCount } from 'frontend-burgernabije-besluitendatabank/utils/ember-data';
 
 export default class DataQualityRoute extends Route {
   @service declare store: Store;

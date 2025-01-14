@@ -65,8 +65,12 @@ export default [
       ecmaVersion: "latest",
       sourceType: "module", // Adjust to "module" if using ES Modules
     },
-
-    rules: {},
+    rules: {
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        { prefer: "type-imports" },
+      ],
+    },
   },
   ...compat
     .extends(

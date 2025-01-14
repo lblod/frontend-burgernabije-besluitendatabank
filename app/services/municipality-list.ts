@@ -1,7 +1,7 @@
-import Store from '@ember-data/store';
+import type Store from '@ember-data/store';
 import Service, { service } from '@ember/service';
 import { QueryParameterKeys } from 'frontend-burgernabije-besluitendatabank/constants/query-parameter-keys';
-import LocationModel from 'frontend-burgernabije-besluitendatabank/models/location';
+import type LocationModel from 'frontend-burgernabije-besluitendatabank/models/location';
 import { deserializeArray } from 'frontend-burgernabije-besluitendatabank/utils/query-params';
 type Municipality = { label: string; id: string };
 

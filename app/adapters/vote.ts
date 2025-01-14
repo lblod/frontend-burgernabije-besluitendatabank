@@ -1,5 +1,6 @@
 import JSONAPIAdapter from '@ember-data/adapter/json-api';
-import Store, { Snapshot } from '@ember-data/store';
+import type { Snapshot } from '@ember-data/store';
+import type Store from '@ember-data/store';
 
 export default class VoteAdapter extends JSONAPIAdapter {
   findHasMany(
