@@ -189,7 +189,7 @@ export default class DateRangeFilterComponent extends Component<Signature> {
 
   findPreset(
     start: ISODateString | null,
-    end: ISODateString | null
+    end: ISODateString | null,
   ): Preset | null {
     const NO_PRESET = null;
 
@@ -219,12 +219,12 @@ export default class DateRangeFilterComponent extends Component<Signature> {
 
     if (startDate > this.MAX_DATE || startDate < this.MIN_DATE) {
       this.startDateError.push(
-        'De startdatum moet tussen 1 januari 2015 en 31 december 2100 liggen'
+        'De startdatum moet tussen 1 januari 2015 en 31 december 2100 liggen',
       );
     }
     if (endDate > this.MAX_DATE || endDate < this.MIN_DATE) {
       this.endDateError.push(
-        'De einddatum moet tussen 1 januari 2015 en 31 december 2100 liggen'
+        'De einddatum moet tussen 1 januari 2015 en 31 december 2100 liggen',
       );
     }
     if (this.isInvalidDateRange) {

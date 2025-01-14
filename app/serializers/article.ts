@@ -28,7 +28,7 @@ export default class ArticleSerializer extends JSONAPISerializer {
     primaryModelClass: ModelSchema,
     payload: { data?: Article | Array<Article> },
     id: string | number,
-    requestType: string
+    requestType: string,
   ) {
     if (Array.isArray(payload.data)) {
       payload.data = payload.data.map((item) => this.normilizeArticle(item));
@@ -41,7 +41,7 @@ export default class ArticleSerializer extends JSONAPISerializer {
       primaryModelClass,
       payload,
       id,
-      requestType
+      requestType,
     );
   }
 }

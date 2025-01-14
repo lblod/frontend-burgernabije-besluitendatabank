@@ -61,11 +61,11 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
             return flattenedHaystack.find(
               (option) =>
                 get(option, searchField) === value &&
-                option['type'] === queryParam
+                option['type'] === queryParam,
             );
           })
           .filter(Boolean) as Option[];
-      }
+      },
     );
 
     this.onSelectedChange(results);

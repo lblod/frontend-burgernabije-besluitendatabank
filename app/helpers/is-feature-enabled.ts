@@ -9,7 +9,7 @@ export default class IsFeatureEnabled extends Helper<string[]> {
   compute(positional: [string | undefined]) {
     assert(
       'is-feature-enabled expects exactly one argument',
-      positional.length === 1
+      positional.length === 1,
     );
 
     return this.features.isEnabled(positional[0] ?? '');

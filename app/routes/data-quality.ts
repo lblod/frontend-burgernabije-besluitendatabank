@@ -3,6 +3,7 @@ import { action } from '@ember/object';
 import Route from '@ember/routing/route';
 import Transition from '@ember/routing/transition';
 import { service } from '@ember/service';
+import DataQualityController from 'frontend-burgernabije-besluitendatabank/controllers/data-quality';
 import AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
 import VoteModel from 'frontend-burgernabije-besluitendatabank/models/vote';
 import FeaturesService from 'frontend-burgernabije-besluitendatabank/services/features';
@@ -18,10 +19,12 @@ export default class DataQualityRoute extends Route {
   @action
   loading(transition: Transition) {
     // eslint-disable-next-line ember/no-controller-access-in-routes
-    const controller: any = this.controllerFor('data-quality');
-    controller.set('currentlyLoading', true);
-    transition.promise.finally(function () {
-      controller.set('currentlyLoading', false);
+    const controller = this.controllerFor(
+      'data-quality',
+    ) as DataQualityController;
+    controller.currentlyLoading = true;
+    transition.promise.finally(() => {
+      controller.currentlyLoading = false;
     });
   }
 
@@ -75,7 +78,7 @@ export default class DataQualityRoute extends Route {
       const percentageAgendaItemsWithTitleAndDescriptionToTotal = Math.round(
         ((getCount(totalCountAgendaItemsWithTitleAndDescription) || 0) /
           (totalCountAgendaItems || 1)) *
-          100
+          100,
       );
 
       const totalCountAgendaItemsTreated: AdapterPopulatedRecordArrayWithMeta<AgendaItemModel> =
@@ -103,12 +106,12 @@ export default class DataQualityRoute extends Route {
       const percentageAgendaItemsTreatedToTotal = Math.round(
         ((getCount(totalCountAgendaItemsTreated) || 0) /
           (totalCountAgendaItems || 1)) *
-          100
+          100,
       );
 
       // get all classifications (governing bodies) from the store and dont get duplicates
       const allGoverningBodyClassifications = await this.store.findAll(
-        'governing-body-classification-code'
+        'governing-body-classification-code',
       );
 
       // put all of the classifications through a loop to get the count of agenda items per classification
@@ -117,7 +120,7 @@ export default class DataQualityRoute extends Route {
         .filter(
           // filter out duplicates
           (classification, index, self) =>
-            self.findIndex((c) => c.label === classification.label) === index
+            self.findIndex((c) => c.label === classification.label) === index,
         )
         .map(async (governingBody) => {
           const agendaItems: AdapterPopulatedRecordArrayWithMeta<AgendaItemModel> =
@@ -146,9 +149,8 @@ export default class DataQualityRoute extends Route {
         });
 
       // resolve the promises
-      agendaItemsPerGoverningBodyClassification = await Promise.all(
-        agendaItemsPromises
-      );
+      agendaItemsPerGoverningBodyClassification =
+        await Promise.all(agendaItemsPromises);
 
       agendaItemsPerGoverningBodyClassification =
         agendaItemsPerGoverningBodyClassification.map((item) => ({
@@ -179,7 +181,7 @@ export default class DataQualityRoute extends Route {
       const percentageAgendaItemsWithVoteOrVotersToTotal = Math.round(
         ((getCount(agendaItemsWithVoteOrVoters) || 0) /
           (totalCountAgendaItems || 1)) *
-          100
+          100,
       );
 
       return {

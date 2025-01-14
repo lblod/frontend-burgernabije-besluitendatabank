@@ -9,7 +9,7 @@ module('Unit | Utility | mu-search-data-format', function () {
     test('it returns a Date when input string is valid', function (assert) {
       assert.deepEqual(
         parseMuSearchAttributeToDate('2022-11-29T20:00:00+01:00'),
-        new Date('2022-11-29T20:00:00+01:00')
+        new Date('2022-11-29T20:00:00+01:00'),
       );
     });
 
@@ -19,7 +19,7 @@ module('Unit | Utility | mu-search-data-format', function () {
           '2023-01-26T19:35:00+01:00',
           '2022-11-29T20:00:00+01:00',
         ]),
-        new Date('2023-01-26T19:35:00+01:00')
+        new Date('2023-01-26T19:35:00+01:00'),
       );
     });
 
@@ -40,7 +40,7 @@ module('Unit | Utility | mu-search-data-format', function () {
     test('it returns the first string when input is an array of strings', function (assert) {
       assert.deepEqual(
         parseMuSearchAttributeToString(['test', 'test2']),
-        'test'
+        'test',
       );
     });
 

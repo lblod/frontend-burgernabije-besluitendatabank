@@ -99,12 +99,12 @@ module(
 
       // Check if selected options are displayed
       const selectedOptionLabels = findAll(
-        '.ember-power-select-multiple-option'
+        '.ember-power-select-multiple-option',
       );
       assert.deepEqual(
         selectedOptionLabels.length,
         2,
-        'All selected options are displayed'
+        'All selected options are displayed',
       );
     });
 
@@ -144,5 +144,5 @@ module(
       const optionLabels = findAll('.ember-power-select-option');
       assert.deepEqual(optionLabels.length, 2, 'All options are displayed');
     });
-  }
+  },
 );

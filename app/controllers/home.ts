@@ -22,7 +22,7 @@ export default class HomeController extends Controller {
       ([municipalities, provinces]) => [
         { groupName: 'Gemeente', options: municipalities },
         { groupName: 'Provincie', options: provinces },
-      ]
+      ],
     );
   }
 
@@ -57,7 +57,7 @@ export default class HomeController extends Controller {
       label: string;
       id: string;
       type: 'provincies' | 'gemeentes';
-    }>
+    }>,
   ) {
     this.governmentList.selectedLocalGovernments = selectedLocalGovernments;
   }
@@ -70,12 +70,12 @@ export default class HomeController extends Controller {
         provincies: serializeArray(
           this.governmentList.selectedLocalGovernments
             .filter((municipality) => municipality.type === 'provincies')
-            .map((municipality) => municipality.label)
+            .map((municipality) => municipality.label),
         ),
         gemeentes: serializeArray(
           this.governmentList.selectedLocalGovernments
             .filter((municipality) => municipality.type === 'gemeentes')
-            .map((municipality) => municipality.label)
+            .map((municipality) => municipality.label),
         ),
       },
     });

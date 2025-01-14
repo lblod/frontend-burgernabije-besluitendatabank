@@ -27,7 +27,7 @@ export interface MuSearchResponse<T> {
 
 export default class MuSearchService extends Service {
   async search<I, O>(
-    request: PageableRequest<I, O>
+    request: PageableRequest<I, O>,
   ): Promise<MuSearchResponse<O>> {
     const { index, page, size, sort, filters, dataMapping } = request;
     try {
@@ -47,9 +47,9 @@ export default class MuSearchService extends Service {
           ...sortParams.map(
             (sortParam) =>
               `sort[${this.stripSort(sortParam)}.field]=${this.sortOrder(
-                sortParam
-              )}`
-          )
+                sortParam,
+              )}`,
+          ),
         );
       }
 
@@ -92,7 +92,7 @@ export default class MuSearchService extends Service {
   private getPaginationMetadata(
     pageNumber: number,
     pageSize: number,
-    total: number
+    total: number,
   ): Page {
     const size = Math.min(pageSize, total);
     const lastPageNumber =

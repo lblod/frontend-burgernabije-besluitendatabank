@@ -22,7 +22,7 @@ export default class SessionsSessionController extends Controller {
       .sort((a, b) =>
         a.titleFormatted.localeCompare(b.titleFormatted, undefined, {
           numeric: true,
-        })
+        }),
       );
   }
 }

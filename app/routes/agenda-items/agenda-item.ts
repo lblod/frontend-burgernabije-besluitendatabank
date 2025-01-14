@@ -47,7 +47,7 @@ export default class AgendaItemRoute extends Route {
         await administrativeUnit?.location;
         administrativeUnit = await governingBody?.administrativeUnit;
         await administrativeUnit?.location;
-      }) || []
+      }) || [],
     );
     const sessionId = agendaItem.session?.id;
     const agendaItemOnSameSessionRaw = sessionId
@@ -74,7 +74,7 @@ export default class AgendaItemRoute extends Route {
       await Promise.all(
         resolutions?.map(async (resolution) => {
           return (await resolution.articles).slice();
-        }) || []
+        }) || [],
       )
     )
       .flat()
@@ -115,7 +115,7 @@ export default class AgendaItemRoute extends Route {
   afterModel(model: AgendaItemRouteModel) {
     if (
       this.governingBodyDisabledList.list.includes(
-        model.agendaItem.governingBodyIdResolved || ''
+        model.agendaItem.governingBodyIdResolved || '',
       )
     ) {
       this.router.transitionTo('agenda-items.index');
@@ -125,7 +125,7 @@ export default class AgendaItemRoute extends Route {
   resetController(
     controller: AgendaItemController,
     isExiting: boolean,
-    transition: Transition
+    transition: Transition,
   ) {
     super.resetController(controller, isExiting, transition);
     if (isExiting) {

@@ -21,7 +21,7 @@ export default class ProvinceListService extends Service {
   }
 
   async getProvinceIdsFromLabels(
-    labels: Array<string> | string
+    labels: Array<string> | string,
   ): Promise<Array<string>> {
     const provinces = await this.provinces();
     if (!labels || labels.length === 0) {

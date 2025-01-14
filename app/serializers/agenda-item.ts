@@ -30,7 +30,7 @@ export default class AgendaItemSerializer extends JSONAPISerializer {
     primaryModelClass: ModelSchema,
     payload: { data?: AgendaItem | AgendaItem[] },
     id: string | number,
-    requestType: string
+    requestType: string,
   ) {
     if (Array.isArray(payload.data)) {
       payload.data = payload.data.map((item) => this.normilizeAgendaItem(item));
@@ -43,7 +43,7 @@ export default class AgendaItemSerializer extends JSONAPISerializer {
       primaryModelClass,
       payload,
       id,
-      requestType
+      requestType,
     );
   }
 }

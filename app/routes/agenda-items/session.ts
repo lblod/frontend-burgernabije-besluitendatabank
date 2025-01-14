@@ -22,7 +22,7 @@ export default class AgendaItemsAgendaItemSessionRoute extends Route {
           'governing-body.administrative-unit.location',
           'agenda-items',
         ].join(','),
-      }
+      },
     );
 
     return {

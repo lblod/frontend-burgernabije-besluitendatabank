@@ -41,7 +41,7 @@ export default class MunicipalityListService extends Service {
   async municipalityLabels() {
     if (!this._municipalityCleanedLabels) {
       this._municipalityCleanedLabels = this._filteredMunicipalities(
-        await this.municipalities()
+        await this.municipalities(),
       );
     }
 
@@ -58,9 +58,9 @@ export default class MunicipalityListService extends Service {
         municipalities
           .filter(
             (municipality) =>
-              municipality.label && municipality.label !== 'Kruishoutem'
+              municipality.label && municipality.label !== 'Kruishoutem',
           )
-          .map(({ label }) => label)
+          .map(({ label }) => label),
       ),
     ].map((label) => ({ label, type: QueryParameterKeys.municipalities }));
 
@@ -97,7 +97,7 @@ export default class MunicipalityListService extends Service {
    * @returns a Promise for an array of location ids
    */
   async getLocationIdsFromLabels(
-    labels?: Array<string> | string
+    labels?: Array<string> | string,
   ): Promise<Array<string>> {
     const municipalities = await this.municipalities();
     if (typeof labels === 'string') {

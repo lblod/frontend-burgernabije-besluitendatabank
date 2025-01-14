@@ -30,7 +30,7 @@ export default class ResolutionSerializer extends JSONAPISerializer {
     primaryModelClass: ModelSchema,
     payload: { data?: Resolution | Array<Resolution> },
     id: string | number,
-    requestType: string
+    requestType: string,
   ) {
     if (Array.isArray(payload.data)) {
       payload.data = payload.data.map((item) => this.normilizeResolution(item));
@@ -43,7 +43,7 @@ export default class ResolutionSerializer extends JSONAPISerializer {
       primaryModelClass,
       payload,
       id,
-      requestType
+      requestType,
     );
   }
 }

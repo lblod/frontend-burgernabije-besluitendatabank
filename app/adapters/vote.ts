@@ -6,12 +6,12 @@ export default class VoteAdapter extends JSONAPIAdapter {
     store: Store,
     snapshot: Snapshot,
     url: string,
-    relationship: { key: string }
+    relationship: { key: string },
   ) {
     // add page size 100 when relationship is voters
     if (
       ['hasProponents', 'hasOpponents', 'hasAbstainers'].includes(
-        relationship?.key
+        relationship?.key,
       )
     ) {
       const separator = url.includes('?') ? '&' : '?';
