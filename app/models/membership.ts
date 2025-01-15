@@ -1,5 +1,5 @@
-import Model, { AsyncBelongsTo, belongsTo } from '@ember-data/model';
-import ParliamentaryGroupModel from './parliamentary-group';
+import Model, { type AsyncBelongsTo, belongsTo } from '@ember-data/model';
+import type ParliamentaryGroupModel from './parliamentary-group';
 
 export default class MembershipModel extends Model {
   @belongsTo('parliamentary-group', { async: true, inverse: null })

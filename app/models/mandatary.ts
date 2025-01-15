@@ -1,6 +1,7 @@
-import Model, { AsyncBelongsTo, attr, belongsTo } from '@ember-data/model';
-import MembershipModel from './membership';
-import PersonModel from './person';
+import type { AsyncBelongsTo } from '@ember-data/model';
+import Model, { attr, belongsTo } from '@ember-data/model';
+import type MembershipModel from './membership';
+import type PersonModel from './person';
 
 export default class MandataryModel extends Model {
   @attr('date') declare startDate: Date;

@@ -1,7 +1,7 @@
 import Controller from '@ember/controller';
-import { ModelFrom } from '../../lib/type-utils';
-import SessionSessionRoute from '../../routes/sessions/session';
-import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
+import type { ModelFrom } from '../../lib/type-utils';
+import type SessionSessionRoute from '../../routes/sessions/session';
+import type AgendaItem from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
 
 export default class SessionsSessionController extends Controller {
   /** Used to fetch agenda items from the model */
@@ -22,7 +22,7 @@ export default class SessionsSessionController extends Controller {
       .sort((a, b) =>
         a.titleFormatted.localeCompare(b.titleFormatted, undefined, {
           numeric: true,
-        })
+        }),
       );
   }
 }

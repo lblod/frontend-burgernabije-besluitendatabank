@@ -1,5 +1,5 @@
 import { action, get } from '@ember/object';
-import RouterService from '@ember/routing/router-service';
+import type RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
 import { deserializeArray } from 'frontend-burgernabije-besluitendatabank/utils/query-params';
 import FilterComponent, { type FilterArgs } from './filter';
@@ -61,11 +61,11 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
             return flattenedHaystack.find(
               (option) =>
                 get(option, searchField) === value &&
-                option['type'] === queryParam
+                option['type'] === queryParam,
             );
           })
           .filter(Boolean) as Option[];
-      }
+      },
     );
 
     this.onSelectedChange(results);

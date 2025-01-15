@@ -1,5 +1,6 @@
-import Model, { AsyncBelongsTo, attr, belongsTo } from '@ember-data/model';
-import ResolutionModel from './resolution';
+import type { AsyncBelongsTo } from '@ember-data/model';
+import Model, { attr, belongsTo } from '@ember-data/model';
+import type ResolutionModel from './resolution';
 
 export default class ArticleModel extends Model {
   @attr('string') declare number?: string;

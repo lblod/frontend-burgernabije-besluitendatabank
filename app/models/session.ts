@@ -1,14 +1,9 @@
-import Model, {
-  AsyncBelongsTo,
-  AsyncHasMany,
-  attr,
-  belongsTo,
-  hasMany,
-} from '@ember-data/model';
+import type { AsyncBelongsTo, AsyncHasMany } from '@ember-data/model';
+import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 import { getFormattedDate } from 'frontend-burgernabije-besluitendatabank/utils/get-formatted-date';
 import { getFormattedDateRange } from 'frontend-burgernabije-besluitendatabank/utils/get-formatted-date-range';
-import AgendaItemModel from './agenda-item';
-import GoverningBodyModel from './governing-body';
+import type AgendaItemModel from './agenda-item';
+import type GoverningBodyModel from './governing-body';
 
 export default class SessionModel extends Model {
   @attr('date') declare plannedStart?: Date;

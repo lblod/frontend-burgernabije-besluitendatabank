@@ -1,4 +1,4 @@
-import Store from '@ember-data/store';
+import type Store from '@ember-data/store';
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
 
@@ -15,14 +15,14 @@ export default class AgendaItemsAgendaItemSessionRoute extends Route {
 
     const session = await this.store.findRecord(
       'session',
-      sessions?.firstObject?.id as string,
+      sessions?.objectAt(0)?.id as string,
       {
         include: [
           'governing-body.is-time-specialization-of.administrative-unit.location',
           'governing-body.administrative-unit.location',
           'agenda-items',
         ].join(','),
-      }
+      },
     );
 
     return {

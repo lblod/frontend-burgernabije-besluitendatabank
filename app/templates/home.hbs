@@ -22,12 +22,13 @@
         </AuContent>
         <div class="au-c-home__form au-o-flow">
           <AuLabel
-            for={{"municipality"}}
+            for="municipality"
             class="au-u-hidden-visually"
             @inline={{true}}
           >
             In welke gemeente(s) wil je zoeken?
           </AuLabel>
+          {{! template-lint-disable no-at-ember-render-modifiers }}
           <div
             class="au-o-flow au-o-flow--small"
             {{did-insert this.resetLoading}}

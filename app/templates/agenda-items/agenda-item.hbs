@@ -89,9 +89,9 @@
               <AuBadge @icon="report" @skin="brand" />
               <AuAccordion
                 @reverse={{true}}
-                @iconOpen={{"nav-down"}}
-                @iconClosed={{"nav-right"}}
-                @buttonLabel={{"Besluit"}}
+                @iconOpen="nav-down"
+                @iconClosed="nav-right"
+                @buttonLabel="Besluit"
               >
                 {{#let
                   (get
@@ -120,7 +120,7 @@
                   {{else}}
                     <AuAlert
                       @skin="warning"
-                      @title={{"Besluit niet beschikbaar"}}
+                      @title="Besluit niet beschikbaar"
                       class="au-u-margin-top au-u-margin-bottom"
                     />
                   {{/if}}
@@ -128,9 +128,9 @@
                     <div class="c-accordion-holder c-accordion-holder--top">
                       <AuAccordion
                         @reverse={{true}}
-                        @iconOpen={{"nav-down"}}
-                        @iconClosed={{"nav-right"}}
-                        @buttonLabel={{"Motivering"}}
+                        @iconOpen="nav-down"
+                        @iconClosed="nav-right"
+                        @buttonLabel="Motivering"
                       >
                         <AuContent @skin="small" class="au-u-padding">
                           <p class="au-u-muted">
@@ -149,9 +149,9 @@
                 <AuBadge @icon="book" @skin="brand" />
                 <AuAccordion
                   @reverse={{true}}
-                  @iconOpen={{"nav-down"}}
-                  @iconClosed={{"nav-right"}}
-                  @buttonLabel={{"Artikel"}}
+                  @iconOpen="nav-down"
+                  @iconClosed="nav-right"
+                  @buttonLabel="Artikel"
                 >
                   <AuAlert
                     @skin="success"
@@ -183,7 +183,7 @@
                 {{else}}
                   <AuAlert
                     @skin="warning"
-                    @title={{"Stemming niet beschikbaar"}}
+                    @title="Stemming niet beschikbaar"
                     class="au-u-margin-top au-u-margin-bottom"
                   />
                 {{/if}}

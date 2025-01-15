@@ -1,4 +1,4 @@
-import Store from '@ember-data/store';
+import type Store from '@ember-data/store';
 import Service, { service } from '@ember/service';
 import { QueryParameterKeys } from 'frontend-burgernabije-besluitendatabank/constants/query-parameter-keys';
 export default class ProvinceListService extends Service {
@@ -21,7 +21,7 @@ export default class ProvinceListService extends Service {
   }
 
   async getProvinceIdsFromLabels(
-    labels: Array<string> | string
+    labels: Array<string> | string,
   ): Promise<Array<string>> {
     const provinces = await this.provinces();
     if (!labels || labels.length === 0) {

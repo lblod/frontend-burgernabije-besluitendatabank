@@ -1,13 +1,13 @@
-import Store from '@ember-data/store';
+import type Store from '@ember-data/store';
 import Route from '@ember/routing/route';
-import Transition from '@ember/routing/transition';
+import type Transition from '@ember/routing/transition';
 import { service } from '@ember/service';
-import AgendaItemController from 'frontend-burgernabije-besluitendatabank/controllers/agenda-items/agenda-item';
-import AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
-import ArticleModel from 'frontend-burgernabije-besluitendatabank/models/article';
-import VoteModel from 'frontend-burgernabije-besluitendatabank/models/vote';
-import GoverningBodyDisabledList from 'frontend-burgernabije-besluitendatabank/services/governing-body-disabled-list';
-import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
+import type AgendaItemController from 'frontend-burgernabije-besluitendatabank/controllers/agenda-items/agenda-item';
+import type AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
+import type ArticleModel from 'frontend-burgernabije-besluitendatabank/models/article';
+import type VoteModel from 'frontend-burgernabije-besluitendatabank/models/vote';
+import type GoverningBodyDisabledList from 'frontend-burgernabije-besluitendatabank/services/governing-body-disabled-list';
+import type KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
 import { sortObjectsByTitle } from 'frontend-burgernabije-besluitendatabank/utils/array-utils';
 
 interface DetailParams {
@@ -47,7 +47,7 @@ export default class AgendaItemRoute extends Route {
         await administrativeUnit?.location;
         administrativeUnit = await governingBody?.administrativeUnit;
         await administrativeUnit?.location;
-      }) || []
+      }) || [],
     );
     const sessionId = agendaItem.session?.id;
     const agendaItemOnSameSessionRaw = sessionId
@@ -74,7 +74,7 @@ export default class AgendaItemRoute extends Route {
       await Promise.all(
         resolutions?.map(async (resolution) => {
           return (await resolution.articles).slice();
-        }) || []
+        }) || [],
       )
     )
       .flat()
@@ -115,7 +115,7 @@ export default class AgendaItemRoute extends Route {
   afterModel(model: AgendaItemRouteModel) {
     if (
       this.governingBodyDisabledList.list.includes(
-        model.agendaItem.governingBodyIdResolved || ''
+        model.agendaItem.governingBodyIdResolved || '',
       )
     ) {
       this.router.transitionTo('agenda-items.index');
@@ -125,7 +125,7 @@ export default class AgendaItemRoute extends Route {
   resetController(
     controller: AgendaItemController,
     isExiting: boolean,
-    transition: Transition
+    transition: Transition,
   ) {
     super.resetController(controller, isExiting, transition);
     if (isExiting) {

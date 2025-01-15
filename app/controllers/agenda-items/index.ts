@@ -3,20 +3,21 @@ import { action } from '@ember/object';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { task } from 'ember-concurrency';
-import { Resource } from 'ember-resources';
+import { Resource } from 'ember-modify-based-class-resource';
 import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/mu-search/agenda-item';
-import GoverningBodyDisabledList from 'frontend-burgernabije-besluitendatabank/services/governing-body-disabled-list';
-import GoverningBodyListService from 'frontend-burgernabije-besluitendatabank/services/governing-body-list';
-import GovernmentListService from 'frontend-burgernabije-besluitendatabank/services/government-list';
+import type GoverningBodyDisabledList from 'frontend-burgernabije-besluitendatabank/services/governing-body-disabled-list';
+import type GoverningBodyListService from 'frontend-burgernabije-besluitendatabank/services/governing-body-list';
+import type GovernmentListService from 'frontend-burgernabije-besluitendatabank/services/government-list';
 
-import MuSearchService, {
+import type {
   DataMapper,
   MuSearchData,
   MuSearchResponse,
   PageableRequest,
 } from 'frontend-burgernabije-besluitendatabank/services/mu-search';
-import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
-import ProvinceListService from 'frontend-burgernabije-besluitendatabank/services/province-list';
+import type MuSearchService from 'frontend-burgernabije-besluitendatabank/services/mu-search';
+import type MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
+import type ProvinceListService from 'frontend-burgernabije-besluitendatabank/services/province-list';
 import { cleanString } from 'frontend-burgernabije-besluitendatabank/utils/clean-string';
 import {
   parseMuSearchAttributeToDate,
@@ -91,11 +92,11 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
 
       const municipalityIds =
         await this.municipalityList.getLocationIdsFromLabels(
-          this.#filters.municipalityLabels
+          this.#filters.municipalityLabels,
         );
 
       const provinceIds = await this.provinceList.getProvinceIdsFromLabels(
-        this.#filters.provinceLabels
+        this.#filters.provinceLabels,
       );
 
       const locationIds = [...municipalityIds, ...provinceIds].join(',');
@@ -105,7 +106,7 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
 
       const governingBodyClassificationIds =
         await this.governingBodyList.getGoverningBodyClassificationIdsFromLabels(
-          this.#filters.governingBodyClassifications
+          this.#filters.governingBodyClassifications,
         );
 
       const agendaItems: MuSearchResponse<AgendaItem> =
@@ -119,19 +120,19 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
             plannedStartMin,
             plannedStartMax,
             dateSort,
-          })
+          }),
         );
 
       // remove disabled governing bodies from the response
       const items = agendaItems.items.filter((item) => {
         return !this.governingBodyDisabledList.disabledList.some((disabled) =>
-          item.governingBodyIdResolved.includes(disabled)
+          item.governingBodyIdResolved.includes(disabled),
         );
       });
 
       this.total = agendaItems.count ?? 0;
       this.data = [...this.data, ...items.slice()];
-    }
+    },
   );
 
   #reset() {
@@ -160,7 +161,7 @@ export default class AgendaItemsIndexController extends Controller {
       label: string;
       id: string;
       type: 'provincies' | 'gemeentes';
-    }>
+    }>,
   ) {
     this.governmentList.selectedLocalGovernments = newOptions;
   }
@@ -170,7 +171,7 @@ export default class AgendaItemsIndexController extends Controller {
       ([municipalities, provinces]) => [
         { groupName: 'Gemeente', options: municipalities },
         { groupName: 'Provincie', options: provinces },
-      ]
+      ],
     );
   }
   // QueryParameters
@@ -194,7 +195,7 @@ export default class AgendaItemsIndexController extends Controller {
       label: string;
       id: string;
       type: 'governing-body-classifications';
-    }>
+    }>,
   ) {
     this.governingBodyList.selectedGoverningBodyClassifications = newOptions;
   }
@@ -327,11 +328,10 @@ const agendaItemsQuery = ({
 
   // Apply optional filter for planned start range
   if (plannedStartMin) {
-    filters[
-      ':query:session_planned_start'
-    ] = `(session_planned_start:[${plannedStartMin} TO ${
-      plannedStartMax || '*'
-    }] ) `;
+    filters[':query:session_planned_start'] =
+      `(session_planned_start:[${plannedStartMin} TO ${
+        plannedStartMax || '*'
+      }] ) `;
   }
 
   // Apply optional filter for locationIds
@@ -365,7 +365,7 @@ const agendaItemsQuery = ({
 };
 
 const dataMapping: DataMapper<AgendaItemMuSearchEntry, AgendaItem> = (
-  data: MuSearchData<AgendaItemMuSearchEntry>
+  data: MuSearchData<AgendaItemMuSearchEntry>,
 ) => {
   const entry = data.attributes;
   const uuid = entry.uuid;
@@ -375,44 +375,44 @@ const dataMapping: DataMapper<AgendaItemMuSearchEntry, AgendaItem> = (
   dataResponse.id = Array.isArray(uuid) ? uuid[0] : uuid;
   dataResponse.title = cleanString(parseMuSearchAttributeToString(entry.title));
   dataResponse.resolutionTitle = cleanString(
-    parseMuSearchAttributeToString(entry.resolution_title)
+    parseMuSearchAttributeToString(entry.resolution_title),
   );
   dataResponse.description = cleanString(
-    parseMuSearchAttributeToString(entry.description)
+    parseMuSearchAttributeToString(entry.description),
   );
   dataResponse.locationId = entry.location_id || entry.abstract_location_id;
   dataResponse.abstractGoverningBodyLocationName =
     parseMuSearchAttributeToString(entry.abstract_governing_body_location_name);
   dataResponse.governingBodyLocationName = parseMuSearchAttributeToString(
-    entry.governing_body_location_name
+    entry.governing_body_location_name,
   );
   dataResponse.abstractGoverningBodyId = parseMuSearchAttributeToArray(
-    entry.abstract_governing_body_id
+    entry.abstract_governing_body_id,
   );
   dataResponse.governingBodyId = parseMuSearchAttributeToArray(
-    entry.governing_body_id
+    entry.governing_body_id,
   );
   dataResponse.abstractGoverningBodyName = parseMuSearchAttributeToString(
-    entry.abstract_governing_body_name
+    entry.abstract_governing_body_name,
   );
   dataResponse.governingBodyName = parseMuSearchAttributeToString(
-    entry.governing_body_name
+    entry.governing_body_name,
   );
   dataResponse.abstractGoverningBodyClassificationName =
     parseMuSearchAttributeToString(
-      entry.abstract_governing_body_classification_name
+      entry.abstract_governing_body_classification_name,
     );
   dataResponse.governingBodyClassificationName = parseMuSearchAttributeToString(
-    entry.governing_body_classification_name
+    entry.governing_body_classification_name,
   );
   dataResponse.sessionPlannedStart = parseMuSearchAttributeToDate(
-    entry.session_planned_start
+    entry.session_planned_start,
   );
   dataResponse.sessionEndedAt = parseMuSearchAttributeToDate(
-    entry.session_ended_at
+    entry.session_ended_at,
   );
   dataResponse.sessionStartedAt = parseMuSearchAttributeToDate(
-    entry.session_started_at
+    entry.session_started_at,
   );
 
   return dataResponse;

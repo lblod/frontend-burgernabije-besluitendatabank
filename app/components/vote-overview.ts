@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
-import MandataryModel from 'frontend-burgernabije-besluitendatabank/models/mandatary';
-import VoteModel from 'frontend-burgernabije-besluitendatabank/models/vote';
+import type MandataryModel from 'frontend-burgernabije-besluitendatabank/models/mandatary';
+import type VoteModel from 'frontend-burgernabije-besluitendatabank/models/vote';
 
 interface ArgsInterface {
   numberOfAbstentions: number;

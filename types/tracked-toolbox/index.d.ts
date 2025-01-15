@@ -12,6 +12,6 @@ declare module 'tracked-toolbox' {
    */
   export function localCopy<T = unknown>(
     memo: string,
-    initializer?: T | (() => T)
+    initializer?: T | (() => T),
   ): PropertyDecorator;
 }
