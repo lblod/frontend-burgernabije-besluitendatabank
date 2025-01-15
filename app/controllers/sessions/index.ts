@@ -12,7 +12,7 @@ import type {
 } from 'frontend-burgernabije-besluitendatabank/services/mu-search';
 import type MuSearchService from 'frontend-burgernabije-besluitendatabank/services/mu-search';
 import { task } from 'ember-concurrency';
-import { Resource } from 'ember-resources';
+import { Resource } from 'ember-modify-based-class-resource';
 import type GoverningBodyListService from 'frontend-burgernabije-besluitendatabank/services/governing-body-list';
 import type GovernmentListService from 'frontend-burgernabije-besluitendatabank/services/government-list';
 import type ProvinceListService from 'frontend-burgernabije-besluitendatabank/services/province-list';

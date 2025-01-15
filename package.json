@@ -84,7 +84,7 @@
     "concurrently": "^8.2.2",
     "date-fns": "^4.1.0",
     "ember-auto-import": "^2.10.0",
-    "ember-cli": "~5.12.0",
+    "ember-cli": "~6.1.0",
     "ember-cli-app-version": "^7.0.0",
     "ember-cli-autoprefixer": "^2.0.0",
     "ember-cli-babel": "^8.2.0",
@@ -131,7 +131,8 @@
     "tracked-toolbox": "^2.0.0",
     "typescript": "^5.7.3",
     "webpack": "^5.97.1",
-    "webpack-bundle-analyzer": "^4.10.2"
+    "webpack-bundle-analyzer": "^4.10.2",
+    "ember-modify-based-class-resource": "^1.1.1"
   },
   "engines": {
     "node": "14.* || 16.* || >= 18"

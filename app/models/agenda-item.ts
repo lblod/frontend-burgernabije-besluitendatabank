@@ -67,8 +67,8 @@ export default class AgendaItemModel extends Model {
             .value() as AgendaItemHandlingModel
         )
           ?.hasMany('resolutions')
-          .value() as SyncHasMany<ResolutionModel>
-      )?.firstObject?.title ||
+          .value() as unknown as ResolutionModel[]
+      )?.[0]?.title ||
       'Ontbrekende titel'
     );
   }

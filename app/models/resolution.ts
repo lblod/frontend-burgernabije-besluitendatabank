@@ -7,7 +7,7 @@ export default class ResolutionModel extends Model {
   @attr('string') declare value?: string;
   @attr('string') declare motivation?: string;
 
-  @hasMany('articles', { async: true })
+  @hasMany('articles', { async: true, inverse: null })
   declare articles: AsyncHasMany<ArticleModel>;
 }
 

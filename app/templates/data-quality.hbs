@@ -139,7 +139,7 @@
         </PowerSelect>
         <AuList @divider={{true}} as |Item|>
           {{#if this.currentlyLoading}}
-            <AuLoader />
+            <AuLoader @hideMessage={{true}}>Aan het laden</AuLoader>
 
           {{else}}
             <Item>

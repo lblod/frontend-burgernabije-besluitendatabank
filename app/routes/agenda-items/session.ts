@@ -15,7 +15,7 @@ export default class AgendaItemsAgendaItemSessionRoute extends Route {
 
     const session = await this.store.findRecord(
       'session',
-      sessions?.firstObject?.id as string,
+      sessions?.objectAt(0)?.id as string,
       {
         include: [
           'governing-body.is-time-specialization-of.administrative-unit.location',
