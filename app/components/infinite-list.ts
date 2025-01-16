@@ -1,6 +1,5 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
-import { tracked } from '@glimmer/tracking';
 
 interface ArgsInterface {
   loadMore: () => void;
@@ -10,7 +9,7 @@ interface ArgsInterface {
 }
 
 export default class InfiniteList extends Component<ArgsInterface> {
-  @tracked isScrolling = false;
+  isScrolling = false;
 
   @action
   scroll(event: Event) {
