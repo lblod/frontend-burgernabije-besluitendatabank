@@ -1,7 +1,7 @@
 import Helper from '@ember/component/helper';
 import { assert } from '@ember/debug';
 import { service } from '@ember/service';
-import FeaturesService from 'frontend-burgernabije-besluitendatabank/services/features';
+import type FeaturesService from 'frontend-burgernabije-besluitendatabank/services/features';
 
 export default class IsFeatureEnabled extends Helper<string[]> {
   @service declare features: FeaturesService;
@@ -9,7 +9,7 @@ export default class IsFeatureEnabled extends Helper<string[]> {
   compute(positional: [string | undefined]) {
     assert(
       'is-feature-enabled expects exactly one argument',
-      positional.length === 1
+      positional.length === 1,
     );
 
     return this.features.isEnabled(positional[0] ?? '');

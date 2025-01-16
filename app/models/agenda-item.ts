@@ -1,15 +1,13 @@
-import Model, {
+import type {
   AsyncBelongsTo,
   AsyncHasMany,
   SyncHasMany,
-  attr,
-  belongsTo,
-  hasMany,
 } from '@ember-data/model';
+import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 import { sortSessions } from 'frontend-burgernabije-besluitendatabank/utils/sort-sessions';
-import AgendaItemHandlingModel from './agenda-item-handling';
-import ResolutionModel from './resolution';
-import SessionModel from './session';
+import type AgendaItemHandlingModel from './agenda-item-handling';
+import type ResolutionModel from './resolution';
+import type SessionModel from './session';
 
 export default class AgendaItemModel extends Model {
   @attr('string') declare title: string;
@@ -69,8 +67,8 @@ export default class AgendaItemModel extends Model {
             .value() as AgendaItemHandlingModel
         )
           ?.hasMany('resolutions')
-          .value() as SyncHasMany<ResolutionModel>
-      )?.firstObject?.title ||
+          .value() as unknown as ResolutionModel[]
+      )?.[0]?.title ||
       'Ontbrekende titel'
     );
   }

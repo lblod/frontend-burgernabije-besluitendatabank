@@ -9,7 +9,7 @@
   </ul>
   <div class="au-u-flex au-u-flex--center au-u-padding-top">
     {{#if @isLoading}}
-      <AuLoader />
+      <AuLoader @hideMessage={{true}}>Aan het laden</AuLoader>
     {{else if this.moreDataToLoad}}
       <AuButton
         @icon="add"

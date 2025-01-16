@@ -1,4 +1,4 @@
-import Store from '@ember-data/store';
+import type Store from '@ember-data/store';
 import Service, { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { QueryParameterKeys } from 'frontend-burgernabije-besluitendatabank/constants/query-parameter-keys';
@@ -13,7 +13,7 @@ export default class GoverningBodyListService extends Service {
    **/
 
   async getGoverningBodyClassificationIdsFromLabels(
-    governingBodyLabels?: Array<string> | string
+    governingBodyLabels?: Array<string> | string,
   ): Promise<string | undefined> {
     if (!governingBodyLabels) {
       return undefined;
@@ -31,7 +31,7 @@ export default class GoverningBodyListService extends Service {
         }
         return acc;
       },
-      [] as Array<string>
+      [] as Array<string>,
     );
 
     return governingBodyClassificationIds.join(',');
@@ -49,13 +49,13 @@ export default class GoverningBodyListService extends Service {
       {
         page: { size: 100 },
         sort: 'label',
-      }
+      },
     );
 
     return governingBodyClasssificationCodes
       .filter(
         (classificationCode, index, self) =>
-          self.findIndex((t) => t.label === classificationCode.label) === index
+          self.findIndex((t) => t.label === classificationCode.label) === index,
       )
       .map((governingBody) => ({
         id: governingBody.id,

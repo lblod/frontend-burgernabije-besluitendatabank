@@ -2,24 +2,25 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
-import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
+import type MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 import Session from 'frontend-burgernabije-besluitendatabank/models/mu-search/session';
-import MuSearchService, {
+import type {
   DataMapper,
   MuSearchData,
   MuSearchResponse,
   PageableRequest,
 } from 'frontend-burgernabije-besluitendatabank/services/mu-search';
+import type MuSearchService from 'frontend-burgernabije-besluitendatabank/services/mu-search';
 import { task } from 'ember-concurrency';
-import { Resource } from 'ember-resources';
-import GoverningBodyListService from 'frontend-burgernabije-besluitendatabank/services/governing-body-list';
-import GovernmentListService from 'frontend-burgernabije-besluitendatabank/services/government-list';
-import ProvinceListService from 'frontend-burgernabije-besluitendatabank/services/province-list';
+import { Resource } from 'ember-modify-based-class-resource';
+import type GoverningBodyListService from 'frontend-burgernabije-besluitendatabank/services/governing-body-list';
+import type GovernmentListService from 'frontend-burgernabije-besluitendatabank/services/government-list';
+import type ProvinceListService from 'frontend-burgernabije-besluitendatabank/services/province-list';
 import {
   parseMuSearchAttributeToString,
   parseMuSearchAttributeToDate,
 } from 'frontend-burgernabije-besluitendatabank/utils/mu-search-data-format';
-import RouterService from '@ember/routing/router-service';
+import type RouterService from '@ember/routing/router-service';
 
 interface SessionsParams {
   municipalityLabels: string;
@@ -85,11 +86,11 @@ class SessionsLoader extends Resource<SessionsLoaderArgs> {
 
     const municipalityIds =
       await this.municipalityList.getLocationIdsFromLabels(
-        this.#filters.municipalityLabels
+        this.#filters.municipalityLabels,
       );
 
     const provinceIds = await this.provinceList.getProvinceIdsFromLabels(
-      this.#filters.provinceLabels
+      this.#filters.provinceLabels,
     );
 
     const locationIds = [...municipalityIds, ...provinceIds].join(',');
@@ -99,7 +100,7 @@ class SessionsLoader extends Resource<SessionsLoaderArgs> {
 
     const governingBodyClassificationIds =
       await this.governingBodyList.getGoverningBodyClassificationIdsFromLabels(
-        this.#filters.governingBodyClassifications
+        this.#filters.governingBodyClassifications,
       );
 
     const sessions: MuSearchResponse<Session> = await this.muSearch.search(
@@ -112,7 +113,7 @@ class SessionsLoader extends Resource<SessionsLoaderArgs> {
         plannedStartMin,
         plannedStartMax,
         dateSort,
-      })
+      }),
     );
 
     this.total = sessions.count ?? 0;
@@ -145,7 +146,7 @@ export default class SessionsIndexController extends Controller {
       label: string;
       id: string;
       type: 'provincies' | 'gemeentes';
-    }>
+    }>,
   ) {
     this.governmentList.selectedLocalGovernments = newOptions;
   }
@@ -155,7 +156,7 @@ export default class SessionsIndexController extends Controller {
       ([municipalities, provinces]) => [
         { groupName: 'Gemeente', options: municipalities },
         { groupName: 'Provincie', options: provinces },
-      ]
+      ],
     );
   }
   // QueryParameters
@@ -181,7 +182,7 @@ export default class SessionsIndexController extends Controller {
       label: string;
       id: string;
       type: 'governing-body-classifications';
-    }>
+    }>,
   ) {
     this.governingBodyList.selectedGoverningBodyClassifications = newOptions;
   }
@@ -345,7 +346,7 @@ const sessionsQuery = ({
 };
 
 const dataMapping: DataMapper<SessionMuSearchEntry, Session> = (
-  data: MuSearchData<SessionMuSearchEntry>
+  data: MuSearchData<SessionMuSearchEntry>,
 ) => {
   const entry = data.attributes;
   const uuid = entry.uuid;
@@ -357,21 +358,21 @@ const dataMapping: DataMapper<SessionMuSearchEntry, Session> = (
   dataResponse.abstractGoverningBodyLocationName =
     parseMuSearchAttributeToString(entry.abstract_governing_body_location_name);
   dataResponse.governingBodyLocationName = parseMuSearchAttributeToString(
-    entry.governing_body_location_name
+    entry.governing_body_location_name,
   );
   dataResponse.abstractGoverningBodyName = parseMuSearchAttributeToString(
-    entry.abstract_governing_body_name
+    entry.abstract_governing_body_name,
   );
   dataResponse.governingBodyName = parseMuSearchAttributeToString(
-    entry.governing_body_name
+    entry.governing_body_name,
   );
   dataResponse.agendaItemsId = entry['agenda-items_id'] || [];
   dataResponse.abstractGoverningBodyClassificationName =
     parseMuSearchAttributeToString(
-      entry.abstract_governing_body_classification_name
+      entry.abstract_governing_body_classification_name,
     );
   dataResponse.governingBodyClassificationName = parseMuSearchAttributeToString(
-    entry.governing_body_classification_name
+    entry.governing_body_classification_name,
   );
   dataResponse.plannedStart = parseMuSearchAttributeToDate(entry.planned_start);
   dataResponse.endedAt = parseMuSearchAttributeToDate(entry.ended_at);

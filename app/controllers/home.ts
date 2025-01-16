@@ -1,11 +1,11 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
-import RouterService from '@ember/routing/router-service';
+import type RouterService from '@ember/routing/router-service';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import GovernmentListService from 'frontend-burgernabije-besluitendatabank/services/government-list';
-import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
-import ProvinceListService from 'frontend-burgernabije-besluitendatabank/services/province-list';
+import type GovernmentListService from 'frontend-burgernabije-besluitendatabank/services/government-list';
+import type MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
+import type ProvinceListService from 'frontend-burgernabije-besluitendatabank/services/province-list';
 import { serializeArray } from 'frontend-burgernabije-besluitendatabank/utils/query-params';
 
 export default class HomeController extends Controller {
@@ -22,7 +22,7 @@ export default class HomeController extends Controller {
       ([municipalities, provinces]) => [
         { groupName: 'Gemeente', options: municipalities },
         { groupName: 'Provincie', options: provinces },
-      ]
+      ],
     );
   }
 
@@ -57,7 +57,7 @@ export default class HomeController extends Controller {
       label: string;
       id: string;
       type: 'provincies' | 'gemeentes';
-    }>
+    }>,
   ) {
     this.governmentList.selectedLocalGovernments = selectedLocalGovernments;
   }
@@ -70,12 +70,12 @@ export default class HomeController extends Controller {
         provincies: serializeArray(
           this.governmentList.selectedLocalGovernments
             .filter((municipality) => municipality.type === 'provincies')
-            .map((municipality) => municipality.label)
+            .map((municipality) => municipality.label),
         ),
         gemeentes: serializeArray(
           this.governmentList.selectedLocalGovernments
             .filter((municipality) => municipality.type === 'gemeentes')
-            .map((municipality) => municipality.label)
+            .map((municipality) => municipality.label),
         ),
       },
     });

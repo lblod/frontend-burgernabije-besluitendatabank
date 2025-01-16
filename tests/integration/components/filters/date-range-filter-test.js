@@ -92,13 +92,13 @@ module('Integration | Component | filters/date-range-filter', function (hooks) {
 
       assert
         .dom(
-          '[data-test-date-range-filter-from-error="De startdatum moet tussen 1 januari 2015 en 31 december 2100 liggen"]'
+          '[data-test-date-range-filter-from-error="De startdatum moet tussen 1 januari 2015 en 31 december 2100 liggen"]',
         )
         .exists();
 
       assert
         .dom(
-          '[data-test-date-range-filter-to-error="De einddatum moet tussen 1 januari 2015 en 31 december 2100 liggen"]'
+          '[data-test-date-range-filter-to-error="De einddatum moet tussen 1 januari 2015 en 31 december 2100 liggen"]',
         )
         .exists();
     });
@@ -111,13 +111,13 @@ module('Integration | Component | filters/date-range-filter', function (hooks) {
 
       assert
         .dom(
-          '[data-test-date-range-filter-from-error="De startdatum moet tussen 1 januari 2015 en 31 december 2100 liggen"]'
+          '[data-test-date-range-filter-from-error="De startdatum moet tussen 1 januari 2015 en 31 december 2100 liggen"]',
         )
         .exists();
 
       assert
         .dom(
-          '[data-test-date-range-filter-to-error="De einddatum moet tussen 1 januari 2015 en 31 december 2100 liggen"]'
+          '[data-test-date-range-filter-to-error="De einddatum moet tussen 1 januari 2015 en 31 december 2100 liggen"]',
         )
         .exists();
     });
@@ -130,7 +130,7 @@ module('Integration | Component | filters/date-range-filter', function (hooks) {
 
       assert
         .dom(
-          '[data-test-date-range-filter-to-error="De startdatum moet voor de einddatum liggen"]'
+          '[data-test-date-range-filter-to-error="De startdatum moet voor de einddatum liggen"]',
         )
         .exists();
 

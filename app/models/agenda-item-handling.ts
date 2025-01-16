@@ -1,6 +1,7 @@
-import Model, { AsyncHasMany, attr, hasMany } from '@ember-data/model';
-import ResolutionModel from './resolution';
-import VoteModel from './vote';
+import type { AsyncHasMany } from '@ember-data/model';
+import Model, { attr, hasMany } from '@ember-data/model';
+import type ResolutionModel from './resolution';
+import type VoteModel from './vote';
 
 export default class AgendaItemHandlingModel extends Model {
   @attr('boolean') declare public?: boolean;
