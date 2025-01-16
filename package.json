@@ -15,7 +15,6 @@
   },
   "scripts": {
     "build": "ember build --environment=production",
-    "build:analyze-bundle": "ANALYZE_BUNDLE=true EMBROIDER_CONCAT_STATS=true ember build --environment=production",
     "lint": "concurrently \"npm:lint:*(!fix)\" --names \"lint:\"",
     "lint:css": "stylelint \"**/*.scss\"",
     "lint:css:fix": "concurrently \"npm:lint:css -- --fix\"",
@@ -132,7 +131,6 @@
     "tracked-toolbox": "^2.0.0",
     "typescript": "^5.7.3",
     "webpack": "^5.97.1",
-    "webpack-bundle-analyzer": "^4.10.2",
     "@glimmer/runtime": "^0.93.1"
   },
   "engines": {
