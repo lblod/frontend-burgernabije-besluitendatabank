@@ -1,11 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'frontend-burgernabije-besluitendatabank/tests/helpers';
-import {
-  click,
-  fillIn,
-  find as findElement,
-  render,
-} from '@ember/test-helpers';
+import { click, fillIn, find, render } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
 import sinon from 'sinon';
 
@@ -17,7 +12,7 @@ module('Integration | Component | filters/date-range-filter', function (hooks) {
   });
 
   const toggleButtonSelector = async () =>
-    await findElement('[data-test-filters-toggle-button]');
+    await find('[data-test-filters-toggle-button]');
 
   test('it displays presets by default', async function (assert) {
     assert
@@ -47,10 +42,10 @@ module('Integration | Component | filters/date-range-filter', function (hooks) {
     });
 
     const dateRangeFilterFromSelector = async () =>
-      await findElement('[data-test-date-range-filter-from]');
+      await find('[data-test-date-range-filter-from]');
 
     const dateRangeFilterToSelector = async () =>
-      await findElement('[data-test-date-range-filter-to]');
+      await find('[data-test-date-range-filter-to]');
 
     test('it updates queryParams when date valide ', async function (assert) {
       assert.expect(2);
