@@ -1,3 +1,13 @@
+## v0.8.3 (2025-01-23)
+
+#### :rocket: Enhancement
+
+- [#205](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/205) Adapt the jira iframe to the screen height and translate the text into dutch ([@Andresdev02](https://github.com/Andresdev02))
+
+#### Committers: 1
+
+- Andres Vergauwen ([@Andresdev02](https://github.com/Andresdev02))
+
 ## v0.8.2 (2025-01-23)
 
 #### :rocket: Enhancement
