@@ -28,5 +28,8 @@ export default class AgendaItemsIndexRoute extends Route {
     dateSort: {
       as: QueryParameterKeys.dateSort,
     },
+    status: {
+      as: QueryParameterKeys.status,
+    },
   };
 }

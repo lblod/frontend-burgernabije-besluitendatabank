@@ -34,6 +34,7 @@ interface AgendaItemsParams {
   governingBodyClassifications: string;
   dataQualityList: Array<string>;
   dateSort: string;
+  status: string;
 }
 
 interface AgendaItemsLoaderArgs {
@@ -108,7 +109,6 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
         await this.governingBodyList.getGoverningBodyClassificationIdsFromLabels(
           this.#filters.governingBodyClassifications,
         );
-
       const agendaItems: MuSearchResponse<AgendaItem> =
         await this.muSearch.search(
           agendaItemsQuery({
@@ -120,6 +120,7 @@ class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
             plannedStartMin,
             plannedStartMax,
             dateSort,
+            status: this.#filters.status,
           }),
         );
 
@@ -174,7 +175,17 @@ export default class AgendaItemsIndexController extends Controller {
       ],
     );
   }
+
+  @action
+  updateSelectedStatus(value: string) {
+    this.status = value;
+  }
+
+  get statusOfAgendaItems() {
+    return ['Alles', 'Behandeld', 'Niet behandeld'];
+  }
   // QueryParameters
+  @tracked status = 'Alles';
   @tracked keyword = '';
   @tracked municipalityLabels = '';
   @tracked provinceLabels = '';
@@ -261,6 +272,7 @@ export default class AgendaItemsIndexController extends Controller {
       dateSort: this.dateSort,
       governingBodyClassifications: this.governingBodyClassifications,
       dataQualityList: [],
+      status: this.status,
     };
   }
 
@@ -279,6 +291,7 @@ type AgendaItemsQueryArguments = {
   plannedStartMax?: string;
   dateSort?: string;
   governingBodyClassificationIds?: string;
+  status?: string;
 };
 
 type AgendaItemMuSearchEntry = {
@@ -315,6 +328,7 @@ const agendaItemsQuery = ({
   plannedStartMax,
   dateSort,
   governingBodyClassificationIds,
+  status,
 }: AgendaItemsQueryArguments): AgendaItemsQueryResult => {
   // Initialize filters and request objects
   const filters = {} as { [key: string]: string };
@@ -332,6 +346,16 @@ const agendaItemsQuery = ({
       `(session_planned_start:[${plannedStartMin} TO ${
         plannedStartMax || '*'
       }] ) `;
+  }
+
+  // Apply optional filter for status
+  if (status === 'Behandeld') {
+    filters[':has:session_started_at'] = 't';
+    filters[':has:session_ended_at'] = 't';
+  }
+  if (status === 'Niet behandeld') {
+    filters[':has-no:session_started_at'] = 't';
+    filters[':has-no:session_ended_at'] = 't';
   }
 
   // Apply optional filter for locationIds
