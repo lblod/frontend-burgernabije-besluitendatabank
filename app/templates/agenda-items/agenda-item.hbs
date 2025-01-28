@@ -122,7 +122,13 @@
                       @skin="warning"
                       @title="Besluit niet beschikbaar"
                       class="au-u-margin-top au-u-margin-bottom"
-                    />
+                    >
+                      {{#if this.model.agendaItem.wasHandled}}
+                        <p>De data voor dit agendapunt is nog niet beschikbaar.</p>
+                      {{else}}
+                        <p>Dit agendapunt werd nog niet behandeld.</p>
+                      {{/if}}
+                    </AuAlert>
                   {{/if}}
                   {{#if resolution.motivation}}
                     <div class="c-accordion-holder c-accordion-holder--top">
@@ -185,7 +191,13 @@
                     @skin="warning"
                     @title="Stemming niet beschikbaar"
                     class="au-u-margin-top au-u-margin-bottom"
-                  />
+                  >
+                    {{#if this.model.agendaItem.wasHandled}}
+                      <p>De data voor dit agendapunt is nog niet beschikbaar.</p>
+                    {{else}}
+                      <p>Dit agendapunt werd nog niet behandeld.</p>
+                    {{/if}}
+                  </AuAlert>
                 {{/if}}
               </AuAccordion>
             </section>
