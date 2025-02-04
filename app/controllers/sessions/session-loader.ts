@@ -103,7 +103,7 @@ export default class SessionsLoader extends Resource<SessionsLoaderArgs> {
   );
 
   loadMore = () => {
-    if (this.canLoadMore) {
+    if (this.canLoadMore && !this.isLoading) {
       this.#currentPage += 1;
       this.loadSessions.perform(this.#currentPage);
     }

@@ -106,7 +106,7 @@ export default class AgendaItemsLoader extends Resource<AgendaItemsLoaderArgs> {
   }
 
   loadMore = () => {
-    if (this.canLoadMore) {
+    if (this.canLoadMore && !this.isLoading) {
       this.#currentPage++;
       this.loadAgendaItems.perform(this.#currentPage);
     }

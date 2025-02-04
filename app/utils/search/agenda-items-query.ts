@@ -28,7 +28,7 @@ export function createAgendaItemsQuery({
   return {
     index,
     page,
-    size: 10,
+    size: 15,
     sort: `${dateSort === 'asc' ? '+' : '-'}session_planned_start`,
     filters: buildFilters({
       keyword,

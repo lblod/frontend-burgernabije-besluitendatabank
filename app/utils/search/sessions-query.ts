@@ -52,10 +52,12 @@ function buildFilters({
   };
 
   if (plannedStartMin) {
-    filters[':query:planned_start'] = `(planned_start:[${plannedStartMin} TO ${
-      plannedStartMax || '*'
-    }] ) `;
+    filters[':query:session_planned_start'] =
+      `(session_planned_start:[${plannedStartMin} TO ${
+        plannedStartMax || '*'
+      }] ) `;
   }
+
   if (locationIds) {
     filters[':terms:search_location_id'] = locationIds;
   }
