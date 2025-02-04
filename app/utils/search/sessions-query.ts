@@ -27,7 +27,7 @@ export function createSessionsQuery({
   return {
     index,
     page,
-    size: 10,
+    size: 15,
     sort: `${dateSort === 'asc' ? '+' : '-'}planned_start`,
     filters: buildFilters({
       keyword,
