@@ -45,6 +45,7 @@
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^10.0.0",
     "@glimmer/component": "^1.1.2",
+    "@glimmer/runtime": "^0.93.1",
     "@glimmer/tracking": "^1.1.2",
     "@release-it-plugins/lerna-changelog": "^7.0.0",
     "@tsconfig/ember": "^3.0.8",
@@ -95,6 +96,7 @@
     "ember-concurrency": "^3.1.1",
     "ember-data": "~5.3.9",
     "ember-focus-trap": "^1.1.1",
+    "ember-lifeline": "^7.0.0",
     "ember-load-initializers": "^3.0.1",
     "ember-modifier": "^4.2.0",
     "ember-modify-based-class-resource": "^1.1.1",
@@ -130,8 +132,7 @@
     "tracked-built-ins": "^3.4.0",
     "tracked-toolbox": "^2.0.0",
     "typescript": "^5.7.3",
-    "webpack": "^5.97.1",
-    "@glimmer/runtime": "^0.93.1"
+    "webpack": "^5.97.1"
   },
   "engines": {
     "node": "14.* || 16.* || >= 18"

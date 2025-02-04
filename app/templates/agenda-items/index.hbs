@@ -13,7 +13,7 @@
         >
           <Filters::TextFilter
             @id="keyword"
-            @class="au-u-max-width-xsmall@small"
+            @class="au-u-max-width-xsmall@small au-u-margin-bottom-small au-u-margin-bottom-none@medium"
             @queryParam="trefwoord"
             @value={{this.keyword}}
             @label="Zoeken"
@@ -26,7 +26,7 @@
 
           <AuFormRow
             @alignment="inline"
-            class="au-u-1-1 au-u-flex au-u-flex--end au-u-margin-top-small@xsmall au-u-margin-top-none@small"
+            class="au-u-1-1 au-u-flex au-u-flex--end"
           >
             <section
               class="au-u-flex au-u-1-2@large au-u-1-1 au-u-margin-left-small@small au-u-flex--end"
@@ -36,7 +36,7 @@
                 id="sort-on"
                 type="select"
                 {{on "change" this.handleDateSortChange}}
-                class="au-c-input au-u-1-2@small au-u-1-1 au-u-max-width-xsmall@small"
+                class="au-c-input au-u-4-5@small au-u-1-1 au-u-max-width-xsmall@small"
               >
                 <option value="desc">Sorteer van nieuw naar oud</option>
                 <option value="asc">
