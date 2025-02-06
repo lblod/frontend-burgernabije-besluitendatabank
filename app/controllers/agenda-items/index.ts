@@ -1,9 +1,11 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
+import type RouterService from '@ember/routing/router-service';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { task } from 'ember-concurrency';
 import { Resource } from 'ember-modify-based-class-resource';
+import QueryParameterKeys from 'frontend-burgernabije-besluitendatabank/constants/query-parameter-keys';
 import AgendaItem from 'frontend-burgernabije-besluitendatabank/models/mu-search/agenda-item';
 import type GoverningBodyDisabledList from 'frontend-burgernabije-besluitendatabank/services/governing-body-disabled-list';
 import type GoverningBodyListService from 'frontend-burgernabije-besluitendatabank/services/governing-body-list';
@@ -155,6 +157,7 @@ export default class AgendaItemsIndexController extends Controller {
   @service declare provinceList: ProvinceListService;
   @service declare governingBodyList: GoverningBodyListService;
   @service declare governmentList: GovernmentListService;
+  @service declare router: RouterService;
 
   @action
   updateSelectedGovernment(
@@ -165,6 +168,12 @@ export default class AgendaItemsIndexController extends Controller {
     }>,
   ) {
     this.governmentList.selectedLocalGovernments = newOptions;
+    this.governingBodyList.selectedGoverningBodyClassifications = [];
+    this.router.transitionTo({
+      queryParams: {
+        [QueryParameterKeys.governingBodies]: null,
+      },
+    });
   }
 
   get localGovernmentGroupOptions() {
