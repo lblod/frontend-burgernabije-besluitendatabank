@@ -102,8 +102,8 @@ export default class AgendaItemRoute extends Route {
     )
       .filter((item) => item.id !== agendaItem.id && !!item.title)
       .slice(0, 4);
-
     return {
+      resolutions,
       agendaItem,
       vote,
       articles,

@@ -93,12 +93,7 @@
                 @iconClosed="nav-right"
                 @buttonLabel="Besluit"
               >
-                {{#let
-                  (get
-                    this.model.agendaItem.handledBy.resolutions "firstObject"
-                  )
-                  as |resolution|
-                }}
+                {{#let this.firstResolution as |resolution|}}
                   {{#if resolution.value}}
                     <AuAlert
                       @skin="success"
