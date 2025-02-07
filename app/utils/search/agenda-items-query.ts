@@ -24,6 +24,7 @@ export function createAgendaItemsQuery({
   plannedStartMax,
   dateSort,
   governingBodyClassificationIds,
+  status,
 }: AgendaItemsQueryArguments): AgendaItemsQueryResult {
   return {
     index,
@@ -36,6 +37,7 @@ export function createAgendaItemsQuery({
       plannedStartMin,
       plannedStartMax,
       governingBodyClassificationIds,
+      status,
     }),
     dataMapping,
   };
@@ -47,6 +49,7 @@ function buildFilters({
   plannedStartMin,
   plannedStartMax,
   governingBodyClassificationIds,
+  status,
 }: Partial<AgendaItemsQueryArguments>): Record<string, string> {
   const filters: Record<string, string> = {
     ':has:search_location_id': 't', // Ensure search_location_id is always present
@@ -65,6 +68,12 @@ function buildFilters({
   }
   if (keyword) {
     filters[':fuzzy:search_content'] = keyword;
+  }
+  if (status === 'Behandeld') {
+    filters[':has:session_started_at'] = 't';
+  }
+  if (status === 'Niet behandeld') {
+    filters[':has-no:session_started_at'] = 't';
   }
 
   return filters;

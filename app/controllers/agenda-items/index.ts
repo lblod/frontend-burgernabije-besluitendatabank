@@ -11,12 +11,15 @@ import type ProvinceListService from 'frontend-burgernabije-besluitendatabank/se
 
 import type { AgendaItemsParams, SortType } from './types';
 import AgendaItemsLoader from './agenda-item-loader';
+import type RouterService from '@ember/routing/router-service';
+import QueryParameterKeys from 'frontend-burgernabije-besluitendatabank/constants/query-parameter-keys';
 
 export default class AgendaItemsIndexController extends Controller {
   @service declare municipalityList: MunicipalityListService;
   @service declare provinceList: ProvinceListService;
   @service declare governingBodyList: GoverningBodyListService;
   @service declare governmentList: GovernmentListService;
+  @service declare router: RouterService;
   // QueryParameters
   @tracked keyword = '';
   @tracked municipalityLabels = '';
@@ -25,6 +28,7 @@ export default class AgendaItemsIndexController extends Controller {
   @tracked plannedStartMax = '';
   @tracked governingBodyClassifications = '';
   @tracked dateSort: SortType = 'desc';
+  @tracked status = 'Alles';
   /** Controls the loading animation of the "load more" button */
   @tracked isLoadingMore = false;
   @tracked loading = false; // Controls the loading animation that replaces the main view
@@ -57,6 +61,9 @@ export default class AgendaItemsIndexController extends Controller {
   get governingBodies() {
     return this.governingBodyList.governingBodies();
   }
+  get statusOfAgendaItems() {
+    return ['Alles', 'Behandeld', 'Niet behandeld'];
+  }
   get filters(): AgendaItemsParams {
     return {
       keyword: this.keyword,
@@ -67,6 +74,7 @@ export default class AgendaItemsIndexController extends Controller {
       dateSort: this.dateSort,
       governingBodyClassifications: this.governingBodyClassifications,
       dataQualityList: [],
+      status: this.status,
     };
   }
 
@@ -82,6 +90,17 @@ export default class AgendaItemsIndexController extends Controller {
     }>,
   ) {
     this.governmentList.selectedLocalGovernments = newOptions;
+    this.governingBodyList.selectedGoverningBodyClassifications = [];
+    this.router.transitionTo({
+      queryParams: {
+        [QueryParameterKeys.governingBodies]: null,
+      },
+    });
+  }
+
+  @action
+  updateSelectedStatus(value: string) {
+    this.status = value;
   }
 
   @action

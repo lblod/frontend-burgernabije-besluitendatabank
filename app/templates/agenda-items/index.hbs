@@ -165,6 +165,17 @@
           @start={{this.plannedStartMin}}
           @end={{this.plannedStartMax}}
         />
+        <Filters::SelectFilter
+          @id="status"
+          @label="Status agendapunten"
+          @options={{this.statusOfAgendaItems}}
+          @selected={{this.status}}
+          @updateSelected={{this.updateSelectedStatus}}
+          @queryParam="status"
+          @allowClear={{false}}
+          @searchEnabled={{false}}
+          @placeholder="Alle agendapunten"
+        />
         <section class="c-advanced-filter-holder">
           <Accordion
             @defaultOpen={{this.showAdvancedFilters}}
@@ -183,7 +194,6 @@
               @queryParam="bestuursorganen"
               @placeholder="Alle bestuursorganen"
             />
-
           </Accordion>
         </section>
       </div>

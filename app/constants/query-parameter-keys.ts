@@ -6,6 +6,7 @@ export const QueryParameterKeys = {
   end: 'eind',
   keyword: 'trefwoord',
   dateSort: 'datumsortering',
+  status: 'status',
 };
 
 export default QueryParameterKeys;

@@ -10,6 +10,7 @@ export interface AgendaItemsParams {
   governingBodyClassifications: string;
   dataQualityList: Array<string>;
   dateSort: string;
+  status: string;
 }
 
 export interface AgendaItemsLoaderArgs {
@@ -28,6 +29,7 @@ export type AgendaItemsQueryArguments = {
   plannedStartMax?: string;
   dateSort?: string;
   governingBodyClassificationIds?: string;
+  status: string;
 };
 
 export type AgendaItemMuSearchEntry = {

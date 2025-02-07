@@ -93,12 +93,7 @@
                 @iconClosed="nav-right"
                 @buttonLabel="Besluit"
               >
-                {{#let
-                  (get
-                    this.model.agendaItem.handledBy.resolutions "firstObject"
-                  )
-                  as |resolution|
-                }}
+                {{#let this.firstResolution as |resolution|}}
                   {{#if resolution.value}}
                     <AuAlert
                       @skin="success"
@@ -122,7 +117,13 @@
                       @skin="warning"
                       @title="Besluit niet beschikbaar"
                       class="au-u-margin-top au-u-margin-bottom"
-                    />
+                    >
+                      {{#if this.model.agendaItem.wasHandled}}
+                        <p>De data voor dit agendapunt is nog niet beschikbaar.</p>
+                      {{else}}
+                        <p>Dit agendapunt werd nog niet behandeld.</p>
+                      {{/if}}
+                    </AuAlert>
                   {{/if}}
                   {{#if resolution.motivation}}
                     <div class="c-accordion-holder c-accordion-holder--top">
@@ -185,7 +186,13 @@
                     @skin="warning"
                     @title="Stemming niet beschikbaar"
                     class="au-u-margin-top au-u-margin-bottom"
-                  />
+                  >
+                    {{#if this.model.agendaItem.wasHandled}}
+                      <p>De data voor dit agendapunt is nog niet beschikbaar.</p>
+                    {{else}}
+                      <p>Dit agendapunt werd nog niet behandeld.</p>
+                    {{/if}}
+                  </AuAlert>
                 {{/if}}
               </AuAccordion>
             </section>
@@ -223,6 +230,8 @@
                           href={{alternateLink}}
                           class="au-u-flex--inline"
                         >
+                          <AuPill>{{document-type alternateLink}}</AuPill>
+                          -
                           {{alternateLink}}
                         </AuLinkExternal>
                       {{/if}}
