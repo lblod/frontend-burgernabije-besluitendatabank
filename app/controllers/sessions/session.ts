@@ -1,28 +1,63 @@
 import Controller from '@ember/controller';
-import type { ModelFrom } from '../../lib/type-utils';
-import type SessionSessionRoute from '../../routes/sessions/session';
-import type AgendaItem from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
-
+import type Store from '@ember-data/store';
+import { service } from '@ember/service';
+import type SessionModel from 'frontend-burgernabije-besluitendatabank/models/session';
+import type GoverningBodyModel from 'frontend-burgernabije-besluitendatabank/models/governing-body';
+import type AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
+import { tracked } from '@glimmer/tracking';
 export default class SessionsSessionController extends Controller {
-  /** Used to fetch agenda items from the model */
-  declare model: ModelFrom<SessionSessionRoute>;
+  @service declare store: Store;
+  queryParams = ['gemeentes', 'bestuursorganen'];
 
-  get agendaItemsSorted() {
-    let agendaItems = this.model.hasMany('agendaItems').value() as
-      | AgendaItem[]
-      | null;
+  @tracked bestuursorganen: string | null = null;
+  @tracked gemeentes: string | null = null;
 
-    if (!agendaItems) {
-      agendaItems = [];
-    }
+  declare model: {
+    classificationLabel: string;
+    session: SessionModel;
+    agendaItems: {
+      isFinished: boolean;
+      isRunning: boolean;
+      value: AgendaItemModel[];
+    };
+    otherSessions: {
+      isFinished: boolean;
+      isRunning: boolean;
+      value: SessionModel[];
+    };
+    governingBodies: {
+      isFinished: boolean;
+      isRunning: boolean;
+      value: GoverningBodyModel[];
+    };
+  };
 
-    return agendaItems
-      .slice()
-      .filter(({ titleFormatted }) => !!titleFormatted)
-      .sort((a, b) =>
-        a.titleFormatted.localeCompare(b.titleFormatted, undefined, {
-          numeric: true,
-        }),
-      );
+  get agendaItems() {
+    return this.model?.agendaItems.isFinished
+      ? this.model?.agendaItems.value
+      : [];
+  }
+
+  get governingBodies() {
+    return this.model?.governingBodies.isFinished
+      ? this.model?.governingBodies.value
+      : [];
+  }
+  get otherSessions() {
+    return this.model?.otherSessions.isFinished
+      ? this.model?.otherSessions.value
+      : [];
+  }
+
+  get municipalityQuery() {
+    return {
+      gemeentes: this.model.session.municipality,
+    };
+  }
+  get govBodyQuery() {
+    return {
+      gemeentes: this.model.session.municipality,
+      bestuursorganen: this.model.classificationLabel,
+    };
   }
 }
