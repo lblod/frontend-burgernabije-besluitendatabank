@@ -2,124 +2,31 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
-import type MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
-import type GoverningBodyListService from 'frontend-burgernabije-besluitendatabank/services/governing-body-list';
-import type GovernmentListService from 'frontend-burgernabije-besluitendatabank/services/government-list';
-import type ProvinceListService from 'frontend-burgernabije-besluitendatabank/services/province-list';
 import type RouterService from '@ember/routing/router-service';
-import SessionsLoader from './session-loader';
-import type { SessionsParams, SortType } from './types';
-import { runTask } from 'ember-lifeline';
+import type { SortType } from './types';
+import type FilterService from 'frontend-burgernabije-besluitendatabank/services/filter-service';
+import type ItemsService from '../../services/items-service';
 
 export default class SessionsIndexController extends Controller {
-  @service declare municipalityList: MunicipalityListService;
-  @service declare provinceList: ProvinceListService;
-  @service declare governingBodyList: GoverningBodyListService;
-  @service declare governmentList: GovernmentListService;
+  @service declare filterService: FilterService;
   @service declare router: RouterService;
-
-  // QueryParameters
-  @tracked municipalityLabels = '';
-  @tracked provinceLabels = '';
-  @tracked plannedStartMin = '';
-  @tracked plannedStartMax = '';
-  @tracked keyword = '';
-  @tracked governingBodyClassifications = '';
-  @tracked dateSort: SortType = 'desc';
-  /** Controls the loading animation of the "load more" button */
-  @tracked isLoadingMore = false;
-  @tracked loading = false; // Controls the loading animation that replaces the main view
-  @tracked errorMsg = ''; // Controls whether an Oops is shown
-  /** Mobile filter */
+  @service declare itemsService: ItemsService;
   @tracked hasFilter = false;
-  /** Data quality modal */
-  @tracked modalOpen = false;
 
-  SessionsLoader = SessionsLoader;
+  @tracked dateSort: SortType = 'desc';
 
-  get localGovernmentGroupOptions() {
-    return Promise.all([this.municipalities, this.provinces]).then(
-      ([municipalities, provinces]) => [
-        { groupName: 'Gemeente', options: municipalities },
-        { groupName: 'Provincie', options: provinces },
-      ],
-    );
-  }
-
-  get showAdvancedFilters() {
-    return this.governingBodyClassifications.length > 0;
-  }
-
-  get municipalities() {
-    return this.municipalityList.municipalityLabels();
-  }
-
-  get provinces() {
-    return this.provinceList.provinceLabels();
-  }
-  get governingBodies() {
-    return this.governingBodyList.governingBodies();
-  }
-
-  get filters(): SessionsParams {
-    return {
-      municipalityLabels: this.municipalityLabels,
-      provinceLabels: this.provinceLabels,
-      keyword: this.keyword,
-      plannedStartMin: this.plannedStartMin,
-      plannedStartMax: this.plannedStartMax,
-      dateSort: this.dateSort,
-      governingBodyClassifications: this.governingBodyClassifications,
-      dataQualityList: [],
-    };
-  }
-
-  get hasMunicipalityFilter() {
-    return this.filters.municipalityLabels.length > 0;
+  get filters() {
+    return this.filterService.filters;
   }
 
   @action
-  updateSelectedGovernment(
-    newOptions: Array<{
-      label: string;
-      id: string;
-      type: 'provincies' | 'gemeentes';
-    }>,
-  ) {
-    this.governmentList.selectedLocalGovernments = newOptions;
-  }
-  @action handleDateSortChange(event: { target: { value: SortType } }) {
+  handleDateSortChange(event: { target: { value: SortType } }) {
     this.dateSort = event?.target?.value;
-  }
-
-  @action updateSelectedGoverningBodyClassifications(
-    newOptions: Array<{
-      label: string;
-      id: string;
-      type: 'governing-body-classifications';
-    }>,
-  ) {
-    this.governingBodyList.selectedGoverningBodyClassifications = newOptions;
+    this.filterService.updateFilters({ dateSort: this.dateSort });
   }
 
   @action
   showFilter() {
     this.hasFilter = true;
-  }
-
-  @action
-  hideFilter() {
-    runTask(this, () => {
-      this.hasFilter = false;
-    });
-  }
-
-  @action
-  showModal() {
-    this.modalOpen = true;
-  }
-  @action
-  closeModal() {
-    this.modalOpen = false;
   }
 }

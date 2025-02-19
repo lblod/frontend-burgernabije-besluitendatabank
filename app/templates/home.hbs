@@ -37,9 +37,9 @@
               @searchEnabled={{true}}
               @id="municipality"
               @label="Kies één of meer besturen"
-              @options={{this.localGovernmentGroupOptions}}
+              @options={{this.governmentList.options}}
               @noMatchesMessage="Geen besturen gevonden"
-              @selected={{this.governmentList.selectedLocalGovernments}}
+              @selected={{this.governmentList.selected}}
               @onChange={{this.handleSelectLocalGovernmentsChange}}
               @searchField="label"
               @placeholder="Alle besturen"

@@ -22,6 +22,7 @@ export interface AgendaItemsLoaderArgs {
 export type AgendaItemsQueryArguments = {
   index: string;
   page: number;
+  size?: number;
   keyword?: string;
   locationIds?: string;
   provinceIds?: string;

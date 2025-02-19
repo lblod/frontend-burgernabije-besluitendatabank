@@ -1,0 +1,32 @@
+<div class="au-u-flex au-u-flex--between">
+  <p class="au-u-margin-left au-u-margin-top-small au-u-h4 au-u-medium">
+    {{format-number @loader.total 0}}
+    Zoekresultaten
+  </p>
+</div>
+<MultiTabs @loader={{@loader}} @filters={{this.filters}} />
+{{#if @loader.hasErroredSessions}}
+  <Oops @title="Oeps!" @content="Er is iets fout gelopen!" />
+{{else if (and @loader.loadSessions.isRunning (not @loader.sessions))}}
+  <LoaderFullPage @content="Zittingen aan het laden" />
+{{else if @loader.sessions}}
+  <InfiniteList
+    @loadMore={{@loader.loadMoreSessions}}
+    @isLoading={{@loader.loadSessions.isRunning}}
+    @itemsShown={{@loader.sessions.length}}
+    @itemsAmount={{@loader.total}}
+  >
+    {{#each @loader.sessions as |item|}}
+      <SessionItemCard @item={{item}} />
+    {{/each}}
+  </InfiniteList>
+{{else}}
+  <div class="au-o-box">
+    <AuAlert
+      @size="small"
+      @skin="warning"
+      @icon="info-circle"
+      @title="Er werden geen zoekresultaten gevonden."
+    />
+  </div>
+{{/if}}

@@ -23,11 +23,12 @@ export function createSessionsQuery({
   dateSort,
   locationIds,
   governingBodyClassificationIds,
+  size = 15,
 }: SessionsQueryArguments): SessionsQueryResult {
   return {
     index,
     page,
-    size: 15,
+    size,
     sort: `${dateSort === 'asc' ? '+' : '-'}planned_start`,
     filters: buildFilters({
       keyword,

@@ -25,11 +25,12 @@ export function createAgendaItemsQuery({
   dateSort,
   governingBodyClassificationIds,
   status,
+  size = 15,
 }: AgendaItemsQueryArguments): AgendaItemsQueryResult {
   return {
     index,
     page,
-    size: 15,
+    size,
     sort: `${dateSort === 'asc' ? '+' : '-'}session_planned_start`,
     filters: buildFilters({
       keyword,

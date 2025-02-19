@@ -1,0 +1,32 @@
+<div class="au-u-flex au-u-flex--between">
+  <p class="au-u-margin-left au-u-margin-top-small au-u-h4 au-u-medium">
+    {{format-number @loader.total 0}}
+    Zoekresultaten
+  </p>
+</div>
+<MultiTabs @loader={{@loader}} />
+{{#if @loader.hasErroredAgendaItems}}
+  <Oops @title="Oeps!" @content="Er is iets fout gelopen!" />
+{{else if (and @loader.loadAgendaItems.isRunning (not @loader.agendaItems))}}
+  <LoaderFullPage @content="Agendapunten aan het laden" />
+{{else if @loader.agendaItems}}
+  <InfiniteList
+    @loadMore={{@loader.loadMoreAgendaItems}}
+    @isLoading={{@loader.loadAgendaItems.isRunning}}
+    @itemsShown={{@loader.agendaItems.length}}
+    @itemsAmount={{@loader.total}}
+  >
+    {{#each @loader.agendaItems as |item|}}
+      <AgendaItemCard @item={{item}} />
+    {{/each}}
+  </InfiniteList>
+{{else}}
+  <div class="au-o-box">
+    <AuAlert
+      @size="small"
+      @skin="warning"
+      @icon="info-circle"
+      @title="Er werden geen zoekresultaten gevonden."
+    />
+  </div>
+{{/if}}

@@ -21,6 +21,7 @@ export interface SessionsLoaderArgs {
 export type SessionsQueryArguments = {
   index: string;
   page: number;
+  size?: number;
   keyword?: string;
   locationIds?: string;
   provinceIds?: string;

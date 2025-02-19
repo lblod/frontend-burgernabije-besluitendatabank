@@ -3,6 +3,7 @@ import { action } from '@ember/object';
 import type RouterService from '@ember/routing/router-service';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import type { LocalGovernmentOption } from 'frontend-burgernabije-besluitendatabank/services/government-list';
 import type GovernmentListService from 'frontend-burgernabije-besluitendatabank/services/government-list';
 import type MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 import type ProvinceListService from 'frontend-burgernabije-besluitendatabank/services/province-list';
@@ -53,13 +54,9 @@ export default class HomeController extends Controller {
   }
 
   @action handleSelectLocalGovernmentsChange(
-    selectedLocalGovernments: Array<{
-      label: string;
-      id: string;
-      type: 'provincies' | 'gemeentes';
-    }>,
+    selectedLocalGovernments: LocalGovernmentOption[],
   ) {
-    this.governmentList.selectedLocalGovernments = selectedLocalGovernments;
+    this.governmentList.selected = selectedLocalGovernments;
   }
 
   @action handleMunicipalitySelect() {
@@ -68,12 +65,12 @@ export default class HomeController extends Controller {
       queryParams: {
         trefwoord: this.keywordValue,
         provincies: serializeArray(
-          this.governmentList.selectedLocalGovernments
+          this.governmentList.selected
             .filter((municipality) => municipality.type === 'provincies')
             .map((municipality) => municipality.label),
         ),
         gemeentes: serializeArray(
-          this.governmentList.selectedLocalGovernments
+          this.governmentList.selected
             .filter((municipality) => municipality.type === 'gemeentes')
             .map((municipality) => municipality.label),
         ),
