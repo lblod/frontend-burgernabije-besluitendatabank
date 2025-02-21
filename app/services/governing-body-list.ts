@@ -9,12 +9,29 @@ import type GoverningBodyModel from 'frontend-burgernabije-besluitendatabank/mod
 import type GoverningBodyClasssificationCodeModel from 'frontend-burgernabije-besluitendatabank/models/governing-body-classification-code';
 import type { AdapterPopulatedRecordArrayWithMeta } from 'frontend-burgernabije-besluitendatabank/utils/ember-data';
 import type GovernmentListService from './government-list';
+import type FilterService from './filter-service';
+
+export interface GoverningBodyOption {
+  id: string;
+  label: string;
+  type: string;
+}
 
 export default class GoverningBodyListService extends Service {
   @service declare store: Store;
   @service declare router: RouterService;
   @service declare municipalityList: MunicipalityListService;
   @service declare governmentList: GovernmentListService;
+  @service declare filterService: FilterService;
+
+  @tracked selected: GoverningBodyOption[] = [];
+  @tracked options: GoverningBodyOption[] = [];
+
+  constructor(...args: []) {
+    super(...args);
+    this.loadOptions();
+  }
+
   /**
    * Get the governing body classification ids from the given labels.
    * @returns The governing body classifcation ids.
@@ -27,12 +44,12 @@ export default class GoverningBodyListService extends Service {
       return undefined;
     }
 
-    const governingBodies = await this.governingBodies();
+    const options = await this.loadOptions();
 
     const governingBodyLabelsArray = Array.isArray(governingBodyLabels)
       ? governingBodyLabels
       : deserializeArray(governingBodyLabels);
-    const governingBodyClassificationIds = governingBodies.reduce(
+    const governingBodyClassificationIds = options.reduce(
       (acc, governingBody) => {
         if (governingBodyLabelsArray.includes(governingBody.label)) {
           acc.push(governingBody.id);
@@ -45,23 +62,25 @@ export default class GoverningBodyListService extends Service {
     return governingBodyClassificationIds.join(',');
   }
 
-  @tracked selectedGoverningBodyClassifications: Array<{
-    label: string;
-    id: string;
-    type: 'governing-body-classifications';
-  }> = [];
+  async loadOptions() {
+    const { municipalityLabels, governingBodyClassifications } =
+      this.filterService.filters;
 
-  async governingBodies() {
-    const municipalityLabels = this.governmentList.selectedLocalGovernments.map(
-      (localGovernment) => localGovernment.label,
+    const classificationsPromise = this.store.query(
+      'governing-body-classification-code',
+      {
+        page: { size: 100 },
+        sort: 'label',
+      },
     );
-    if (municipalityLabels && municipalityLabels.length > 0) {
+
+    if (municipalityLabels != null && municipalityLabels.length > 0) {
       const municipalityIds =
         await this.municipalityList.getLocationIdsFromLabels(
           municipalityLabels,
         );
 
-      const govBodies = await this.store.query('governing-body', {
+      const governingBodies = await this.store.query('governing-body', {
         filter: {
           'administrative-unit': {
             location: { ':id:': municipalityIds.join(',') },
@@ -71,18 +90,26 @@ export default class GoverningBodyListService extends Service {
         page: { size: 100 },
       });
 
-      return this.getUniqueGoverningBodies(govBodies).sort((a, b) =>
-        a.label.localeCompare(b.label),
+      this.options = this.sortOptions(
+        this.getUniqueGoverningBodies(governingBodies),
+      );
+    } else {
+      const governingBodyClassifications = await classificationsPromise;
+      this.options = this.sortOptions(
+        this.getUniqueClassifications(governingBodyClassifications),
+      );
+    }
+    if (governingBodyClassifications != null) {
+      this.selected = this.options.filter((option) =>
+        governingBodyClassifications.includes(option.label),
       );
     }
 
-    const governingBodyClassifications = await this.store.query(
-      'governing-body-classification-code',
-      { page: { size: 100 }, sort: 'label' },
-    );
-    return this.getUniqueClassifications(governingBodyClassifications).sort(
-      (a, b) => a.label.localeCompare(b.label),
-    );
+    return this.options;
+  }
+
+  sortOptions(options: GoverningBodyOption[]): GoverningBodyOption[] {
+    return options.sort((a, b) => a.label.localeCompare(b.label));
   }
 
   getUniqueGoverningBodies(

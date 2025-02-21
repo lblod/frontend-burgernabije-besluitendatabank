@@ -9,7 +9,7 @@ export default class AgendaItemsAgendaItemSessionController extends Controller {
   declare model: ModelFrom<AgendaItemsAgendaItemSessionRoute>;
 
   get agendaItemsSorted() {
-    let agendaItems = this.model.session.hasMany('agendaItems').value() as
+    let agendaItems = this.model.session?.hasMany('agendaItems').value() as
       | AgendaItem[]
       | null;
 
