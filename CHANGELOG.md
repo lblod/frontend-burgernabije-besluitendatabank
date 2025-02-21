@@ -1,3 +1,25 @@
+## v0.8.4 (2025-02-21)
+
+#### :rocket: Enhancement
+
+- [#214](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/214) Add new status filter by ([@Andresdev02](https://github.com/Andresdev02))
+
+- [#215](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/215) New helper to show document type of the sources ([@Andresdev02](https://github.com/Andresdev02))
+
+- [#216](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/216) Add nog niet behandeld explanations ([@Andresdev02](https://github.com/Andresdev02))
+
+- [#217](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/217) Only get relevant bestuursorganen for municipality ([@Andresdev02](https://github.com/Andresdev02))
+
+- [#218](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/218) Optimize search and filter functionality in lokaal beslist app ([@Andresdev02](https://github.com/Andresdev02))
+
+- [#219](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/219) New helper function to format number ([@Andresdev02](https://github.com/Andresdev02))
+
+- [#220](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/220) Add sessions and agenda items to the existing overview page ([@Andresdev02](https://github.com/Andresdev02))
+
+#### Committers: 1
+
+- Andres Vergauwen ([@Andresdev02](https://github.com/Andresdev02))
+
 ## v0.8.3 (2025-01-23)
 
 #### :rocket: Enhancement
