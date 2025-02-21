@@ -53,10 +53,9 @@ function buildFilters({
   };
 
   if (plannedStartMin) {
-    filters[':query:session_planned_start'] =
-      `(session_planned_start:[${plannedStartMin} TO ${
-        plannedStartMax || '*'
-      }] ) `;
+    filters[':query:planned_start'] = `(planned_start:[${plannedStartMin} TO ${
+      plannedStartMax || '*'
+    }] ) `;
   }
 
   if (locationIds) {
