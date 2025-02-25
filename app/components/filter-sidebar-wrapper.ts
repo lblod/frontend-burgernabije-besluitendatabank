@@ -17,6 +17,7 @@ interface FilterSidebarWrapperArgs {
   filters: AgendaItemsParams;
   onFiltersChange: (filters: AgendaItemsParams) => void;
   dateSort: SortType;
+  hasFilter: boolean;
 }
 
 export default class FilterSidebarWrapper extends Component<FilterSidebarWrapperArgs> {
@@ -24,7 +25,6 @@ export default class FilterSidebarWrapper extends Component<FilterSidebarWrapper
   @service declare governmentList: GovernmentListService;
   @service declare router: RouterService;
   @service declare filterService: FilterService;
-  @tracked hasFilter = false;
 
   /** Data quality modal */
   // @tracked modalOpen = false;
@@ -41,13 +41,6 @@ export default class FilterSidebarWrapper extends Component<FilterSidebarWrapper
 
   get hasMunicipalityFilter() {
     return this.args.filters.municipalityLabels.length > 0;
-  }
-
-  @action
-  hideFilter() {
-    runTask(this, () => {
-      this.hasFilter = false;
-    });
   }
 
   @action

@@ -13,6 +13,9 @@
       />
       <InfiniteListAgendaItemWrapper @loader={{this.itemsService}} />
     </div>
-    <FilterSidebarWrapper />
+    <FilterSidebarWrapper
+      @hasFilter={{this.hasFilter}}
+      @hideFilter={{this.hideFilter}}
+    />
   </div>
 </AuBodyContainer>

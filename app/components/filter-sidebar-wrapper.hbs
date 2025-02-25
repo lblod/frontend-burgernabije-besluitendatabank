@@ -1,21 +1,21 @@
 <FilterSidebar
   @id="filtersidebar"
   @class="c-interface__sidebar c-interface__sidebar--dialog {{if
-    this.hasFilter
+    @hasFilter
     'is-visible'
   }}"
   {{focus-trap
-    isActive=this.hasFilter
+    isActive=@hasFilter
     shouldSelfFocus=true
     additionalElements=(array "#ember-basic-dropdown-wormhole")
-    focusTrapOptions=(hash onDeactivate=this.hideFilter)
+    focusTrapOptions=(hash onDeactivate=@hideFilter)
   }}
 >
   <div class="c-interface__sidebar-close-button">
     <a
       href="#filtercontent"
       class="au-c-button au-c-button--naked"
-      {{on "click" this.hideFilter}}
+      {{on "click" @hideFilter}}
     >
       Terug
     </a>
@@ -73,14 +73,14 @@
     </section>
   </div>
   <div class="c-interface__sidebar-submit-buttons">
-    <AuButton @skin="primary" @width="block" {{on "click" this.hideFilter}}>
+    <AuButton @skin="primary" @width="block" {{on "click" @hideFilter}}>
       Zoeken
     </AuButton>
 
     <a
       href="#filtercontent"
       class="au-c-button au-c-button--naked au-c-button--block"
-      {{on "click" this.hideFilter}}
+      {{on "click" @hideFilter}}
     >
       Annuleer
     </a>

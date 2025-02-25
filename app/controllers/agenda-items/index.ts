@@ -6,6 +6,7 @@ import type { SortType } from './types';
 import { action } from '@ember/object';
 import type FilterService from 'frontend-burgernabije-besluitendatabank/services/filter-service';
 import type ItemsService from '../../services/items-service';
+import { runTask } from 'ember-lifeline';
 
 export default class AgendaItemsIndexController extends Controller {
   @service declare filterService: FilterService;
@@ -33,5 +34,12 @@ export default class AgendaItemsIndexController extends Controller {
   @action
   showFilter() {
     this.hasFilter = true;
+  }
+
+  @action
+  hideFilter() {
+    runTask(this, () => {
+      this.hasFilter = false;
+    });
   }
 }
