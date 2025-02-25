@@ -11,7 +11,10 @@
       @icon="search"
       @rowClass="au-c-form-row--button"
     />
-    <AuFormRow @alignment="inline" class="au-u-1-1 au-u-flex au-u-flex--end">
+    <AuFormRow
+      @alignment="inline"
+      class="au-u-1-1 au-u-flex au-u-flex--end au-u-flex--column-reverse@small"
+    >
       <section
         class="au-u-flex au-u-1-2@large au-u-1-1 au-u-margin-left-small@small au-u-flex--end"
       >
@@ -32,14 +35,15 @@
           >Sorteer van oud naar nieuw</option>
         </select>
       </section>
+      <a
+        href="#filtersidebar"
+        class="au-u-1-1 au-c-button au-c-button--secondary au-c-button--block c-interface__filter-button"
+        {{on "click" @showFilter}}
+      >
+        <AuIcon @icon="filter" />
+        Toon filters
+      </a>
+
     </AuFormRow>
   </div>
-  <a
-    href="#filtersidebar"
-    class="au-c-button au-c-button--secondary au-c-button--block c-interface__filter-button"
-    {{on "click" @showFilter}}
-  >
-    <AuIcon @icon="filter" />
-    Toon filters
-  </a>
 </div>
