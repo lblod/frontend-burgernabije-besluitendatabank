@@ -110,6 +110,7 @@ export default class ItemsService extends Service {
             page,
             locationIds,
             governingBodyClassificationIds,
+            filterService: this.filterService,
             ...this.filters,
           }),
         );
@@ -161,6 +162,7 @@ export default class ItemsService extends Service {
               size: 1,
               locationIds,
               governingBodyClassificationIds,
+              filterService: this.filterService,
               ...this.filters,
             }),
           );

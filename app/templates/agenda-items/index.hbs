@@ -7,12 +7,13 @@
     >
       <FilterContent
         @keyword={{this.keyword}}
-        @handleDateSortChange={{this.handleDateSortChange}}
         @showFilter={{this.showFilter}}
-        @filterService={{this.filterService}}
       />
-      <InfiniteListAgendaItemWrapper @loader={{this.itemsService}} />
+      <InfiniteListAgendaItemWrapper />
     </div>
-    <FilterSidebarWrapper />
+    <FilterSidebarWrapper
+      @hasFilter={{this.hasFilter}}
+      @hideFilter={{this.hideFilter}}
+    />
   </div>
 </AuBodyContainer>
