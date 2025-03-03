@@ -364,6 +364,18 @@ cursor {
   }
 }
 
+.advanced-search-alert {
+  ul {
+    list-style: disc;
+    margin-left: 2rem;
+    margin-top: 1rem;
+  }
+}
+
+.flex-1 {
+  flex: 1;
+}
+
 #governing-body {
   ul {
     margin: 0 0.6rem;

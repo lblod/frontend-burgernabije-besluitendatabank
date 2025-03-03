@@ -26,12 +26,6 @@ export default class AgendaItemsIndexController extends Controller {
   }
 
   @action
-  handleDateSortChange(event: { target: { value: SortType } }) {
-    this.dateSort = event?.target?.value;
-    this.filterService.updateFilters({ dateSort: this.dateSort });
-  }
-
-  @action
   showFilter() {
     this.hasFilter = true;
   }

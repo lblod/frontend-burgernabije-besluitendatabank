@@ -7,11 +7,9 @@
     >
       <FilterContent
         @keyword={{this.keyword}}
-        @handleDateSortChange={{this.handleDateSortChange}}
         @showFilter={{this.showFilter}}
-        @filterService={{this.filterService}}
       />
-      <InfiniteListSessionWrapper @loader={{this.itemsService}} />
+      <InfiniteListSessionWrapper />
     </div>
     <FilterSidebarWrapper
       @hasFilter={{this.hasFilter}}
