@@ -1,6 +1,6 @@
 import type { AsyncBelongsTo, AsyncHasMany } from '@ember-data/model';
 import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
-import type AdministrativeUnitClasssificationCodeModel from './administrative-unit-classification-code';
+import type AdministrativeUnitClassificationCodeModel from './administrative-unit-classification-code';
 import type GoverningBodyModel from './governing-body';
 import type LocationModel from './location';
 
@@ -15,7 +15,7 @@ export default class AdministrativeUnitModel extends Model {
     async: true,
     inverse: null,
   })
-  declare classification: AsyncBelongsTo<AdministrativeUnitClasssificationCodeModel>;
+  declare classification: AsyncBelongsTo<AdministrativeUnitClassificationCodeModel>;
 
   @belongsTo('location', { async: true, inverse: null })
   declare location: AsyncBelongsTo<LocationModel>;
