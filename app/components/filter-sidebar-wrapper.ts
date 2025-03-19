@@ -11,7 +11,7 @@ import type {
   SortType,
 } from 'frontend-burgernabije-besluitendatabank/controllers/agenda-items/types';
 import type FilterService from 'frontend-burgernabije-besluitendatabank/services/filter-service';
-import type { LocalGovernmentType } from 'frontend-burgernabije-besluitendatabank/services/government-list';
+import { LocalGovernmentType } from 'frontend-burgernabije-besluitendatabank/services/government-list';
 
 interface FilterSidebarWrapperArgs {
   filters: AgendaItemsParams;
@@ -51,7 +51,7 @@ export default class FilterSidebarWrapper extends Component<FilterSidebarWrapper
   }
 
   @action
-  updateSelectedGovernment(
+  async updateSelectedGovernment(
     newOptions: Array<{
       label: string;
       id: string;
@@ -59,11 +59,20 @@ export default class FilterSidebarWrapper extends Component<FilterSidebarWrapper
     }>,
   ) {
     this.governmentList.selected = newOptions;
-    this.governingBodyList.selected = [];
-    const municipalityLabels = newOptions.map((o) => o.label).toString();
+    const municipalityLabels = newOptions
+      .filter((o) => o.type === LocalGovernmentType.Municipality)
+      .map((o) => o.label)
+      .toString();
+    const provinceLabels = newOptions
+      .filter((o) => o.type === LocalGovernmentType.Province)
+      .map((o) => o.label)
+      .toString();
     this.filterService.updateFilters({
       municipalityLabels,
+      provinceLabels,
     });
+
+    await this.governingBodyList.loadOptions();
   }
   get selectedMunicipality() {
     return this.filterService.filters.municipalityLabels;
