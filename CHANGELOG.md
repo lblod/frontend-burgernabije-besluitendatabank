@@ -1,3 +1,18 @@
+## v0.8.5 (2025-03-19)
+
+#### :rocket: Enhancement
+
+- [#225](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/225) Postpone loading of related agendaitems for faster first load of agenda-item by ([@madnificent](https://github.com/madnificent))
+
+- [#223](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/223) Refactor filter sidebar to include province labels and fix classification model naming by ([@Andresdev02](https://github.com/Andresdev02))
+
+- [#222](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/222) Implementation of advanced search feature by ([@Andresdev02](https://github.com/Andresdev02))
+
+#### Committers: 1
+
+- Andres Vergauwen ([@Andresdev02](https://github.com/Andresdev02))
+- Madnificent ([@madnificent](https://github.com/madnificent))
+
 ## v0.8.4 (2025-02-21)
 
 #### :rocket: Enhancement

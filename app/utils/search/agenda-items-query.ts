@@ -70,23 +70,31 @@ function buildFilters({
   }
 
   if (keyword) {
-    const parsedResults = keywordSearch([keyword, ['title', 'description']]);
-    const buildQuery = [];
-    if (parsedResults !== null) {
-      if (parsedResults['must'] && parsedResults['must'].length > 0) {
-        buildQuery.push(`(${parsedResults['must'].join(' AND ')})`);
+    if (keyword === '-title*' || keyword === '-description*') {
+      if (keyword.includes('title')) {
+        filters[':has-no:title'] = 't';
+      } else if (keyword.includes('description')) {
+        filters[':has-no:description'] = 't';
       }
-      if (parsedResults['or'] && parsedResults['or'].length > 0) {
-        buildQuery.push(`(${parsedResults['or'].join(' OR ')})`);
-      }
-      if (parsedResults['not'] && parsedResults['not'].length > 0) {
-        buildQuery.push(`(NOT ${parsedResults['not'].join(' AND NOT ')})`);
-      }
-    }
-    if (buildQuery.length !== 0) {
-      filters[':query:search_content'] = buildQuery.join(' AND ');
     } else {
-      filters[':fuzzy:search_content'] = keyword;
+      const parsedResults = keywordSearch([keyword, ['title', 'description']]);
+      const buildQuery = [];
+      if (parsedResults !== null) {
+        if (parsedResults['must'] && parsedResults['must'].length > 0) {
+          buildQuery.push(`(${parsedResults['must'].join(' AND ')})`);
+        }
+        if (parsedResults['or'] && parsedResults['or'].length > 0) {
+          buildQuery.push(`(${parsedResults['or'].join(' OR ')})`);
+        }
+        if (parsedResults['not'] && parsedResults['not'].length > 0) {
+          buildQuery.push(`(NOT ${parsedResults['not'].join(' AND NOT ')})`);
+        }
+      }
+      if (buildQuery.length !== 0) {
+        filters[':query:search_content'] = buildQuery.join(' AND ');
+      } else {
+        filters[':fuzzy:search_content'] = keyword;
+      }
     }
   }
 
