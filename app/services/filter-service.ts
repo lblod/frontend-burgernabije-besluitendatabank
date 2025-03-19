@@ -28,7 +28,14 @@ export default class FilterService extends Service {
 
   updateFilters(newFilters: Partial<AgendaItemsParams>) {
     if (newFilters.keyword && newFilters.keyword !== this.filters.keyword) {
-      this.keywordAdvancedSearch = keywordSearch([newFilters.keyword]);
+      if (
+        newFilters.keyword == '-title*' ||
+        newFilters.keyword === '-description*'
+      ) {
+        this.keywordAdvancedSearch = null;
+      } else {
+        this.keywordAdvancedSearch = keywordSearch([newFilters.keyword]);
+      }
     } else if (newFilters.keyword === '') {
       this.keywordAdvancedSearch = null;
     }
