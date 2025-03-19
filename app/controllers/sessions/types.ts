@@ -10,6 +10,7 @@ export interface SessionsParams {
   governingBodyClassifications: string;
   dataQualityList: Array<string>;
   dateSort: string;
+  status: string;
 }
 
 export interface SessionsLoaderArgs {
@@ -29,6 +30,7 @@ export type SessionsQueryArguments = {
   plannedStartMax?: string;
   dateSort?: string;
   governingBodyClassificationIds?: string;
+  status: string;
 };
 
 export type SessionMuSearchEntry = {

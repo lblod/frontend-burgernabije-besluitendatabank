@@ -1,3 +1,15 @@
+## v0.8.5 (2025-03-19)
+
+#### :rocket: Enhancement
+
+- [#223](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/223) Refactor filter sidebar to include province labels and fix classification model naming by ([@Andresdev02](https://github.com/Andresdev02))
+
+- [#222](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/222) Implementation of advanced search feature by ([@Andresdev02](https://github.com/Andresdev02))
+
+#### Committers: 1
+
+- Andres Vergauwen ([@Andresdev02](https://github.com/Andresdev02))
+
 ## v0.8.4 (2025-02-21)
 
 #### :rocket: Enhancement

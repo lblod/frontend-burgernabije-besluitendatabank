@@ -23,6 +23,7 @@ export function createSessionsQuery({
   dateSort,
   locationIds,
   governingBodyClassificationIds,
+  status,
   size = 15,
 }: SessionsQueryArguments): SessionsQueryResult {
   return {
@@ -36,6 +37,7 @@ export function createSessionsQuery({
       plannedStartMin,
       plannedStartMax,
       governingBodyClassificationIds,
+      status,
     }),
     dataMapping,
   };
@@ -47,6 +49,7 @@ function buildFilters({
   plannedStartMin,
   plannedStartMax,
   governingBodyClassificationIds,
+  status,
 }: Partial<SessionsQueryArguments>): Record<string, string> {
   const filters: Record<string, string> = {
     ':has:search_location_id': 't', // Ensure search_location_id is always present
@@ -65,7 +68,12 @@ function buildFilters({
     filters[':terms:search_governing_body_classification_id'] =
       governingBodyClassificationIds;
   }
-
+  if (status === 'Behandeld') {
+    filters[':has:ended_at'] = 't';
+  }
+  if (status === 'Niet behandeld') {
+    filters[':has-no:ended_at'] = 't';
+  }
   if (keyword) {
     filters[':fuzzy:search_content'] = keyword;
   }
