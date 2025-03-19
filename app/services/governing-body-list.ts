@@ -10,6 +10,7 @@ import type GoverningBodyClasssificationCodeModel from 'frontend-burgernabije-be
 import type { AdapterPopulatedRecordArrayWithMeta } from 'frontend-burgernabije-besluitendatabank/utils/ember-data';
 import type GovernmentListService from './government-list';
 import type FilterService from './filter-service';
+import type ProvinceListService from './province-list';
 
 export interface GoverningBodyOption {
   id: string;
@@ -21,6 +22,7 @@ export default class GoverningBodyListService extends Service {
   @service declare store: Store;
   @service declare router: RouterService;
   @service declare municipalityList: MunicipalityListService;
+  @service declare provinceList: ProvinceListService;
   @service declare governmentList: GovernmentListService;
   @service declare filterService: FilterService;
 
@@ -63,46 +65,56 @@ export default class GoverningBodyListService extends Service {
   }
 
   async loadOptions() {
-    const { municipalityLabels, governingBodyClassifications } =
+    const { municipalityLabels, governingBodyClassifications, provinceLabels } =
       this.filterService.filters;
-
-    const classificationsPromise = this.store.query(
-      'governing-body-classification-code',
-      {
-        page: { size: 100 },
-        sort: 'label',
-      },
-    );
-
-    if (municipalityLabels != null && municipalityLabels.length > 0) {
+    if (
+      (municipalityLabels == undefined || municipalityLabels == '') &&
+      (provinceLabels == undefined || provinceLabels == '')
+    ) {
+      const governingBodyClassifications = await this.store.query(
+        'governing-body-classification-code',
+        {
+          page: { size: 100 },
+          sort: 'label',
+        },
+      );
+      this.options = this.sortOptions(
+        this.getUniqueClassifications(governingBodyClassifications),
+      );
+    } else {
       const municipalityIds =
         await this.municipalityList.getLocationIdsFromLabels(
-          municipalityLabels,
+          municipalityLabels?.replace(',', '+'),
         );
-
+      const provinceIds = await this.provinceList.getProvinceIdsFromLabels(
+        provinceLabels?.replace(',', '+'),
+      );
       const governingBodies = await this.store.query('governing-body', {
         filter: {
           'administrative-unit': {
-            location: { ':id:': municipalityIds.join(',') },
+            location: {
+              ':id:': municipalityIds.join(',') + provinceIds.join(','),
+            },
           },
         },
         include: 'classification',
         page: { size: 100 },
       });
-
       this.options = this.sortOptions(
         this.getUniqueGoverningBodies(governingBodies),
-      );
-    } else {
-      const governingBodyClassifications = await classificationsPromise;
-      this.options = this.sortOptions(
-        this.getUniqueClassifications(governingBodyClassifications),
       );
     }
     if (governingBodyClassifications != null) {
       this.selected = this.options.filter((option) =>
-        governingBodyClassifications.includes(option.label),
+        governingBodyClassifications.split('+').includes(option.label),
       );
+      if (this.selected.length == 0) {
+        this.router.transitionTo({
+          queryParams: {
+            bestuursorganen: null,
+          },
+        });
+      }
     }
 
     return this.options;
