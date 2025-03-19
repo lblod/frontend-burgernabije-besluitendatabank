@@ -83,7 +83,26 @@ export default class AgendaItemRoute extends Route {
     const locationId = agendaItem.session?.municipalityId;
 
     // load 5 similiar agenda items in order to filter out the current agenda item
-    const similiarAgendaItems = (
+    const similarAgendaItemsPromise = this.constructRelatedItems(
+      locationId,
+      agendaItem,
+    );
+
+    return {
+      resolutions,
+      agendaItem,
+      vote,
+      articles,
+      agendaItemOnSameSession,
+      similarAgendaItemsPromise,
+    };
+  }
+
+  async constructRelatedItems(
+    locationId: string | undefined,
+    agendaItem: AgendaItemModel,
+  ) {
+    return (
       await this.store.query('agenda-item', {
         page: {
           size: 5,
@@ -102,14 +121,6 @@ export default class AgendaItemRoute extends Route {
     )
       .filter((item) => item.id !== agendaItem.id && !!item.title)
       .slice(0, 4);
-    return {
-      resolutions,
-      agendaItem,
-      vote,
-      articles,
-      agendaItemOnSameSession,
-      similiarAgendaItems,
-    };
   }
 
   afterModel(model: AgendaItemRouteModel) {
