@@ -15,7 +15,6 @@
             class="u-truncate"
           >{{this.model.agendaItem.titleFormatted}}</span>
         </li>
-
       </ul>
     </Group>
   </AuToolbar>
@@ -296,79 +295,101 @@
               />
             {{/if}}
           </div>
-          {{#if
-            (and
-              this.model.agendaItem.session.hasMunicipality
-              this.model.similiarAgendaItems.length
-            )
-          }}
-            <AuContent class="au-u-margin-top">
+          <AuContent class="au-u-margin-top">
+            {{#if this.model.agendaItemOnSameSession}}
+              <h2 class="au-u-h4 au-u-medium">
+                <AuLink
+                  class="au-u-medium"
+                  @route="agenda-items.session"
+                  @model="{{this.model.agendaItem.id}}"
+                >
+                  Volledige agenda
+                </AuLink>
+                van
+                {{this.model.agendaItem.session.dateFormatted}}
+              </h2>
               {{#if this.model.agendaItemOnSameSession}}
-                <h2 class="au-u-h4 au-u-medium">
+                <ol>
+                  {{#each this.model.agendaItemOnSameSession as |agendaItem|}}
+                    <li>
+                      {{! if the agendaItem.id is equal to the current agendaItem then display "Huidige agendapunt" }}
+                      {{#if (eq agendaItem.id this.model.agendaItem.id)}}
+                        <p class="au-u-medium">Huidige agendapunt</p>
+                      {{else}}
+                        <AuLink
+                          @route="agenda-items.agenda-item"
+                          @model={{agendaItem.id}}
+                        >
+                          <p class="truncate">
+                            {{agendaItem.titleFormatted}}
+                          </p>
+                        </AuLink>
+                      {{/if}}
+                    </li>
+                  {{/each}}
+                </ol>
+              {{/if}}
+            {{/if}}
+            {{#if (is-pending this.model.similarAgendaItemsPromise)}}
+                <AuHeading @level="2" @skin="4">
+                  {{#if this.keywordStore.keyword}}
+                    Meer relevante info over
+                    <AuLink
+                      class="au-u-medium"
+                    >{{this.keywordStore.keyword}}</AuLink>
+                  {{else}}
+                    Meer agendapunten
+                  {{/if}}
+                  in
                   <AuLink
+                    @route="agenda-items"
+                    @query={{this.municipalityQuery}}
                     class="au-u-medium"
-                    @route="agenda-items.session"
-                    @model="{{this.model.agendaItem.id}}"
-                  >
-                    Volledige agenda
-                  </AuLink>
-                  van
-                  {{this.model.agendaItem.session.dateFormatted}}
-                </h2>
-                {{#if this.model.agendaItemOnSameSession}}
-                  <ol>
-                    {{#each this.model.agendaItemOnSameSession as |agendaItem|}}
-                      <li>
-                        {{! if the agendaItem.id is equal to the current agendaItem then display "Huidige agendapunt" }}
-                        {{#if (eq agendaItem.id this.model.agendaItem.id)}}
-                          <p class="au-u-medium">Huidige agendapunt</p>
-                        {{else}}
-                          <AuLink
-                            @route="agenda-items.agenda-item"
-                            @model={{agendaItem.id}}
-                          >
-                            <p class="truncate">
-                              {{agendaItem.titleFormatted}}
-                            </p>
-                          </AuLink>
-                        {{/if}}
+                  >{{this.model.agendaItem.session.municipality}}</AuLink>
+                  worden geladen...
+                </AuHeading>
+            {{else}}
+              {{#let (await this.model.similarAgendaItemsPromise) as |similarAgendaItems|}}
+                {{#if
+                  (and
+                     this.model.agendaItem.session.hasMunicipality
+                     similarAgendaItems.length
+                  )
+                }}
+                  <AuHeading @level="2" @skin="4">
+                    {{#if this.keywordStore.keyword}}
+                      Meer relevante info over
+                      <AuLink
+                        class="au-u-medium"
+                      >{{this.keywordStore.keyword}}</AuLink>
+                    {{else}}
+                      Meer agendapunten
+                    {{/if}}
+                    in
+                    <AuLink
+                      @route="agenda-items"
+                      @query={{this.municipalityQuery}}
+                      class="au-u-medium"
+                    >{{this.model.agendaItem.session.municipality}}</AuLink>
+                  </AuHeading>
+                  <ol type="1">
+                    {{#each similarAgendaItems as |agendaItem|}}
+                      <li class="au-u-margin-top-small">
+                        <AuLink
+                          @model={{agendaItem.id}}
+                          @route="agenda-items.agenda-item"
+                        >
+                          <p class="truncate">
+                            {{agendaItem.titleFormatted}}
+                          </p>
+                        </AuLink>
                       </li>
                     {{/each}}
                   </ol>
                 {{/if}}
-              {{/if}}
-              <AuHeading @level="2" @skin="4">
-                {{#if this.keywordStore.keyword}}
-                  Meer relevante info over
-                  <AuLink
-                    class="au-u-medium"
-                  >{{this.keywordStore.keyword}}</AuLink>
-                {{else}}
-                  Meer agendapunten
-                {{/if}}
-                in
-                <AuLink
-                  @route="agenda-items"
-                  @query={{this.municipalityQuery}}
-                  class="au-u-medium"
-                >{{this.model.agendaItem.session.municipality}}</AuLink>
-              </AuHeading>
-              <ol type="1">
-                {{#each this.model.similiarAgendaItems as |agendaItem|}}
-                  <li class="au-u-margin-top-small">
-                    <AuLink
-                      @model={{agendaItem.id}}
-                      @route="agenda-items.agenda-item"
-                    >
-                      <p class="truncate">
-                        {{agendaItem.titleFormatted}}
-                      </p>
-                    </AuLink>
-                  </li>
-                {{/each}}
-              </ol>
-            </AuContent>
-          {{/if}}
+              {{/let}}
+            {{/if}}
+          </AuContent>
         </div>
       </aside>
     </div>
