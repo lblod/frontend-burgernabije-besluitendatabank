@@ -8,8 +8,6 @@ function getKeywordAdvancedSearch(
 ): ParsedResults | null {
   const operators = ['OR', 'NOT', 'MUST'];
   const queryParts = formatQueryToParts(query, operators);
-  console.log('queryParts', queryParts);
-  console.log(typeof queryParts);
   if (queryParts.length === 0) return null;
   const parsedResults: ParsedResults = {};
   let activeOperator: string | null = null;
@@ -19,7 +17,6 @@ function getKeywordAdvancedSearch(
       .split(/(OR|NOT|MUST|SKIP)/)
       .map((segment) => segment.trim())
       .filter(Boolean);
-    console.log('segments', segments);
     segments.forEach((segment) => {
       if (operators.includes(segment)) {
         activeOperator = segment.toLowerCase();
@@ -35,15 +32,6 @@ function getKeywordAdvancedSearch(
         }
         if (Array.isArray(searchField)) {
           const searchFieldResult: string[] = [];
-          console.log('searchField', searchField);
-          console.log('searchFieldResult', searchFieldResult);
-          console.log(
-            'searchField in production:',
-            JSON.stringify(searchField),
-          );
-          if (!Array.isArray(searchField)) {
-            console.error('searchField is not an array!', searchField);
-          }
           searchField.forEach((field) => {
             if (activeOperator) {
               searchFieldResult.push(`${field}:"${segment}"`);
