@@ -8,6 +8,8 @@ function getKeywordAdvancedSearch(
 ): ParsedResults | null {
   const operators = ['OR', 'NOT', 'MUST'];
   const queryParts = formatQueryToParts(query, operators);
+  console.log('queryParts', queryParts);
+  console.log(typeof queryParts);
   if (queryParts.length === 0) return null;
   const parsedResults: ParsedResults = {};
   let activeOperator: string | null = null;
@@ -17,7 +19,7 @@ function getKeywordAdvancedSearch(
       .split(/(OR|NOT|MUST|SKIP)/)
       .map((segment) => segment.trim())
       .filter(Boolean);
-
+    console.log('segments', segments);
     segments.forEach((segment) => {
       if (operators.includes(segment)) {
         activeOperator = segment.toLowerCase();
