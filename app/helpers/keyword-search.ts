@@ -17,7 +17,6 @@ function getKeywordAdvancedSearch(
       .split(/(OR|NOT|MUST|SKIP)/)
       .map((segment) => segment.trim())
       .filter(Boolean);
-
     segments.forEach((segment) => {
       if (operators.includes(segment)) {
         activeOperator = segment.toLowerCase();
@@ -31,11 +30,11 @@ function getKeywordAdvancedSearch(
           activeOperator = 'or';
           parsedResults[activeOperator] = [];
         }
-        if (searchField) {
+        if (Array.isArray(searchField)) {
           const searchFieldResult: string[] = [];
           searchField.forEach((field) => {
             if (activeOperator) {
-              searchFieldResult?.push(`${field}:"${segment}"`);
+              searchFieldResult.push(`${field}:"${segment}"`);
             }
           });
           if (activeOperator === 'not') {

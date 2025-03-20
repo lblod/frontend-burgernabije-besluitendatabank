@@ -1,3 +1,13 @@
+## v0.8.6 (2025-03-20)
+
+#### :rocket: Enhancement
+
+- [#226](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/226) Hotfix void error on search by ([@madnificent](https://github.com/Andresdev02))
+
+#### Committers: 1
+
+- Andres Vergauwen ([@Andresdev02](https://github.com/Andresdev02))
+
 ## v0.8.5 (2025-03-19)
 
 #### :rocket: Enhancement
