@@ -33,8 +33,9 @@ function getKeywordAdvancedSearch(
           activeOperator = 'or';
           parsedResults[activeOperator] = [];
         }
-        if (searchField) {
+        if (searchField !== undefined) {
           const searchFieldResult: string[] = [];
+          console.log('searchField', searchField);
           searchField.forEach((field) => {
             if (activeOperator) {
               searchFieldResult?.push(`${field}:"${segment}"`);
