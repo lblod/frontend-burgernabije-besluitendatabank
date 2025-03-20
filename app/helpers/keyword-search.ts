@@ -33,12 +33,20 @@ function getKeywordAdvancedSearch(
           activeOperator = 'or';
           parsedResults[activeOperator] = [];
         }
-        if (searchField !== undefined) {
+        if (Array.isArray(searchField)) {
           const searchFieldResult: string[] = [];
           console.log('searchField', searchField);
+          console.log('searchFieldResult', searchFieldResult);
+          console.log(
+            'searchField in production:',
+            JSON.stringify(searchField),
+          );
+          if (!Array.isArray(searchField)) {
+            console.error('searchField is not an array!', searchField);
+          }
           searchField.forEach((field) => {
             if (activeOperator) {
-              searchFieldResult?.push(`${field}:"${segment}"`);
+              searchFieldResult.push(`${field}:"${segment}"`);
             }
           });
           if (activeOperator === 'not') {
