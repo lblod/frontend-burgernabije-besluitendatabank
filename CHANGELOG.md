@@ -1,8 +1,18 @@
+## v0.8.7 (2025-04-18)
+
+#### :rocket: Enhancement
+
+- [#226](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/227) Hotfix: Refactor keyword query formatting by ([@Andresdev02](https://github.com/Andresdev02))
+
+#### Committers: 1
+
+- Andres Vergauwen ([@Andresdev02](https://github.com/Andresdev02))
+
 ## v0.8.6 (2025-03-20)
 
 #### :rocket: Enhancement
 
-- [#226](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/226) Hotfix void error on search by ([@madnificent](https://github.com/Andresdev02))
+- [#226](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/226) Hotfix void error on search by ([@Andresdev02](https://github.com/Andresdev02))
 
 #### Committers: 1
 
