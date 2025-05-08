@@ -17,6 +17,13 @@ export default class AgendaItemsIndexController extends Controller {
   firstStep = 0;
   lastStep = 3;
   zoom = 14;
+  complementaryColors = ['green', 'blue', 'red', 'orange', 'purple', 'yellow'];
+  questions = [
+    'In welke gemeente ga je rijden?',
+    'Door welke zones ga je rijden?',
+    'Je zal rijden als?',
+    'Wat is de reden van de reis?',
+  ];
 
   @tracked lat = 0;
   @tracked lng = 0;
@@ -54,6 +61,13 @@ export default class AgendaItemsIndexController extends Controller {
       return !this.selectedTravelReason;
     }
     return true;
+  }
+  @action
+  getColorForArea(index: number): string {
+    return (
+      this.complementaryColors[index % this.complementaryColors.length] ??
+      'gray'
+    );
   }
 
   @action
@@ -199,6 +213,11 @@ export default class AgendaItemsIndexController extends Controller {
   @action
   isAreaSelected(area: Area): boolean {
     return this.selectedAreas.some((a) => a.name === area.name);
+  }
+
+  @action
+  getTooltipText(index: number): string {
+    return `Stap ${index + 1} - ${this.questions[index]}`;
   }
 }
 

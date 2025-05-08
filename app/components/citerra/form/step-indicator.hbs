@@ -8,7 +8,7 @@
         {{on "click" (fn @setStep i)}}
         @disabled={{gt i @currentStep}}
       />
-      <EmberTooltip @text="Stap {{add i 1}}" @side="top" />
+      <EmberTooltip @text={{@getTooltipText i}} @side="top" />
     </div>
   {{/each}}
 </div>

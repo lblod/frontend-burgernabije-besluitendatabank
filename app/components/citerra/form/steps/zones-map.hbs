@@ -19,10 +19,10 @@
         @url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
       />
 
-      {{#each @areas as |area|}}
+      {{#each @areas as |area index|}}
         <layers.polygon
           @locations={{area.coordinates}}
-          @color={{if (@isAreaSelected area) "green" "gray"}}
+          @color={{if (@isAreaSelected area) (@getColorForArea index) "gray"}}
           @fillOpacity={{if (@isAreaSelected area) 0.5 0.3}}
           @onClick={{fn @selectAreas area}}
           as |polygon|

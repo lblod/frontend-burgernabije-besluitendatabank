@@ -11,6 +11,7 @@
         @totalSteps={{this.lastStep}}
         @setStep={{this.setStep}}
         @canGoToNextStep={{this.canGoToNextStep}}
+        @getTooltipText={{this.getTooltipText}}
       />
     {{/unless}}
 
@@ -42,6 +43,7 @@
             @lng={{this.lng}}
             @zoom={{this.zoom}}
             @isAreaSelected={{this.isAreaSelected}}
+            @getColorForArea={{this.getColorForArea}}
           />
         {{else if (eq this.step 2)}}
           <Citerra::Form::Steps::EntityType

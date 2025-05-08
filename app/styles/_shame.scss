@@ -412,18 +412,25 @@ cursor {
   }
 }
 
-.leaflet-interactive:hover {
-  stroke-width: 6px;
-  fill-opacity: 0.4;
-  cursor: pointer;
-  transition: 0.3s ease-in-out;
-}
-
 #map-container {
   align-items: flex-start;
 
   path {
     outline: none;
+  }
+
+  .leaflet-interactive:hover {
+    fill-opacity: 0.4;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+  }
+
+  $complementary-colors: green, blue, red, orange, purple, yellow;
+
+  @for $i from 1 through 6 {
+    .leaflet-interactive:nth-child(#{$i}):hover {
+      fill: nth($complementary-colors, $i);
+    }
   }
 }
 
@@ -457,6 +464,7 @@ cursor {
   .tooltip-wrapper {
     position: relative;
     display: inline-block;
+    cursor: pointer;
   }
 
   &.active {

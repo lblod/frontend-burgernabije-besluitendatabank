@@ -5,5 +5,6 @@ module.exports = {
   rules: {
     'media-feature-range-notation': null,
     'selector-class-pattern': null, // This enforces kebab-case by default but we use BEM which isn't compatible
+    'scss/no-global-function-names': null,
   },
 };
