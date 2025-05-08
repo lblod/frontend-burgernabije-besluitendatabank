@@ -1,0 +1,11 @@
+<div class="step-indicator">
+  {{#each (range 0 (inc @totalSteps)) as |i|}}
+    <AuButton
+      class="step-dot {{if (lte i @currentStep) 'active'}}"
+      aria-label="Step {{add i 1}}"
+      @skin="link"
+      {{on "click" (fn @setStep i)}}
+      @disabled={{gt i @currentStep}}
+    />
+  {{/each}}
+</div>

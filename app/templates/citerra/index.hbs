@@ -1,0 +1,118 @@
+<Citerra::Intro />
+
+<section
+  id="citerra-form"
+  class="au-u-flex au-u-flex--column au-u-flex--center au-u-flex--vertical-center au-u-padding-top-large au-u-padding-bottom-large au-u-padding-left au-u-padding-right"
+>
+  <article class="au-u-max-width-medium au-u-1-1 au-o-flow">
+    {{#unless this.isFormSubmitted}}
+      <Citerra::Form::StepIndicator
+        @currentStep={{this.step}}
+        @totalSteps={{this.lastStep}}
+        @setStep={{this.setStep}}
+        @canGoToNextStep={{this.canGoToNextStep}}
+      />
+    {{/unless}}
+
+    <AuHeading @level="4" @skin="4">
+      {{#if this.isFormSubmitted}}
+        Het formulier is ingevuld.
+      {{else}}
+        Vul het formulier in om de nodige informatie te krijgen die voor jou van
+        toepassing is.
+      {{/if}}
+    </AuHeading>
+
+    <div
+      class="au-u-flex au-u-flex--between au-u-flex--spaced au-u-flex--vertical-start"
+    >
+      <div class="au-u-1-1 au-u-flex--spaced">
+        {{#if (eq this.step 0)}}
+          <Citerra::Form::Steps::Municipality
+            @governmentOptions={{this.governmentList.options}}
+            @selectedGovernment={{this.selectedGovernment}}
+            @updateSelectedGovernment={{this.setGovernment}}
+          />
+        {{else if (eq this.step 1)}}
+          <Citerra::Form::Steps::ZonesMap
+            @areas={{this.areas}}
+            @selectedAreas={{this.selectedAreas}}
+            @selectAreas={{this.selectAreas}}
+            @lat={{this.lat}}
+            @lng={{this.lng}}
+            @zoom={{this.zoom}}
+            @isAreaSelected={{this.isAreaSelected}}
+          />
+        {{else if (eq this.step 2)}}
+          <Citerra::Form::Steps::EntityType
+            @entityTypes={{this.entityTypes}}
+            @selectedEntityType={{this.selectedEntityType}}
+            @setEntityType={{this.setEntityType}}
+          />
+        {{else if (eq this.step 3)}}
+          <Citerra::Form::Steps::TravelReason
+            @travelReasons={{this.travelReasons}}
+            @selectedTravelReason={{this.selectedTravelReason}}
+            @setTravelReason={{this.setTravelReason}}
+          />
+        {{else if (eq this.step 4)}}
+          <Citerra::Form::Steps::Summary @resetForm={{this.resetForm}} />
+        {{/if}}
+
+        {{#if (lte this.step this.lastStep)}}
+          <div
+            class="{{concat
+                'au-u-flex au-u-flex--spaced au-u-margin-top '
+                (if this.isFirstStep 'au-u-flex--end' 'au-u-flex--between')
+              }}"
+          >
+            {{#unless this.isFirstStep}}
+              <AuButton
+                @skin="secondary"
+                @icon="chevron-left"
+                @iconAlignment="left"
+                {{on "click" this.prevStep}}
+              >
+                Vorige
+              </AuButton>
+            {{/unless}}
+
+            {{#if this.isLastStep}}
+              <AuButton
+                @skin="primary"
+                @icon="chevron-right"
+                @iconAlignment="right"
+                @disabled={{this.canGoToNextStep}}
+                {{on "click" this.submitForm}}
+              >
+                Verstuur
+              </AuButton>
+            {{else}}
+              <AuButton
+                @skin="primary"
+                @icon="chevron-right"
+                @iconAlignment="right"
+                @disabled={{this.canGoToNextStep}}
+                {{on "click" this.nextStep}}
+              >
+                Volgende
+              </AuButton>
+            {{/if}}
+          </div>
+        {{/if}}
+      </div>
+
+      {{#if (gt this.step 0)}}
+        <Citerra::Form::RecapBox
+          @step={{this.step}}
+          @selectedGovernment={{this.selectedGovernment}}
+          @selectedAreas={{this.selectedAreas}}
+          @selectedEntityType={{this.selectedEntityType}}
+          @selectedTravelReason={{this.selectedTravelReason}}
+          @setStep={{this.setStep}}
+          @isFormSubmitted={{this.isFormSubmitted}}
+        />
+      {{/if}}
+    </div>
+  </article>
+</section>

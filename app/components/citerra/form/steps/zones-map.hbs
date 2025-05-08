@@ -1,0 +1,35 @@
+<div class="au-o-grid au-u-margin-none au-u-flex--between" id="map-container">
+  <div class="au-u-3-6 au-u-padding-right">
+    <Filters::SelectMultipleFilter
+      @id="zones"
+      @label="Door welke zones ga je rijden?"
+      @options={{@areas}}
+      @selected={{@selectedAreas}}
+      @updateSelected={{@selectAreas}}
+      @noMatchesMessage="Geen zones gevonden"
+      @searchField="name"
+      @queryParam="gemeentes+provincies"
+      @placeholder="Kies één of meer zones waarin je zal rijden"
+    />
+  </div>
+
+  <div class="au-u-3-6">
+    <LeafletMap @lat={{@lat}} @lng={{@lng}} @zoom={{@zoom}} as |layers|>
+      <layers.tile
+        @url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
+      />
+
+      {{#each @areas as |area|}}
+        <layers.polygon
+          @locations={{area.coordinates}}
+          @color={{if (@isAreaSelected area) "green" "gray"}}
+          @fillOpacity={{if (@isAreaSelected area) 0.5 0.3}}
+          @onClick={{fn @selectAreas area}}
+          as |polygon|
+        >
+          <polygon.tooltip @sticky={{true}}>{{area.name}}</polygon.tooltip>
+        </layers.polygon>
+      {{/each}}
+    </LeafletMap>
+  </div>
+</div>

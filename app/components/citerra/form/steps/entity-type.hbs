@@ -1,0 +1,17 @@
+<AuFieldset as |f|>
+  <f.legend>Je zal rijden als:</f.legend>
+  <f.content>
+    <AuRadioGroup
+      @onChange={{@setEntityType}}
+      @selected={{@selectedEntityType}}
+      @name="radios"
+      as |Group|
+    >
+      {{#each @entityTypes as |option|}}
+        <Group.Radio @value={{option}}>
+          {{option.label}}
+        </Group.Radio>
+      {{/each}}
+    </AuRadioGroup>
+  </f.content>
+</AuFieldset>

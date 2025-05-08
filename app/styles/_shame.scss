@@ -386,6 +386,10 @@ cursor {
 // Related to BNB-452 CommentId=97815
 .ember-power-select-multiple-options li {
   list-style: none;
+
+  input {
+    field-sizing: content;
+  }
 }
 
 .infinite-scroll-height {
@@ -394,4 +398,60 @@ cursor {
 
 .au-c-main-header__title {
   max-width: 100% !important;
+}
+
+// AUTOLUWE ZONE
+#citerra-form {
+  #summary ul {
+    list-style: disc;
+    margin-left: 2rem;
+  }
+
+  hr {
+    border: 0.5px solid var(--au-gray-300);
+  }
+}
+
+#map-container {
+  align-items: flex-start;
+
+  path {
+    outline: none;
+  }
+}
+
+.recap_box {
+  border-radius: 6px;
+  border: 1px solid var(--au-blue-700);
+  padding: 1rem 1.5rem;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.leaflet-container {
+  height: 400px;
+  width: 100%;
+}
+
+.step-indicator {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-start;
+  margin: 1rem 0;
+}
+
+.step-dot {
+  width: 10px;
+  height: 2px;
+  background-color: var(--au-gray-200);
+  border-radius: 3px;
+  transition: background-color 0.3s;
+
+  &.active {
+    background-color: var(--au-blue-700);
+  }
+
+  &.is-disabled {
+    background-color: var(--au-gray-200) !important;
+  }
 }

@@ -25,5 +25,10 @@ Router.map(function () {
   this.route('accessibility-statement', {
     path: '/toegankelijkheidsverklaring',
   });
+
+  this.route('citerra', function () {
+    this.route('index', { path: '/' });
+  });
+
   this.route('data-quality', { path: '/data-kwaliteit' });
 });

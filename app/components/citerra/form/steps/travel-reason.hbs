@@ -1,0 +1,12 @@
+<Filters::SelectFilter
+  @id="status"
+  @label="Wat is de reden van de reis?"
+  @options={{@travelReasons}}
+  @selected={{@selectedTravelReason}}
+  @updateSelected={{@setTravelReason}}
+  @queryParam="status"
+  @allowClear={{false}}
+  @searchEnabled={{true}}
+  @searchField="label"
+  @placeholder="Kies een optie"
+/>

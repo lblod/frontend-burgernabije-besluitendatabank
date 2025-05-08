@@ -1,0 +1,67 @@
+<div class="recap_box au-u-1-5">
+  {{#if @selectedGovernment.label}}
+    <div>
+      <label class="au-u-bold">Gekozen gemeente</label>
+      <br />
+      <AuButton
+        @skin="link"
+        class="au-u-padding-none"
+        @disabled={{@isFormSubmitted}}
+        {{on "click" (fn @setStep 0)}}
+      >
+        {{@selectedGovernment.label}}
+      </AuButton>
+    </div>
+  {{/if}}
+  {{#if @selectedAreas.length}}
+    <hr />
+    <div>
+      <label class="au-u-bold">Zones</label>
+      <br />
+      {{#each @selectedAreas as |area|}}
+        <div>
+          <AuButton
+            @skin="link"
+            class="au-u-padding-none"
+            @disabled={{@isFormSubmitted}}
+            {{on "click" (fn @setStep 1)}}
+          >
+            {{area.name}}<br />
+          </AuButton>
+        </div>
+      {{/each}}
+    </div>
+  {{/if}}
+
+  {{#if @selectedEntityType.label}}
+    <hr />
+    <div>
+      <label class="au-u-bold">Je rijdt als</label>
+      <br />
+      <AuButton
+        @skin="link"
+        class="au-u-padding-none"
+        @disabled={{@isFormSubmitted}}
+        {{on "click" (fn @setStep 2)}}
+      >
+        {{@selectedEntityType.label}}
+      </AuButton>
+    </div>
+  {{/if}}
+
+  {{#if @selectedTravelReason.label}}
+    <hr />
+    <div>
+      <label class="au-u-bold">Reden</label>
+      <br />
+      <AuButton
+        @skin="link"
+        class="au-u-padding-none"
+        @disabled={{@isFormSubmitted}}
+        {{on "click" (fn @setStep 3)}}
+      >
+        {{@selectedTravelReason.label}}
+      </AuButton>
+    </div>
+  {{/if}}
+</div>
