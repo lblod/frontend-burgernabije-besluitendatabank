@@ -1,7 +1,7 @@
 <div class="recap_box au-u-1-5">
   {{#if @selectedGovernment.label}}
     <div>
-      <label class="au-u-bold">Gekozen gemeente</label>
+      <label class="au-u-medium">Gekozen gemeente</label>
       <br />
       <AuButton
         @skin="link"
@@ -16,7 +16,7 @@
   {{#if @selectedAreas.length}}
     <hr />
     <div>
-      <label class="au-u-bold">Zones</label>
+      <label class="au-u-medium">Zones</label>
       <br />
       {{#each @selectedAreas as |area|}}
         <div>
@@ -36,7 +36,7 @@
   {{#if @selectedEntityType.label}}
     <hr />
     <div>
-      <label class="au-u-bold">Je rijdt als</label>
+      <label class="au-u-medium">Je rijdt als</label>
       <br />
       <AuButton
         @skin="link"
@@ -52,7 +52,7 @@
   {{#if @selectedTravelReason.label}}
     <hr />
     <div>
-      <label class="au-u-bold">Reden</label>
+      <label class="au-u-medium">Reden</label>
       <br />
       <AuButton
         @skin="link"

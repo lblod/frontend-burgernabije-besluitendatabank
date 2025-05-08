@@ -412,6 +412,13 @@ cursor {
   }
 }
 
+.leaflet-interactive:hover {
+  stroke-width: 6px;
+  fill-opacity: 0.4;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
 #map-container {
   align-items: flex-start;
 
@@ -447,11 +454,24 @@ cursor {
   border-radius: 3px;
   transition: background-color 0.3s;
 
+  .tooltip-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+
   &.active {
     background-color: var(--au-blue-700);
   }
 
   &.is-disabled {
     background-color: var(--au-gray-200) !important;
+  }
+
+  .custom-tooltip {
+    background-color: #333;
+    color: white;
+    font-size: 0.85rem;
+    border-radius: 4px;
+    padding: 5px 8px;
   }
 }

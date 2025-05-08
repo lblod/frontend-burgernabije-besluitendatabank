@@ -1,11 +1,14 @@
 <div class="step-indicator">
   {{#each (range 0 (inc @totalSteps)) as |i|}}
-    <AuButton
-      class="step-dot {{if (lte i @currentStep) 'active'}}"
-      aria-label="Step {{add i 1}}"
-      @skin="link"
-      {{on "click" (fn @setStep i)}}
-      @disabled={{gt i @currentStep}}
-    />
+    <div class="tooltip-wrapper">
+      <AuButton
+        class="step-dot {{if (lte i @currentStep) 'active'}}"
+        aria-label="Stap {{add i 1}}"
+        @skin="link"
+        {{on "click" (fn @setStep i)}}
+        @disabled={{gt i @currentStep}}
+      />
+      <EmberTooltip @text="Stap {{add i 1}}" @side="top" />
+    </div>
   {{/each}}
 </div>
