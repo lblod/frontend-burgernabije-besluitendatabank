@@ -23,7 +23,7 @@ export default class FilterService extends Service {
     dateSort: 'desc' as SortType,
     governingBodyClassifications: '',
     dataQualityList: [],
-    status: 'Alles',
+    status: null,
   };
 
   updateFilters(newFilters: Partial<AgendaItemsParams>) {
@@ -43,7 +43,9 @@ export default class FilterService extends Service {
   }
   @action
   handleDateSortChange(event: { target: { value: SortType } }) {
-    const queryParams = { [QueryParameterKeys.dateSort]: event?.target?.value };
+    const queryParams = {
+      [QueryParameterKeys.dateSort]: event?.target?.value || null,
+    };
     this.router.transitionTo({ queryParams });
     this.updateFilters({ dateSort: event?.target?.value });
   }

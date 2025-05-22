@@ -23,7 +23,7 @@ export default class FilterContent extends Component {
   handleSubmit(event: Event) {
     event.preventDefault();
 
-    const queryParams = { [QueryParameterKeys.keyword]: this.value };
+    const queryParams = { [QueryParameterKeys.keyword]: this.value || null };
     this.router.transitionTo({ queryParams });
   }
 

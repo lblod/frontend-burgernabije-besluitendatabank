@@ -10,7 +10,7 @@ export interface AgendaItemsParams {
   governingBodyClassifications: string;
   dataQualityList: Array<string>;
   dateSort: string;
-  status: string;
+  status: string | null;
 }
 
 export interface AgendaItemsLoaderArgs {

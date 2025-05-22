@@ -34,7 +34,7 @@ export default class FilterSidebarWrapper extends Component<FilterSidebarWrapper
   }
 
   get statusOfAgendaItemsOptions() {
-    return ['Alles', 'Behandeld', 'Niet behandeld'];
+    return ['Behandeld', 'Niet behandeld'];
   }
 
   get hasMunicipalityFilter() {
