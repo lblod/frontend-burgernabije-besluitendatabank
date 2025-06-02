@@ -14,6 +14,11 @@ Router.map(function () {
     this.route('session', { path: '/:id/zitting' });
   });
 
+  this.route('agenda-items', { path: '/datamonitoringtool' }, function () {
+    this.route('agenda-item', { path: '/:id' });
+    this.route('session', { path: '/:id/zitting' });
+  });
+
   this.route('sessions', { path: '/zittingen' }, function () {
     this.route('session', { path: '/:session_id' });
   });

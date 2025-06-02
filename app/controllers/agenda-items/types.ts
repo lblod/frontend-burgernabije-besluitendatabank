@@ -1,6 +1,7 @@
 import type { PageableRequest } from 'frontend-burgernabije-besluitendatabank/services/mu-search';
 import type AgendaItem from 'frontend-burgernabije-besluitendatabank/models/mu-search/agenda-item';
 
+export type filterType = 'duplicate-uri'; //Add more filter types if needed (e.g., missing decisions, inconsistent statuses, etc.)
 export interface AgendaItemsParams {
   keyword: string;
   municipalityLabels: string;
@@ -11,6 +12,7 @@ export interface AgendaItemsParams {
   dataQualityList: Array<string>;
   dateSort: string;
   status: string | null;
+  filter: filterType | null;
 }
 
 export interface AgendaItemsLoaderArgs {
