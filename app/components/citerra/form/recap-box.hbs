@@ -5,14 +5,25 @@
       <br />
       {{#each @selectedGovernment as |gov|}}
         <div>
-          <AuButton
-            @skin="link"
-            class="au-u-padding-none"
-            @disabled={{@isFormSubmitted}}
-            {{on "click" (fn @setStep 0)}}
-          >
-            {{gov.label}}<br />
-          </AuButton>
+          {{#if (eq @step 1)}}
+            <AuButton
+              @skin="link"
+              class="au-u-padding-none"
+              @disabled={{@isFormSubmitted}}
+              {{on "click" (fn @goToMunicipality gov.label)}}
+            >
+              {{gov.label}}<br />
+            </AuButton>
+          {{else}}
+            <AuButton
+              @skin="link"
+              class="au-u-padding-none"
+              @disabled={{@isFormSubmitted}}
+              {{on "click" (fn @setStep 0)}}
+            >
+              {{gov.label}}<br />
+            </AuButton>
+          {{/if}}
         </div>
       {{/each}}
     </div>
@@ -24,14 +35,25 @@
       <br />
       {{#each @selectedAreas as |area|}}
         <div>
-          <AuButton
-            @skin="link"
-            class="au-u-padding-none"
-            @disabled={{@isFormSubmitted}}
-            {{on "click" (fn @setStep 1)}}
-          >
-            {{area.name}}<br />
-          </AuButton>
+          {{#if (eq @step 1)}}
+            <AuButton
+              @skin="link"
+              class="au-u-padding-none"
+              @disabled={{@isFormSubmitted}}
+              {{on "click" (fn @goToArea area)}}
+            >
+              {{area.name}}<br />
+            </AuButton>
+          {{else}}
+            <AuButton
+              @skin="link"
+              class="au-u-padding-none"
+              @disabled={{@isFormSubmitted}}
+              {{on "click" (fn @setStep 1)}}
+            >
+              {{area.name}}<br />
+            </AuButton>
+          {{/if}}
         </div>
       {{/each}}
     </div>

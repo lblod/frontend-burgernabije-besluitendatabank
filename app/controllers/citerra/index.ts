@@ -30,7 +30,7 @@ export default class AgendaItemsIndexController extends Controller {
   @tracked lat = 0;
   @tracked lng = 0;
   @tracked step = this.firstStep;
-  @tracked selectedGovernment: GoverningBodyOption[] | null = null;
+  @tracked selectedGovernment: GoverningBodyOption[] = [];
   @tracked areas: Area[] = [];
   @tracked entityTypes = defaultEntityTypes;
   @tracked travelReasons: TravelReasonOption[] = defaultTravelReasons;
@@ -42,6 +42,7 @@ export default class AgendaItemsIndexController extends Controller {
 
   @service declare governmentList: GovernmentListService;
   @service declare governingBodyList: GoverningBodyListService;
+  private abortController?: AbortController;
 
   get isFirstStep() {
     return this.step === this.firstStep;
@@ -52,7 +53,7 @@ export default class AgendaItemsIndexController extends Controller {
   }
   get canGoToNextStep() {
     if (this.step === 0) {
-      return !this.selectedGovernment;
+      return this.selectedGovernment.length === 0;
     }
     if (this.step === 1) {
       return this.selectedAreas.length === 0;
@@ -102,7 +103,7 @@ export default class AgendaItemsIndexController extends Controller {
   resetForm() {
     this.isFormSubmitted = false;
     this.step = this.firstStep;
-    this.selectedGovernment = null;
+    this.selectedGovernment = [];
     this.selectedAreas = [];
     this.selectedEntityType = null;
     this.selectedTravelReason = null;
@@ -110,14 +111,22 @@ export default class AgendaItemsIndexController extends Controller {
 
   @action
   async setGovernment(newOptions: GoverningBodyOption[]) {
+    this.abortController?.abort();
+    this.abortController = new AbortController();
+
     this.isLoading = true;
     this.selectedGovernment = newOptions;
     this.selectedAreas = [];
     this.areas = [];
-    await this.getCoordinates();
-    this.isLoading = false;
-  }
 
+    try {
+      await this.getCoordinates(this.abortController.signal);
+    } catch (error: unknown) {
+      console.error(error);
+    } finally {
+      this.isLoading = false;
+    }
+  }
   @action
   setEntityType(value: EntityOption) {
     this.selectedEntityType = value;
@@ -128,20 +137,20 @@ export default class AgendaItemsIndexController extends Controller {
     this.selectedTravelReason = value;
   }
 
-  async getCoordinates() {
+  async getCoordinates(signal: AbortSignal) {
     if (!this.selectedGovernment || this.selectedGovernment.length === 0) {
-      throw new Error('No government selected');
+      return;
     }
 
-    const promises = this.selectedGovernment.map(({ label }) => {
-      const coordinates = this.fetchCoords(label);
-      coordinates.then((coord) => {
-        this.generateRandomZones(coord.lat, coord.lng, label);
-      });
-      return coordinates.catch((error) => {
+    const promises = this.selectedGovernment.map(async ({ label }) => {
+      try {
+        const coord = await this.fetchCoords(label, signal);
+        await this.generateRandomZones(coord.lat, coord.lng, label);
+        return coord;
+      } catch (error) {
         console.error(`Error fetching coordinates for ${label}:`, error);
         return { lat: 0, lng: 0 };
-      });
+      }
     });
 
     const coordinates = await Promise.all(promises);
@@ -149,16 +158,20 @@ export default class AgendaItemsIndexController extends Controller {
     if (!coordinates || coordinates.length === 0 || !coordinate) {
       throw new Error('No valid coordinates found');
     }
+
     this.lat = coordinate.lat;
     this.lng = coordinate.lng;
+
     return { lat: this.lat, lng: this.lng };
   }
 
-  async fetchCoords(label: string): Promise<LatLngPoint> {
+  @action
+  async fetchCoords(label: string, signal?: AbortSignal): Promise<LatLngPoint> {
     const query = encodeURIComponent(label);
     const url = `https://nominatim.openstreetmap.org/search?q=${query}&format=json&limit=1`;
 
     const res = await fetch(url, {
+      signal,
       headers: {
         'Accept-Language': 'en',
         'User-Agent': 'your-app-name (your@email.com)',
@@ -171,7 +184,7 @@ export default class AgendaItemsIndexController extends Controller {
     }
     const { lat, lon } = data[0];
     return {
-      lat: lat,
+      lat,
       lng: lon,
     };
   }
@@ -216,6 +229,7 @@ export default class AgendaItemsIndexController extends Controller {
 
   @action
   async selectAreas(selected: Area[] | Area) {
+    this.abortController = new AbortController();
     if (Array.isArray(selected)) {
       const uniqueNames = new Set();
       this.selectedAreas = selected
@@ -227,9 +241,14 @@ export default class AgendaItemsIndexController extends Controller {
         .sort((a, b) => a.name.localeCompare(b.name));
       const lastSelected = selected[selected.length - 1];
       if (lastSelected) {
-        const coordinates = await this.fetchCoords(lastSelected.name);
-        this.lat = coordinates.lat;
-        this.lng = coordinates.lng;
+        const coordinates = await this.fetchCoords(
+          lastSelected.name,
+          this.abortController.signal,
+        );
+        if (this.lat !== coordinates.lat && this.lng !== coordinates.lng) {
+          this.lat = coordinates.lat;
+          this.lng = coordinates.lng;
+        }
       }
     } else {
       const exists = this.selectedAreas.some((a) => a.name === selected.name);
@@ -239,7 +258,10 @@ export default class AgendaItemsIndexController extends Controller {
         : [...this.selectedAreas, selected];
 
       this.selectedAreas.sort((a, b) => a.name.localeCompare(b.name));
-      const coordinates = await this.fetchCoords(selected.name);
+      const coordinates = await this.fetchCoords(
+        selected.name,
+        this.abortController.signal,
+      );
       this.lat = coordinates.lat;
       this.lng = coordinates.lng;
     }
@@ -253,6 +275,19 @@ export default class AgendaItemsIndexController extends Controller {
   @action
   getTooltipText(index: number): string {
     return `Stap ${index + 1} - ${this.questions[index]}`;
+  }
+  @action
+  goToArea(area: Area) {
+    if (!area.coordinates || area.coordinates.length === 0) return;
+    this.lat = (area.coordinates[0] ?? { lat: 0, lng: 0 }).lat;
+    this.lng = (area.coordinates[0] ?? { lat: 0, lng: 0 }).lng;
+    this.zoom = 14;
+  }
+  @action
+  async goToMunicipality(municipality: string) {
+    const coordinates = await this.fetchCoords(municipality);
+    this.lat = coordinates.lat;
+    this.lng = coordinates.lng;
   }
 }
 
