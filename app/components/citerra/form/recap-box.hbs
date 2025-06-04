@@ -1,16 +1,20 @@
 <div class="recap_box au-u-1-5">
-  {{#if @selectedGovernment.label}}
+  {{#if @selectedGovernment}}
     <div>
       <label class="au-u-medium">Gekozen gemeente</label>
       <br />
-      <AuButton
-        @skin="link"
-        class="au-u-padding-none"
-        @disabled={{@isFormSubmitted}}
-        {{on "click" (fn @setStep 0)}}
-      >
-        {{@selectedGovernment.label}}
-      </AuButton>
+      {{#each @selectedGovernment as |gov|}}
+        <div>
+          <AuButton
+            @skin="link"
+            class="au-u-padding-none"
+            @disabled={{@isFormSubmitted}}
+            {{on "click" (fn @setStep 0)}}
+          >
+            {{gov.label}}<br />
+          </AuButton>
+        </div>
+      {{/each}}
     </div>
   {{/if}}
   {{#if @selectedAreas.length}}

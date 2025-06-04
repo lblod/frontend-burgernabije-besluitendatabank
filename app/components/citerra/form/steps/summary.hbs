@@ -1,26 +1,44 @@
 <article id="summary">
   <p>Voor het ingevulde scenario geldt:</p>
   <br />
-  <p>Je hebt de volgende
-    <span class="au-u-medium">bewijsstukken</span>
-    nodig:</p>
-  <ul>
-    <li>Een goedkeurig van de
-      <AuLinkExternal
-        href="https://lokaalbeslist.vlaanderen.be"
-      >gemeente</AuLinkExternal></li>
-    <li>[lorem ipsum]</li>
-  </ul>
-  <br />
-  <p>De kostprijs is <span class="au-u-medium">0 EUR</span>.</p>
-  <br />
-  <p>Deze informatie komt uit:</p>
-  <ul>
-    <li><AuLinkExternal href="https://lokaalbeslist.vlaanderen.be">Besluit van
-        de gemeente</AuLinkExternal></li>
-    <li>[lorem ipsum]</li>
-  </ul>
+  {{#each @selectedGovernment as |gov|}}
+    <div
+      class="au-u-background-gray-100 au-u-padding-small au-u-margin-bottom-small"
+    >
+      <AuPill
+        class="au-u-margin-top-small au-u-margin-bottom-tiny"
+        @skin="ongoing"
+      >{{gov.label}}</AuPill>
+      <p>Je hebt de volgende
+        <span class="au-u-medium">bewijsstukken</span>
+        nodig:</p>
 
+      <ul>
+        <li>Een goedkeurig van de
+          <AuLinkExternal href="https://lokaalbeslist.vlaanderen.be">gemeente
+            {{gov.label}}
+          </AuLinkExternal></li>
+        <li>Werkgeversattest of bewijs van professionele activiteit binnen de
+          zone</li>
+        <li>[lorem ipsum]</li>
+      </ul>
+
+      <br />
+      <p>De kostprijs is <span class="au-u-medium">150 EUR</span>.</p>
+      <br />
+      <p>Deze informatie komt uit:</p>
+      <ul>
+        <li><AuLinkExternal href="https://lokaalbeslist.vlaanderen.be">Besluit
+            van de gemeente
+            {{gov.label}}</AuLinkExternal></li>
+        <li>[lorem ipsum]</li>
+      </ul>
+    </div>
+  {{/each}}
+  <div class="au-u-background-gray-100 au-u-padding-small au-u-margin-bottom">
+    <p>De totale kostprijs is
+      <span class="au-u-medium">{{this.totalCost}} EUR</span>.</p>
+  </div>
   <AuButton
     class="au-u-margin-top"
     @skin="link"

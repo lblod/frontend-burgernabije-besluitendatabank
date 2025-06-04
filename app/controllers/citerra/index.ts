@@ -4,7 +4,6 @@ import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import type { GoverningBodyOption } from 'frontend-burgernabije-besluitendatabank/services/governing-body-list';
 import type GoverningBodyListService from 'frontend-burgernabije-besluitendatabank/services/governing-body-list';
-import type { LocalGovernmentType } from 'frontend-burgernabije-besluitendatabank/services/government-list';
 import type GovernmentListService from 'frontend-burgernabije-besluitendatabank/services/government-list';
 import {
   type AreaParams,
@@ -13,10 +12,12 @@ import {
 } from './types';
 import { defaultEntityTypes, defaultTravelReasons } from './data';
 
+type LatLngPoint = { lat: number; lng: number };
+
 export default class AgendaItemsIndexController extends Controller {
   firstStep = 0;
   lastStep = 3;
-  zoom = 14;
+
   complementaryColors = ['green', 'blue', 'red', 'orange', 'purple', 'yellow'];
   questions = [
     'In welke gemeente ga je rijden?',
@@ -25,10 +26,11 @@ export default class AgendaItemsIndexController extends Controller {
     'Wat is de reden van de reis?',
   ];
 
+  @tracked zoom = 14;
   @tracked lat = 0;
   @tracked lng = 0;
   @tracked step = this.firstStep;
-  @tracked selectedGovernment: GoverningBodyOption | null = null;
+  @tracked selectedGovernment: GoverningBodyOption[] | null = null;
   @tracked areas: Area[] = [];
   @tracked entityTypes = defaultEntityTypes;
   @tracked travelReasons: TravelReasonOption[] = defaultTravelReasons;
@@ -36,6 +38,7 @@ export default class AgendaItemsIndexController extends Controller {
   @tracked selectedEntityType: EntityOption | null = null;
   @tracked selectedTravelReason: TravelReasonOption | null = null;
   @tracked isFormSubmitted: boolean = false;
+  @tracked isLoading: boolean = false;
 
   @service declare governmentList: GovernmentListService;
   @service declare governingBodyList: GoverningBodyListService;
@@ -93,12 +96,6 @@ export default class AgendaItemsIndexController extends Controller {
   submitForm() {
     this.isFormSubmitted = true;
     this.step = this.lastStep + 1;
-    console.log({
-      selectedGovernment: this.selectedGovernment,
-      selectedAreas: this.selectedAreas,
-      selectedEntityType: this.selectedEntityType,
-      selectedTravelReason: this.selectedTravelReason,
-    });
   }
 
   @action
@@ -112,14 +109,13 @@ export default class AgendaItemsIndexController extends Controller {
   }
 
   @action
-  async setGovernment(newOptions: {
-    label: string;
-    id: string;
-    type: LocalGovernmentType;
-  }) {
+  async setGovernment(newOptions: GoverningBodyOption[]) {
+    this.isLoading = true;
     this.selectedGovernment = newOptions;
     this.selectedAreas = [];
+    this.areas = [];
     await this.getCoordinates();
+    this.isLoading = false;
   }
 
   @action
@@ -133,63 +129,93 @@ export default class AgendaItemsIndexController extends Controller {
   }
 
   async getCoordinates() {
-    if (!this.selectedGovernment) {
+    if (!this.selectedGovernment || this.selectedGovernment.length === 0) {
       throw new Error('No government selected');
     }
-    const encoded = encodeURIComponent(this.selectedGovernment.label);
-    const url = `https://nominatim.openstreetmap.org/search?q=${encoded}&format=json&limit=1`;
 
-    const response = await fetch(url, {
+    const promises = this.selectedGovernment.map(({ label }) => {
+      const coordinates = this.fetchCoords(label);
+      coordinates.then((coord) => {
+        this.generateRandomZones(coord.lat, coord.lng, label);
+      });
+      return coordinates.catch((error) => {
+        console.error(`Error fetching coordinates for ${label}:`, error);
+        return { lat: 0, lng: 0 };
+      });
+    });
+
+    const coordinates = await Promise.all(promises);
+    const coordinate = coordinates[0];
+    if (!coordinates || coordinates.length === 0 || !coordinate) {
+      throw new Error('No valid coordinates found');
+    }
+    this.lat = coordinate.lat;
+    this.lng = coordinate.lng;
+    return { lat: this.lat, lng: this.lng };
+  }
+
+  async fetchCoords(label: string): Promise<LatLngPoint> {
+    const query = encodeURIComponent(label);
+    const url = `https://nominatim.openstreetmap.org/search?q=${query}&format=json&limit=1`;
+
+    const res = await fetch(url, {
       headers: {
         'Accept-Language': 'en',
+        'User-Agent': 'your-app-name (your@email.com)',
       },
     });
 
-    const data = await response.json();
-
-    if (data.length > 0) {
-      const { lat, lon } = data[0];
-      this.lat = parseFloat(lat);
-      this.lng = parseFloat(lon);
-      this.generateRandomZones();
-    } else {
-      throw new Error('Location not found');
+    const data = await res.json();
+    if (data.length === 0) {
+      throw new Error(`Location not found: "${label}"`);
     }
+    const { lat, lon } = data[0];
+    return {
+      lat: lat,
+      lng: lon,
+    };
   }
 
-  generateRandomZones() {
+  generateRandomZones(lat: number, lng: number, municipality: string) {
     const numZones = 2 + Math.floor(Math.random() * 3);
-    const zones = [];
+    const zones: Area[] = [];
     const offsetScale = 0.002;
 
     for (let z = 0; z < numZones; z++) {
       const numPoints = Math.floor(Math.random() * 8) + 8;
       const angleStep = (2 * Math.PI) / numPoints;
-      const baseLat = this.lat + (Math.random() - 0.5) * 0.01;
-      const baseLng = this.lng + (Math.random() - 0.5) * 0.01;
-      const points = [];
+
+      const baseLat = Number(lat) + (Math.random() - 0.5) * 0.01;
+      const baseLng = Number(lng) + (Math.random() - 0.5) * 0.01;
+
+      const points: { lat: number; lng: number }[] = [];
 
       for (let i = 0; i < numPoints; i++) {
         const angle = i * angleStep;
         const radius = offsetScale + Math.random() * offsetScale;
+        const offsetLat = radius * Math.sin(angle);
+        const offsetLng = radius * Math.cos(angle);
+
         points.push({
-          lat: baseLat + radius * Math.sin(angle),
-          lng: baseLng + radius * Math.cos(angle),
+          lat: Number(baseLat + offsetLat),
+          lng: Number(baseLng + offsetLng),
         });
       }
 
       zones.push(
         new Area({
-          name: `Zone ${z + 1}`,
+          name: `${municipality} - Zone ${z + 1} `,
+          municipality,
           coordinates: points,
         }),
       );
     }
 
-    this.areas = zones;
+    this.areas.push(...zones);
   }
+
   @action
-  selectAreas(selected: Area[] | Area) {
+  async selectAreas(selected: Area[] | Area) {
     if (Array.isArray(selected)) {
       const uniqueNames = new Set();
       this.selectedAreas = selected
@@ -199,6 +225,12 @@ export default class AgendaItemsIndexController extends Controller {
           return true;
         })
         .sort((a, b) => a.name.localeCompare(b.name));
+      const lastSelected = selected[selected.length - 1];
+      if (lastSelected) {
+        const coordinates = await this.fetchCoords(lastSelected.name);
+        this.lat = coordinates.lat;
+        this.lng = coordinates.lng;
+      }
     } else {
       const exists = this.selectedAreas.some((a) => a.name === selected.name);
 
@@ -207,6 +239,9 @@ export default class AgendaItemsIndexController extends Controller {
         : [...this.selectedAreas, selected];
 
       this.selectedAreas.sort((a, b) => a.name.localeCompare(b.name));
+      const coordinates = await this.fetchCoords(selected.name);
+      this.lat = coordinates.lat;
+      this.lng = coordinates.lng;
     }
   }
 
@@ -223,10 +258,12 @@ export default class AgendaItemsIndexController extends Controller {
 
 class Area {
   @tracked name: string;
-  @tracked coordinates: { lat: number; lng: number }[];
+  @tracked municipality: string;
+  @tracked coordinates: LatLngPoint[];
 
-  constructor({ name, coordinates }: AreaParams) {
+  constructor({ name, municipality, coordinates }: AreaParams) {
     this.name = name;
+    this.municipality = municipality;
     this.coordinates = coordinates;
   }
 }

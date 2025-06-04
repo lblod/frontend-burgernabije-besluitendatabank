@@ -8,5 +8,6 @@ export type TravelReasonOption = {
 };
 export interface AreaParams {
   name: string;
+  municipality: string;
   coordinates: { lat: number; lng: number }[];
 }

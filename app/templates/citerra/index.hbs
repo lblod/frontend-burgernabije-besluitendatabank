@@ -58,7 +58,10 @@
             @setTravelReason={{this.setTravelReason}}
           />
         {{else if (eq this.step 4)}}
-          <Citerra::Form::Steps::Summary @resetForm={{this.resetForm}} />
+          <Citerra::Form::Steps::Summary
+            @resetForm={{this.resetForm}}
+            @selectedGovernment={{this.selectedGovernment}}
+          />
         {{/if}}
 
         {{#if (lte this.step this.lastStep)}}
@@ -95,6 +98,7 @@
                 @icon="chevron-right"
                 @iconAlignment="right"
                 @disabled={{this.canGoToNextStep}}
+                @loading={{this.isLoading}}
                 {{on "click" this.nextStep}}
               >
                 Volgende

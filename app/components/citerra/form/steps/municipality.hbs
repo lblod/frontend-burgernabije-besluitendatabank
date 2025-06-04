@@ -1,4 +1,4 @@
-<Filters::SelectFilter
+<Filters::SelectMultipleFilter
   @id="municipality"
   @label="In welke gemeente ga je rijden?"
   @options={{@governmentOptions}}
@@ -7,5 +7,6 @@
   @noMatchesMessage="Geen besturen gevonden"
   @searchField="label"
   @placeholder="Kies één gemeente"
+  @queryParam="gemeentes+provincies"
   @searchEnabled={{true}}
 />
