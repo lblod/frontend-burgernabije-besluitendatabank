@@ -39,6 +39,17 @@ export default class GovernmentListService extends Service {
     );
   }
 
+  get citerraOptions() {
+    const targetLabels = ['Antwerpen', 'Gent', 'Mechelen', 'Leuven', 'Hasselt']; // Example target labels for Citerra can be removed in future if needed.
+
+    return Promise.all([this.municipalities]).then(([municipalities]) => {
+      const filtered = municipalities.filter((m) =>
+        targetLabels.includes(m.label),
+      );
+      return [{ groupName: 'Gemeente', options: filtered }];
+    });
+  }
+
   private syncSelectedGovernments(
     municipalities: LocalGovernmentOption[],
     provinces: LocalGovernmentOption[],

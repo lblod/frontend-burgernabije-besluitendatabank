@@ -1,11 +1,41 @@
 <div class="recap_box au-u-1-5">
+  {{#if @selectedEntityType.label}}
+    <div>
+      <label class="au-u-medium">Je rijdt als</label>
+      <br />
+      <AuButton
+        @skin="link"
+        class="au-u-padding-none"
+        @disabled={{@isFormSubmitted}}
+        {{on "click" (fn @setStep 0)}}
+      >
+        {{@selectedEntityType.label}}
+      </AuButton>
+    </div>
+  {{/if}}
+  {{#if @selectedTravelReason.label}}
+    <hr />
+    <div>
+      <label class="au-u-medium">Reden</label>
+      <br />
+      <AuButton
+        @skin="link"
+        class="au-u-padding-none"
+        @disabled={{@isFormSubmitted}}
+        {{on "click" (fn @setStep 1)}}
+      >
+        {{@selectedTravelReason.label}}
+      </AuButton>
+    </div>
+  {{/if}}
   {{#if @selectedGovernment}}
+    <hr />
     <div>
       <label class="au-u-medium">Gekozen gemeente</label>
       <br />
       {{#each @selectedGovernment as |gov|}}
         <div>
-          {{#if (eq @step 1)}}
+          {{#if (eq @step 3)}}
             <AuButton
               @skin="link"
               class="au-u-padding-none"
@@ -19,7 +49,7 @@
               @skin="link"
               class="au-u-padding-none"
               @disabled={{@isFormSubmitted}}
-              {{on "click" (fn @setStep 0)}}
+              {{on "click" (fn @setStep 2)}}
             >
               {{gov.label}}<br />
             </AuButton>
@@ -35,7 +65,7 @@
       <br />
       {{#each @selectedAreas as |area|}}
         <div>
-          {{#if (eq @step 1)}}
+          {{#if (eq @step 3)}}
             <AuButton
               @skin="link"
               class="au-u-padding-none"
@@ -49,7 +79,7 @@
               @skin="link"
               class="au-u-padding-none"
               @disabled={{@isFormSubmitted}}
-              {{on "click" (fn @setStep 1)}}
+              {{on "click" (fn @setStep 3)}}
             >
               {{area.name}}<br />
             </AuButton>
@@ -59,35 +89,4 @@
     </div>
   {{/if}}
 
-  {{#if @selectedEntityType.label}}
-    <hr />
-    <div>
-      <label class="au-u-medium">Je rijdt als</label>
-      <br />
-      <AuButton
-        @skin="link"
-        class="au-u-padding-none"
-        @disabled={{@isFormSubmitted}}
-        {{on "click" (fn @setStep 2)}}
-      >
-        {{@selectedEntityType.label}}
-      </AuButton>
-    </div>
-  {{/if}}
-
-  {{#if @selectedTravelReason.label}}
-    <hr />
-    <div>
-      <label class="au-u-medium">Reden</label>
-      <br />
-      <AuButton
-        @skin="link"
-        class="au-u-padding-none"
-        @disabled={{@isFormSubmitted}}
-        {{on "click" (fn @setStep 3)}}
-      >
-        {{@selectedTravelReason.label}}
-      </AuButton>
-    </div>
-  {{/if}}
 </div>

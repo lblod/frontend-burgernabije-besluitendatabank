@@ -20,10 +20,10 @@ export default class AgendaItemsIndexController extends Controller {
 
   complementaryColors = ['green', 'blue', 'red', 'orange', 'purple', 'yellow'];
   questions = [
-    'In welke gemeente ga je rijden?',
-    'Door welke zones ga je rijden?',
     'Je zal rijden als?',
     'Wat is de reden van de reis?',
+    'In welke gemeente ga je rijden?',
+    'Door welke zones ga je rijden?',
   ];
 
   @tracked zoom = 14;
@@ -53,16 +53,16 @@ export default class AgendaItemsIndexController extends Controller {
   }
   get canGoToNextStep() {
     if (this.step === 0) {
-      return this.selectedGovernment.length === 0;
-    }
-    if (this.step === 1) {
-      return this.selectedAreas.length === 0;
-    }
-    if (this.step === 2) {
       return !this.selectedEntityType;
     }
-    if (this.step === 3) {
+    if (this.step === 1) {
       return !this.selectedTravelReason;
+    }
+    if (this.step === 2) {
+      return this.selectedGovernment.length === 0;
+    }
+    if (this.step === 3) {
+      return this.selectedAreas.length === 0;
     }
     return true;
   }
@@ -279,6 +279,7 @@ export default class AgendaItemsIndexController extends Controller {
   @action
   goToArea(area: Area) {
     if (!area.coordinates || area.coordinates.length === 0) return;
+    this.step = this.lastStep;
     this.lat = (area.coordinates[0] ?? { lat: 0, lng: 0 }).lat;
     this.lng = (area.coordinates[0] ?? { lat: 0, lng: 0 }).lng;
     this.zoom = 14;
