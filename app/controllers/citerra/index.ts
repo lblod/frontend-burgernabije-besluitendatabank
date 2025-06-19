@@ -1,6 +1,6 @@
+import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
-import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import type { GoverningBodyOption } from 'frontend-burgernabije-besluitendatabank/services/governing-body-list';
 import type GoverningBodyListService from 'frontend-burgernabije-besluitendatabank/services/governing-body-list';
@@ -10,7 +10,8 @@ import {
   type EntityOption,
   type TravelReasonOption,
 } from './types';
-import { defaultEntityTypes, defaultTravelReasons } from './data';
+import { defaultTravelReasons } from './data';
+import type ConceptModel from 'frontend-burgernabije-besluitendatabank/models/concept';
 
 type LatLngPoint = { lat: number; lng: number };
 
@@ -32,7 +33,9 @@ export default class AgendaItemsIndexController extends Controller {
   @tracked step = this.firstStep;
   @tracked selectedGovernment: GoverningBodyOption[] = [];
   @tracked areas: Area[] = [];
-  @tracked entityTypes = defaultEntityTypes;
+  @tracked entityTypes: Array<ConceptModel> = (
+    this.model as { applicantTypes: Array<ConceptModel> }
+  ).applicantTypes;
   @tracked travelReasons: TravelReasonOption[] = defaultTravelReasons;
   @tracked selectedAreas: Area[] = [];
   @tracked selectedEntityType: EntityOption | null = null;
@@ -66,6 +69,7 @@ export default class AgendaItemsIndexController extends Controller {
     }
     return true;
   }
+
   @action
   getColorForArea(index: number): string {
     return (
