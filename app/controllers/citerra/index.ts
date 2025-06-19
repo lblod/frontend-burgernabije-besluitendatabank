@@ -10,7 +10,6 @@ import {
   type EntityOption,
   type TravelReasonOption,
 } from './types';
-import { defaultTravelReasons } from './data';
 import type ConceptModel from 'frontend-burgernabije-besluitendatabank/models/concept';
 
 type LatLngPoint = { lat: number; lng: number };
@@ -27,16 +26,19 @@ export default class AgendaItemsIndexController extends Controller {
     'Door welke zones ga je rijden?',
   ];
 
+  declare model: {
+    applicantTypes: Array<ConceptModel>;
+    reasons: Array<TravelReasonOption>;
+  };
+
   @tracked zoom = 14;
   @tracked lat = 0;
   @tracked lng = 0;
   @tracked step = this.firstStep;
   @tracked selectedGovernment: GoverningBodyOption[] = [];
   @tracked areas: Area[] = [];
-  @tracked entityTypes: Array<ConceptModel> = (
-    this.model as { applicantTypes: Array<ConceptModel> }
-  ).applicantTypes;
-  @tracked travelReasons: TravelReasonOption[] = defaultTravelReasons;
+  @tracked entityTypes: Array<ConceptModel> = this.model.applicantTypes;
+  @tracked travelReasons: TravelReasonOption[] = this.model.reasons;
   @tracked selectedAreas: Area[] = [];
   @tracked selectedEntityType: EntityOption | null = null;
   @tracked selectedTravelReason: TravelReasonOption | null = null;
