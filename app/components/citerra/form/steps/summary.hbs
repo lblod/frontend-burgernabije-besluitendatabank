@@ -23,7 +23,10 @@
           {{/each}}
         </ul>
       </div>
-      <p>De kostprijs is <span class="au-u-medium">150 EUR</span>.</p>
+      <p class="au-u-margin-top">De
+        <strong>kostprijs</strong>
+        is
+        <strong>150 EUR</strong>.</p>
       <br />
       <p>Deze informatie komt uit:</p>
       <ul>
@@ -34,9 +37,11 @@
       </ul>
     </div>
   {{/each}}
-  <div class="au-u-background-gray-100 au-u-padding-small au-u-margin-bottom">
-    <p>De totale kostprijs is
-      <span class="au-u-h4 au-u-medium">{{this.totalCost}} EUR</span>.</p>
+  <div
+    class="au-u-background-gray-100 au-u-padding-small au-u-margin-bottom au-u-flex au-u-flex--between au-u-h4 au-u-medium"
+  >
+    <p>Totale kostprijs</p>
+    <p>EUR {{this.totalCost}}</p>
   </div>
   <AuButton
     class="au-u-margin-top"
