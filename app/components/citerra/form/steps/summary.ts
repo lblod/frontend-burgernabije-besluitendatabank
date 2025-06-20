@@ -9,4 +9,20 @@ export default class Accordion extends Component<ArgsInterface> {
   get totalCost() {
     return (this.args.selectedGovernment.length ?? 0) * 150;
   }
+
+  get conditions() {
+    return [
+      'Zone A is enkel bereikbaar tussen 12-15 uur',
+      'Houders van een vergunning mogen de zone betreden met hun voertuig',
+      '[lorem ipsum]',
+    ];
+  }
+
+  get requiredProof() {
+    return [
+      'Een goedkeuring van de gemeente',
+      'Werkgeversattest of bewijs van professionele activiteit binnen de zone',
+      '[lorem ipsum]',
+    ];
+  }
 }

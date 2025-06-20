@@ -9,21 +9,22 @@
         class="au-u-margin-top-small au-u-margin-bottom-tiny"
         @skin="ongoing"
       >{{gov.label}}</AuPill>
-      <p>Je hebt de volgende
-        <span class="au-u-medium">bewijsstukken</span>
-        nodig:</p>
-
-      <ul>
-        <li>Een goedkeurig van de
-          <AuLinkExternal href="https://lokaalbeslist.vlaanderen.be">gemeente
-            {{gov.label}}
-          </AuLinkExternal></li>
-        <li>Werkgeversattest of bewijs van professionele activiteit binnen de
-          zone</li>
-        <li>[lorem ipsum]</li>
-      </ul>
-
-      <br />
+      <div class="au-u-margin-top-small">
+        <p class="au-u-medium">Voorwaarden</p>
+        <ul>
+          {{#each this.conditions as |condition|}}
+            <li>{{condition}}</li>
+          {{/each}}
+        </ul>
+      </div>
+      <div class="au-u-margin-top">
+        <p class="au-u-medium">Bewijsstukken</p>
+        <ul>
+          {{#each this.requiredProof as |proof|}}
+            <li>{{proof}}</li>
+          {{/each}}
+        </ul>
+      </div>
       <p>De kostprijs is <span class="au-u-medium">150 EUR</span>.</p>
       <br />
       <p>Deze informatie komt uit:</p>
