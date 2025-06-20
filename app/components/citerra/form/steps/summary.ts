@@ -7,7 +7,10 @@ interface ArgsInterface {
 
 export default class Accordion extends Component<ArgsInterface> {
   get totalCost() {
-    return (this.args.selectedGovernment.length ?? 0) * 150;
+    const withInfo = this.mappedGovernmentInfo.filter(
+      (gov) => gov.didFindInfoAboutGov,
+    );
+    return (withInfo.length ?? 0) * 150;
   }
 
   get conditions() {
@@ -24,5 +27,16 @@ export default class Accordion extends Component<ArgsInterface> {
       'Werkgeversattest of bewijs van professionele activiteit binnen de zone',
       '[lorem ipsum]',
     ];
+  }
+
+  get mappedGovernmentInfo() {
+    return this.args.selectedGovernment.map((gov, index) => {
+      return {
+        ...gov,
+        conditions: this.conditions,
+        proof: this.requiredProof,
+        didFindInfoAboutGov: index !== 1,
+      };
+    });
   }
 }
