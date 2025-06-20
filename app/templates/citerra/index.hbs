@@ -17,13 +17,15 @@
 
     <AuHeading @level="4" @skin="4">
       {{#if this.isFormSubmitted}}
-        Het formulier is ingevuld.
+        Het formulier is ingevuld
       {{else}}
         Vul het formulier in om de nodige informatie te krijgen die voor jou van
         toepassing is.
       {{/if}}
     </AuHeading>
-
+    {{#if (eq this.step 4)}}
+      <p class="au-u-margin-top-small">Voor het ingevulde scenario geldt:</p>
+    {{/if}}
     <div
       class="au-u-flex au-u-flex--between au-u-flex--spaced au-u-flex--vertical-start"
     >
