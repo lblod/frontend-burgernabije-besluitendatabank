@@ -8,6 +8,8 @@ import type GovernmentListService from 'frontend-burgernabije-besluitendatabank/
 import {
   type AreaParams,
   type EntityOption,
+  type Requirement,
+  type SparqlBinding,
   type TravelReasonOption,
 } from './types';
 import type ConceptModel from 'frontend-burgernabije-besluitendatabank/models/concept';
@@ -17,6 +19,8 @@ import type ZoneModel from 'frontend-burgernabije-besluitendatabank/models/zone'
 import type MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 import type Store from '@ember-data/store';
 import type { AdapterPopulatedRecordArrayWithMeta } from 'frontend-burgernabije-besluitendatabank/utils/ember-data';
+import { REQUIREMENTS_QUERY } from './query';
+import type AdministrativeUnitModel from 'frontend-burgernabije-besluitendatabank/models/administrative-unit';
 
 type LatLngPoint = { lat: number; lng: number };
 type LambertCoord = [number, number];
@@ -61,6 +65,7 @@ export default class AgendaItemsIndexController extends Controller {
   @tracked entityTypes: Array<ConceptModel> = this.model.applicantTypes;
   @tracked travelReasons: TravelReasonOption[] = this.model.reasons;
   @tracked selectedAreas: Area[] = [];
+  @tracked requirements: Requirement[] = [];
   @tracked selectedEntityType: EntityOption | null = null;
   @tracked selectedTravelReason: TravelReasonOption | null = null;
   @tracked isFormSubmitted: boolean = false;
@@ -124,9 +129,44 @@ export default class AgendaItemsIndexController extends Controller {
   }
 
   @action
-  submitForm() {
+  async submitForm() {
+    const result = await fetch(
+      '/frontend-sparql?query=' +
+        encodeURIComponent(
+          REQUIREMENTS_QUERY({
+            userSelectedAdminUnit: this.selectedGovernment[0]?.label ?? '',
+            userSelectedZone: this.selectedAreas
+              .map((area) => area.name)
+              .join(','),
+            userSelectedType: this.selectedEntityType?.uri ?? '',
+            userSelectedReason: this.selectedTravelReason?.uri ?? '',
+          }),
+        ),
+    );
+    const sparqlJson = await result.json();
+    const rawBindings = sparqlJson.results.bindings;
+
+    this.requirements = await Promise.all(
+      rawBindings.map(async (binding: SparqlBinding) => ({
+        adminUnit: await this.getAdminUnit(
+          binding.userSelectedAdminUnit?.value ?? '',
+        ),
+        zone: binding.userSelectedZone?.value,
+        requirement: binding.situationReq?.value,
+        description: binding.description?.value ?? null,
+        evidenceDescription: binding.evidenceDescription?.value ?? null,
+      })),
+    );
     this.isFormSubmitted = true;
     this.step = this.lastStep + 1;
+  }
+
+  private async getAdminUnit(uri: string) {
+    const administrativeUnit = await this.store.query('administrative-unit', {
+      'filter[governing-bodies][has-time-specializations][:uri:]': uri,
+      include: 'governing-bodies.has-time-specializations',
+    });
+    return (administrativeUnit.slice()[0] as AdministrativeUnitModel).name;
   }
 
   @action

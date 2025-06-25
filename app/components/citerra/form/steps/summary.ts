@@ -1,16 +1,15 @@
 import Component from '@glimmer/component';
+import type { Requirement } from 'frontend-burgernabije-besluitendatabank/controllers/citerra/types';
 import type { GoverningBodyOption } from 'frontend-burgernabije-besluitendatabank/services/governing-body-list';
 
 interface ArgsInterface {
   selectedGovernment: GoverningBodyOption[];
+  requirements: Requirement[];
 }
 
 export default class Accordion extends Component<ArgsInterface> {
   get totalCost() {
-    const withInfo = this.mappedGovernmentInfo.filter(
-      (gov) => gov.didFindInfoAboutGov,
-    );
-    return (withInfo.length ?? 0) * 150;
+    return 0;
   }
 
   get conditions() {
@@ -30,12 +29,18 @@ export default class Accordion extends Component<ArgsInterface> {
   }
 
   get mappedGovernmentInfo() {
-    return this.args.selectedGovernment.map((gov, index) => {
+    return this.args.selectedGovernment.map((gov) => {
       return {
         ...gov,
-        conditions: this.conditions,
-        proof: this.requiredProof,
-        didFindInfoAboutGov: index !== 1,
+        conditions: this.args.requirements.filter(
+          (req: Requirement) => req.adminUnit === gov.label,
+        ),
+        requiredProof: this.args.requirements.filter(
+          (req: Requirement) => req.adminUnit === gov.label,
+        ),
+        didFindInfoAboutGov: this.args.requirements.some(
+          (req: Requirement) => req.adminUnit === gov.label,
+        ),
       };
     });
   }

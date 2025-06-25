@@ -63,11 +63,14 @@
           <Citerra::Form::Steps::Summary
             @resetForm={{this.resetForm}}
             @selectedGovernment={{this.selectedGovernment}}
+            @requirements={{this.requirements}}
           />
         {{/if}}
 
         {{#if (lte this.step this.lastStep)}}
-          <div class="au-u-flex au-u-flex--start au-u-flex--spaced au-u-margin-top">
+          <div
+            class="au-u-flex au-u-flex--start au-u-flex--spaced au-u-margin-top"
+          >
             {{#unless this.isFirstStep}}
               <AuButton
                 @skin="secondary"

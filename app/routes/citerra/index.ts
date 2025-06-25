@@ -12,11 +12,13 @@ export default class CiterraIndexRoute extends Route {
       'filter[concept-schemes][:id:]': APPLICANT_CONCEPT_SCHEME_ID,
       include: 'concept-schemes',
       sort: ':no-case:label',
+      page: { size: 100 },
     });
     const reasons = await this.store.query('concept', {
       'filter[concept-schemes][:id:]': REASON_CONCEPT_SCHEME_ID,
       include: 'concept-schemes',
       sort: ':no-case:label',
+      page: { size: 100 },
     });
 
     return {

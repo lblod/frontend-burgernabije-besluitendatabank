@@ -13,7 +13,9 @@
           <p class="au-u-medium">Voorwaarden</p>
           <ul>
             {{#each gov.conditions as |condition|}}
-              <li>{{condition}}</li>
+              {{#if condition.description}}
+                <li>{{condition.description}}</li>
+              {{/if}}
             {{/each}}
           </ul>
         </div>
@@ -21,7 +23,9 @@
           <p class="au-u-medium">Bewijsstukken</p>
           <ul>
             {{#each gov.requiredProof as |proof|}}
-              <li>{{proof}}</li>
+              {{#if proof.evidenceDescription}}
+                <li>{{proof.evidenceDescription}}</li>
+              {{/if}}
             {{/each}}
           </ul>
         </div>
