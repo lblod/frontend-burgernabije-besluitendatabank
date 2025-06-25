@@ -23,7 +23,9 @@
         toepassing is.
       {{/if}}
     </AuHeading>
-
+    {{#if (eq this.step 4)}}
+      <p class="au-u-margin-top-small">Voor het ingevulde scenario geldt:</p>
+    {{/if}}
     <div
       class="au-u-flex au-u-flex--between au-u-flex--spaced au-u-flex--vertical-start"
     >
@@ -65,12 +67,7 @@
         {{/if}}
 
         {{#if (lte this.step this.lastStep)}}
-          <div
-            class="{{concat
-                'au-u-flex au-u-flex--spaced au-u-margin-top '
-                (if this.isFirstStep 'au-u-flex--end' 'au-u-flex--between')
-              }}"
-          >
+          <div class="au-u-flex au-u-flex--start au-u-flex--spaced au-u-margin-top">
             {{#unless this.isFirstStep}}
               <AuButton
                 @skin="secondary"
