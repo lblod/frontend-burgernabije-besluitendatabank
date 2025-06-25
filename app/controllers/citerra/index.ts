@@ -8,6 +8,10 @@ import type GovernmentListService from 'frontend-burgernabije-besluitendatabank/
 import {
   type AreaParams,
   type EntityOption,
+  type JsonApiResource,
+  type JsonApiResponse,
+  type LambertCoord,
+  type LatLngPoint,
   type Requirement,
   type SparqlBinding,
   type TravelReasonOption,
@@ -22,21 +26,6 @@ import type { AdapterPopulatedRecordArrayWithMeta } from 'frontend-burgernabije-
 import { REQUIREMENTS_QUERY } from './query';
 import type AdministrativeUnitModel from 'frontend-burgernabije-besluitendatabank/models/administrative-unit';
 
-type LatLngPoint = { lat: number; lng: number };
-type LambertCoord = [number, number];
-
-interface JsonApiResource {
-  id: string;
-  type: string;
-  attributes: Record<string, string>;
-  relationships?: Record<string, string>;
-}
-
-interface JsonApiResponse {
-  data: JsonApiResource[];
-  included?: JsonApiResource[];
-}
-
 export default class AgendaItemsIndexController extends Controller {
   firstStep = 0;
   lastStep = 3;
@@ -45,7 +34,7 @@ export default class AgendaItemsIndexController extends Controller {
   questions = [
     'Je zal rijden als?',
     'Wat is de reden van de reis?',
-    'In welke gemeente ga je rijden?',
+    'In welke gemeentes ga je rijden?',
     'Door welke zones ga je rijden?',
   ];
 
@@ -130,33 +119,48 @@ export default class AgendaItemsIndexController extends Controller {
 
   @action
   async submitForm() {
-    const result = await fetch(
-      '/frontend-sparql?query=' +
-        encodeURIComponent(
-          REQUIREMENTS_QUERY({
-            userSelectedAdminUnit: this.selectedGovernment[0]?.label ?? '',
-            userSelectedZone: this.selectedAreas
-              .map((area) => area.name)
-              .join(','),
-            userSelectedType: this.selectedEntityType?.uri ?? '',
-            userSelectedReason: this.selectedTravelReason?.uri ?? '',
-          }),
-        ),
-    );
-    const sparqlJson = await result.json();
-    const rawBindings = sparqlJson.results.bindings;
+    try {
+      this.isLoading = true;
+      for (const government of this.selectedGovernment) {
+        const result = await fetch(
+          '/frontend-sparql?query=' +
+            encodeURIComponent(
+              REQUIREMENTS_QUERY({
+                userSelectedAdminUnit: this.selectedAreas
+                  .filter((area) => area.municipality === government.label)
+                  .map((area) => `<${area.govBody?.attributes?.['uri']}>`)
+                  .join(''),
+                userSelectedZone: this.selectedAreas
+                  .filter((area) => area.municipality === government.label)
+                  .map((area) => `<${area.uri}>`)
+                  .join(' '),
+                userSelectedType: this.selectedEntityType?.uri ?? '',
+                userSelectedReason: this.selectedTravelReason?.uri ?? '',
+              }),
+            ),
+        );
+        const sparqlJson = await result.json();
+        const rawBindings = sparqlJson.results.bindings;
 
-    this.requirements = await Promise.all(
-      rawBindings.map(async (binding: SparqlBinding) => ({
-        adminUnit: await this.getAdminUnit(
-          binding.userSelectedAdminUnit?.value ?? '',
-        ),
-        zone: binding.userSelectedZone?.value,
-        requirement: binding.situationReq?.value,
-        description: binding.description?.value ?? null,
-        evidenceDescription: binding.evidenceDescription?.value ?? null,
-      })),
-    );
+        const requirementsResults = await Promise.all(
+          rawBindings.map(async (binding: SparqlBinding) => ({
+            adminUnit: await this.getAdminUnit(
+              binding.userSelectedAdminUnit?.value ?? '',
+            ),
+            zone: binding.userSelectedZone?.value,
+            requirement: binding.situationReq?.value,
+            description: binding.description?.value ?? null,
+            evidenceDescription: binding.evidenceDescription?.value ?? null,
+          })),
+        );
+        this.requirements.push(...requirementsResults);
+      }
+    } catch (error: unknown) {
+      console.error(error);
+    } finally {
+      this.isLoading = false;
+    }
+
     this.isFormSubmitted = true;
     this.step = this.lastStep + 1;
   }
@@ -227,44 +231,54 @@ export default class AgendaItemsIndexController extends Controller {
             label: 'Gemeenteraad',
           },
         },
-        sort: '-sessions.has-excerpt.created-on',
+        sort: 'has-time-specializations.start-date,-sessions.has-excerpt.created-on',
         include:
           'classification,has-time-specializations.sessions.has-excerpt,sessions.has-excerpt,is-time-specialization-of.sessions.has-excerpt',
-        page: { size: 400 },
+        page: { size: 1 },
       })) as JsonApiResponse;
-
     const excerpts = (governingBodies.included ?? []).filter(
       (item): item is JsonApiResource => item.type === 'uittreksels',
     );
+    const govBody = (governingBodies.included ?? []).filter(
+      (item): item is JsonApiResource =>
+        item.type === 'governing-bodies' &&
+        item.attributes?.['end-date'] == null, // catches null and undefined
+    )[0];
 
     const allLinks: string[] = excerpts.flatMap(
       (item) => item.attributes['alternate-link'] ?? [],
     );
     if (!allLinks.length) return;
-    await this.processZones(municipality, allLinks[0]);
+    await this.processZones(municipality, allLinks, govBody);
   }
 
   private async processZones(
     municipality: GoverningBodyOption,
-    publicationLink?: string,
+    publicationLinks?: string[],
+    govBody?: JsonApiResource,
   ) {
+    if (!publicationLinks || publicationLinks.length === 0) {
+      return;
+    }
     const zones = (await this.store.query('zone', {
       include: 'geo-point',
       filter: {
         ':or:': {
-          'publication-link': publicationLink,
+          'publication-link': publicationLinks[0],
         },
       },
     })) as AdapterPopulatedRecordArrayWithMeta<ZoneModel>;
 
     for (const zone of zones.slice()) {
-      await this.processZone(municipality, zone);
+      await this.processZone(municipality, zone, publicationLinks, govBody);
     }
   }
 
   private async processZone(
     municipality: GoverningBodyOption,
     zone: ZoneModel,
+    publicationLinks: string[],
+    govBody?: JsonApiResource,
   ) {
     const geoPoint = await zone.geoPoint;
     const coordinatesString = geoPoint.coordinates;
@@ -283,6 +297,9 @@ export default class AgendaItemsIndexController extends Controller {
           name: `${municipality.label} - ${zone.label}`,
           municipality: municipality.label,
           coordinates: coords4326,
+          uri: zone.uri,
+          publicationLinks: publicationLinks[0],
+          govBody,
         }),
       );
       if (coords4326[0]) {
@@ -348,31 +365,25 @@ export default class AgendaItemsIndexController extends Controller {
         })
         .sort((a, b) => a.name.localeCompare(b.name));
       const lastSelected = selected[selected.length - 1];
-      if (lastSelected) {
-        const coordinates = await this.fetchCoords(
-          lastSelected.name,
-          this.abortController.signal,
-        );
-        if (this.lat !== coordinates.lat && this.lng !== coordinates.lng) {
+      if (lastSelected?.coordinates) {
+        const coordinates =
+          lastSelected.coordinates[lastSelected.coordinates.length / 2];
+        if (
+          coordinates &&
+          this.lat !== coordinates.lat &&
+          this.lng !== coordinates.lng
+        ) {
           this.lat = coordinates.lat;
           this.lng = coordinates.lng;
         }
       }
     } else {
       const exists = this.selectedAreas.some((a) => a.name === selected.name);
-
       this.selectedAreas = exists
         ? this.selectedAreas.filter((a) => a.name !== selected.name)
         : [...this.selectedAreas, selected];
 
       this.selectedAreas.sort((a, b) => a.name.localeCompare(b.name));
-      const coordinates = await this.fetchCoords(
-        selected.name,
-        this.abortController.signal,
-      );
-      this.lat = coordinates.lat;
-      this.lng = coordinates.lng;
-      this.zoom = 14;
     }
   }
 
@@ -405,10 +416,23 @@ class Area {
   @tracked name: string;
   @tracked municipality: string;
   @tracked coordinates: LatLngPoint[];
+  @tracked uri?: string;
+  @tracked publicationLinks?: string;
+  @tracked govBody?: JsonApiResource;
 
-  constructor({ name, municipality, coordinates }: AreaParams) {
+  constructor({
+    name,
+    municipality,
+    coordinates,
+    uri,
+    publicationLinks,
+    govBody,
+  }: AreaParams) {
     this.name = name;
     this.municipality = municipality;
     this.coordinates = coordinates;
+    this.uri = uri;
+    this.publicationLinks = publicationLinks;
+    this.govBody = govBody;
   }
 }

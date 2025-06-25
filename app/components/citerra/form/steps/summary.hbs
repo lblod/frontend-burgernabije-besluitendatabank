@@ -32,14 +32,24 @@
         <p class="au-u-margin-top">De
           <strong>kostprijs</strong>
           is
-          <strong>150 EUR</strong>.</p>
+          <strong>0 EUR</strong>.</p>
         <br />
         <p>Deze informatie komt uit:</p>
         <ul>
-          <li><AuLinkExternal href="https://lokaalbeslist.vlaanderen.be">Besluit
+          {{#each gov.zones as |zone|}}
+            {{#if zone.publicationLinks}}
+              <li>
+                <AuLinkExternal
+                  href={{zone.publicationLinks}}
+                >{{zone.name}}</AuLinkExternal>
+              </li>
+
+            {{/if}}
+          {{/each}}
+          {{!-- <li><AuLinkExternal href="https://lokaalbeslist.vlaanderen.be">Besluit
               van de gemeente
               {{gov.label}}</AuLinkExternal></li>
-          <li>[lorem ipsum]</li>
+          <li>[lorem ipsum]</li> --}}
         </ul>
       {{else}}
         <p class="au-u-padding-top-small">Voor deze gemeente hebben we geen

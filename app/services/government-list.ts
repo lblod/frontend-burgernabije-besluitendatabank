@@ -40,15 +40,7 @@ export default class GovernmentListService extends Service {
   }
 
   get citerraOptions() {
-    const targetLabels = [
-      'Aarschot',
-      'Affligem',
-      'Antwerpen',
-      'Gent',
-      'Mechelen',
-      'Leuven',
-      'Hasselt',
-    ]; // Example target labels for Citerra can be removed in future if needed.
+    const targetLabels = ['Antwerpen', 'Gent', 'Mechelen', 'Leuven', 'Hasselt']; // Example target labels for Citerra can be removed in future if needed.
 
     return Promise.all([this.municipalities]).then(([municipalities]) => {
       const filtered = municipalities.filter((m) =>

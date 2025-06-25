@@ -13,7 +13,7 @@ PREFIX m8g: <http://data.europa.eu/m8g/>
 PREFIX locn: <http://www.w3.org/ns/locn#>
 PREFIX citerra: <https://data.vlaanderen.be/ns/mobiliteit-intelligente-toegang#>
 
-SELECT DISTINCT ?userSelectedAdminUnit ?userSelectedZone ?situationReq ?description ?evidenceDescription WHERE {
+SELECT DISTINCT ?userSelectedAdminUnit ?situationReq ?description ?evidenceDescription WHERE {
 
   # Logic operators
   VALUES (?or ?and) {
@@ -41,20 +41,27 @@ SELECT DISTINCT ?userSelectedAdminUnit ?userSelectedZone ?situationReq ?descript
   }
 
   VALUES ?userSelectedAdminUnit {
-    <http://data.lblod.info/id/bestuursorganen/43da2d0134b3a4b40519ad0ffaf9d2a8e708600c4059f6e97d809ddfa10cd04d>
+    ${data.userSelectedAdminUnit}
   }
 
   VALUES ?userSelectedZone {
-    <https://publicatie.gelinkt-notuleren.vlaanderen.be/id/plaats/4b0b3f0d-7f7d-4065-88a3-4e7f9e6b84dc>
-    <https://publicatie.gelinkt-notuleren.vlaanderen.be/id/plaats/dee3615f-ad0f-4f52-8a8c-8bef49808f49>
+    ${data.userSelectedZone}
   }
 
+
   # Get most recent public service linked to selected admin unit
+  {
+    SELECT ?service WHERE {
   ?zitting besluit:isGehoudenDoor ?userSelectedAdminUnit.
   ?zitting besluit:heeftUittreksel ?u.
   ?u prov:wasDerivedFrom ?publication.
+  ?u ext:createdOnTimestamp ?publicationDate.
   ?service prov:wasDerivedFrom ?publication.
   ?service a cpsv:PublicService.
+    } ORDER BY DESC(?publicationDate) LIMIT 1
+  }
+
+
   ?service belgif:hasRequirement ?topLevelReq.
 
   # Access structure: service → requirement tree

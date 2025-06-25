@@ -64,6 +64,7 @@
             @resetForm={{this.resetForm}}
             @selectedGovernment={{this.selectedGovernment}}
             @requirements={{this.requirements}}
+            @selectedAreas={{this.selectedAreas}}
           />
         {{/if}}
 
@@ -88,6 +89,7 @@
                 @icon="chevron-right"
                 @iconAlignment="right"
                 @disabled={{this.canGoToNextStep}}
+                @loading={{this.isLoading}}
                 {{on "click" this.submitForm}}
               >
                 Verstuur

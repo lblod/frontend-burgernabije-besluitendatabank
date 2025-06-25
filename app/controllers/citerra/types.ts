@@ -12,6 +12,9 @@ export interface AreaParams {
   name: string;
   municipality: string;
   coordinates: { lat: number; lng: number }[];
+  uri?: string;
+  publicationLinks?: string;
+  govBody?: JsonApiResource;
 }
 
 export interface SparqlBinding {
@@ -29,3 +32,18 @@ export type Requirement = {
   description?: string | null;
   evidenceDescription?: string | null;
 };
+
+export type LatLngPoint = { lat: number; lng: number };
+export type LambertCoord = [number, number];
+
+export interface JsonApiResource {
+  id: string;
+  type: string;
+  attributes: Record<string, string>;
+  relationships?: Record<string, string>;
+}
+
+export interface JsonApiResponse {
+  data: JsonApiResource[];
+  included?: JsonApiResource[];
+}

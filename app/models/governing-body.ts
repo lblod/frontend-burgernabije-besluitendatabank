@@ -21,6 +21,7 @@ import type SessionModel from './session';
  */
 export default class GoverningBodyModel extends Model {
   @attr('string', { defaultValue: 'Ontbrekende naam' }) declare name: string;
+  @attr uri?: string;
 
   @belongsTo('administrative-unit', {
     async: true,

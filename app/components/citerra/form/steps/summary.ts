@@ -1,10 +1,14 @@
 import Component from '@glimmer/component';
-import type { Requirement } from 'frontend-burgernabije-besluitendatabank/controllers/citerra/types';
+import type {
+  AreaParams,
+  Requirement,
+} from 'frontend-burgernabije-besluitendatabank/controllers/citerra/types';
 import type { GoverningBodyOption } from 'frontend-burgernabije-besluitendatabank/services/governing-body-list';
 
 interface ArgsInterface {
   selectedGovernment: GoverningBodyOption[];
   requirements: Requirement[];
+  selectedAreas: AreaParams[];
 }
 
 export default class Accordion extends Component<ArgsInterface> {
@@ -40,6 +44,9 @@ export default class Accordion extends Component<ArgsInterface> {
         ),
         didFindInfoAboutGov: this.args.requirements.some(
           (req: Requirement) => req.adminUnit === gov.label,
+        ),
+        zones: this.args.selectedAreas.filter(
+          (area: AreaParams) => area.municipality === gov.label,
         ),
       };
     });
