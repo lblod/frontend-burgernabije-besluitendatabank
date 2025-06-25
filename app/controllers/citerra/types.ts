@@ -5,6 +5,7 @@ export type EntityOption = {
 export type TravelReasonOption = {
   label: string;
   value: string;
+  uri?: string;
 };
 export interface AreaParams {
   name: string;

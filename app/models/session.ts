@@ -4,6 +4,7 @@ import { getFormattedDate } from 'frontend-burgernabije-besluitendatabank/utils/
 import { getFormattedDateRange } from 'frontend-burgernabije-besluitendatabank/utils/get-formatted-date-range';
 import type AgendaItemModel from './agenda-item';
 import type GoverningBodyModel from './governing-body';
+import type ExcerptModel from './excerpt';
 
 export default class SessionModel extends Model {
   @attr('date') declare plannedStart?: Date;
@@ -15,6 +16,9 @@ export default class SessionModel extends Model {
 
   @belongsTo('governing-body', { async: true, inverse: 'sessions' })
   declare governingBody: AsyncBelongsTo<GoverningBodyModel>;
+
+  @hasMany('has-excerpt', { async: true })
+  declare uittreksel: AsyncHasMany<ExcerptModel>;
 
   get governingBodyValue() {
     // cast this because of https://github.com/typed-ember/ember-cli-typescript/issues/1416

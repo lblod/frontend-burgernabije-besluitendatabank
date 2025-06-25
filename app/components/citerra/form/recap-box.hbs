@@ -4,8 +4,9 @@
       <label class="au-u-medium">Je rijdt als</label>
       <br />
       <AuButton
+        @width="block"
         @skin="link"
-        class="au-u-padding-none"
+        class="au-u-padding-none au-u-flex--start"
         @disabled={{@isFormSubmitted}}
         {{on "click" (fn @setStep 0)}}
       >
@@ -19,8 +20,9 @@
       <label class="au-u-medium">Reden</label>
       <br />
       <AuButton
+        @width="block"
         @skin="link"
-        class="au-u-padding-none"
+        class="au-u-padding-none au-u-flex--start"
         @disabled={{@isFormSubmitted}}
         {{on "click" (fn @setStep 1)}}
       >
@@ -37,8 +39,9 @@
         <div>
           {{#if (eq @step 3)}}
             <AuButton
+              @width="block"
               @skin="link"
-              class="au-u-padding-none"
+              class="au-u-padding-none au-u-flex--start"
               @disabled={{@isFormSubmitted}}
               {{on "click" (fn @goToMunicipality gov.label)}}
             >
@@ -46,8 +49,9 @@
             </AuButton>
           {{else}}
             <AuButton
+              @width="block"
               @skin="link"
-              class="au-u-padding-none"
+              class="au-u-padding-none au-u-flex--start"
               @disabled={{@isFormSubmitted}}
               {{on "click" (fn @setStep 2)}}
             >
@@ -67,8 +71,9 @@
         <div>
           {{#if (eq @step 3)}}
             <AuButton
+              @width="block"
               @skin="link"
-              class="au-u-padding-none"
+              class="au-u-padding-none au-u-flex--start"
               @disabled={{@isFormSubmitted}}
               {{on "click" (fn @goToArea area)}}
             >
@@ -76,8 +81,9 @@
             </AuButton>
           {{else}}
             <AuButton
+              @width="block"
               @skin="link"
-              class="au-u-padding-none"
+              class="au-u-padding-none au-u-flex--start"
               @disabled={{@isFormSubmitted}}
               {{on "click" (fn @setStep 3)}}
             >

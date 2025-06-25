@@ -18,9 +18,12 @@ export default class CiterraIndexRoute extends Route {
       include: 'concept-schemes',
       sort: ':no-case:label',
     });
+
     return {
       applicantTypes,
       reasons,
+      geoPoints: [],
+      zones: [],
     };
   }
 }

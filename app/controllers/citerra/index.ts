@@ -11,8 +11,27 @@ import {
   type TravelReasonOption,
 } from './types';
 import type ConceptModel from 'frontend-burgernabije-besluitendatabank/models/concept';
+import type GeoPointModel from 'frontend-burgernabije-besluitendatabank/models/geo-point';
+import proj4 from 'proj4';
+import type ZoneModel from 'frontend-burgernabije-besluitendatabank/models/zone';
+import type MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
+import type Store from '@ember-data/store';
+import type { AdapterPopulatedRecordArrayWithMeta } from 'frontend-burgernabije-besluitendatabank/utils/ember-data';
 
 type LatLngPoint = { lat: number; lng: number };
+type LambertCoord = [number, number];
+
+interface JsonApiResource {
+  id: string;
+  type: string;
+  attributes: Record<string, string>;
+  relationships?: Record<string, string>;
+}
+
+interface JsonApiResponse {
+  data: JsonApiResource[];
+  included?: JsonApiResource[];
+}
 
 export default class AgendaItemsIndexController extends Controller {
   firstStep = 0;
@@ -29,6 +48,8 @@ export default class AgendaItemsIndexController extends Controller {
   declare model: {
     applicantTypes: Array<ConceptModel>;
     reasons: Array<TravelReasonOption>;
+    geoPoints: Array<GeoPointModel>;
+    zones: Array<ZoneModel>;
   };
 
   @tracked zoom = 14;
@@ -47,6 +68,9 @@ export default class AgendaItemsIndexController extends Controller {
 
   @service declare governmentList: GovernmentListService;
   @service declare governingBodyList: GoverningBodyListService;
+  @service declare municipalityList: MunicipalityListService;
+  @service declare store: Store;
+
   private abortController?: AbortController;
 
   get isFirstStep() {
@@ -58,10 +82,10 @@ export default class AgendaItemsIndexController extends Controller {
   }
   get canGoToNextStep() {
     if (this.step === 0) {
-      return !this.selectedEntityType;
+      return false;
     }
     if (this.step === 1) {
-      return !this.selectedTravelReason;
+      return false;
     }
     if (this.step === 2) {
       return this.selectedGovernment.length === 0;
@@ -126,49 +150,129 @@ export default class AgendaItemsIndexController extends Controller {
     this.areas = [];
 
     try {
-      await this.getCoordinates(this.abortController.signal);
+      this.defineProj4();
+      await Promise.all(
+        this.selectedGovernment.map((municipality) =>
+          this.processMunicipality(municipality),
+        ),
+      );
     } catch (error: unknown) {
       console.error(error);
     } finally {
       this.isLoading = false;
     }
   }
+
+  private defineProj4() {
+    proj4.defs(
+      'EPSG:31370',
+      '+proj=lcc +lat_1=49.8333339 +lat_2=51.16666723333333 +lat_0=90 +lon_0=4.367486666666666 +x_0=150000.013 +y_0=5400088.438 +ellps=intl +units=m +no_defs',
+    );
+  }
+
+  private async processMunicipality(municipality: GoverningBodyOption) {
+    const municipalityId = await this.municipalityList.getLocationIdsFromLabels(
+      municipality.label,
+    );
+    const governingBodies = (await this.store
+      .adapterFor('governing-body')
+      .query(this.store, this.store.modelFor('governing-body'), {
+        filter: {
+          'administrative-unit': {
+            location: {
+              ':id:': municipalityId.join(','),
+            },
+          },
+          classification: {
+            label: 'Gemeenteraad',
+          },
+        },
+        sort: '-sessions.has-excerpt.created-on',
+        include:
+          'classification,has-time-specializations.sessions.has-excerpt,sessions.has-excerpt,is-time-specialization-of.sessions.has-excerpt',
+        page: { size: 400 },
+      })) as JsonApiResponse;
+
+    const excerpts = (governingBodies.included ?? []).filter(
+      (item): item is JsonApiResource => item.type === 'uittreksels',
+    );
+
+    const allLinks: string[] = excerpts.flatMap(
+      (item) => item.attributes['alternate-link'] ?? [],
+    );
+    if (!allLinks.length) return;
+    await this.processZones(municipality, allLinks[0]);
+  }
+
+  private async processZones(
+    municipality: GoverningBodyOption,
+    publicationLink?: string,
+  ) {
+    const zones = (await this.store.query('zone', {
+      include: 'geo-point',
+      filter: {
+        ':or:': {
+          'publication-link': publicationLink,
+        },
+      },
+    })) as AdapterPopulatedRecordArrayWithMeta<ZoneModel>;
+
+    for (const zone of zones.slice()) {
+      await this.processZone(municipality, zone);
+    }
+  }
+
+  private async processZone(
+    municipality: GoverningBodyOption,
+    zone: ZoneModel,
+  ) {
+    const geoPoint = await zone.geoPoint;
+    const coordinatesString = geoPoint.coordinates;
+    if (!coordinatesString) return;
+    const coordinates = this.parseWKTPolygon(coordinatesString);
+    const coords4326: LatLngPoint[] = coordinates.map(([x, y]) => {
+      const [lon, lat]: [number, number] = proj4('EPSG:31370', 'EPSG:4326', [
+        x,
+        y,
+      ]);
+      return { lat, lng: lon };
+    });
+    if (zone.label) {
+      this.areas.push(
+        new Area({
+          name: `${municipality.label} - ${zone.label}`,
+          municipality: municipality.label,
+          coordinates: coords4326,
+        }),
+      );
+      if (coords4326[0]) {
+        this.lat = coords4326[0].lat;
+        this.lng = coords4326[0].lng;
+        this.zoom = 13;
+      }
+    }
+  }
+
+  parseWKTPolygon(wkt: string): LambertCoord[] {
+    const match = wkt.match(/POLYGON\(\(([^)]+)\)\)/);
+    if (!match?.[1]) throw new Error('Invalid WKT POLYGON format');
+
+    const coordPairs = match[1].split(',');
+
+    return coordPairs.map((pair) => {
+      const [xStr, yStr] = pair.trim().split(/\s+/);
+      return [parseFloat(xStr ?? '0'), parseFloat(yStr ?? '0')];
+    });
+  }
+
   @action
-  setEntityType(value: EntityOption) {
+  async setEntityType(value: EntityOption) {
     this.selectedEntityType = value;
   }
 
   @action
   setTravelReason(value: TravelReasonOption) {
     this.selectedTravelReason = value;
-  }
-
-  async getCoordinates(signal: AbortSignal) {
-    if (!this.selectedGovernment || this.selectedGovernment.length === 0) {
-      return;
-    }
-
-    const promises = this.selectedGovernment.map(async ({ label }) => {
-      try {
-        const coord = await this.fetchCoords(label, signal);
-        await this.generateRandomZones(coord.lat, coord.lng, label);
-        return coord;
-      } catch (error) {
-        console.error(`Error fetching coordinates for ${label}:`, error);
-        return { lat: 0, lng: 0 };
-      }
-    });
-
-    const coordinates = await Promise.all(promises);
-    const coordinate = coordinates[0];
-    if (!coordinates || coordinates.length === 0 || !coordinate) {
-      throw new Error('No valid coordinates found');
-    }
-
-    this.lat = coordinate.lat;
-    this.lng = coordinate.lng;
-
-    return { lat: this.lat, lng: this.lng };
   }
 
   @action
@@ -178,10 +282,6 @@ export default class AgendaItemsIndexController extends Controller {
 
     const res = await fetch(url, {
       signal,
-      headers: {
-        'Accept-Language': 'en',
-        'User-Agent': 'your-app-name (your@email.com)',
-      },
     });
 
     const data = await res.json();
@@ -193,44 +293,6 @@ export default class AgendaItemsIndexController extends Controller {
       lat,
       lng: lon,
     };
-  }
-
-  generateRandomZones(lat: number, lng: number, municipality: string) {
-    const numZones = 2 + Math.floor(Math.random() * 3);
-    const zones: Area[] = [];
-    const offsetScale = 0.002;
-
-    for (let z = 0; z < numZones; z++) {
-      const numPoints = Math.floor(Math.random() * 8) + 8;
-      const angleStep = (2 * Math.PI) / numPoints;
-
-      const baseLat = Number(lat) + (Math.random() - 0.5) * 0.01;
-      const baseLng = Number(lng) + (Math.random() - 0.5) * 0.01;
-
-      const points: { lat: number; lng: number }[] = [];
-
-      for (let i = 0; i < numPoints; i++) {
-        const angle = i * angleStep;
-        const radius = offsetScale + Math.random() * offsetScale;
-        const offsetLat = radius * Math.sin(angle);
-        const offsetLng = radius * Math.cos(angle);
-
-        points.push({
-          lat: Number(baseLat + offsetLat),
-          lng: Number(baseLng + offsetLng),
-        });
-      }
-
-      zones.push(
-        new Area({
-          name: `${municipality} - Zone ${z + 1} `,
-          municipality,
-          coordinates: points,
-        }),
-      );
-    }
-
-    this.areas.push(...zones);
   }
 
   @action
@@ -270,6 +332,7 @@ export default class AgendaItemsIndexController extends Controller {
       );
       this.lat = coordinates.lat;
       this.lng = coordinates.lng;
+      this.zoom = 14;
     }
   }
 
