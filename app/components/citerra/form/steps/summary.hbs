@@ -1,7 +1,5 @@
 <article id="summary">
-  <p>Voor het ingevulde scenario geldt:</p>
-  <br />
-  {{#each @selectedGovernment as |gov|}}
+  {{#each this.mappedGovernmentInfo as |gov|}}
     <div
       class="au-u-background-gray-100 au-u-padding-small au-u-margin-bottom-small"
     >
@@ -9,35 +7,50 @@
         class="au-u-margin-top-small au-u-margin-bottom-tiny"
         @skin="ongoing"
       >{{gov.label}}</AuPill>
-      <p>Je hebt de volgende
-        <span class="au-u-medium">bewijsstukken</span>
-        nodig:</p>
 
-      <ul>
-        <li>Een goedkeurig van de
-          <AuLinkExternal href="https://lokaalbeslist.vlaanderen.be">gemeente
-            {{gov.label}}
-          </AuLinkExternal></li>
-        <li>Werkgeversattest of bewijs van professionele activiteit binnen de
-          zone</li>
-        <li>[lorem ipsum]</li>
-      </ul>
-
-      <br />
-      <p>De kostprijs is <span class="au-u-medium">150 EUR</span>.</p>
-      <br />
-      <p>Deze informatie komt uit:</p>
-      <ul>
-        <li><AuLinkExternal href="https://lokaalbeslist.vlaanderen.be">Besluit
-            van de gemeente
-            {{gov.label}}</AuLinkExternal></li>
-        <li>[lorem ipsum]</li>
-      </ul>
+      {{#if gov.didFindInfoAboutGov}}
+        <div class="au-u-margin-top-small">
+          <p class="au-u-medium">Voorwaarden</p>
+          <ul>
+            {{#each gov.conditions as |condition|}}
+              <li>{{condition}}</li>
+            {{/each}}
+          </ul>
+        </div>
+        <div class="au-u-margin-top">
+          <p class="au-u-medium">Bewijsstukken</p>
+          <ul>
+            {{#each gov.requiredProof as |proof|}}
+              <li>{{proof}}</li>
+            {{/each}}
+          </ul>
+        </div>
+        <p class="au-u-margin-top">De
+          <strong>kostprijs</strong>
+          is
+          <strong>150 EUR</strong>.</p>
+        <br />
+        <p>Deze informatie komt uit:</p>
+        <ul>
+          <li><AuLinkExternal href="https://lokaalbeslist.vlaanderen.be">Besluit
+              van de gemeente
+              {{gov.label}}</AuLinkExternal></li>
+          <li>[lorem ipsum]</li>
+        </ul>
+      {{else}}
+        <p class="au-u-padding-top-small">Voor deze gemeente hebben we geen
+          informatie gevonden.</p>
+        <p><AuLinkExternal href="https://lokaalbeslist.vlaanderen.be">Contacteer
+            de gemeente</AuLinkExternal>
+          voor meer informatie.</p>
+      {{/if}}
     </div>
   {{/each}}
-  <div class="au-u-background-gray-100 au-u-padding-small au-u-margin-bottom">
-    <p>De totale kostprijs is
-      <span class="au-u-h4 au-u-medium">{{this.totalCost}} EUR</span>.</p>
+  <div
+    class="au-u-background-gray-100 au-u-padding-small au-u-margin-bottom au-u-flex au-u-flex--between au-u-h4 au-u-medium"
+  >
+    <p>Totale kostprijs</p>
+    <p>EUR {{this.totalCost}}</p>
   </div>
   <AuButton
     class="au-u-margin-top"
