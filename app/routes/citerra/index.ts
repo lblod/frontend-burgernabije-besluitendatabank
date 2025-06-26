@@ -16,6 +16,7 @@ export default class CiterraIndexRoute extends Route {
     });
     const reasons = await this.store.query('concept', {
       'filter[concept-schemes][:id:]': REASON_CONCEPT_SCHEME_ID,
+      'filter[concept-schemes][label]': 'Reden',
       include: 'concept-schemes',
       sort: ':no-case:label',
       page: { size: 100 },
