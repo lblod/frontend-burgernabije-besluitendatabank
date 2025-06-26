@@ -265,7 +265,6 @@ export default class AgendaItemsIndexController extends Controller {
     });
 
     const lastExcerpt = sortedUittreksels[sortedUittreksels.length - 1];
-    console.log(uittreksels);
     const govBody = (governingBodies.included ?? []).filter(
       (item): item is JsonApiResource =>
         item.type === 'governing-bodies' &&

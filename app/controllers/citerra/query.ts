@@ -93,6 +93,8 @@ SELECT DISTINCT ?userSelectedAdminUnit ?situationReq ?description ?evidenceDescr
 
   OPTIONAL {
     ?situationReq dct:description ?description.
+  }
+  OPTIONAL {
     ?situationReq ext:expectedValue ?requesterType.
   }
 
