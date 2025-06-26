@@ -76,10 +76,10 @@ export default class AgendaItemsIndexController extends Controller {
   }
   get canGoToNextStep() {
     if (this.step === 0) {
-      return false;
+      return !this.selectedEntityType;
     }
     if (this.step === 1) {
-      return false;
+      return !this.selectedTravelReason;
     }
     if (this.step === 2) {
       return this.selectedGovernment.length === 0;
