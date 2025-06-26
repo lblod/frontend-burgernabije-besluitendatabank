@@ -257,9 +257,15 @@ export default class AgendaItemsIndexController extends Controller {
     const uittreksels = (governingBodies.included ?? []).filter(
       (item): item is JsonApiResource => item.type === 'uittreksels',
     );
-    const lastExcerpt =
-      uittreksels.length > 0 ? uittreksels[uittreksels.length - 1] : undefined;
 
+    const sortedUittreksels = uittreksels.sort((a, b) => {
+      const dateA = new Date(a.attributes?.['created-on'] ?? 0).getTime();
+      const dateB = new Date(b.attributes?.['created-on'] ?? 0).getTime();
+      return dateA - dateB;
+    });
+
+    const lastExcerpt = sortedUittreksels[sortedUittreksels.length - 1];
+    console.log(uittreksels);
     const govBody = (governingBodies.included ?? []).filter(
       (item): item is JsonApiResource =>
         item.type === 'governing-bodies' &&
