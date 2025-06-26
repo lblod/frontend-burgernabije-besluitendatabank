@@ -23,12 +23,14 @@ export interface SparqlBinding {
   situationReq?: { value: string };
   description?: { value: string };
   evidenceDescription?: { value: string };
+  requesterType?: { value: string };
 }
 
 export type Requirement = {
   adminUnit: string;
   zone: string;
   requirement: string;
+  requesterType: string;
   description?: string | null;
   evidenceDescription?: string | null;
 };

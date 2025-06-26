@@ -12,42 +12,46 @@ interface ArgsInterface {
 }
 
 export default class Accordion extends Component<ArgsInterface> {
+  // Placeholder for future logic
   get totalCost() {
     return 0;
   }
 
-  get conditions() {
-    return [
-      'Zone A is enkel bereikbaar tussen 12-15 uur',
-      'Houders van een vergunning mogen de zone betreden met hun voertuig',
-      '[lorem ipsum]',
-    ];
+  /**
+   * Filters and returns unique descriptions by requesterType.
+   */
+  private getUniqueDescriptions(requirements: Requirement[]): string[] {
+    const seen = new Set<string>();
+    return requirements.reduce((descriptions: string[], req) => {
+      if (!seen.has(req.requesterType)) {
+        seen.add(req.requesterType);
+        descriptions.push(req.description ?? '');
+      }
+      return descriptions;
+    }, []);
   }
 
-  get requiredProof() {
-    return [
-      'Een goedkeuring van de gemeente',
-      'Werkgeversattest of bewijs van professionele activiteit binnen de zone',
-      '[lorem ipsum]',
-    ];
-  }
-
+  /**
+   * Returns a list of mapped government info, including conditions and other filtered data.
+   */
   get mappedGovernmentInfo() {
     return this.args.selectedGovernment.map((gov) => {
+      const { label } = gov;
+
+      const govRequirements = this.args.requirements.filter(
+        (req) => req.adminUnit === label,
+      );
+
+      const govZones = this.args.selectedAreas.filter(
+        (area) => area.municipality === label,
+      );
+
       return {
         ...gov,
-        conditions: this.args.requirements.filter(
-          (req: Requirement) => req.adminUnit === gov.label,
-        ),
-        requiredProof: this.args.requirements.filter(
-          (req: Requirement) => req.adminUnit === gov.label,
-        ),
-        didFindInfoAboutGov: this.args.requirements.some(
-          (req: Requirement) => req.adminUnit === gov.label,
-        ),
-        zones: this.args.selectedAreas.filter(
-          (area: AreaParams) => area.municipality === gov.label,
-        ),
+        conditions: this.getUniqueDescriptions(govRequirements),
+        requiredProof: govRequirements,
+        didFindInfoAboutGov: govRequirements.length > 0,
+        zones: govZones,
       };
     });
   }

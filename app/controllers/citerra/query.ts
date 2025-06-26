@@ -13,7 +13,7 @@ PREFIX m8g: <http://data.europa.eu/m8g/>
 PREFIX locn: <http://www.w3.org/ns/locn#>
 PREFIX citerra: <https://data.vlaanderen.be/ns/mobiliteit-intelligente-toegang#>
 
-SELECT DISTINCT ?userSelectedAdminUnit ?situationReq ?description ?evidenceDescription WHERE {
+SELECT DISTINCT ?userSelectedAdminUnit ?situationReq ?description ?evidenceDescription ?requesterType WHERE {
 
   # Logic operators
   VALUES (?or ?and) {
@@ -93,6 +93,7 @@ SELECT DISTINCT ?userSelectedAdminUnit ?situationReq ?description ?evidenceDescr
 
   OPTIONAL {
     ?situationReq dct:description ?description.
+    ?situationReq ext:expectedValue ?requesterType.
   }
 
   OPTIONAL {

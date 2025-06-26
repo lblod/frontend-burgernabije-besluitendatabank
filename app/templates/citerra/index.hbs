@@ -58,6 +58,8 @@
             @zoom={{this.zoom}}
             @isAreaSelected={{this.isAreaSelected}}
             @getColorForArea={{this.getColorForArea}}
+            @selectedGovernment={{this.selectedGovernment}}
+            @resetForm={{this.resetForm}}
           />
         {{else if (eq this.step 4)}}
           <Citerra::Form::Steps::Summary

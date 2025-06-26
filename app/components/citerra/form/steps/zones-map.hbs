@@ -1,35 +1,63 @@
 <div class="au-o-grid au-u-margin-none au-u-flex--between" id="map-container">
-  <div class="au-u-3-6 au-u-padding-right">
-    <Filters::SelectMultipleFilter
-      @id="zones"
-      @label="Door welke zones ga je rijden?"
-      @options={{@areas}}
-      @selected={{@selectedAreas}}
-      @updateSelected={{@selectAreas}}
-      @noMatchesMessage="Geen zones gevonden"
-      @searchField="name"
-      @queryParam="gemeentes+provincies"
-      @placeholder="Kies één of meer zones waarin je zal rijden"
-    />
-  </div>
-
-  <div class="au-u-3-6">
-    <LeafletMap @lat={{@lat}} @lng={{@lng}} @zoom={{@zoom}} as |layers|>
-      <layers.tile
-        @url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
+  {{#if @areas}}
+    <div class="au-u-3-6 au-u-padding-right">
+      <Filters::SelectMultipleFilter
+        @id="zones"
+        @label="Door welke zones ga je rijden?"
+        @options={{@areas}}
+        @selected={{@selectedAreas}}
+        @updateSelected={{@selectAreas}}
+        @noMatchesMessage="Geen zones gevonden"
+        @searchField="name"
+        @queryParam="gemeentes+provincies"
+        @placeholder="Kies één of meer zones waarin je zal rijden"
       />
+    </div>
 
-      {{#each @areas as |area index|}}
-        <layers.polygon
-          @locations={{area.coordinates}}
-          @color={{if (@isAreaSelected area) (@getColorForArea index) "gray"}}
-          @fillOpacity={{if (@isAreaSelected area) 0.5 0.3}}
-          @onClick={{fn @selectAreas area}}
-          as |polygon|
-        >
-          <polygon.tooltip @sticky={{true}}>{{area.name}}</polygon.tooltip>
-        </layers.polygon>
+    <div class="au-u-3-6">
+      <LeafletMap @lat={{@lat}} @lng={{@lng}} @zoom={{@zoom}} as |layers|>
+        <layers.tile
+          @url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
+        />
+
+        {{#each @areas as |area index|}}
+          <layers.polygon
+            @locations={{area.coordinates}}
+            @color={{if (@isAreaSelected area) (@getColorForArea index) "gray"}}
+            @fillOpacity={{if (@isAreaSelected area) 0.5 0.3}}
+            @onClick={{fn @selectAreas area}}
+            as |polygon|
+          >
+            <polygon.tooltip @sticky={{true}}>{{area.name}}</polygon.tooltip>
+          </layers.polygon>
+        {{/each}}
+      </LeafletMap>
+    </div>
+  {{else}}
+    <div
+      class="au-u-background-gray-100 au-u-padding-small au-u-margin-bottom-small au-u-1-1"
+    >
+      {{#each @selectedGovernment as |gov|}}
+        <AuPill
+          class="au-u-margin-bottom-tiny"
+          @skin="ongoing"
+        >{{gov.label}}</AuPill>
       {{/each}}
-    </LeafletMap>
-  </div>
+      <p class="au-u-padding-top-small">Voor deze gemeente(s) hebben we geen
+        zones gevonden.</p>
+      <p><AuLinkExternal href="https://lokaalbeslist.vlaanderen.be">Contacteer
+          de gemeente(s)</AuLinkExternal>
+        voor meer informatie.</p>
+
+      <AuButton
+        class="au-u-margin-top"
+        @skin="link"
+        @icon="chevron-left"
+        @iconAlignment="left"
+        {{on "click" @resetForm}}
+      >
+        Zoek opnieuw
+      </AuButton>
+    </div>
+  {{/if}}
 </div>

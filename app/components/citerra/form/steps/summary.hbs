@@ -13,8 +13,8 @@
           <p class="au-u-medium">Voorwaarden</p>
           <ul>
             {{#each gov.conditions as |condition|}}
-              {{#if condition.description}}
-                <li>{{condition.description}}</li>
+              {{#if condition}}
+                <li>{{condition}}</li>
               {{/if}}
             {{/each}}
           </ul>
@@ -46,10 +46,6 @@
 
             {{/if}}
           {{/each}}
-          {{!-- <li><AuLinkExternal href="https://lokaalbeslist.vlaanderen.be">Besluit
-              van de gemeente
-              {{gov.label}}</AuLinkExternal></li>
-          <li>[lorem ipsum]</li> --}}
         </ul>
       {{else}}
         <p class="au-u-padding-top-small">Voor deze gemeente hebben we geen

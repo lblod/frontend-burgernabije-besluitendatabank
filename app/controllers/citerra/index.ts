@@ -119,28 +119,44 @@ export default class AgendaItemsIndexController extends Controller {
 
   @action
   async submitForm() {
+    this.isLoading = true;
+
     try {
-      this.isLoading = true;
       for (const government of this.selectedGovernment) {
-        const result = await fetch(
-          '/frontend-sparql?query=' +
-            encodeURIComponent(
-              REQUIREMENTS_QUERY({
-                userSelectedAdminUnit: this.selectedAreas
-                  .filter((area) => area.municipality === government.label)
-                  .map((area) => `<${area.govBody?.attributes?.['uri']}>`)
-                  .join(''),
-                userSelectedZone: this.selectedAreas
-                  .filter((area) => area.municipality === government.label)
-                  .map((area) => `<${area.uri}>`)
-                  .join(' '),
-                userSelectedType: this.selectedEntityType?.uri ?? '',
-                userSelectedReason: this.selectedTravelReason?.uri ?? '',
-              }),
-            ),
+        const relevantAreas = this.selectedAreas.filter(
+          (area) => area.municipality === government.label,
         );
-        const sparqlJson = await result.json();
-        const rawBindings = sparqlJson.results.bindings;
+
+        const govBodies = relevantAreas
+          .map((area) => area.govBody?.attributes?.['uri'])
+          .filter(Boolean)
+          .map((uri) => `<${uri}>`)
+          .join('');
+
+        const zones = relevantAreas
+          .map((area) => area.uri)
+          .filter(Boolean)
+          .map((uri) => `<${uri}>`)
+          .join(' ');
+
+        const queryString = REQUIREMENTS_QUERY({
+          userSelectedAdminUnit: govBodies,
+          userSelectedZone: zones,
+          userSelectedType: this.selectedEntityType?.uri ?? '',
+          userSelectedReason: this.selectedTravelReason?.uri ?? '',
+        });
+
+        const encodedQuery = encodeURIComponent(queryString);
+        const response = await fetch(`/frontend-sparql?query=${encodedQuery}`);
+
+        if (!response.ok) {
+          throw new Error(
+            `Failed to fetch SPARQL results: ${response.statusText}`,
+          );
+        }
+
+        const sparqlJson = await response.json();
+        const rawBindings = sparqlJson?.results?.bindings ?? [];
 
         const requirementsResults = await Promise.all(
           rawBindings.map(async (binding: SparqlBinding) => ({
@@ -151,18 +167,19 @@ export default class AgendaItemsIndexController extends Controller {
             requirement: binding.situationReq?.value,
             description: binding.description?.value ?? null,
             evidenceDescription: binding.evidenceDescription?.value ?? null,
+            requesterType: binding.requesterType?.value ?? null,
           })),
         );
+
         this.requirements.push(...requirementsResults);
       }
-    } catch (error: unknown) {
-      console.error(error);
+    } catch (error) {
+      console.error('An error occurred while submitting the form:', error);
     } finally {
       this.isLoading = false;
+      this.isFormSubmitted = true;
+      this.step = this.lastStep + 1;
     }
-
-    this.isFormSubmitted = true;
-    this.step = this.lastStep + 1;
   }
 
   private async getAdminUnit(uri: string) {
@@ -237,47 +254,46 @@ export default class AgendaItemsIndexController extends Controller {
           'classification,has-time-specializations.sessions.has-excerpt,sessions.has-excerpt,is-time-specialization-of.sessions.has-excerpt',
         page: { size: 1 },
       })) as JsonApiResponse;
-    const lastExcerpt = (governingBodies.included ?? [])
-      .filter((item): item is JsonApiResource => item.type === 'uittreksels')
-      .at(-1);
+    const uittreksels = (governingBodies.included ?? []).filter(
+      (item): item is JsonApiResource => item.type === 'uittreksels',
+    );
+    const lastExcerpt =
+      uittreksels.length > 0 ? uittreksels[uittreksels.length - 1] : undefined;
 
     const govBody = (governingBodies.included ?? []).filter(
       (item): item is JsonApiResource =>
         item.type === 'governing-bodies' &&
         item.attributes?.['end-date'] == null, // catches null and undefined
     )[0];
-    console.log(lastExcerpt);
-    const allLinks: string[] = lastExcerpt.attributes['alternate-link'] ?? [];
-    if (!allLinks.length) return;
-    await this.processZones(municipality, allLinks, govBody);
+    const publicationLink = lastExcerpt?.attributes['alternate-link']?.[0];
+    if (publicationLink && !publicationLink.length) return;
+    await this.processZones(municipality, publicationLink, govBody);
   }
 
   private async processZones(
     municipality: GoverningBodyOption,
-    publicationLinks?: string[],
+    publicationLink?: string,
     govBody?: JsonApiResource,
   ) {
-    if (!publicationLinks || publicationLinks.length === 0) {
-      return;
-    }
+    if (!publicationLink) return;
     const zones = (await this.store.query('zone', {
       include: 'geo-point',
       filter: {
         ':or:': {
-          'publication-link': publicationLinks[0],
+          'publication-link': publicationLink,
         },
       },
     })) as AdapterPopulatedRecordArrayWithMeta<ZoneModel>;
 
     for (const zone of zones.slice()) {
-      await this.processZone(municipality, zone, publicationLinks, govBody);
+      await this.processZone(municipality, zone, publicationLink, govBody);
     }
   }
 
   private async processZone(
     municipality: GoverningBodyOption,
     zone: ZoneModel,
-    publicationLinks: string[],
+    publicationLink?: string,
     govBody?: JsonApiResource,
   ) {
     const geoPoint = await zone.geoPoint;
@@ -298,7 +314,7 @@ export default class AgendaItemsIndexController extends Controller {
           municipality: municipality.label,
           coordinates: coords4326,
           uri: zone.uri,
-          publicationLinks: publicationLinks[0],
+          publicationLinks: publicationLink,
           govBody,
         }),
       );
@@ -367,7 +383,9 @@ export default class AgendaItemsIndexController extends Controller {
       const lastSelected = selected[selected.length - 1];
       if (lastSelected?.coordinates) {
         const coordinates =
-          lastSelected.coordinates[lastSelected.coordinates.length / 2];
+          lastSelected.coordinates[
+            Math.floor(lastSelected.coordinates.length / 2)
+          ];
         if (
           coordinates &&
           this.lat !== coordinates.lat &&
