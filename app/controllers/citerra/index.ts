@@ -263,7 +263,7 @@ export default class AgendaItemsIndexController extends Controller {
     const govBody = (governingBodies.included ?? []).filter(
       (item): item is JsonApiResource =>
         item.type === 'governing-bodies' &&
-        item.attributes?.['end-date'] == null, // catches null and undefined
+        item.attributes?.['end-date'] == null,
     )[0];
     const publicationLink = lastExcerpt?.attributes['alternate-link']?.[0];
     if (publicationLink && !publicationLink.length) return;
