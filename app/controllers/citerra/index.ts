@@ -236,18 +236,17 @@ export default class AgendaItemsIndexController extends Controller {
           'classification,has-time-specializations.sessions.has-excerpt,sessions.has-excerpt,is-time-specialization-of.sessions.has-excerpt',
         page: { size: 1 },
       })) as JsonApiResponse;
-    const excerpts = (governingBodies.included ?? []).filter(
-      (item): item is JsonApiResource => item.type === 'uittreksels',
-    );
+    const lastExcerpt = (governingBodies.included ?? [])
+      .filter((item): item is JsonApiResource => item.type === 'uittreksels')
+      .at(-1);
+
     const govBody = (governingBodies.included ?? []).filter(
       (item): item is JsonApiResource =>
         item.type === 'governing-bodies' &&
         item.attributes?.['end-date'] == null, // catches null and undefined
     )[0];
-
-    const allLinks: string[] = excerpts.flatMap(
-      (item) => item.attributes['alternate-link'] ?? [],
-    );
+    console.log(lastExcerpt);
+    const allLinks: string[] = lastExcerpt.attributes['alternate-link'] ?? [];
     if (!allLinks.length) return;
     await this.processZones(municipality, allLinks, govBody);
   }
