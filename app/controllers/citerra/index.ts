@@ -181,6 +181,7 @@ export default class AgendaItemsIndexController extends Controller {
     this.selectedAreas = [];
     this.selectedEntityType = null;
     this.selectedTravelReason = null;
+    this.requirements = [];
   }
 
   @action

@@ -58,7 +58,7 @@ SELECT DISTINCT ?userSelectedAdminUnit ?situationReq ?description ?evidenceDescr
   ?u ext:createdOnTimestamp ?publicationDate.
   ?service prov:wasDerivedFrom ?publication.
   ?service a cpsv:PublicService.
-    } ORDER BY DESC(?publicationDate) LIMIT 1
+    } ORDER BY DESC(?publicationDate)
   }
 
 
