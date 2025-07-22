@@ -75,7 +75,18 @@ function buildFilters({
     filters[':has-no:ended_at'] = 't';
   }
   if (keyword) {
-    filters[':fuzzy:search_content'] = keyword;
+    if (keyword.includes('-title*') && keyword.includes('-description*')) {
+      filters[':query:search_content'] =
+        '(NOT _exists_:agenda-items_title OR agenda-items_title:"") AND (NOT _exists_:agenda-items_description OR agenda-items_description:"")';
+    } else if (keyword.includes('-title*')) {
+      filters[':query:search_content'] =
+        '(NOT _exists_:agenda-items_title OR agenda-items_title:"")';
+    } else if (keyword.includes('-description*')) {
+      filters[':query:search_content'] =
+        '(NOT _exists_:agenda-items_description OR agenda-items_description:"")';
+    } else {
+      filters[':fuzzy:search_content'] = keyword;
+    }
   }
 
   return filters;

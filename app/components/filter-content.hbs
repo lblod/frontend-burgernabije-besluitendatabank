@@ -95,6 +95,13 @@
                 @actionText="close"
               >Negeer: {{item}}</AuPill>
             {{/each}}
+            {{#each advancedSearch.without as |item|}}
+              <AuPill
+                @skin="warning"
+                @actionIcon="cross"
+                @actionText="close"
+              >Agendapunten zonder {{item}}</AuPill>
+            {{/each}}
           </div>
         {{/if}}
       {{/let}}
