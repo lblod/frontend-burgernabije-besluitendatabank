@@ -29,10 +29,14 @@ export default class FilterService extends Service {
   updateFilters(newFilters: Partial<AgendaItemsParams>) {
     if (newFilters.keyword && newFilters.keyword !== this.filters.keyword) {
       if (
-        newFilters.keyword == '-title*' ||
-        newFilters.keyword === '-description*'
+        newFilters.keyword.includes('-title*') &&
+        newFilters.keyword.includes('-description*')
       ) {
-        this.keywordAdvancedSearch = null;
+        this.keywordAdvancedSearch = { without: ['titel', 'beschrijving'] };
+      } else if (newFilters.keyword.includes('-title*')) {
+        this.keywordAdvancedSearch = { without: ['titel'] };
+      } else if (newFilters.keyword.includes('-description*')) {
+        this.keywordAdvancedSearch = { without: ['beschrijving'] };
       } else {
         this.keywordAdvancedSearch = keywordSearch([newFilters.keyword]);
       }

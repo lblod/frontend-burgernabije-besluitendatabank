@@ -70,12 +70,14 @@ function buildFilters({
   }
 
   if (keyword) {
-    if (keyword === '-title*' || keyword === '-description*') {
-      if (keyword.includes('title')) {
-        filters[':has-no:title'] = 't';
-      } else if (keyword.includes('description')) {
-        filters[':has-no:description'] = 't';
-      }
+    if (keyword.includes('-title*') && keyword.includes('-description*')) {
+      filters[':query:search_content'] =
+        '(NOT _exists_:title OR title:"") AND (NOT _exists_:description OR description:"")';
+    } else if (keyword.includes('-title*')) {
+      filters[':query:search_content'] = '(NOT _exists_:title OR title:"")';
+    } else if (keyword.includes('-description*')) {
+      filters[':query:search_content'] =
+        '(NOT _exists_:description OR description:"")';
     } else {
       const parsedResults = keywordSearch([keyword, ['title', 'description']]);
       const buildQuery = [];
