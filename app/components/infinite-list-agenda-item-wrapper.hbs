@@ -35,7 +35,7 @@
       @loadMore={{loader.loadMoreAgendaItems}}
       @isLoading={{loader.loadAgendaItems.isRunning}}
       @itemsShown={{loader.agendaItems.length}}
-      @itemsAmount={{loader.total}}
+      @itemsAmount={{loader.totalAgendaItems}}
     >
       {{#each loader.agendaItems as |item|}}
         <AgendaItemCard @item={{item}} />
