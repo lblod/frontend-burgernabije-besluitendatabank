@@ -35,7 +35,7 @@
       @loadMore={{loader.loadMoreSessions}}
       @isLoading={{loader.loadSessions.isRunning}}
       @itemsShown={{loader.sessions.length}}
-      @itemsAmount={{loader.total}}
+      @itemsAmount={{loader.totalSessions}}
     >
       {{#each loader.sessions as |item|}}
         <SessionItemCard @item={{item}} />

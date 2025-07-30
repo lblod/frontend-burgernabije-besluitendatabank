@@ -13,6 +13,7 @@ import type {
   SessionsQueryArguments,
   SessionsQueryResult,
 } from 'frontend-burgernabije-besluitendatabank/controllers/sessions/types';
+import { keywordSearch } from 'frontend-burgernabije-besluitendatabank/helpers/keyword-search';
 
 export function createSessionsQuery({
   index,
@@ -42,7 +43,8 @@ export function createSessionsQuery({
     dataMapping,
   };
 }
-
+// This is the same as createAgendaItemsQuery and could be refactored to a shared utility function
+// This will be done in a future refactor
 function buildFilters({
   keyword,
   locationIds,
@@ -85,7 +87,27 @@ function buildFilters({
       filters[':query:search_content'] =
         '(NOT _exists_:agenda-items_description OR agenda-items_description:"")';
     } else {
-      filters[':fuzzy:search_content'] = keyword;
+      const parsedResults = keywordSearch([
+        keyword,
+        ['agenda-items_title', 'agenda-items_description'],
+      ]);
+      const buildQuery = [];
+      if (parsedResults !== null) {
+        if (parsedResults['must'] && parsedResults['must'].length > 0) {
+          buildQuery.push(`(${parsedResults['must'].join(' AND ')})`);
+        }
+        if (parsedResults['or'] && parsedResults['or'].length > 0) {
+          buildQuery.push(`(${parsedResults['or'].join(' OR ')})`);
+        }
+        if (parsedResults['not'] && parsedResults['not'].length > 0) {
+          buildQuery.push(`(NOT ${parsedResults['not'].join(' AND NOT ')})`);
+        }
+      }
+      if (buildQuery.length !== 0) {
+        filters[':query:search_content'] = buildQuery.join(' AND ');
+      } else {
+        filters[':fuzzy:search_content'] = keyword;
+      }
     }
   }
 
