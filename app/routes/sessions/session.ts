@@ -26,11 +26,11 @@ export default class SessionRoute extends Route {
         'agenda-items.handled-by.resolutions',
       ].join(','),
     });
-    const agendaItems = await session.get('agendaItems');
-    const govBody = await session.get('governingBody');
+    const agendaItems = await session?.get('agendaItems');
+    const govBody = await session?.get('governingBody');
     const resolvedGovBody = await govBody?.get('isTimeSpecializationOf');
     const governingBody = resolvedGovBody ?? govBody;
-    const classification = await governingBody.get('classification');
+    const classification = await governingBody?.get('classification');
     return {
       session,
       agendaItems: this.loadAgendaItemsTask.perform(
@@ -39,7 +39,7 @@ export default class SessionRoute extends Route {
       ),
       otherSessions: this.loadOtherSessionsTask.perform(governingBody, session),
       governingBodies: this.loadGoverningBodiesTask.perform(governingBody),
-      classificationLabel: classification.get('label'),
+      classificationLabel: classification?.get('label'),
     };
   }
 
@@ -136,7 +136,7 @@ function getUniqueGoverningBodies(
   return governingBodies
     .reduce(
       (unique, govBody) => {
-        const label = govBody.get('classification').get('label');
+        const label = govBody?.get('classification')?.get('label');
         if (label && !uniqueLabels.has(label)) {
           uniqueLabels.add(label);
           unique.push({ label });
