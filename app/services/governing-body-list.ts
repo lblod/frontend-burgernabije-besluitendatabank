@@ -6,17 +6,22 @@ import { QueryParameterKeys } from 'frontend-burgernabije-besluitendatabank/cons
 import { deserializeArray } from 'frontend-burgernabije-besluitendatabank/utils/query-params';
 import type MunicipalityListService from './municipality-list';
 import type GoverningBodyModel from 'frontend-burgernabije-besluitendatabank/models/governing-body';
-import type GoverningBodyClasssificationCodeModel from 'frontend-burgernabije-besluitendatabank/models/governing-body-classification-code';
 import type { AdapterPopulatedRecordArrayWithMeta } from 'frontend-burgernabije-besluitendatabank/utils/ember-data';
 import type GovernmentListService from './government-list';
 import type FilterService from './filter-service';
 import type ProvinceListService from './province-list';
+import type GoverningBodyClassificationCodeModel from 'frontend-burgernabije-besluitendatabank/models/governing-body-classification-code';
 
-export interface GoverningBodyOption {
+export type GoverningBodyOption = {
   id: string;
   label: string;
   type: string;
-}
+};
+
+type ClassificationCode = {
+  id: string;
+  label: string;
+};
 
 export default class GoverningBodyListService extends Service {
   @service declare store: Store;
@@ -64,60 +69,103 @@ export default class GoverningBodyListService extends Service {
     return governingBodyClassificationIds.join(',');
   }
 
-  async loadOptions() {
+  async loadOptions(): Promise<GoverningBodyOption[]> {
     const { municipalityLabels, governingBodyClassifications, provinceLabels } =
       this.filterService.filters;
-    if (
-      (municipalityLabels == undefined || municipalityLabels == '') &&
-      (provinceLabels == undefined || provinceLabels == '')
-    ) {
-      const governingBodyClassifications = await this.store.query(
+
+    const hasLocationFilters =
+      Boolean(municipalityLabels?.trim()) || Boolean(provinceLabels?.trim());
+
+    if (!hasLocationFilters) {
+      const allCodes = await this.store.query(
         'governing-body-classification-code',
         {
-          page: { size: 100 },
+          page: { size: 999 },
           sort: 'label',
         },
       );
-      this.options = this.sortOptions(
-        this.getUniqueClassifications(governingBodyClassifications),
-      );
-    } else {
-      const municipalityIds =
-        await this.municipalityList.getLocationIdsFromLabels(
-          municipalityLabels?.replace(',', '+'),
-        );
-      const provinceIds = await this.provinceList.getProvinceIdsFromLabels(
-        provinceLabels?.replace(',', '+'),
-      );
-      const governingBodies = await this.store.query('governing-body', {
+
+      this.options = this.sortOptions(this.getUniqueClassifications(allCodes));
+
+      this.restoreSelected(governingBodyClassifications);
+      return this.options;
+    }
+
+    const [municipalityIds, provinceIds] = await Promise.all([
+      municipalityLabels
+        ? this.municipalityList.getLocationIdsFromLabels(
+            municipalityLabels.replace(',', '+'),
+          )
+        : Promise.resolve([]),
+      provinceLabels
+        ? this.provinceList.getProvinceIdsFromLabels(
+            provinceLabels.replace(',', '+'),
+          )
+        : Promise.resolve([]),
+    ]);
+
+    const locationIds = [...municipalityIds, ...provinceIds];
+
+    const [governingBodies, allCodes] = await Promise.all([
+      this.store.query('governing-body', {
         filter: {
           'administrative-unit': {
-            location: {
-              ':id:': municipalityIds.join(',') + provinceIds.join(','),
-            },
+            location: { ':id:': locationIds.join(',') },
           },
         },
         include: 'classification',
-        page: { size: 100 },
-      });
-      this.options = this.sortOptions(
-        this.getUniqueGoverningBodies(governingBodies),
-      );
-    }
-    if (governingBodyClassifications != null) {
-      this.selected = this.options.filter((option) =>
-        governingBodyClassifications.split('+').includes(option.label),
-      );
-      if (this.selected.length == 0) {
-        this.router.transitionTo({
-          queryParams: {
-            bestuursorganen: null,
-          },
-        });
-      }
-    }
+        page: { size: 999 },
+      }),
+      this.store.query('governing-body-classification-code', {
+        page: { size: 999 },
+        sort: 'label',
+      }),
+    ]);
+
+    // Process data
+    const bodyOptions = this.getUniqueGoverningBodies(governingBodies);
+    const filteredCodes = this.filterByLabel(allCodes, bodyOptions);
+    const uniqueCodes = this.uniqueByLabel(filteredCodes);
+
+    this.options = uniqueCodes.map((item) => ({
+      id: item.id,
+      label: item.label,
+      type: QueryParameterKeys.governingBodies,
+    }));
+
+    this.restoreSelected(governingBodyClassifications);
 
     return this.options;
+  }
+
+  private filterByLabel(
+    list: AdapterPopulatedRecordArrayWithMeta<GoverningBodyClassificationCodeModel>,
+    options: { label: string }[],
+  ): ClassificationCode[] {
+    return list.filter((item) =>
+      options.some((o) => o.label.toLowerCase() === item.label.toLowerCase()),
+    );
+  }
+
+  private uniqueByLabel(list: ClassificationCode[]): ClassificationCode[] {
+    const seen = new Set<string>();
+    return list.filter((item) => {
+      const key = item.label.toLowerCase();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }
+
+  private restoreSelected(selectedParam?: string) {
+    if (!selectedParam) return;
+
+    const labels = selectedParam.split('+');
+    this.selected = this.options.filter((opt) => labels.includes(opt.label));
+
+    if (this.selected.length === 0) {
+      this.router.transitionTo({ queryParams: { bestuursorganen: null } });
+    }
   }
 
   sortOptions(options: GoverningBodyOption[]): GoverningBodyOption[] {
@@ -131,7 +179,7 @@ export default class GoverningBodyListService extends Service {
 
     return govBodies
       .filter((govBody) => {
-        const label = govBody.classification.get('label');
+        const label = govBody.classification.get('label') ?? govBody.name;
         if (label && !uniqueLabels.has(label)) {
           uniqueLabels.add(label);
           return true;
@@ -139,14 +187,14 @@ export default class GoverningBodyListService extends Service {
         return false;
       })
       .map((govBody) => ({
-        id: govBody.classification.get('id') ?? '',
-        label: govBody.classification.get('label') ?? '',
+        id: govBody.classification.get('id') ?? govBody.id,
+        label: govBody.classification.get('label') ?? govBody.name,
         type: QueryParameterKeys.governingBodies,
       }));
   }
 
   getUniqueClassifications(
-    classifications: AdapterPopulatedRecordArrayWithMeta<GoverningBodyClasssificationCodeModel>,
+    classifications: AdapterPopulatedRecordArrayWithMeta<GoverningBodyClassificationCodeModel>,
   ) {
     const uniqueLabels = new Set();
 
