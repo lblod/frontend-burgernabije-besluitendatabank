@@ -124,6 +124,7 @@ Or in template files by using the `is-feature-enabled` helper:
 | PLAUSIBLE_APIHOST | The domain where the plausible.js can be found                  |
 | PLAUSIBLE_DOMAIN  | The domain that has been configured to be tracked. If undefined |
 | GOVERNING_BODY_DISABLED_LIST | A comma-separated list of governing bodies that should be disabled |
+| MAINTENANCE_MODE  | Set to `true` to enable maintenance mode, which displays a maintenance message instead of the normal application |
 
 ### Disabling governing bodies
 
