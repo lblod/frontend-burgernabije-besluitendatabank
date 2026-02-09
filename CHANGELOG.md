@@ -1,23 +1,28 @@
-## v0.8.10 (2025-12-03)
-
-#### :rocket: Enhancement
-
-- [#235](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/235) Hotfix: Add optional chaining to prevent potential null reference errors by ([@Andresdev02](https://github.com/Andresdev02))
-
 ## v0.8.9 (2025-11-07)
 
+#### :bug: Bug Fix
+
+- [#235](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/235) Hotfix: Add optional chaining to prevent potential null reference errors ([@Andresdev02](https://github.com/Andresdev02))
+
+#### Committers: 1
+
+- Andres Vergauwen ([@Andresdev02](https://github.com/Andresdev02))
+
+## v0.8.8 (2025-07-30)
+
 #### :rocket: Enhancement
 
-- [#235](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/235) Hotfix: Add optional chaining to prevent potential null reference errors by ([@Andresdev02](https://github.com/Andresdev02))
+- [#232](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/232) Enhance advanced search functionality by updating filters for title and description exclusions ([@Andresdev02](https://github.com/Andresdev02))
+- [#233](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/233) Fix List Loading, Alert Logic, and Session Search Issues ([@Andresdev02](https://github.com/Andresdev02))
 
-## v0.8.8 (2025-10-23)
+#### :house: Internal
 
-#### :rocket: Enhancement
+- [#228](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/228) Refactor Woodpecker CI ([@Andresdev02](https://github.com/Andresdev02))
+- [#229](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/229) Remove Woodpecker CI tag configuration file ([@Andresdev02](https://github.com/Andresdev02))
 
-- [#228](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/228) Refactor Woodpecker CI by ([@Andresdev02](https://github.com/Andresdev02))
-- [#229](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/229) Remove Woodpecker CI tag configuration file by ([@Andresdev02](https://github.com/Andresdev02))
-- [#232](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/232) Enhance advanced search functionality by updating filters for title and description exclusions by ([@Andresdev02](https://github.com/Andresdev02))
-- [#233](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/233) Feature/improvements Fix List Loading, Alert Logic, and Session Search Issues by ([@Andresdev02](https://github.com/Andresdev02))
+#### Committers: 1
+
+- Andres Vergauwen ([@Andresdev02](https://github.com/Andresdev02))
 
 ## v0.8.7 (2025-05-13)
 
