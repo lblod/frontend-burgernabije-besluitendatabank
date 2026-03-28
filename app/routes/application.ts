@@ -13,6 +13,20 @@ export default class ApplicationRoute extends Route {
     this.setGoverningBodyDisabledList();
   }
 
+  model() {
+    let message;
+    if (config.maintenance.message === '{{MAINTENANCE_MESSAGE}}') {
+      message =
+        'De website is momenteel niet beschikbaar wegens onderhoud. Probeer het later opnieuw.';
+    } else {
+      message = config.maintenance.message;
+    }
+    return {
+      isMaintenanceMode: config.maintenance.enabled === 'true',
+      message,
+    };
+  }
+
   startAnalytics(): void {
     const { domain, apiHost } = config.plausible;
 

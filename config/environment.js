@@ -24,6 +24,10 @@ module.exports = function (environment) {
       // define feature flags here
       'statistics-page-feature': false,
     },
+    maintenance: {
+      enabled: '{{MAINTENANCE_MODE}}',
+      message: '{{MAINTENANCE_MESSAGE}}',
+    },
     'governing-body-disabled': '{{GOVERNING_BODY_DISABLED_LIST}}',
   };
 

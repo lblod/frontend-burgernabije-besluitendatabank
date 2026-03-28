@@ -3,7 +3,14 @@
   <AppHeader />
   <AuMainContainer as |m|>
     <m.content @scroll={{true}}>
-      {{outlet}}
+      {{#if @model.isMaintenanceMode}}
+        <AuContent @skin="large">
+          <AuHeading @level="1" @skin="2">Onderhoudsmodus</AuHeading>
+          <p>{{@model.message}}</p>
+        </AuContent>
+      {{else}}
+        {{outlet}}
+      {{/if}}
     </m.content>
   </AuMainContainer>
   <Footer />
