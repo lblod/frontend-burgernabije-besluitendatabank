@@ -1,12 +1,16 @@
+## v0.8.11 (2026-06-18)
+
+- [#237](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/237) Fix missing bestuursorganen in filter bestuursorganen of Lokaal Beslist app ([@Andresdev02](https://github.com/Andresdev02))
 
 ## v0.8.10 (2026-02-09)
 
 #### :bug: Bug Fix
-* [#236](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/236) Fix: Update governing body classification model and service to improv… ([@Andresdev02](https://github.com/Andresdev02))
+
+- [#236](https://github.com/lblod/frontend-burgernabije-besluitendatabank/pull/236) Fix: Update governing body classification model and service to improv… ([@Andresdev02](https://github.com/Andresdev02))
 
 #### Committers: 1
-- Andres Vergauwen ([@Andresdev02](https://github.com/Andresdev02))
 
+- Andres Vergauwen ([@Andresdev02](https://github.com/Andresdev02))
 
 ## v0.8.9 (2025-11-07)
 
