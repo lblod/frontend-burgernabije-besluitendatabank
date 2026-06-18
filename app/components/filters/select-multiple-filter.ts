@@ -18,6 +18,7 @@ interface Signature {
     options: Promise<UnifiedOptions[]>;
     selected: Option[];
     updateSelected: (selected: Option[]) => void;
+    loading?: boolean;
   } & FilterArgs;
 }
 

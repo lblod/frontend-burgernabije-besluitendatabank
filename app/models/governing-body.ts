@@ -41,6 +41,15 @@ export default class GoverningBodyModel extends Model {
   })
   declare classification: AsyncBelongsTo<GoverningBodyClasssificationCodeModel>;
 
+  /**
+   * Fallback classification linked through `org:classification` instead of `besluit:classificatie`.
+   */
+  @belongsTo('governing-body-classification-code', {
+    async: true,
+    inverse: null,
+  })
+  declare orgClassification: AsyncBelongsTo<GoverningBodyClasssificationCodeModel>;
+
   @hasMany('session', { async: true, inverse: 'governingBody' })
   declare sessions: AsyncHasMany<SessionModel>;
 

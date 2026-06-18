@@ -395,3 +395,27 @@ cursor {
 .au-c-main-header__title {
   max-width: 100% !important;
 }
+
+.ember-power-select-trigger.u-select--loading {
+  .ember-power-select-status-icon {
+    background-image: none;
+
+    &::after {
+      content: "";
+      display: block;
+      position: absolute;
+      inset: 0;
+      border: 2px solid currentcolor;
+      border-right-color: transparent;
+      border-radius: 50%;
+      opacity: 0.5;
+      animation: u-select-spin 0.6s linear infinite;
+    }
+  }
+}
+
+@keyframes u-select-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

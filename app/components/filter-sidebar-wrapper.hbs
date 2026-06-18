@@ -62,6 +62,7 @@
           @id="governing-body"
           @label="Kies één of meer bestuursorganen"
           @options={{this.governigBodyOptions}}
+          @loading={{this.governingBodyList.isLoading}}
           @selected={{this.governingBodyList.selected}}
           @updateSelected={{this.updateSelectedGoverningBodyClassifications}}
           @noMatchesMessage="Geen bestuursorganen gevonden"

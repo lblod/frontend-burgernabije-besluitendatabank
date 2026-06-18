@@ -4,7 +4,10 @@
     {{!template-lint-disable no-duplicate-id}}
     id={{@id}}
     @onChange={{this.selectChange}}
-    class="au-u-1-1"
+    class="au-u-1-1{{if @loading ' u-select--loading'}}"
+    data-test-select-multiple-filter-loading={{@loading}}
+    @disabled={{@loading}}
+    @loadingMessage="Aan het laden..."
     @selected={{this.selected}}
     @options={{@options}}
     @allowClear={{true}}
