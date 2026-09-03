@@ -20,8 +20,7 @@ export default class AgendaItemsAgendaItemSessionRoute extends Route {
         sessions[0].id as string,
         {
           include: [
-            'governing-body.is-time-specialization-of.administrative-unit.location',
-            'governing-body.administrative-unit.location',
+            'governing-body-abstract.administrative-unit.location',
             'agenda-items',
           ].join(','),
         },

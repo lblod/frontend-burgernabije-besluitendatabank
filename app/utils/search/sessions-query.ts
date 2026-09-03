@@ -121,23 +121,14 @@ const dataMapping: DataMapper<SessionMuSearchEntry, Session> = (
 
   return Object.assign(new Session(), {
     id: Array.isArray(entry.uuid) ? entry.uuid[0] : entry.uuid,
-    locationId: entry.location_id || entry.abstract_location_id,
-    abstractGoverningBodyLocationName: parseMuSearchAttributeToString(
-      entry.abstract_governing_body_location_name,
-    ),
+    locationId: entry.location_id,
     governingBodyLocationName: parseMuSearchAttributeToString(
       entry.governing_body_location_name,
-    ),
-    abstractGoverningBodyName: parseMuSearchAttributeToString(
-      entry.abstract_governing_body_name,
     ),
     governingBodyName: parseMuSearchAttributeToString(
       entry.governing_body_name,
     ),
     agendaItemsId: entry['agenda-items_id'] ?? [],
-    abstractGoverningBodyClassificationName: parseMuSearchAttributeToString(
-      entry.abstract_governing_body_classification_name,
-    ),
     governingBodyClassificationName: parseMuSearchAttributeToString(
       entry.governing_body_classification_name,
     ),

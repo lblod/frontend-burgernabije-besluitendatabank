@@ -16,26 +16,20 @@ export default class SessionModel extends Model {
   @belongsTo('governing-body', { async: true, inverse: 'sessions' })
   declare governingBody: AsyncBelongsTo<GoverningBodyModel>;
 
-  get governingBodyValue() {
+  /**
+   * The abstract (undated) governing body, denormalised onto the session by the
+   * besluiten consumer as `ext:governingBodyAbstract`. It is the abstraction of
+   * `governingBody` when that one is a time specialisation, and `governingBody`
+   * itself otherwise.
+   */
+  @belongsTo('governing-body', { async: true, inverse: null })
+  declare governingBodyAbstract: AsyncBelongsTo<GoverningBodyModel>;
+
+  get governingBodyResolved() {
     // cast this because of https://github.com/typed-ember/ember-cli-typescript/issues/1416
     return (this as SessionModel)
-      .belongsTo('governingBody')
+      .belongsTo('governingBodyAbstract')
       ?.value() as GoverningBodyModel | null;
-  }
-
-  /**
-   * @returns
-   * - ... the session's timeSpecialised governing body's name
-   * - ... if the above can't be found, the abstracted governing body's name
-   * - ... if the above can't be found, an error string
-   *
-   * This naming scheme is in relation to the app/back-end
-   */
-  get governingBodyResolved() {
-    return (
-      this.governingBodyValue?.isTimeSpecializationOfValue ||
-      this.governingBodyValue
-    );
   }
 
   get governingBodyNameResolved() {

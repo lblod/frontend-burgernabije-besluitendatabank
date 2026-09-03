@@ -33,19 +33,12 @@ export default class AgendaItemRoute extends Route {
 
     // wait until sessions are loaded
     const sessions = await agendaItem.sessions;
-    // SessionModel expects the following to be loaded:
-    // - governingBody.isTimeSpecializationOf.administrativeUnit.location
-    // - governingBody.administrativeUnit.location
-    // to resolve municipality & governingBody name
+    // SessionModel expects governingBodyAbstract.administrativeUnit.location to be
+    // loaded to resolve municipality & governingBody name
     await Promise.all(
       sessions?.map(async (session) => {
-        const governingBody = await session.governingBody;
-        const isTimeSpecializationOf =
-          await governingBody?.isTimeSpecializationOf;
-        let administrativeUnit =
-          await isTimeSpecializationOf?.administrativeUnit;
-        await administrativeUnit?.location;
-        administrativeUnit = await governingBody?.administrativeUnit;
+        const governingBody = await session.governingBodyAbstract;
+        const administrativeUnit = await governingBody?.administrativeUnit;
         await administrativeUnit?.location;
       }) || [],
     );
@@ -107,9 +100,7 @@ export default class AgendaItemRoute extends Route {
         page: {
           size: 5,
         },
-        'filter[:or:][sessions][governing-body][is-time-specialization-of][administrative-unit][location][:id:]':
-          locationId,
-        'filter[:or:][sessions][governing-body][administrative-unit][location][:id:]':
+        'filter[:or:][sessions][governing-body-abstract][administrative-unit][location][:id:]':
           locationId,
         filter: {
           ':or:': {

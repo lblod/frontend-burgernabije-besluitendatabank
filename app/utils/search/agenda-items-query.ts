@@ -123,25 +123,13 @@ const dataMapping: DataMapper<AgendaItemMuSearchEntry, AgendaItem> = (
       parseMuSearchAttributeToString(entry.resolution_title),
     ),
     description: cleanString(parseMuSearchAttributeToString(entry.description)),
-    locationId: entry.location_id || entry.abstract_location_id,
-    abstractGoverningBodyLocationName: parseMuSearchAttributeToString(
-      entry.abstract_governing_body_location_name,
-    ),
+    locationId: entry.location_id,
     governingBodyLocationName: parseMuSearchAttributeToString(
       entry.governing_body_location_name,
     ),
-    abstractGoverningBodyId: parseMuSearchAttributeToArray(
-      entry.abstract_governing_body_id,
-    ),
     governingBodyId: parseMuSearchAttributeToArray(entry.governing_body_id),
-    abstractGoverningBodyName: parseMuSearchAttributeToString(
-      entry.abstract_governing_body_name,
-    ),
     governingBodyName: parseMuSearchAttributeToString(
       entry.governing_body_name,
-    ),
-    abstractGoverningBodyClassificationName: parseMuSearchAttributeToString(
-      entry.abstract_governing_body_classification_name,
     ),
     governingBodyClassificationName: parseMuSearchAttributeToString(
       entry.governing_body_classification_name,
