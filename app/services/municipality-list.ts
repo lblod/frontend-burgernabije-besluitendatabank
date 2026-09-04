@@ -28,12 +28,11 @@ export default class MunicipalityListService extends Service {
   }
 
   /**
-   * Get all municipalities, filtered on the following criteria:
-   * - no duplicate labels
-   * - remove 'Kruishoutem' (because it's not a municipality anymore) #BNB-402
+   * Get all municipalities, de-duplicated by label.
    *
-   * Filtering is managed frontend as a temporary solution ^^
-   * TODO: move this to the backend
+   * Municipalities that no longer exist are removed backend-side by the db-cleanup job
+   * registered in config/migrations/20260903090000-register-defunct-municipality-cleanup-job.sparql,
+   * so they never reach this list.
    *
    * @returns A promise for an array of municipality labels
    **/
@@ -56,10 +55,7 @@ export default class MunicipalityListService extends Service {
     const uniqueLabels = [
       ...new Set(
         municipalities
-          .filter(
-            (municipality) =>
-              municipality.label && municipality.label !== 'Kruishoutem',
-          )
+          .filter((municipality) => municipality.label)
           .map(({ label }) => label),
       ),
     ].map((label) => ({ label, type: QueryParameterKeys.municipalities }));

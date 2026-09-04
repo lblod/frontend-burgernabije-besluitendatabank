@@ -21,15 +21,12 @@ export default class SessionRoute extends Route {
   async model({ session_id }: { session_id: string }) {
     const session = await this.store.findRecord('session', session_id, {
       include: [
-        'governing-body.is-time-specialization-of.administrative-unit.location',
-        'governing-body.administrative-unit.location',
+        'governing-body-abstract.administrative-unit.location',
         'agenda-items.handled-by.resolutions',
       ].join(','),
     });
     const agendaItems = await session?.get('agendaItems');
-    const govBody = await session?.get('governingBody');
-    const resolvedGovBody = await govBody?.get('isTimeSpecializationOf');
-    const governingBody = resolvedGovBody ?? govBody;
+    const governingBody = await session?.get('governingBodyAbstract');
     const classification = await governingBody?.get('classification');
     return {
       session,
@@ -38,7 +35,9 @@ export default class SessionRoute extends Route {
         'titleFormatted',
       ),
       otherSessions: this.loadOtherSessionsTask.perform(governingBody, session),
-      governingBodies: this.loadGoverningBodiesTask.perform(governingBody),
+      governingBodies: this.loadGoverningBodiesTask.perform(
+        session?.municipalityId,
+      ),
       classificationLabel: classification?.get('label'),
     };
   }
@@ -80,10 +79,8 @@ export default class SessionRoute extends Route {
 
         const otherSessions = (await this.store.query('session', {
           filter: {
-            'governing-body': {
-              'is-time-specialization-of': {
-                ':id:': resolvedGovBody.id,
-              },
+            'governing-body-abstract': {
+              ':id:': resolvedGovBody.id,
             },
           },
           page: {
@@ -105,18 +102,16 @@ export default class SessionRoute extends Route {
   );
   readonly loadGoverningBodiesTask = task(
     { restartable: true },
-    async (resolvedGovBody: GoverningBodyModel) => {
+    async (locationId?: string) => {
       try {
-        if (!resolvedGovBody) {
+        if (!locationId) {
           return;
         }
-        const municipality = await resolvedGovBody?.get('administrativeUnit');
-        const location = await municipality?.get('location');
         const governingBodies = await this.store.query('governing-body', {
           include: 'classification',
           filter: {
             'administrative-unit': {
-              location: { ':id:': location.id },
+              location: { ':id:': locationId },
             },
           },
         });

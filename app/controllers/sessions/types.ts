@@ -35,13 +35,9 @@ export type SessionsQueryArguments = {
 
 export type SessionMuSearchEntry = {
   uuid: string[] | string;
-  abstract_location_id?: string;
   location_id?: string;
-  abstract_governing_body_location_name?: string;
   governing_body_location_name?: string;
-  abstract_governing_body_name?: string;
   governing_body_name?: string;
-  abstract_governing_body_classification_name?: string;
   governing_body_classification_name?: string;
   planned_start?: string;
   started_at?: string;
