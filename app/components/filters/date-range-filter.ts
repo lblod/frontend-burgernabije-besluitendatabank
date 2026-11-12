@@ -6,10 +6,12 @@ import Component from '@glimmer/component';
 import { cached, tracked } from '@glimmer/tracking';
 import {
   endOfMonth,
+  endOfQuarter,
   endOfWeek as endOfWeekDateFns,
   endOfYear,
   formatISO,
   startOfMonth,
+  startOfQuarter,
   startOfWeek as startOfWeekDateFns,
   startOfYear,
   sub,
@@ -26,7 +28,7 @@ interface Signature {
   };
 }
 
-enum Preset {
+enum FixedPreset {
   Future = 'Toekomst',
   ThisWeek = 'Deze week',
   LastWeek = 'Vorige week',
@@ -35,6 +37,10 @@ enum Preset {
   ThisYear = 'Dit jaar',
   LastYear = 'Vorig jaar',
 }
+
+// A fixed preset, or a quarter of the current year labelled "Q1 2026" … "Q4 2026".
+type Preset = string;
+type DateRange = [ISODateString, ISODateString];
 
 export default class DateRangeFilterComponent extends Component<Signature> {
   readonly MIN = '2015-01-01';
@@ -50,42 +56,38 @@ export default class DateRangeFilterComponent extends Component<Signature> {
   @tracked endDateError?: string[];
   @tracked startDateError?: string[];
 
-  presets = [
-    Preset.Future,
-    Preset.ThisWeek,
-    Preset.LastWeek,
-    Preset.ThisMonth,
-    Preset.LastMonth,
-    Preset.ThisYear,
-    Preset.LastYear,
-  ];
+  // The order of the keys in presetDateRanges is the order shown in the select.
+  get presets(): Preset[] {
+    return Object.keys(this.presetDateRanges);
+  }
 
   @cached
-  get presetDateRanges() {
+  get presetDateRanges(): Record<Preset, DateRange> {
     const today = new Date();
     return {
-      [Preset.Future]: [toIsoDateString(today), this.MAX],
-      [Preset.ThisWeek]: [
+      [FixedPreset.Future]: [toIsoDateString(today), this.MAX],
+      [FixedPreset.ThisWeek]: [
         toIsoDateString(startOfWeek(today)),
         toIsoDateString(endOfWeek(today)),
       ],
-      [Preset.LastWeek]: [
+      [FixedPreset.LastWeek]: [
         toIsoDateString(startOfWeek(sub(today, { weeks: 1 }))),
         toIsoDateString(endOfWeek(sub(today, { weeks: 1 }))),
       ],
-      [Preset.ThisMonth]: [
+      [FixedPreset.ThisMonth]: [
         toIsoDateString(startOfMonth(today)),
         toIsoDateString(endOfMonth(today)),
       ],
-      [Preset.LastMonth]: [
+      [FixedPreset.LastMonth]: [
         toIsoDateString(startOfMonth(sub(today, { months: 1 }))),
         toIsoDateString(endOfMonth(sub(today, { months: 1 }))),
       ],
-      [Preset.ThisYear]: [
+      ...quartersOfYear(today.getFullYear()),
+      [FixedPreset.ThisYear]: [
         toIsoDateString(startOfYear(today)),
         toIsoDateString(endOfYear(today)),
       ],
-      [Preset.LastYear]: [
+      [FixedPreset.LastYear]: [
         toIsoDateString(startOfYear(sub(today, { years: 1 }))),
         toIsoDateString(endOfYear(sub(today, { years: 1 }))),
       ],
@@ -255,6 +257,18 @@ export default class DateRangeFilterComponent extends Component<Signature> {
       },
     });
   }
+}
+
+function quartersOfYear(year: number): Record<Preset, DateRange> {
+  const quarters: Record<Preset, DateRange> = {};
+  for (let quarter = 0; quarter < 4; quarter++) {
+    const start = startOfQuarter(new Date(year, quarter * 3, 1));
+    quarters[`Q${quarter + 1} ${year}`] = [
+      toIsoDateString(start),
+      toIsoDateString(endOfQuarter(start)),
+    ];
+  }
+  return quarters;
 }
 
 function toIsoDateString(date: Date): ISODateString {

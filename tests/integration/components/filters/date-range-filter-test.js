@@ -3,7 +3,6 @@ import { setupRenderingTest } from 'frontend-burgernabije-besluitendatabank/test
 import { click, fillIn, find, render } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
 import sinon from 'sinon';
-
 module('Integration | Component | filters/date-range-filter', function (hooks) {
   setupRenderingTest(hooks);
 
@@ -32,6 +31,29 @@ module('Integration | Component | filters/date-range-filter', function (hooks) {
     await click(toggleButton);
 
     assert.deepEqual(toggleButton.textContent.trim(), 'Bestaande periodes');
+  });
+
+  module('quarter presets', function () {
+    const year = new Date().getFullYear();
+    const quarters = [
+      ['Q1', `${year}-01-01`, `${year}-03-31`],
+      ['Q2', `${year}-04-01`, `${year}-06-30`],
+      ['Q3', `${year}-07-01`, `${year}-09-30`],
+      ['Q4', `${year}-10-01`, `${year}-12-31`],
+    ];
+
+    quarters.forEach(([quarter, start, end]) => {
+      test(`it recognises ${start} to ${end} as "${quarter} ${year}"`, async function (assert) {
+        this.start = start;
+        this.end = end;
+
+        await render(
+          hbs`<Filters::DateRangeFilter @start={{this.start}} @end={{this.end}} />`,
+        );
+
+        assert.dom('#date-period').includesText(`${quarter} ${year}`);
+      });
+    });
   });
 
   module('when custom date range is selected', function (hooks) {
