@@ -149,6 +149,12 @@ Or in template files by using the `is-feature-enabled` helper:
 | PLAUSIBLE_APIHOST | The domain where the plausible.js can be found                  |
 | PLAUSIBLE_DOMAIN  | The domain that has been configured to be tracked. If undefined |
 | GOVERNING_BODY_DISABLED_LIST | A comma-separated list of governing bodies that should be disabled |
+| MAINTENANCE_BANNER_ENABLED | Set to `true` to show a maintenance banner at the top of every page |
+| MAINTENANCE_BANNER_MESSAGE | Optional custom text for the maintenance banner. Falls back to a default message when not set |
+
+### Maintenance banner
+
+To inform users about ongoing maintenance, set `MAINTENANCE_BANNER_ENABLED` to `true`. A warning banner is then shown above the header on every page. The default text can be overridden with `MAINTENANCE_BANNER_MESSAGE`. Like the other environment variables, these are injected at runtime by the static file service (as `EMBER_MAINTENANCE_BANNER_ENABLED` / `EMBER_MAINTENANCE_BANNER_MESSAGE`), so no rebuild is needed.
 
 ### Disabling governing bodies
 
