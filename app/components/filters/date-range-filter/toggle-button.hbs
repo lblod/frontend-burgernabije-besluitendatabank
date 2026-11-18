@@ -1,8 +1,8 @@
-<div class="au-u-1-1 au-u-text-right au-u-margin-top-tiny" ...attributes>
-  <AuButton
-    @icon={{@icon}}
-    @skin="naked"
-    {{on "click" @onClick}}
-    data-test-filters-toggle-button
-  >{{yield}}</AuButton>
-</div>
+<AuButton
+  @icon={{@icon}}
+  @skin="naked"
+  class="c-date-range-filter__toggle"
+  {{on "click" @onClick}}
+  data-test-filters-toggle-button
+  ...attributes
+>{{yield}}</AuButton>

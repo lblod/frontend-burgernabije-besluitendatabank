@@ -10,6 +10,8 @@ import {
   endOfWeek as endOfWeekDateFns,
   endOfYear,
   formatISO,
+  getQuarter,
+  parseISO,
   startOfMonth,
   startOfQuarter,
   startOfWeek as startOfWeekDateFns,
@@ -38,9 +40,17 @@ enum FixedPreset {
   LastYear = 'Vorig jaar',
 }
 
-// A fixed preset, or a quarter of the current year labelled "Q1 2026" … "Q4 2026".
 type Preset = string;
 type DateRange = [ISODateString, ISODateString];
+
+enum Mode {
+  Presets = 'presets',
+  Quarters = 'quarters',
+  Custom = 'custom',
+}
+
+const QUARTERS = ['Q1', 'Q2', 'Q3', 'Q4'] as const;
+type Quarter = (typeof QUARTERS)[number];
 
 export default class DateRangeFilterComponent extends Component<Signature> {
   readonly MIN = '2015-01-01';
@@ -52,9 +62,28 @@ export default class DateRangeFilterComponent extends Component<Signature> {
   @tracked start: string | null;
   @tracked end: string | null;
   @tracked selectedPreset: Preset | null = null;
-  @tracked isChoosingPresets = true;
+  @tracked mode: Mode = Mode.Presets;
+  @tracked selectedQuarter: Quarter | null = null;
+  @tracked selectedYear: number | null = null;
   @tracked endDateError?: string[];
   @tracked startDateError?: string[];
+
+  readonly quarters = QUARTERS;
+
+  get isChoosingPresets(): boolean {
+    return this.mode === Mode.Presets;
+  }
+
+  get isChoosingQuarters(): boolean {
+    return this.mode === Mode.Quarters;
+  }
+
+  // Most recent year first, down to the first year with data.
+  get years(): number[] {
+    const first = this.MIN_DATE.getFullYear();
+    const current = new Date().getFullYear();
+    return Array.from({ length: current - first + 1 }, (_, i) => current - i);
+  }
 
   // The order of the keys in presetDateRanges is the order shown in the select.
   get presets(): Preset[] {
@@ -82,7 +111,6 @@ export default class DateRangeFilterComponent extends Component<Signature> {
         toIsoDateString(startOfMonth(sub(today, { months: 1 }))),
         toIsoDateString(endOfMonth(sub(today, { months: 1 }))),
       ],
-      ...quartersOfYear(today.getFullYear()),
       [FixedPreset.ThisYear]: [
         toIsoDateString(startOfYear(today)),
         toIsoDateString(endOfYear(today)),
@@ -155,13 +183,64 @@ export default class DateRangeFilterComponent extends Component<Signature> {
     return date === null || date.length === 10;
   }
 
+  @action handleQuarterChange(quarter: Quarter | null): void {
+    this.selectedQuarter = quarter;
+    if (quarter && !this.selectedYear) {
+      this.selectedYear = new Date().getFullYear();
+    }
+    this.applySelectedQuarter();
+  }
+
+  @action handleYearChange(year: number | null): void {
+    this.selectedYear = year;
+    this.applySelectedQuarter();
+  }
+
+  applySelectedQuarter(): void {
+    const { selectedQuarter, selectedYear } = this;
+
+    if (selectedQuarter && selectedYear) {
+      const [start, end] = quarterDateRange(selectedQuarter, selectedYear);
+      this.start = start;
+      this.end = end;
+      this.updateQueryParams();
+      this.args.updateSelected(start, end);
+    } else if (!this.hasNoDates) {
+      // An incomplete quarter selection doesn't filter anything.
+      this.resetQueryParams();
+    }
+  }
+
   @action chooseCustomRange() {
-    this.isChoosingPresets = false;
+    this.mode = Mode.Custom;
     this.selectedPreset = null;
+    this.selectedQuarter = null;
+    this.selectedYear = null;
+  }
+
+  @action chooseQuarters() {
+    this.mode = Mode.Quarters;
+    this.selectedPreset = null;
+    this.selectedQuarter = null;
+    this.selectedYear = null;
+
+    if (this.hasNoDates) {
+      return;
+    }
+
+    const maybeQuarter = this.findQuarter(this.start, this.end);
+    if (maybeQuarter) {
+      [this.selectedQuarter, this.selectedYear] = maybeQuarter;
+    } else {
+      // Same reasoning as in choosePresets: don't keep a hidden date filter.
+      this.resetQueryParams();
+    }
   }
 
   @action choosePresets() {
-    this.isChoosingPresets = true;
+    this.mode = Mode.Presets;
+    this.selectedQuarter = null;
+    this.selectedYear = null;
 
     if (this.hasNoDates) {
       return;
@@ -183,12 +262,37 @@ export default class DateRangeFilterComponent extends Component<Signature> {
     }
 
     const maybePreset = this.findPreset(this.start, this.end);
+    const maybeQuarter = this.findQuarter(this.start, this.end);
     if (maybePreset) {
       this.selectedPreset = maybePreset;
+    } else if (maybeQuarter) {
+      this.mode = Mode.Quarters;
+      [this.selectedQuarter, this.selectedYear] = maybeQuarter;
     } else {
-      // The dates don't match a preset, so we switch to the custom date inputs instead
-      this.isChoosingPresets = false;
+      // The dates don't match a preset or quarter, so we switch to the custom date inputs instead
+      this.mode = Mode.Custom;
     }
+  }
+
+  findQuarter(
+    start: ISODateString | null,
+    end: ISODateString | null,
+  ): [Quarter, number] | null {
+    if (!start || !end) {
+      return null;
+    }
+
+    const startDate = parseISO(start);
+    const year = startDate.getFullYear();
+    const quarter = QUARTERS[getQuarter(startDate) - 1];
+    if (!quarter || !this.years.includes(year)) {
+      return null;
+    }
+
+    const [quarterStart, quarterEnd] = quarterDateRange(quarter, year);
+    return start === quarterStart && end === quarterEnd
+      ? [quarter, year]
+      : null;
   }
 
   findPreset(
@@ -259,16 +363,11 @@ export default class DateRangeFilterComponent extends Component<Signature> {
   }
 }
 
-function quartersOfYear(year: number): Record<Preset, DateRange> {
-  const quarters: Record<Preset, DateRange> = {};
-  for (let quarter = 0; quarter < 4; quarter++) {
-    const start = startOfQuarter(new Date(year, quarter * 3, 1));
-    quarters[`Q${quarter + 1} ${year}`] = [
-      toIsoDateString(start),
-      toIsoDateString(endOfQuarter(start)),
-    ];
-  }
-  return quarters;
+function quarterDateRange(quarter: Quarter, year: number): DateRange {
+  const start = startOfQuarter(
+    new Date(year, QUARTERS.indexOf(quarter) * 3, 1),
+  );
+  return [toIsoDateString(start), toIsoDateString(endOfQuarter(start))];
 }
 
 function toIsoDateString(date: Date): ISODateString {
