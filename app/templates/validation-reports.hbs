@@ -1,0 +1,46 @@
+{{page-title "Validatierapporten"}}
+<section class="au-o-region" id="content">
+  <div class="au-o-layout au-o-layout--small">
+    <AuHeading @level="1" @skin="2">Validatierapporten</AuHeading>
+    <p class="au-u-margin-top-small au-u-margin-bottom">
+      De evaluatie van de publicaties van
+      {{if
+        this.currentSession.isBestuur
+        "uw bestuur"
+        "de besturen die u mag bekijken"
+      }}.
+    </p>
+    {{#if @model.length}}
+      <AuList
+        @divider={{true}}
+        class="c-validation-reports"
+        data-test-validation-reports
+        as |Item|
+      >
+        {{#each @model as |report|}}
+          <Item class="c-validation-report-item">
+            <div>
+              <AuLink
+                @route="sessions.session"
+                @model={{report.session.id}}
+                class="au-u-medium"
+              >
+                {{report.session.governingBodyNameResolved}}
+              </AuLink>
+              <p class="au-u-muted">{{report.session.dateFormatted}}</p>
+            </div>
+            {{#if report.conforms}}
+              <AuPill @skin="success" @icon="circle-check">Conform</AuPill>
+            {{else}}
+              <AuPill @skin="warning" @icon="alert-triangle">Niet conform</AuPill>
+            {{/if}}
+          </Item>
+        {{/each}}
+      </AuList>
+    {{else}}
+      <AuAlert @skin="info" @icon="info-circle">
+        Er zijn nog geen validatierapporten.
+      </AuAlert>
+    {{/if}}
+  </div>
+</section>

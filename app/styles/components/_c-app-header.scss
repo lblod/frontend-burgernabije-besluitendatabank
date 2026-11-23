@@ -14,6 +14,20 @@
   font-weight: var(--au-bold);
 }
 
+.c-validation-reports {
+  display: block;
+  width: 100%;
+}
+
+.c-validation-report-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: $au-unit-small;
+  padding-top: $au-unit-tiny;
+  padding-bottom: $au-unit-tiny;
+}
+
 .c-mock-login__pagination {
   display: flex;
   align-items: center;
