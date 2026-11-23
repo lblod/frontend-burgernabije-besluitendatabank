@@ -1,0 +1,84 @@
+{{#if this.currentSession.isLoggedIn}}
+  <section class="c-accordion-holder">
+    <AuBadge @icon="file" @skin="brand" />
+    <AuAccordion
+      @reverse={{true}}
+      @iconOpen="nav-down"
+      @iconClosed="nav-right"
+      @buttonLabel="Evaluatie van de publicatie"
+      @isOpenInitially={{true}}
+    >
+      {{#if this.loadTask.isRunning}}
+        <AuLoader @centered={{false}} @inline={{true}} class="au-u-margin-top">
+          Evaluatie aan het laden
+        </AuLoader>
+      {{else if this.loadTask.last.isError}}
+        <AuAlert
+          @skin="error"
+          @icon="alert-triangle"
+          @title="De evaluatie kon niet geladen worden"
+          class="au-u-margin-top"
+        />
+      {{else if this.evaluation.reports.length}}
+        {{#if this.evaluation.conforms}}
+          <AuAlert
+            @skin="success"
+            @icon="check"
+            @title="Deze zitting voldoet aan de publicatieplicht"
+            class="au-u-margin-top"
+          />
+        {{else}}
+          <AuAlert
+            @skin="warning"
+            @icon="alert-triangle"
+            @title="Deze zitting voldoet niet volledig aan de publicatieplicht"
+            class="au-u-margin-top"
+          />
+        {{/if}}
+
+        {{#each this.evaluation.rows as |row|}}
+          <div class="au-u-margin-top">
+            <AuHeading @level="3" @skin="6">
+              {{#if row.value}}
+                Document
+              {{else}}
+                Zitting
+              {{/if}}
+            </AuHeading>
+            {{#if row.value}}
+              <AuLinkExternal
+                href={{row.value}}
+                class="au-u-word-break"
+              >{{row.value}}</AuLinkExternal>
+            {{/if}}
+            <ul class="au-u-margin-top-small">
+              {{#each row.checks as |check|}}
+                <li class="au-u-margin-bottom-small">
+                  <AuPill
+                    @skin={{check.display.skin}}
+                    @icon={{check.display.icon}}
+                  >
+                    {{check.label}}
+                  </AuPill>
+                  {{#each check.messages as |message|}}
+                    <AuHelpText
+                      @skin="secondary"
+                      class="au-u-margin-top-tiny"
+                    >{{message}}</AuHelpText>
+                  {{/each}}
+                </li>
+              {{/each}}
+            </ul>
+          </div>
+        {{/each}}
+      {{else}}
+        <AuAlert
+          @skin="info"
+          @icon="info-circle"
+          @title="Geen evaluatie beschikbaar voor deze zitting"
+          class="au-u-margin-top"
+        />
+      {{/if}}
+    </AuAccordion>
+  </section>
+{{/if}}

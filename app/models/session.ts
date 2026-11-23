@@ -4,6 +4,7 @@ import { getFormattedDate } from 'frontend-burgernabije-besluitendatabank/utils/
 import { getFormattedDateRange } from 'frontend-burgernabije-besluitendatabank/utils/get-formatted-date-range';
 import type AgendaItemModel from './agenda-item';
 import type GoverningBodyModel from './governing-body';
+import type ValidationReportModel from './validation-report';
 
 export default class SessionModel extends Model {
   @attr('date') declare plannedStart?: Date;
@@ -15,6 +16,9 @@ export default class SessionModel extends Model {
 
   @belongsTo('governing-body', { async: true, inverse: 'sessions' })
   declare governingBody: AsyncBelongsTo<GoverningBodyModel>;
+
+  @hasMany('validation-report', { async: true, inverse: 'session' })
+  declare validationReports: AsyncHasMany<ValidationReportModel>;
 
   /**
    * The abstract (undated) governing body, denormalised onto the session by the
