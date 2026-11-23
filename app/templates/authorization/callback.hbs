@@ -1,0 +1,14 @@
+{{page-title "Aanmelden"}}
+<div class="au-o-box au-o-layout">
+  {{#if @model.error}}
+    <AuAlert @skin="error" @icon="alert-triangle" @title="Aanmelden is mislukt">
+      <p>
+        Uw organisatie heeft mogelijk geen toegang tot de evaluatieresultaten
+        van Lokaal Beslist.
+      </p>
+      <p><AuLink @route="home">Terug naar de startpagina</AuLink></p>
+    </AuAlert>
+  {{else}}
+    <AuLoader @hideMessage={{false}}>Bezig met aanmelden…</AuLoader>
+  {{/if}}
+</div>

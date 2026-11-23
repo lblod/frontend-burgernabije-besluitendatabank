@@ -24,12 +24,29 @@ module.exports = function (environment) {
       // define feature flags here
       'statistics-page-feature': false,
     },
+    login: {
+      mock: false,
+      sessionsPath: '/sessions',
+      // Filled in by the frontend container from EMBER_ACMIDM_* variables.
+      acmidm: {
+        clientId: '{{ACMIDM_CLIENT_ID}}',
+        authUrl: '{{ACMIDM_AUTH_URL}}',
+        redirectUrl: '{{ACMIDM_AUTH_REDIRECT_URL}}',
+        logoutUrl: '{{ACMIDM_LOGOUT_URL}}',
+        scope: '{{ACMIDM_SCOPE}}',
+      },
+    },
     'governing-body-disabled': '{{GOVERNING_BODY_DISABLED_LIST}}',
     maintenance: {
       enabled: '{{MAINTENANCE_BANNER_ENABLED}}',
       message: '{{MAINTENANCE_BANNER_MESSAGE}}',
     },
   };
+
+  if (environment === 'development') {
+    ENV.login.mock = true;
+    ENV.login.sessionsPath = '/mock/sessions';
+  }
 
   if (environment === 'test') {
     ENV.locationType = 'none';

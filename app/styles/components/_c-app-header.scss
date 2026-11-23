@@ -1,0 +1,22 @@
+/* ==================================
+   #APP HEADER
+   ================================== */
+
+.c-app-header__user {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  padding-left: $au-unit-small;
+  border-left: 0.1rem solid var(--au-gray-200);
+}
+
+.c-app-header__user-menu > .au-c-button--naked {
+  font-weight: var(--au-bold);
+}
+
+.c-mock-login__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $au-unit-small;
+}

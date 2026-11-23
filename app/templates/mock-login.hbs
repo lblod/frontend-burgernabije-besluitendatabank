@@ -1,0 +1,83 @@
+{{page-title "Aanmelden (mock)"}}
+<section class="au-o-region" id="content">
+  <div class="au-o-layout au-o-layout--small">
+    <AuHeading @level="1" @skin="2">Aanmelden (mock)</AuHeading>
+    <AuHelpText @skin="secondary">
+      Enkel voor ontwikkeling: meld aan als een mock-gebruiker om de
+      validatierapporten per rol te testen.
+    </AuHelpText>
+
+    {{#if this.error}}
+      <AuAlert
+        @skin="error"
+        @icon="alert-triangle"
+        @title={{this.error}}
+        class="au-u-margin-top"
+      />
+    {{/if}}
+
+    <AuHeading @level="2" @skin="4" class="au-u-margin-top">
+      Kies een gebruiker om mee in te loggen.
+    </AuHeading>
+    <div class="au-u-margin-top-small au-u-margin-bottom">
+      <AuLabel for="mock-login-search">Gebruiker zoeken</AuLabel>
+      <input
+        id="mock-login-search"
+        class="au-c-input au-c-input--block"
+        type="search"
+        placeholder="Aalst, Berchem, ..."
+        value={{this.search}}
+        {{on "input" this.onSearchInput}}
+      />
+    </div>
+
+    <ul data-test-mock-users>
+      {{#each @model.users as |user|}}
+        <li>
+          <div
+            class="au-o-box au-o-box--small au-c-card au-u-margin-bottom-small"
+          >
+            <AuButton
+              @skin="link"
+              @disabled={{this.login.isRunning}}
+              {{on "click" (fn this.login.perform user)}}
+            >
+              <strong>{{user.name}}</strong>
+            </AuButton>
+            {{#if user.description}}
+              <p class="au-u-muted">{{user.description}}</p>
+            {{/if}}
+          </div>
+        </li>
+      {{else}}
+        <li>
+          <p>Geen gebruikers gevonden. Zijn de mock-gebruikers geladen
+            (config/sample-migrations/mock-login)?</p>
+        </li>
+      {{/each}}
+    </ul>
+
+    {{#if @model.lastPage}}
+      <div class="c-mock-login__pagination au-u-margin-top">
+        <AuButton
+          @skin="secondary"
+          @icon="nav-left"
+          @disabled={{if this.hasPreviousPage false true}}
+          {{on "click" this.previousPage}}
+        >
+          Vorige
+        </AuButton>
+        <span class="au-u-muted">{{this.pageLabel}}</span>
+        <AuButton
+          @skin="secondary"
+          @icon="nav-right"
+          @iconAlignment="right"
+          @disabled={{if this.hasNextPage false true}}
+          {{on "click" this.nextPage}}
+        >
+          Volgende
+        </AuButton>
+      </div>
+    {{/if}}
+  </div>
+</section>
