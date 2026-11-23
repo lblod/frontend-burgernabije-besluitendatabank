@@ -16,6 +16,7 @@ export default class AuthorizationCallbackRoute extends Route {
   };
 
   async model(params: CallbackParams) {
+    await this.currentSession.load();
     if (this.currentSession.isLoggedIn) {
       this.router.transitionTo('home');
       return { error: null };

@@ -8,7 +8,9 @@
       Meer info
     </AuLink>
   </li>
-  {{#if this.currentSession.isLoggedIn}}
+  {{#if (not this.currentSession.isLoaded)}}{{else if
+    this.currentSession.isLoggedIn
+  }}
     <li class="au-c-list-horizontal__item c-app-header__user">
       <AuDropdown
         @title={{this.currentSession.userLabel}}

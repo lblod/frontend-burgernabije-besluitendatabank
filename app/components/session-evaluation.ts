@@ -122,12 +122,12 @@ export default class SessionEvaluation extends Component<Signature> {
 
   constructor(owner: unknown, args: Signature['Args']) {
     super(owner, args);
-    if (this.currentSession.isLoggedIn) {
-      this.loadTask.perform();
-    }
+    this.loadTask.perform();
   }
 
   loadTask = task(async () => {
+    await this.currentSession.load();
+    if (!this.currentSession.isLoggedIn) return null;
     const reports = await this.store.query('validation-report', {
       filter: { session: { ':id:': this.args.session.id } },
       include: 'results.source-shape',

@@ -13,6 +13,7 @@ export const ROLES = {
 
 const JSON_API = 'application/vnd.api+json';
 const STATE_KEY = 'acmidm-login-state';
+const LOAD_TIMEOUT_MS = 5000;
 // The login service (acmidm-login-service), also in a dev build.
 const ACMIDM_SESSIONS_PATH = '/sessions';
 
@@ -87,10 +88,19 @@ export default class CurrentSessionService extends Service {
     return 'Aangemeld';
   }
 
-  async load(): Promise<void> {
+  #loading: Promise<void> | null = null;
+
+  // The app renders without waiting for this; what needs the session awaits it.
+  load(): Promise<void> {
+    this.#loading ??= this.#load();
+    return this.#loading;
+  }
+
+  async #load(): Promise<void> {
     try {
       const response = await fetch(`${this.sessionsPath}/current`, {
         headers: { Accept: JSON_API },
+        signal: AbortSignal.timeout(LOAD_TIMEOUT_MS),
       });
       if (response.ok) {
         this.#setSession((await response.json()) as SessionResponse);

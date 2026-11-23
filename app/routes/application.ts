@@ -10,10 +10,10 @@ export default class ApplicationRoute extends Route {
   @service declare governingBodyDisabledList: GoverningBodyDisabledList;
   @service declare currentSession: CurrentSessionService;
 
-  async beforeModel(): Promise<void> {
+  beforeModel(): void {
     this.startAnalytics();
     this.setGoverningBodyDisabledList();
-    await this.currentSession.load();
+    void this.currentSession.load();
   }
 
   startAnalytics(): void {
