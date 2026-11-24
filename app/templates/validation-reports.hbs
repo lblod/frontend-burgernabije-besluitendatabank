@@ -34,10 +34,7 @@
                 {{#if report.conforms}}
                   <AuPill @skin="success" @icon="circle-check">Conform</AuPill>
                 {{else}}
-                  <AuPill
-                    @skin="warning"
-                    @icon="alert-triangle"
-                  >Niet conform</AuPill>
+                  <AuPill @skin="warning" @icon="alert-triangle">Niet conform</AuPill>
                 {{/if}}
               </Item>
             {{/each}}
@@ -52,6 +49,28 @@
     <FilterSidebar @id="filtersidebar" @class="c-interface__sidebar">
       <div class="c-interface__sidebar-main">
         <h3 class="au-u-h4 au-u-medium">Filters</h3>
+        <Filters::SelectMultipleFilter
+          @id="municipality"
+          @label="Besturen"
+          @options={{this.governmentList.options}}
+          @selected={{this.selectedGovernments}}
+          @updateSelected={{this.updateSelectedGovernments}}
+          @noMatchesMessage="Geen besturen gevonden"
+          @searchField="label"
+          @queryParam="gemeentes+provincies"
+          @placeholder="Alle besturen"
+        />
+        <Filters::SelectMultipleFilter
+          @id="governing-body"
+          @label="Bestuursorganen"
+          @options={{this.governingBodyOptions}}
+          @selected={{this.selectedGoverningBodies}}
+          @updateSelected={{this.updateSelectedGoverningBodies}}
+          @noMatchesMessage="Geen bestuursorganen gevonden"
+          @searchField="label"
+          @queryParam="bestuursorganen"
+          @placeholder="Alle bestuursorganen"
+        />
       </div>
     </FilterSidebar>
   </div>
