@@ -6,6 +6,7 @@ import { tracked } from '@glimmer/tracking';
 import type CurrentSessionService from 'frontend-burgernabije-besluitendatabank/services/current-session';
 import type GovernmentListService from 'frontend-burgernabije-besluitendatabank/services/government-list';
 import type { LocalGovernmentOption } from 'frontend-burgernabije-besluitendatabank/services/government-list';
+import { getFormattedDate } from 'frontend-burgernabije-besluitendatabank/utils/get-formatted-date';
 
 export type GoverningBodyOption = {
   id: string;
@@ -20,6 +21,23 @@ export default class ValidationReportsController extends Controller {
   @tracked governingBodyOptions: GoverningBodyOption[] = [];
   @tracked selectedGovernments: LocalGovernmentOption[] = [];
   @tracked selectedGoverningBodies: GoverningBodyOption[] = [];
+
+  @tracked maturityLevel: string | null = null;
+  @tracked lastHarvestedAt: Date | null = null;
+
+  get canFilterByGovernment() {
+    return this.currentSession.isAbb || this.currentSession.isSupplier;
+  }
+
+  get maturityLevelLabel() {
+    return this.maturityLevel ?? 'Maturiteitsniveau onbekend';
+  }
+
+  get lastHarvestLabel() {
+    return this.lastHarvestedAt
+      ? `Laatste harvesting op ${getFormattedDate(this.lastHarvestedAt)}`
+      : 'Laatste harvesting onbekend';
+  }
 
   @action
   updateSelectedGovernments(newOptions: LocalGovernmentOption[]) {
