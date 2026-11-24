@@ -18,6 +18,12 @@ module('Integration | Component | filters/date-range-filter', function (hooks) {
   });
 
   test('it switches between presets, quarters and custom date range', async function (assert) {
+    this.owner.lookup('service:router').transitionTo = sinon.stub();
+    this.updateSelected = sinon.stub();
+    await render(
+      hbs`<Filters::DateRangeFilter @updateSelected={{this.updateSelected}} />`,
+    );
+
     await click('[data-test-toggle-quarters]');
     assert.dom('#date-quarter').exists();
     assert.dom('#date-year').exists();
@@ -67,6 +73,43 @@ module('Integration | Component | filters/date-range-filter', function (hooks) {
       assert.dom('#date-year').includesText('2020');
     });
 
+    const currentQuarter = `Q${Math.floor(new Date().getMonth() / 3) + 1}`;
+
+    test('it prefills the current quarter and year', async function (assert) {
+      const router = this.owner.lookup('service:router');
+      router.transitionTo = sinon.stub();
+      this.updateSelected = sinon.stub();
+
+      await render(
+        hbs`<Filters::DateRangeFilter @updateSelected={{this.updateSelected}} />`,
+      );
+      await click('[data-test-toggle-quarters]');
+
+      assert.dom('#date-quarter').includesText(currentQuarter);
+      assert.dom('#date-year').includesText(`${year}`);
+      assert.true(router.transitionTo.calledOnce);
+      assert.true(this.updateSelected.calledOnce);
+    });
+
+    test('it defaults to the current quarter when only a year is chosen', async function (assert) {
+      const router = this.owner.lookup('service:router');
+      router.transitionTo = sinon.stub();
+      this.updateSelected = sinon.stub();
+
+      await render(
+        hbs`<Filters::DateRangeFilter @updateSelected={{this.updateSelected}} />`,
+      );
+      await click('[data-test-toggle-quarters]');
+      await click('#date-quarter .ember-power-select-clear-btn');
+      await click('#date-year .ember-power-select-clear-btn');
+      await selectChoose('#date-year', '2019');
+
+      assert.dom('#date-quarter').includesText(currentQuarter);
+      const { start, end } = router.transitionTo.lastCall.args[0].queryParams;
+      assert.true(start.startsWith('2019-'));
+      assert.true(end.startsWith('2019-'));
+    });
+
     test('it applies the selected quarter, defaulting to the current year', async function (assert) {
       const router = this.owner.lookup('service:router');
       router.transitionTo = sinon.stub();
@@ -76,6 +119,7 @@ module('Integration | Component | filters/date-range-filter', function (hooks) {
         hbs`<Filters::DateRangeFilter @updateSelected={{this.updateSelected}} />`,
       );
       await click('[data-test-toggle-quarters]');
+      await click('#date-year .ember-power-select-clear-btn');
       await selectChoose('#date-quarter', 'Q3');
 
       assert.dom('#date-year').includesText(`${year}`);

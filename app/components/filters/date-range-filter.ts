@@ -193,6 +193,9 @@ export default class DateRangeFilterComponent extends Component<Signature> {
 
   @action handleYearChange(year: number | null): void {
     this.selectedYear = year;
+    if (year && !this.selectedQuarter) {
+      this.selectedQuarter = currentQuarter();
+    }
     this.applySelectedQuarter();
   }
 
@@ -224,16 +227,15 @@ export default class DateRangeFilterComponent extends Component<Signature> {
     this.selectedQuarter = null;
     this.selectedYear = null;
 
-    if (this.hasNoDates) {
-      return;
-    }
-
     const maybeQuarter = this.findQuarter(this.start, this.end);
     if (maybeQuarter) {
       [this.selectedQuarter, this.selectedYear] = maybeQuarter;
     } else {
-      // Same reasoning as in choosePresets: don't keep a hidden date filter.
-      this.resetQueryParams();
+      // Prefill with the current quarter. This also replaces any dates that don't match a quarter, so there is
+      // never a hidden date filter applied in the background.
+      this.selectedQuarter = currentQuarter();
+      this.selectedYear = new Date().getFullYear();
+      this.applySelectedQuarter();
     }
   }
 
@@ -361,6 +363,10 @@ export default class DateRangeFilterComponent extends Component<Signature> {
       },
     });
   }
+}
+
+function currentQuarter(): Quarter {
+  return QUARTERS[getQuarter(new Date()) - 1] as Quarter;
 }
 
 function quarterDateRange(quarter: Quarter, year: number): DateRange {
