@@ -145,6 +145,14 @@
           @queryParam="bestuursorganen"
           @placeholder="Alle bestuursorganen"
         />
+        <AuButton
+          @skin="naked"
+          @icon="cross"
+          class="au-u-flex-self-end"
+          {{on "click" this.resetFilters}}
+        >
+          Herstel alle filters
+        </AuButton>
       </div>
     </FilterSidebar>
   </div>

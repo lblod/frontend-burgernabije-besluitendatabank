@@ -78,6 +78,15 @@ export default class ValidationReportsController extends Controller {
   }
 
   @action
+  resetFilters() {
+    this.municipalityLabels = '';
+    this.provinceLabels = '';
+    this.governingBodyClassifications = '';
+    this.page = 0;
+    this.restoreSelectedFilters();
+  }
+
+  @action
   updateSelectedGovernments(newOptions: LocalGovernmentOption[]) {
     this.selectedGovernments = newOptions;
     this.page = 0;
