@@ -30,6 +30,7 @@ export default class ValidationReportsController extends Controller {
   @tracked municipalityLabels = '';
   @tracked provinceLabels = '';
   @tracked governingBodyClassifications = '';
+  @tracked latestSessionPerMunicipality = false;
   @tracked sort = '';
   @tracked page = 0;
   @tracked itemsPerPage = 20;
@@ -82,8 +83,16 @@ export default class ValidationReportsController extends Controller {
     this.municipalityLabels = '';
     this.provinceLabels = '';
     this.governingBodyClassifications = '';
+    this.latestSessionPerMunicipality = false;
     this.page = 0;
     this.restoreSelectedFilters();
+  }
+
+  @action
+  toggleLatestSessionPerMunicipality(checked: boolean) {
+    this.latestSessionPerMunicipality = checked;
+    this.sort = '';
+    this.page = 0;
   }
 
   @action

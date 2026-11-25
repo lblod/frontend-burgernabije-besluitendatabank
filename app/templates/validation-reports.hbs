@@ -145,6 +145,15 @@
           @queryParam="bestuursorganen"
           @placeholder="Alle bestuursorganen"
         />
+        {{#if this.canFilterByGovernment}}
+          <AuCheckbox
+            @checked={{this.latestSessionPerMunicipality}}
+            @onChange={{this.toggleLatestSessionPerMunicipality}}
+            @disabled={{true}}
+          >
+            Toon recentste zitting per gemeente
+          </AuCheckbox>
+        {{/if}}
         <AuButton
           @skin="naked"
           @icon="cross"
