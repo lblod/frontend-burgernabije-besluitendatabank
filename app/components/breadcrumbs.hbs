@@ -1,0 +1,28 @@
+{{#if (breadcrumbs)}}
+  <AuToolbar @size="medium" @skin="tint" @border="bottom" as |Group|>
+    <Group>
+      <nav>
+        <ul class="au-c-list-horizontal au-c-list-horizontal--small">
+          {{#each (breadcrumbs) as |crumb|}}
+            <li class="au-c-list-horizontal__item">
+              {{#if crumb.data.route}}
+                <AuLink
+                  @route={{crumb.data.route}}
+                  @model={{crumb.data.model}}
+                  @icon={{crumb.data.icon}}
+                >
+                  {{crumb.title}}
+                </AuLink>
+              {{else}}
+                <strong
+                  class="u-truncate"
+                  aria-current="page"
+                >{{crumb.title}}</strong>
+              {{/if}}
+            </li>
+          {{/each}}
+        </ul>
+      </nav>
+    </Group>
+  </AuToolbar>
+{{/if}}
