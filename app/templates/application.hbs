@@ -7,5 +7,7 @@
       {{outlet}}
     </m.content>
   </AuMainContainer>
-  <Footer />
+  {{#if this.showFooter}}
+    <Footer />
+  {{/if}}
 </AuApp>
