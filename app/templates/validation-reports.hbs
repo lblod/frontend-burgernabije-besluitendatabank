@@ -113,7 +113,11 @@
                   @model={{report.session.id}}
                   @icon="eye"
                 >
-                  Bekijk details
+                  {{#if report.conforms}}
+                    Bekijk details
+                  {{else}}
+                    Los fouten op
+                  {{/if}}
                 </AuLink>
               </td>
             </c.body>
