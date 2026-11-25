@@ -87,47 +87,52 @@
 
               <section class="c-accordion-holder">
                 <AuBadge @icon="bookmark" @skin="brand" />
-                <AuAccordion
+                <Accordion
                   @reverse={{true}}
                   @iconOpen="nav-down"
                   @iconClosed="nav-right"
                   @buttonLabel="Gepubliceerde agenda"
-                  @isOpenInitially={{true}}
+                  @defaultOpen={{true}}
                 >
-                  {{#if this.model.agendaItems.isRunning}}
-                    <div class="loading-spinner">
-                      <AuLoader
-                        @centered={{false}}
-                        @inline={{true}}
-                        class="au-u-flex au-u-flex--spaced-small au-u-flex--vertical-center au-u-margin-top"
-                      >Agenda aan het laden</AuLoader>
-                    </div>
-                  {{else}}
-                    <AuList class="au-u-margin-top" as |Item|>
-                      <ol type="1">
-                        {{#each this.agendaItems as |item|}}
-                          <Item class="au-u-flex au-u-margin-bottom-small">
-                            <AuLink
-                              @route="agenda-items.agenda-item"
-                              @model={{item.id}}
-                            > {{item.titleFormatted}}</AuLink>
-                          </Item>
-                        {{else}}
-                          <AuAlert
-                            @skin="warning"
-                            @icon="alert-triangle"
-                            @title="Agenda nog niet gepubliceerd"
-                            class="au-u-margin-top au-u-margin-bottom"
-                          >
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua.
-                          </AuAlert>
-                        {{/each}}
-                      </ol>
-                    </AuList>
-                  {{/if}}
-                </AuAccordion>
+                  <:titleExtra>
+                    <PublicationPill @status={{this.publicationStatus}} />
+                  </:titleExtra>
+                  <:default>
+                    {{#if this.model.agendaItems.isRunning}}
+                      <div class="loading-spinner">
+                        <AuLoader
+                          @centered={{false}}
+                          @inline={{true}}
+                          class="au-u-flex au-u-flex--spaced-small au-u-flex--vertical-center au-u-margin-top"
+                        >Agenda aan het laden</AuLoader>
+                      </div>
+                    {{else}}
+                      <AuList class="au-u-margin-top" as |Item|>
+                        <ol type="1">
+                          {{#each this.agendaItems as |item|}}
+                            <Item class="au-u-flex au-u-margin-bottom-small">
+                              <AuLink
+                                @route="agenda-items.agenda-item"
+                                @model={{item.id}}
+                              > {{item.titleFormatted}}</AuLink>
+                            </Item>
+                          {{else}}
+                            <AuAlert
+                              @skin="warning"
+                              @icon="alert-triangle"
+                              @title="Agenda nog niet gepubliceerd"
+                              class="au-u-margin-top au-u-margin-bottom"
+                            >
+                              Lorem ipsum dolor sit amet, consectetur adipiscing
+                              elit. Sed do eiusmod tempor incididunt ut labore
+                              et dolore magna aliqua.
+                            </AuAlert>
+                          {{/each}}
+                        </ol>
+                      </AuList>
+                    {{/if}}
+                  </:default>
+                </Accordion>
               </section>
               <SessionEvaluation @session={{session}} />
             </c.content>

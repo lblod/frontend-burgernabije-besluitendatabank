@@ -8,13 +8,18 @@
   >
     <Group>
       <div>
-        <AuButton
-          @skin="link"
-          aria-expanded="{{if this.isOpen 'true' 'false'}}"
-          data-test-accordion-button
+        <span
+          class="au-u-flex au-u-flex--vertical-center au-u-flex--spaced-tiny"
         >
-          {{@buttonLabel}}
-        </AuButton>
+          <AuButton
+            @skin="link"
+            aria-expanded="{{if this.isOpen 'true' 'false'}}"
+            data-test-accordion-button
+          >
+            {{@buttonLabel}}
+          </AuButton>
+          {{yield to="titleExtra"}}
+        </span>
         {{#if @subtitle}}
           <p data-test-accordion-subtitle>
             {{@subtitle}}
