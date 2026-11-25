@@ -8,6 +8,12 @@ import type Transition from '@ember/routing/transition';
 import type CurrentSessionService from 'frontend-burgernabije-besluitendatabank/services/current-session';
 import type ValidationReportsController from 'frontend-burgernabije-besluitendatabank/controllers/validation-reports';
 
+type ValidationReportsParams = {
+  sort?: string;
+  page?: number;
+  itemsPerPage?: number;
+};
+
 export default class ValidationReportsRoute extends Route {
   @service declare store: Store;
   @service declare router: RouterService;
@@ -17,6 +23,9 @@ export default class ValidationReportsRoute extends Route {
     municipalityLabels: { as: QueryParameterKeys.municipalities },
     provinceLabels: { as: QueryParameterKeys.provinces },
     governingBodyClassifications: { as: QueryParameterKeys.governingBodies },
+    sort: { refreshModel: true },
+    page: { refreshModel: true },
+    itemsPerPage: { refreshModel: true },
   };
 
   async beforeModel() {
@@ -26,11 +35,15 @@ export default class ValidationReportsRoute extends Route {
     }
   }
 
-  model() {
+  model(params: ValidationReportsParams) {
     return this.store.query('validation-report', {
-      include: 'session.governing-body-abstract.administrative-unit',
-      sort: '-created',
-      page: { size: 100 },
+      include:
+        'session.governing-body-abstract.administrative-unit,session.governing-body-abstract.classification',
+      sort: params.sort || '-created',
+      page: {
+        size: Number(params.itemsPerPage) || 20,
+        number: Number(params.page) || 0,
+      },
     });
   }
 

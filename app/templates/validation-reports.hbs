@@ -2,12 +2,12 @@
 <AuBodyContainer>
   <div class="c-interface">
     <div id="content" class="c-interface__content">
-      <AuToolbar @size="medium" as |Group|>
-        <Group>
+      <AuToolbar @size="large" as |Group|>
+        <Group class="au-u-flex au-u-flex--vertical-center">
           <AuHeading @level="1" @skin="2">
             {{this.currentSession.userLabel}}
           </AuHeading>
-          <AuPill @skin="border">{{this.maturityLevelLabel}}</AuPill>
+          <MaturityPill @level={{this.maturityLevel}} />
         </Group>
         <Group>
           <AuPill @skin="border" @icon="clock">
@@ -48,32 +48,70 @@
         </div>
       </div>
 
-      <AuList
-        @divider={{true}}
-        class="c-validation-reports"
-        data-test-validation-reports
-        as |Item|
+      <AuDataTable
+        @content={{@model}}
+        @page={{this.page}}
+        @size={{this.itemsPerPage}}
+        @noDataMessage="Er werden geen resultaten gevonden"
+        @sort={{this.sort}}
+        @hidePagination={{this.hidePagination}}
+        as |t|
       >
-        {{#each @model as |report|}}
-          <Item class="c-validation-report-item">
-            <div>
+        <t.content as |c|>
+          <c.header>
+            <AuDataTableThSortable
+              @field="session.planned-start"
+              @currentSorting={{this.sort}}
+              @label="Zitting"
+              @class="au-c-data-table__header-title"
+            />
+            <AuDataTableThSortable
+              @field="session.governing-body-abstract.classification.label"
+              @currentSorting={{this.sort}}
+              @label="Bestuursorgaan"
+              @class="au-c-data-table__header-title"
+            />
+            <AuDataTableThSortable
+              @field="maturity-level"
+              @currentSorting={{this.sort}}
+              @label="Maturiteitsniveau"
+              @class="au-c-data-table__header-title"
+            />
+            <AuDataTableThSortable
+              @field="conforms"
+              @currentSorting={{this.sort}}
+              @label="Zijn alle documenten gepubliceerd?"
+              @class="au-c-data-table__header-title"
+            />
+            <th>
+              {{! Actions }}
+            </th>
+          </c.header>
+          <c.body as |report|>
+            <td>{{report.session.dateFormatted}}</td>
+            <td>{{report.session.classification}}</td>
+            <td>
+              <MaturityPill @level={{report.maturityLevel}} />
+            </td>
+            <td>
+              {{#if report.conforms}}
+                Ja
+              {{else}}
+                Nee
+              {{/if}}
+            </td>
+            <td>
               <AuLink
                 @route="sessions.session"
                 @model={{report.session.id}}
-                class="au-u-medium"
+                @icon="eye"
               >
-                {{report.session.governingBodyNameResolved}}
+                Bekijk details
               </AuLink>
-              <p class="au-u-muted">{{report.session.dateFormatted}}</p>
-            </div>
-            {{#if report.conforms}}
-              <AuPill @skin="success" @icon="circle-check">Conform</AuPill>
-            {{else}}
-              <AuPill @skin="warning" @icon="alert-triangle">Niet conform</AuPill>
-            {{/if}}
-          </Item>
-        {{/each}}
-      </AuList>
+            </td>
+          </c.body>
+        </t.content>
+      </AuDataTable>
     </div>
     <FilterSidebar @id="filtersidebar" @class="c-interface__sidebar">
       <div class="c-interface__sidebar-main">

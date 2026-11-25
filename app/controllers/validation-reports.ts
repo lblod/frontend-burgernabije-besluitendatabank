@@ -3,6 +3,7 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import QueryParameterKeys from 'frontend-burgernabije-besluitendatabank/constants/query-parameter-keys';
 import type CurrentSessionService from 'frontend-burgernabije-besluitendatabank/services/current-session';
 import type GovernmentListService from 'frontend-burgernabije-besluitendatabank/services/government-list';
 import type { LocalGovernmentOption } from 'frontend-burgernabije-besluitendatabank/services/government-list';
@@ -15,6 +16,17 @@ export type GoverningBodyOption = {
 };
 
 export default class ValidationReportsController extends Controller {
+  queryParams = [
+    { sort: QueryParameterKeys.sort },
+    { page: QueryParameterKeys.page },
+    { itemsPerPage: QueryParameterKeys.size },
+  ];
+
+  @tracked sort = '';
+  @tracked page = 0;
+  @tracked itemsPerPage = 20;
+  hidePagination = false;
+
   @service declare currentSession: CurrentSessionService;
   @service declare governmentList: GovernmentListService;
 
