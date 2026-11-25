@@ -10,6 +10,7 @@ export const QueryParameterKeys = {
   sort: 'sortering',
   page: 'pagina',
   size: 'aantal',
+  origin: 'herkomst',
 };
 
 export default QueryParameterKeys;

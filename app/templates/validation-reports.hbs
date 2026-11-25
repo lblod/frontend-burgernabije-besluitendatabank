@@ -1,5 +1,9 @@
 {{page-title "Validatierapporten"}}
+{{breadcrumb "Terug naar Lokaal Beslist" route="home" icon="arrow-left"}}
+{{breadcrumb "Validatierapporten" route="validation-reports"}}
+{{breadcrumb this.currentSession.userLabel}}
 <AuBodyContainer>
+  <Breadcrumbs />
   <div class="c-interface">
     <div
       id="content"
@@ -111,6 +115,7 @@
                 <AuLink
                   @route="sessions.session"
                   @model={{report.session.id}}
+                  @query={{hash origin="validatierapporten"}}
                   @icon="eye"
                 >
                   {{#if report.conforms}}

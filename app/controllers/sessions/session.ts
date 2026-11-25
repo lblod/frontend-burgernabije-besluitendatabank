@@ -5,14 +5,24 @@ import type SessionModel from 'frontend-burgernabije-besluitendatabank/models/se
 import type GoverningBodyModel from 'frontend-burgernabije-besluitendatabank/models/governing-body';
 import type AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
 import { tracked } from '@glimmer/tracking';
+import QueryParameterKeys from 'frontend-burgernabije-besluitendatabank/constants/query-parameter-keys';
 import type { PublicationStatus } from 'frontend-burgernabije-besluitendatabank/components/publication-pill';
 
 export default class SessionsSessionController extends Controller {
   @service declare store: Store;
-  queryParams = ['gemeentes', 'bestuursorganen'];
+  queryParams = [
+    'gemeentes',
+    'bestuursorganen',
+    { origin: QueryParameterKeys.origin },
+  ];
 
   @tracked bestuursorganen: string | null = null;
   @tracked gemeentes: string | null = null;
+  @tracked origin: string | null = null;
+
+  get fromValidationReports() {
+    return this.origin === 'validatierapporten';
+  }
 
   declare model: {
     classificationLabel: string;
