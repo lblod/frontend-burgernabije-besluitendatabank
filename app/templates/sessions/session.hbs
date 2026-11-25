@@ -12,9 +12,7 @@
             </AuLink>
           </li>
           <li class="au-c-list-horizontal__item">
-            <span class="u-truncate">
-              {{session.governingBodyNameResolved}}
-              {{session.dateFormatted}}</span>
+            <span class="u-truncate">{{session.sessionTitle}}</span>
           </li>
 
         </ul>
@@ -40,8 +38,7 @@
             <c.header>
               <div class="au-u-flex au-u-flex--between au-u-flex--column@small">
                 <AuHeading @level="1" @skin="3">
-                  {{session.governingBodyNameResolved}}
-                  {{session.dateFormatted}}
+                  {{session.sessionTitle}}
                 </AuHeading>
               </div>
             </c.header>
@@ -80,7 +77,7 @@
                   {{session.dateFormatted}}
                 </li>
               </ul>
-              {{!-- Temporary hidden --}}
+              {{! Temporary hidden }}
               {{!-- <AuContent @skin="small">
                 <AuLinkExternal @icon="link" href="{{session.source}}">
                   Bekijk gepubliceerde agendapunten op de website van de
