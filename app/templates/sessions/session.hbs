@@ -91,7 +91,7 @@
                   @reverse={{true}}
                   @iconOpen="nav-down"
                   @iconClosed="nav-right"
-                  @buttonLabel="Gepubliceerde agendapunten"
+                  @buttonLabel="Gepubliceerde agenda"
                   @isOpenInitially={{true}}
                 >
                   {{#if this.model.agendaItems.isRunning}}
@@ -100,7 +100,7 @@
                         @centered={{false}}
                         @inline={{true}}
                         class="au-u-flex au-u-flex--spaced-small au-u-flex--vertical-center au-u-margin-top"
-                      >Agendapunten aan het laden</AuLoader>
+                      >Agenda aan het laden</AuLoader>
                     </div>
                   {{else}}
                     <AuList class="au-u-margin-top" as |Item|>
