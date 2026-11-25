@@ -1,0 +1,22 @@
+<section class="c-accordion-holder">
+  <AuBadge @icon="users" @skin="brand" />
+  <Accordion
+    @reverse={{true}}
+    @iconOpen="nav-down"
+    @iconClosed="nav-right"
+    @buttonLabel="Mandatarissen"
+  >
+    <:titleExtra>
+      <AuPill @skin="warning" @icon="alert-triangle" class="c-title-pill">
+        {{this.matchedCount}}/{{this.totalCount}}
+        mandatarissen
+      </AuPill>
+    </:titleExtra>
+    <:default>
+      <p class="au-u-margin-top">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua.
+      </p>
+    </:default>
+  </Accordion>
+</section>
