@@ -1,0 +1,61 @@
+<section class="au-u-margin-top">
+  <div class="au-u-flex au-u-flex--between au-u-flex--vertical-center">
+    <span class="au-u-flex au-u-flex--vertical-center au-u-flex--spaced-tiny">
+      <AuHeading @level="2" @skin="4" class="au-u-margin-bottom-none">
+        Overzicht validatie
+      </AuHeading>
+      <AuIcon @icon="circle-question" />
+    </span>
+    <AuButton @skin="link" @icon="download" @disabled={{true}}>
+      Download rapport
+    </AuButton>
+  </div>
+
+  <div
+    class="au-u-padding-small au-u-margin-top-small au-u-background-gray-100 border-radius"
+  >
+    {{#each this.documents as |document|}}
+      <div class="au-u-margin-bottom">
+        <span
+          class="au-u-flex au-u-flex--vertical-center au-u-flex--spaced-tiny"
+        >
+          <strong>{{document.label}}</strong>
+          <PublicationPill @status={{document.publicationStatus}} />
+        </span>
+        <span class="au-u-flex au-u-flex--vertical-center au-u-margin-top-tiny">
+          {{#if document.issueCount}}
+            <AuPill
+              @skin="warning"
+              @icon="alert-triangle"
+              class="au-u-margin-top-tiny"
+            >
+              {{document.issueCount}}
+              problemen
+            </AuPill>
+          {{else}}
+            <em class="au-u-muted">Geen problemen</em>
+          {{/if}}
+        </span>
+      </div>
+    {{/each}}
+
+    <ul>
+      {{#each this.maturityLevels as |maturityLevel|}}
+        <li
+          class="au-u-flex au-u-flex--vertical-center au-u-flex--spaced-tiny au-u-margin-bottom-tiny"
+        >
+          Maturiteitsniveau
+          {{maturityLevel.level}}:
+          {{maturityLevel.percentage}}% behaald
+          <AuIcon @icon="circle-question" />
+        </li>
+      {{/each}}
+    </ul>
+  </div>
+
+  <div class="au-u-flex au-u-flex--end au-u-margin-top-small">
+    <AuLink @route="validation-reports">
+      Bekijk validatie van alle zittingen
+    </AuLink>
+  </div>
+</section>
