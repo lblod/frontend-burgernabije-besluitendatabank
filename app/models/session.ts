@@ -53,6 +53,10 @@ export default class SessionModel extends Model {
     return this.governingBodyResolved?.classification?.get('label') || '';
   }
 
+  get administrativeUnitName() {
+    return this.governingBodyResolved?.administrativeUnitValue?.name;
+  }
+
   get municipality() {
     return (
       this.governingBodyResolved?.administrativeUnitValue?.locationValue

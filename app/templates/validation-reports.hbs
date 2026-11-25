@@ -93,7 +93,10 @@
             </c.header>
             <c.body as |report|>
               <td>{{report.session.sessionTitle}}</td>
-              <td>{{report.session.classification}}</td>
+              <td>
+                {{report.session.classification}}
+                {{report.session.administrativeUnitName}}
+              </td>
               <td>
                 <MaturityPill @level={{report.maturityLevel}} />
               </td>
