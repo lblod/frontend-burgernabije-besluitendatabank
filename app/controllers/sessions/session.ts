@@ -5,6 +5,8 @@ import type SessionModel from 'frontend-burgernabije-besluitendatabank/models/se
 import type GoverningBodyModel from 'frontend-burgernabije-besluitendatabank/models/governing-body';
 import type AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
 import { tracked } from '@glimmer/tracking';
+import type { PublicationStatus } from 'frontend-burgernabije-besluitendatabank/components/publication-pill';
+
 export default class SessionsSessionController extends Controller {
   @service declare store: Store;
   queryParams = ['gemeentes', 'bestuursorganen'];
@@ -36,6 +38,14 @@ export default class SessionsSessionController extends Controller {
     return this.model?.agendaItems.isFinished
       ? this.model?.agendaItems.value
       : [];
+  }
+
+  get publicationStatus(): PublicationStatus {
+    if (this.agendaItems.length === 0) {
+      return 'not-published';
+    }
+
+    return 'on-time';
   }
 
   get governingBodies() {
