@@ -1,0 +1,12 @@
+.c-content-tabs.c-content-tabs .au-c-tabs-list {
+  list-style: none;
+  margin-left: 0;
+}
+
+.c-content-tabs.c-content-tabs .au-c-tabs-list li + li {
+  margin-top: 0;
+}
+
+.c-content-tabs.c-content-tabs.c-content-tabs .au-c-button--link {
+  @include au-font-size(var(--au-u-h6));
+}

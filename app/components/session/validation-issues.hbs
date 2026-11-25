@@ -13,10 +13,29 @@
       </AuPill>
     </:titleExtra>
     <:default>
-      <p class="au-u-margin-top">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua.
-      </p>
+      <AuTabs
+        class="c-content-tabs au-u-margin-top au-u-background-gray-100"
+        as |Tab|
+      >
+        {{#each this.tabs as |tab|}}
+          <Tab>
+            <AuButton
+              @skin="link"
+              class="au-c-link {{if (eq this.activeTab tab.key) 'active'}}"
+              {{on "click" (fn this.selectTab tab.key)}}
+            >
+              {{tab.label}}
+              {{#if tab.issueCount}}
+                <AuPill
+                  @skin="warning"
+                  @size="small"
+                >{{tab.issueCount}}</AuPill>
+              {{/if}}
+            </AuButton>
+          </Tab>
+        {{/each}}
+      </AuTabs>
+      <AuAlert @title={{this.activeTabLabel}} class="au-u-margin-top" />
     </:default>
   </Accordion>
 </section>
