@@ -1,4 +1,5 @@
 import Controller from '@ember/controller';
+
 import type Store from '@ember-data/store';
 import { service } from '@ember/service';
 import type SessionModel from 'frontend-burgernabije-besluitendatabank/models/session';
@@ -7,9 +8,12 @@ import type AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models
 import { tracked } from '@glimmer/tracking';
 import QueryParameterKeys from 'frontend-burgernabije-besluitendatabank/constants/query-parameter-keys';
 import type { PublicationStatus } from 'frontend-burgernabije-besluitendatabank/components/publication-pill';
+import type CurrentSessionService from 'frontend-burgernabije-besluitendatabank/services/current-session';
 
 export default class SessionsSessionController extends Controller {
   @service declare store: Store;
+  @service declare currentSession: CurrentSessionService;
+
   queryParams = [
     'gemeentes',
     'bestuursorganen',

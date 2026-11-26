@@ -85,9 +85,11 @@
                 </AuLinkExternal>
               </AuContent> --}}
 
-              <Session::PublicationDuty @session={{session}} />
-              <Session::ValidationIssues @session={{session}} />
-              <Session::Mandatarissen @session={{session}} />
+              {{#if this.currentSession.isLoggedIn}}
+                <Session::PublicationDuty @session={{session}} />
+                <Session::ValidationIssues @session={{session}} />
+                <Session::Mandatarissen @session={{session}} />
+              {{/if}}
               <section class="c-accordion-holder">
                 <AuBadge @icon="bookmark" @skin="brand" />
                 <Accordion
@@ -166,7 +168,9 @@
               {{/if}}
 
             </div>
-            <Session::ValidationOverview @session={{session}} />
+            {{#if this.currentSession.isLoggedIn}}
+              <Session::ValidationOverview @session={{session}} />
+            {{/if}}
             <AuContent class="au-u-margin-top">
               <AuHeading @level="2" @skin="4">
                 Andere zittingen van
