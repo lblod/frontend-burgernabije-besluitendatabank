@@ -178,46 +178,50 @@
                   {{session.governingBodyNameResolved}}
                 </AuLink>
               </AuHeading>
-              {{#if this.model.otherSessions.isRunning}}
-                <AuLoader
-                  @centered={{false}}
-                  class="au-u-flex au-u-flex--spaced-small au-u-flex--vertical-center"
-                >Zittingen aan het laden</AuLoader>
-              {{else}}
-                {{#if this.otherSessions.sessions}}
-                  <ol type="1">
-                    {{#each this.otherSessions.sessions as |otherSessions|}}
-                      <li class="au-u-margin-top-small">
-                        <AuLink
-                          @route="sessions.session"
-                          @model={{otherSessions.id}}
-                        >
-                          <p class="truncate">
-                            {{otherSessions.dateFormatted}}
-                          </p>
-                        </AuLink>
-                      </li>
-                    {{/each}}
-                    {{!-- {{#if (gt this.otherSessions.count 5)}}
-                      <AuLink
-                        @icon="arrow-right"
-                        @iconAlignment="right"
-                        class="au-u-margin-top-small"
-                        @route="sessions.index"
-                        @query={{this.govBodyQuery}}
-                      >
-                        Bekijk alle zittingen ({{this.otherSessions.count}})
-                      </AuLink>
-                    {{/if}} --}}
-                  </ol>
+              <div
+                class="au-u-padding-small au-u-margin-top-small au-u-background-gray-100 border-radius"
+              >
+                {{#if this.model.otherSessions.isRunning}}
+                  <AuLoader
+                    @centered={{false}}
+                    class="au-u-flex au-u-flex--spaced-small au-u-flex--vertical-center"
+                  >Zittingen aan het laden</AuLoader>
                 {{else}}
-                  <AuAlert
-                    @skin="warning"
-                    @title="Geen andere zittingen gevonden"
-                    class="au-u-margin-top au-u-margin-bottom"
-                  />
+                  {{#if this.otherSessions.sessions}}
+                    <ol type="1">
+                      {{#each this.otherSessions.sessions as |otherSessions|}}
+                        <li class="au-u-margin-top-small">
+                          <AuLink
+                            @route="sessions.session"
+                            @model={{otherSessions.id}}
+                          >
+                            <p class="truncate">
+                              {{otherSessions.dateFormatted}}
+                            </p>
+                          </AuLink>
+                        </li>
+                      {{/each}}
+                      {{!-- {{#if (gt this.otherSessions.count 5)}}
+                        <AuLink
+                          @icon="arrow-right"
+                          @iconAlignment="right"
+                          class="au-u-margin-top-small"
+                          @route="sessions.index"
+                          @query={{this.govBodyQuery}}
+                        >
+                          Bekijk alle zittingen ({{this.otherSessions.count}})
+                        </AuLink>
+                      {{/if}} --}}
+                    </ol>
+                  {{else}}
+                    <AuAlert
+                      @skin="warning"
+                      @title="Geen andere zittingen gevonden"
+                      class="au-u-margin-top au-u-margin-bottom"
+                    />
+                  {{/if}}
                 {{/if}}
-              {{/if}}
+              </div>
               <AuHeading @level="2" @skin="4">
                 Andere organen in
                 <AuLink
@@ -226,40 +230,44 @@
                   class="au-u-medium"
                 >{{session.municipality}}</AuLink>
               </AuHeading>
-              {{#if this.model.governingBodies.isRunning}}
-                <div class="loading-spinner">
-                  <AuLoader
-                    @centered={{false}}
-                    @inline={{true}}
-                    class="au-u-flex au-u-flex--spaced-small au-u-flex--vertical-center au-u-margin-top"
-                  >Organen aan het laden</AuLoader>
-                </div>
-              {{else}}
-                <ol type="1">
-                  {{#each this.governingBodies as |govBody|}}
-                    <li class="au-u-margin-top-small">
-                      <AuLink
-                        @route="sessions.index"
-                        @query={{hash
-                          bestuursorganen=govBody.label
-                          gemeentes=session.municipality
-                        }}
-                      >
-                        <p class="truncate">
-                          {{govBody.label}}
-                        </p>
-                      </AuLink>
-                    </li>
-                  {{/each}}
-                </ol>
-                {{#unless this.governingBodies}}
-                  <AuAlert
-                    @skin="warning"
-                    @title="Geen andere organen gevonden"
-                    class="au-u-margin-top au-u-margin-bottom"
-                  />
-                {{/unless}}
-              {{/if}}
+              <div
+                class="au-u-padding-small au-u-margin-top-small au-u-background-gray-100 border-radius"
+              >
+                {{#if this.model.governingBodies.isRunning}}
+                  <div class="loading-spinner">
+                    <AuLoader
+                      @centered={{false}}
+                      @inline={{true}}
+                      class="au-u-flex au-u-flex--spaced-small au-u-flex--vertical-center au-u-margin-top"
+                    >Organen aan het laden</AuLoader>
+                  </div>
+                {{else}}
+                  <ol type="1">
+                    {{#each this.governingBodies as |govBody|}}
+                      <li class="au-u-margin-top-small">
+                        <AuLink
+                          @route="sessions.index"
+                          @query={{hash
+                            bestuursorganen=govBody.label
+                            gemeentes=session.municipality
+                          }}
+                        >
+                          <p class="truncate">
+                            {{govBody.label}}
+                          </p>
+                        </AuLink>
+                      </li>
+                    {{/each}}
+                  </ol>
+                  {{#unless this.governingBodies}}
+                    <AuAlert
+                      @skin="warning"
+                      @title="Geen andere organen gevonden"
+                      class="au-u-margin-top au-u-margin-bottom"
+                    />
+                  {{/unless}}
+                {{/if}}
+              </div>
             </AuContent>
           </div>
         </aside>
