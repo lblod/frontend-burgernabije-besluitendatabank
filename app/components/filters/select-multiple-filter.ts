@@ -1,5 +1,5 @@
-import { action, get } from '@ember/object';
-import RouterService from '@ember/routing/router-service';
+import { action } from '@ember/object';
+import type RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
 import { deserializeArray } from 'frontend-burgernabije-besluitendatabank/utils/query-params';
 import FilterComponent, { type FilterArgs } from './filter';
@@ -18,6 +18,7 @@ interface Signature {
     options: Promise<UnifiedOptions[]>;
     selected: Option[];
     updateSelected: (selected: Option[]) => void;
+    loading?: boolean;
   } & FilterArgs;
 }
 
@@ -31,44 +32,6 @@ export default class SelectMultipleFilterComponent extends FilterComponent<Signa
   @action
   onSelectedChange(newOptions: Option[]) {
     this.args.updateSelected(newOptions);
-  }
-
-  @action
-  async inserted() {
-    if (!this.router.currentRoute) {
-      console.error('Current route is not available');
-      return;
-    }
-
-    const searchField = this.args.searchField;
-    const haystack = await this.args.options;
-    const flattenedHaystack = haystack.reduce((acc, value) => {
-      if (Array.isArray(value.options)) {
-        return [...acc, ...value.options];
-      } else {
-        return [...acc, value as Option];
-      }
-    }, [] as Option[]);
-
-    const results = deserializeArray(this.args.queryParam).flatMap(
-      (queryParam) => {
-        if (!queryParam) return [];
-        const queryParamValue = this.getQueryParam(queryParam);
-        const values = queryParamValue ? deserializeArray(queryParamValue) : [];
-
-        return values
-          .map((value) => {
-            return flattenedHaystack.find(
-              (option) =>
-                get(option, searchField) === value &&
-                option['type'] === queryParam
-            );
-          })
-          .filter(Boolean) as Option[];
-      }
-    );
-
-    this.onSelectedChange(results);
   }
 
   @action

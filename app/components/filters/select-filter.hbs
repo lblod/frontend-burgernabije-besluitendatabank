@@ -4,17 +4,16 @@
     {{!template-lint-disable no-duplicate-id}}
     id={{@id}}
     @onChange={{this.selectChange}}
-    @selected={{if @value (hash label=@value) ""}}
+    @selected={{this.selected}}
     @options={{@options}}
-    @allowClear={{true}}
+    @allowClear={{@allowClear}}
     @searchField={{@searchField}}
     @placeholder={{@placeholder}}
     @noMatchesMessage={{concat "Geen " @label " gevonden"}}
     @searchMessage="Aan het zoeken..."
-    @searchEnabled={{true}}
+    @searchEnabled={{@searchEnabled}}
     as |value|
   >
-    {{get value @searchField}}
-
+    {{value}}
   </PowerSelect>
 </Filters::Filter>

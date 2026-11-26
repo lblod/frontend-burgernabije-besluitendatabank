@@ -25,6 +25,10 @@ module.exports = function (environment) {
       'statistics-page-feature': false,
     },
     'governing-body-disabled': '{{GOVERNING_BODY_DISABLED_LIST}}',
+    maintenance: {
+      enabled: '{{MAINTENANCE_BANNER_ENABLED}}',
+      message: '{{MAINTENANCE_BANNER_MESSAGE}}',
+    },
   };
 
   if (environment === 'test') {

@@ -1,9 +1,9 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
-import RouterService from '@ember/routing/router-service';
+import type RouterService from '@ember/routing/router-service';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
+import type MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 
 export default class DataQualityController extends Controller {
   @service declare municipalityList: MunicipalityListService;

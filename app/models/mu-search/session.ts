@@ -4,11 +4,8 @@ import { getFormattedDateRange } from 'frontend-burgernabije-besluitendatabank/u
 export default class SessionModel {
   declare id?: string;
   declare locationId?: string;
-  declare abstractGoverningBodyLocationName?: string;
   declare governingBodyLocationName?: string;
-  declare abstractGoverningBodyName?: string;
   declare governingBodyName?: string;
-  declare abstractGoverningBodyClassificationName?: string;
   declare governingBodyClassificationName?: string;
   declare plannedStart?: Date;
   declare startedAt?: Date;
@@ -31,18 +28,10 @@ export default class SessionModel {
   }
 
   get governingBodyClassificationNameResolved() {
-    return (
-      this.abstractGoverningBodyClassificationName ||
-      this.governingBodyClassificationName ||
-      'Ontbrekend bestuursorgaan'
-    );
+    return this.governingBodyClassificationName || 'Ontbrekend bestuursorgaan';
   }
 
   get municipality() {
-    return (
-      this.abstractGoverningBodyLocationName ||
-      this.governingBodyLocationName ||
-      'Ontbrekende bestuurseenheid'
-    );
+    return this.governingBodyLocationName || 'Ontbrekende bestuurseenheid';
   }
 }

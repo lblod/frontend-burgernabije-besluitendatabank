@@ -36,7 +36,7 @@ export default class FeaturesService extends Service {
   isEnabled(feature: string): boolean {
     assert(
       `The "${feature}" feature is not defined. Make sure the feature is defined in the "features" object in the config/environment.js file and that there are no typos in the name.`,
-      feature in this.#features
+      feature in this.#features,
     );
 
     return this.#features[feature] ?? false;
@@ -46,7 +46,7 @@ export default class FeaturesService extends Service {
     const configFeatures: Record<string, boolean> = Object.fromEntries(
       Object.entries(config.features).map(([featureName, value]) => {
         return [featureName, value === 'true' || value === true];
-      })
+      }),
     );
 
     return configFeatures;
@@ -88,7 +88,7 @@ export default class FeaturesService extends Service {
 
   //query param has to start with 'feature-{{feature-name}}'
   #getQueryParamsFeatures(
-    queryParams: URLSearchParams
+    queryParams: URLSearchParams,
   ): Record<string, boolean> {
     const queryFeatures: Record<string, boolean> = {};
 

@@ -15,6 +15,10 @@ declare const config: {
   };
   features: Record<string, boolean | string>;
   'governing-body-disabled': string;
+  maintenance: {
+    enabled: string;
+    message: string;
+  };
 };
 
 export default config;

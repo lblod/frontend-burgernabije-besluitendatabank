@@ -1,5 +1,5 @@
 export const parseMuSearchAttributeToDate = (
-  input: string | string[] | undefined
+  input: string | string[] | undefined,
 ): Date | undefined => {
   // Check if input is undefined or an empty array
   if (!input || (Array.isArray(input) && input.length === 0)) {
@@ -23,7 +23,7 @@ export const parseMuSearchAttributeToDate = (
 };
 
 export const parseMuSearchAttributeToString = (
-  input: string | string[] | undefined
+  input: string | string[] | undefined,
 ): string | undefined => {
   // Check if input is undefined or an empty array
   if (!input || (Array.isArray(input) && input.length === 0)) {
@@ -39,7 +39,7 @@ export const parseMuSearchAttributeToString = (
 };
 
 export const parseMuSearchAttributeToArray = (
-  input: string | string[] | undefined
+  input: string | string[] | undefined,
 ): string[] => {
   // Check if input is undefined or an empty array
   if (!input || (Array.isArray(input) && input.length === 0)) {

@@ -1,0 +1,15 @@
+{{#if (and this.isEnabled (not this.isDismissed))}}
+  <AuAlert
+    @skin="warning"
+    @icon="alert-triangle"
+    @title="Onderhoud"
+    @size="small"
+    @closable={{true}}
+    @onClose={{this.dismiss}}
+    class="c-maintenance-banner au-u-margin-bottom-none"
+    role="status"
+    data-test-maintenance-banner
+  >
+    <p>{{this.message}}</p>
+  </AuAlert>
+{{/if}}

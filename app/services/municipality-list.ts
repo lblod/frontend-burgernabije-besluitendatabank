@@ -1,7 +1,7 @@
-import Store from '@ember-data/store';
+import type Store from '@ember-data/store';
 import Service, { service } from '@ember/service';
 import { QueryParameterKeys } from 'frontend-burgernabije-besluitendatabank/constants/query-parameter-keys';
-import LocationModel from 'frontend-burgernabije-besluitendatabank/models/location';
+import type LocationModel from 'frontend-burgernabije-besluitendatabank/models/location';
 import { deserializeArray } from 'frontend-burgernabije-besluitendatabank/utils/query-params';
 type Municipality = { label: string; id: string };
 
@@ -28,12 +28,11 @@ export default class MunicipalityListService extends Service {
   }
 
   /**
-   * Get all municipalities, filtered on the following criteria:
-   * - no duplicate labels
-   * - remove 'Kruishoutem' (because it's not a municipality anymore) #BNB-402
+   * Get all municipalities, de-duplicated by label.
    *
-   * Filtering is managed frontend as a temporary solution ^^
-   * TODO: move this to the backend
+   * Municipalities that no longer exist are removed backend-side by the db-cleanup job
+   * registered in config/migrations/20260903090000-register-defunct-municipality-cleanup-job.sparql,
+   * so they never reach this list.
    *
    * @returns A promise for an array of municipality labels
    **/
@@ -41,7 +40,7 @@ export default class MunicipalityListService extends Service {
   async municipalityLabels() {
     if (!this._municipalityCleanedLabels) {
       this._municipalityCleanedLabels = this._filteredMunicipalities(
-        await this.municipalities()
+        await this.municipalities(),
       );
     }
 
@@ -56,11 +55,8 @@ export default class MunicipalityListService extends Service {
     const uniqueLabels = [
       ...new Set(
         municipalities
-          .filter(
-            (municipality) =>
-              municipality.label && municipality.label !== 'Kruishoutem'
-          )
-          .map(({ label }) => label)
+          .filter((municipality) => municipality.label)
+          .map(({ label }) => label),
       ),
     ].map((label) => ({ label, type: QueryParameterKeys.municipalities }));
 
@@ -97,7 +93,7 @@ export default class MunicipalityListService extends Service {
    * @returns a Promise for an array of location ids
    */
   async getLocationIdsFromLabels(
-    labels?: Array<string> | string
+    labels?: Array<string> | string,
   ): Promise<Array<string>> {
     const municipalities = await this.municipalities();
     if (typeof labels === 'string') {

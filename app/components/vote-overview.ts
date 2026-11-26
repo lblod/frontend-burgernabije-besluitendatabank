@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
-import MandataryModel from 'frontend-burgernabije-besluitendatabank/models/mandatary';
-import VoteModel from 'frontend-burgernabije-besluitendatabank/models/vote';
+import type MandataryModel from 'frontend-burgernabije-besluitendatabank/models/mandatary';
+import type VoteModel from 'frontend-burgernabije-besluitendatabank/models/vote';
 
 interface ArgsInterface {
   numberOfAbstentions: number;
@@ -32,11 +32,15 @@ export default class VoteOverview extends Component<ArgsInterface> {
   }
 
   get hasVotersData() {
-    return (
-      this.args.vote.hasAbstainers.slice().length > 0 ||
-      this.args.vote.hasOpponents.slice().length > 0 ||
-      this.args.vote.hasProponents.slice().length > 0
-    );
+    const abstainers = this.args.vote.hasAbstainers;
+    const opponents = this.args.vote.hasOpponents;
+    const proponents = this.args.vote.hasProponents;
+
+    const hasAbstainers = Array.isArray(abstainers) && abstainers.length > 0;
+    const hasOpponents = Array.isArray(opponents) && opponents.length > 0;
+    const hasProponents = Array.isArray(proponents) && proponents.length > 0;
+
+    return hasAbstainers || hasOpponents || hasProponents;
   }
 
   get numberOfAbstentions() {

@@ -129,8 +129,8 @@
           @options={{this.municipalities}}
           @allowClear={{true}}
           @searchField="label"
-          @placeholder={{"Alle gemeentes"}}
-          @noMatchesMessage={{"Geen gemeentes gevonden"}}
+          @placeholder="Alle gemeentes"
+          @noMatchesMessage="Geen gemeentes gevonden"
           @searchMessage="Aan het zoeken..."
           @searchEnabled={{true}}
           as |municipality|
@@ -139,7 +139,7 @@
         </PowerSelect>
         <AuList @divider={{true}} as |Item|>
           {{#if this.currentlyLoading}}
-            <AuLoader />
+            <AuLoader @hideMessage={{true}}>Aan het laden</AuLoader>
 
           {{else}}
             <Item>

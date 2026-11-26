@@ -1,5 +1,6 @@
 <div
-  class="{{@class}} u-overflow-padding u-overflow-y-scroll u-overflow-divider"
+  class="{{@class}}
+    u-overflow-padding u-overflow-y-scroll infinite-scroll-height"
   {{on "scroll" this.scroll}}
   tabindex="-1"
 >
@@ -8,9 +9,14 @@
   </ul>
   <div class="au-u-flex au-u-flex--center au-u-padding-top">
     {{#if @isLoading}}
-      <AuLoader />
+      <AuLoader @hideMessage={{true}}>Aan het laden</AuLoader>
     {{else if this.moreDataToLoad}}
-      <AuButton @icon="add" @skin="secondary" @width="block" {{on "click" this.loadMore}}>Laad meer</AuButton>
+      <AuButton
+        @icon="add"
+        @skin="secondary"
+        @width="block"
+        {{on "click" this.loadMore}}
+      >Laad meer</AuButton>
     {{/if}}
   </div>
 </div>

@@ -1,13 +1,13 @@
-import Store from '@ember-data/store';
+import type Store from '@ember-data/store';
 import Route from '@ember/routing/route';
-import Transition from '@ember/routing/transition';
+import type Transition from '@ember/routing/transition';
 import { service } from '@ember/service';
-import AgendaItemController from 'frontend-burgernabije-besluitendatabank/controllers/agenda-items/agenda-item';
-import AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
-import ArticleModel from 'frontend-burgernabije-besluitendatabank/models/article';
-import VoteModel from 'frontend-burgernabije-besluitendatabank/models/vote';
-import GoverningBodyDisabledList from 'frontend-burgernabije-besluitendatabank/services/governing-body-disabled-list';
-import KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
+import type AgendaItemController from 'frontend-burgernabije-besluitendatabank/controllers/agenda-items/agenda-item';
+import type AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
+import type ArticleModel from 'frontend-burgernabije-besluitendatabank/models/article';
+import type VoteModel from 'frontend-burgernabije-besluitendatabank/models/vote';
+import type GoverningBodyDisabledList from 'frontend-burgernabije-besluitendatabank/services/governing-body-disabled-list';
+import type KeywordStoreService from 'frontend-burgernabije-besluitendatabank/services/keyword-store';
 import { sortObjectsByTitle } from 'frontend-burgernabije-besluitendatabank/utils/array-utils';
 
 interface DetailParams {
@@ -33,21 +33,14 @@ export default class AgendaItemRoute extends Route {
 
     // wait until sessions are loaded
     const sessions = await agendaItem.sessions;
-    // SessionModel expects the following to be loaded:
-    // - governingBody.isTimeSpecializationOf.administrativeUnit.location
-    // - governingBody.administrativeUnit.location
-    // to resolve municipality & governingBody name
+    // SessionModel expects governingBodyAbstract.administrativeUnit.location to be
+    // loaded to resolve municipality & governingBody name
     await Promise.all(
       sessions?.map(async (session) => {
-        const governingBody = await session.governingBody;
-        const isTimeSpecializationOf =
-          await governingBody?.isTimeSpecializationOf;
-        let administrativeUnit =
-          await isTimeSpecializationOf?.administrativeUnit;
+        const governingBody = await session.governingBodyAbstract;
+        const administrativeUnit = await governingBody?.administrativeUnit;
         await administrativeUnit?.location;
-        administrativeUnit = await governingBody?.administrativeUnit;
-        await administrativeUnit?.location;
-      }) || []
+      }) || [],
     );
     const sessionId = agendaItem.session?.id;
     const agendaItemOnSameSessionRaw = sessionId
@@ -74,7 +67,7 @@ export default class AgendaItemRoute extends Route {
       await Promise.all(
         resolutions?.map(async (resolution) => {
           return (await resolution.articles).slice();
-        }) || []
+        }) || [],
       )
     )
       .flat()
@@ -83,14 +76,31 @@ export default class AgendaItemRoute extends Route {
     const locationId = agendaItem.session?.municipalityId;
 
     // load 5 similiar agenda items in order to filter out the current agenda item
-    const similiarAgendaItems = (
+    const similarAgendaItemsPromise = this.constructRelatedItems(
+      locationId,
+      agendaItem,
+    );
+
+    return {
+      resolutions,
+      agendaItem,
+      vote,
+      articles,
+      agendaItemOnSameSession,
+      similarAgendaItemsPromise,
+    };
+  }
+
+  async constructRelatedItems(
+    locationId: string | undefined,
+    agendaItem: AgendaItemModel,
+  ) {
+    return (
       await this.store.query('agenda-item', {
         page: {
           size: 5,
         },
-        'filter[:or:][sessions][governing-body][is-time-specialization-of][administrative-unit][location][:id:]':
-          locationId,
-        'filter[:or:][sessions][governing-body][administrative-unit][location][:id:]':
+        'filter[:or:][sessions][governing-body-abstract][administrative-unit][location][:id:]':
           locationId,
         filter: {
           ':or:': {
@@ -102,20 +112,12 @@ export default class AgendaItemRoute extends Route {
     )
       .filter((item) => item.id !== agendaItem.id && !!item.title)
       .slice(0, 4);
-
-    return {
-      agendaItem,
-      vote,
-      articles,
-      agendaItemOnSameSession,
-      similiarAgendaItems,
-    };
   }
 
   afterModel(model: AgendaItemRouteModel) {
     if (
       this.governingBodyDisabledList.list.includes(
-        model.agendaItem.governingBodyIdResolved || ''
+        model.agendaItem.governingBodyIdResolved || '',
       )
     ) {
       this.router.transitionTo('agenda-items.index');
@@ -125,7 +127,7 @@ export default class AgendaItemRoute extends Route {
   resetController(
     controller: AgendaItemController,
     isExiting: boolean,
-    transition: Transition
+    transition: Transition,
   ) {
     super.resetController(controller, isExiting, transition);
     if (isExiting) {

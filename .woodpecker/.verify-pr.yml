@@ -1,23 +1,17 @@
-pipeline:
+steps:
   install:
-    image: danlynn/ember-cli:4.7.0-node_16.17
+    image: madnificent/ember:4.12.1-node_18
     commands:
       - npm ci
-  lint:js:
-    image: danlynn/ember-cli:4.7.0-node_16.17
+  lint-js:
+    image: madnificent/ember:4.12.1-node_18
+    depends_on: [install]
     commands:
       - npm run lint:js
-  lint:hbs:
-    image: danlynn/ember-cli:4.7.0-node_16.17
+  lint-hbs:
+    image: madnificent/ember:4.12.1-node_18
+    depends_on: [install]
     commands:
       - npm run lint:hbs
-  lint:css:
-    image: danlynn/ember-cli:4.2.0-node_16.14
-    commands:
-      - npm run lint:css
-  test:
-    image: danlynn/ember-cli:4.7.0-node_16.17
-    commands:
-      - npm run test:ember
 when:
-  event: pull_request
+  - event: pull_request

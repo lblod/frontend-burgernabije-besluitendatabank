@@ -27,7 +27,7 @@ export interface MuSearchResponse<T> {
 
 export default class MuSearchService extends Service {
   async search<I, O>(
-    request: PageableRequest<I, O>
+    request: PageableRequest<I, O>,
   ): Promise<MuSearchResponse<O>> {
     const { index, page, size, sort, filters, dataMapping } = request;
     try {
@@ -47,9 +47,9 @@ export default class MuSearchService extends Service {
           ...sortParams.map(
             (sortParam) =>
               `sort[${this.stripSort(sortParam)}.field]=${this.sortOrder(
-                sortParam
-              )}`
-          )
+                sortParam,
+              )}`,
+          ),
         );
       }
 
@@ -81,6 +81,31 @@ export default class MuSearchService extends Service {
     }
   }
 
+  async count(
+    index: string,
+    filters?: { [key: string]: string },
+  ): Promise<number> {
+    try {
+      const params = ['page[size]=1', 'page[number]=0'];
+
+      if (filters) {
+        Object.entries(filters).forEach(([field, q]) => {
+          params.push(`filter[${field}]=${q}`);
+        });
+      }
+
+      const endpoint = `/search/${index}/search?${params.join('&')}`;
+      const response = await fetch(endpoint);
+      const json = await response.json();
+
+      return typeof json?.count === 'number' ? json.count : 0;
+    } catch (error) {
+      console.error('Error during search count:', error);
+
+      return 0;
+    }
+  }
+
   private sortOrder(sort: string): string {
     return sort.startsWith('-') ? 'desc' : 'asc';
   }
@@ -92,7 +117,7 @@ export default class MuSearchService extends Service {
   private getPaginationMetadata(
     pageNumber: number,
     pageSize: number,
-    total: number
+    total: number,
   ): Page {
     const size = Math.min(pageSize, total);
     const lastPageNumber =

@@ -22,12 +22,13 @@
         </AuContent>
         <div class="au-c-home__form au-o-flow">
           <AuLabel
-            for={{"municipality"}}
+            for="municipality"
             class="au-u-hidden-visually"
             @inline={{true}}
           >
             In welke gemeente(s) wil je zoeken?
           </AuLabel>
+          {{! template-lint-disable no-at-ember-render-modifiers }}
           <div
             class="au-o-flow au-o-flow--small"
             {{did-insert this.resetLoading}}
@@ -36,9 +37,9 @@
               @searchEnabled={{true}}
               @id="municipality"
               @label="Kies één of meer besturen"
-              @options={{this.localGovernmentGroupOptions}}
+              @options={{this.governmentList.options}}
               @noMatchesMessage="Geen besturen gevonden"
-              @selected={{this.governmentList.selectedLocalGovernments}}
+              @selected={{this.governmentList.selected}}
               @onChange={{this.handleSelectLocalGovernmentsChange}}
               @searchField="label"
               @placeholder="Alle besturen"
@@ -62,6 +63,7 @@
             />
             <AuButton
               @loading={{this.loading}}
+              @loadingMessage="Laden..."
               @width="block"
               {{on "click" this.handleMunicipalitySelect}}
             >Bekijk agendapunten</AuButton>
