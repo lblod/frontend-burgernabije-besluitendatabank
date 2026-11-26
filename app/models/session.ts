@@ -6,6 +6,7 @@ import type AgendaItemModel from './agenda-item';
 import type GoverningBodyModel from './governing-body';
 
 export default class SessionModel extends Model {
+  @attr('string') declare uri?: string;
   @attr('date') declare plannedStart?: Date;
   @attr('date') declare startedAt?: Date;
   @attr('date') declare endedAt?: Date;

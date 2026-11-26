@@ -8,4 +8,32 @@
       Meer info
     </AuLink>
   </li>
+  {{#if this.currentSession.isLoggedIn}}
+    <li class="au-c-list-horizontal__item c-app-header__user">
+      <AuDropdown
+        @title={{this.userLabel}}
+        @alignment="right"
+        class="c-app-header__user-menu"
+        role="menu"
+        data-test-user-menu
+      >
+        <AuLink
+          @route="validation-reports"
+          @icon="circle-check"
+          role="menuitem"
+        >
+          Bekijk validatierapport
+        </AuLink>
+        <AuLink @route="auth.logout" @icon="logout" role="menuitem">
+          Afmelden
+        </AuLink>
+      </AuDropdown>
+    </li>
+  {{else if this.canLogIn}}
+    <li class="au-c-list-horizontal__item">
+      <AuLink @route="auth.login" @skin="secondary" @icon="login">
+        {{if this.isMockLogin "Aanmelden (mock)" "Aanmelden"}}
+      </AuLink>
+    </li>
+  {{/if}}
 </AuMainHeader>

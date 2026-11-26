@@ -1,0 +1,48 @@
+/* ==================================
+   #APP HEADER
+   ================================== */
+
+.c-app-header__user {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  padding-left: $au-unit-small;
+  border-left: 0.1rem solid var(--au-gray-200);
+}
+
+.c-app-header__user-menu > .au-c-button--naked {
+  font-weight: var(--au-bold);
+}
+
+.c-validation-reports {
+  display: block;
+  width: 100%;
+}
+
+.c-validation-report-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: $au-unit-small;
+  padding-top: $au-unit-tiny;
+  padding-bottom: $au-unit-tiny;
+}
+
+.c-mock-login__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $au-unit-small;
+}
+
+.c-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $au-unit-small;
+}
+
+.c-pagination__links {
+  display: flex;
+  gap: $au-unit-small;
+}

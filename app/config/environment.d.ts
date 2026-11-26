@@ -14,6 +14,16 @@ declare const config: {
     domain: string;
   };
   features: Record<string, boolean | string>;
+  login: {
+    mock: boolean;
+    acmidm: {
+      clientId: string;
+      authUrl: string;
+      redirectUrl: string;
+      logoutUrl: string;
+      scope: string;
+    };
+  };
   'governing-body-disabled': string;
   maintenance: {
     enabled: string;

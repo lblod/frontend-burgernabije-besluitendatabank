@@ -127,6 +127,9 @@
                   {{/if}}
                 </AuAccordion>
               </section>
+              {{#if this.currentSession.isLoggedIn}}
+                <SessionEvaluation @session={{session}} />
+              {{/if}}
             </c.content>
           </AuCard>
         </article>

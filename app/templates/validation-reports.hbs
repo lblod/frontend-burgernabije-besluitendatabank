@@ -1,0 +1,74 @@
+{{page-title "Validatierapporten"}}
+<section class="au-o-region" id="content">
+  <div class="au-o-layout au-o-layout--small">
+    <AuHeading @level="1" @skin="2">Validatierapporten</AuHeading>
+    <p class="au-u-margin-top-small au-u-margin-bottom">
+      De evaluatie van de publicaties van
+      {{if
+        this.currentSession.isBestuur
+        "uw bestuur"
+        "de besturen die u mag bekijken"
+      }}.
+    </p>
+    {{#if @model.rows.length}}
+      <AuList
+        @divider={{true}}
+        class="c-validation-reports"
+        data-test-validation-reports
+        as |Item|
+      >
+        {{#each @model.rows as |row|}}
+          <Item class="c-validation-report-item">
+            <div>
+              {{#if row.session}}
+                <AuLink
+                  @route="sessions.session"
+                  @model={{row.session.id}}
+                  class="au-u-medium"
+                >
+                  {{row.session.governingBodyNameResolved}}
+                </AuLink>
+                <p class="au-u-muted">{{row.session.dateFormatted}}</p>
+              {{else}}
+                <p class="au-u-medium">Onbekende zitting</p>
+              {{/if}}
+            </div>
+            {{#if row.report.conforms}}
+              <AuPill @skin="success" @icon="circle-check">Conform</AuPill>
+            {{else}}
+              <AuPill @skin="warning" @icon="alert-triangle">Niet conform</AuPill>
+            {{/if}}
+          </Item>
+        {{/each}}
+      </AuList>
+      <div class="c-pagination au-u-margin-top" data-test-pagination>
+        <span>{{this.rangeLabel}}</span>
+        <div class="c-pagination__links">
+          {{#if this.hasPreviousPage}}
+            <AuButton
+              @skin="link"
+              @icon="nav-left"
+              {{on "click" this.previousPage}}
+            >
+              Vorige
+            </AuButton>
+          {{/if}}
+          {{#if this.hasNextPage}}
+            <AuButton
+              @skin="link"
+              @icon="nav-right"
+              @iconAlignment="right"
+              {{on "click" this.nextPage}}
+            >
+              Volgende
+            </AuButton>
+          {{/if}}
+        </div>
+      </div>
+    {{else}}
+      <AuAlert @skin="info" @icon="info-circle">
+        Er zijn nog geen validatierapporten.
+      </AuAlert>
+    {{/if}}
+  </div>
+</section>
