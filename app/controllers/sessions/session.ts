@@ -28,6 +28,14 @@ export default class SessionsSessionController extends Controller {
     return this.origin === 'validatierapporten';
   }
 
+  get isValidationVisible() {
+    if (!this.currentSession.isLoggedIn) {
+      return false;
+    }
+
+    return Boolean(this.model.session.validationReportsResolved?.length);
+  }
+
   declare model: {
     classificationLabel: string;
     session: SessionModel;

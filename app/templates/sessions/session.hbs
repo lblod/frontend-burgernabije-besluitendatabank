@@ -85,7 +85,7 @@
                 </AuLinkExternal>
               </AuContent> --}}
 
-              {{#if this.currentSession.isLoggedIn}}
+              {{#if this.isValidationVisible}}
                 <Session::PublicationDuty @session={{session}} />
                 <Session::ValidationIssues @session={{session}} />
                 <Session::Mandatarissen @session={{session}} />
@@ -168,7 +168,7 @@
               {{/if}}
 
             </div>
-            {{#if this.currentSession.isLoggedIn}}
+            {{#if this.isValidationVisible}}
               <Session::ValidationOverview @session={{session}} />
             {{/if}}
             <AuContent class="au-u-margin-top">

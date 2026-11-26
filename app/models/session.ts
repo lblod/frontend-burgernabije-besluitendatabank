@@ -29,6 +29,12 @@ export default class SessionModel extends Model {
   @belongsTo('governing-body', { async: true, inverse: null })
   declare governingBodyAbstract: AsyncBelongsTo<GoverningBodyModel>;
 
+  get validationReportsResolved() {
+    return (this as SessionModel).hasMany('validationReports')?.value() as
+      | ValidationReportModel[]
+      | null;
+  }
+
   get governingBodyResolved() {
     // cast this because of https://github.com/typed-ember/ember-cli-typescript/issues/1416
     return (this as SessionModel)
