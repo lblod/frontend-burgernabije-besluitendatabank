@@ -7,15 +7,6 @@
       validatierapporten per rol te testen.
     </AuHelpText>
 
-    {{#if this.error}}
-      <AuAlert
-        @skin="error"
-        @icon="alert-triangle"
-        @title={{this.error}}
-        class="au-u-margin-top"
-      />
-    {{/if}}
-
     <AuHeading @level="2" @skin="4" class="au-u-margin-top">
       Kies een gebruiker om mee in te loggen.
     </AuHeading>
@@ -31,31 +22,46 @@
       />
     </div>
 
-    <ul data-test-mock-users>
-      {{#each @model.users as |user|}}
-        <li>
-          <div
-            class="au-o-box au-o-box--small au-c-card au-u-margin-bottom-small"
-          >
-            <AuButton
-              @skin="link"
-              @disabled={{this.login.isRunning}}
-              {{on "click" (fn this.login.perform user)}}
+    <MockLogin as |login|>
+      {{#if login.errorMessage}}
+        <AuAlert
+          @skin="error"
+          @icon="alert-triangle"
+          @title="Aanmelden is mislukt"
+          class="au-u-margin-bottom"
+        >
+          {{login.errorMessage}}
+        </AuAlert>
+      {{/if}}
+      <ul data-test-mock-users>
+        {{#each @model.users as |user|}}
+          <li>
+            <div
+              class="au-o-box au-o-box--small au-c-card au-u-margin-bottom-small"
             >
-              <strong>{{user.name}}</strong>
-            </AuButton>
-            {{#if user.description}}
-              <p class="au-u-muted">{{user.description}}</p>
-            {{/if}}
-          </div>
-        </li>
-      {{else}}
-        <li>
-          <p>Geen gebruikers gevonden. Zijn de mock-gebruikers geladen
-            (config/sample-migrations/mock-login)?</p>
-        </li>
-      {{/each}}
-    </ul>
+              <AuButton
+                @skin="link"
+                @disabled={{login.isLoading}}
+                {{on
+                  "click"
+                  (fn login.login user.account.id user.account.mockLoginGroupId)
+                }}
+              >
+                <strong>{{user.name}}</strong>
+              </AuButton>
+              {{#if user.description}}
+                <p class="au-u-muted">{{user.description}}</p>
+              {{/if}}
+            </div>
+          </li>
+        {{else}}
+          <li>
+            <p>Geen gebruikers gevonden. Zijn de mock-gebruikers geladen
+              (config/sample-migrations/mock-login)?</p>
+          </li>
+        {{/each}}
+      </ul>
+    </MockLogin>
 
     {{#if @model.lastPage}}
       <div class="c-mock-login__pagination au-u-margin-top">

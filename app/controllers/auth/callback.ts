@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 
-export default class AuthorizationCallbackController extends Controller {
+export default class AuthCallbackController extends Controller {
   queryParams = ['code', 'state', 'error'];
   code: string | null = null;
   state: string | null = null;

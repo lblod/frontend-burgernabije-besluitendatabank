@@ -28,7 +28,9 @@ Router.map(function () {
   this.route('data-quality', { path: '/data-kwaliteit' });
   this.route('validation-reports', { path: '/validatierapporten' });
   this.route('mock-login');
-  this.route('authorization', function () {
+  this.route('auth', { path: '/authorization' }, function () {
     this.route('callback');
+    this.route('login');
+    this.route('logout');
   });
 });

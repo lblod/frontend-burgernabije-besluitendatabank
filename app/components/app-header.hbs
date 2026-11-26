@@ -8,12 +8,10 @@
       Meer info
     </AuLink>
   </li>
-  {{#if (not this.currentSession.isLoaded)}}{{else if
-    this.currentSession.isLoggedIn
-  }}
+  {{#if this.currentSession.isLoggedIn}}
     <li class="au-c-list-horizontal__item c-app-header__user">
       <AuDropdown
-        @title={{this.currentSession.userLabel}}
+        @title={{this.userLabel}}
         @alignment="right"
         class="c-app-header__user-menu"
         role="menu"
@@ -26,27 +24,16 @@
         >
           Bekijk validatierapport
         </AuLink>
-        <AuButton
-          @skin="link"
-          @icon="logout"
-          role="menuitem"
-          {{on "click" this.logout}}
-        >
+        <AuLink @route="auth.logout" @icon="logout" role="menuitem">
           Afmelden
-        </AuButton>
+        </AuLink>
       </AuDropdown>
     </li>
-  {{else if this.currentSession.isMockLogin}}
+  {{else if this.canLogIn}}
     <li class="au-c-list-horizontal__item">
-      <AuLink @route="mock-login" @skin="secondary" @icon="login">
-        Aanmelden (mock)
+      <AuLink @route="auth.login" @skin="secondary" @icon="login">
+        {{if this.isMockLogin "Aanmelden (mock)" "Aanmelden"}}
       </AuLink>
-    </li>
-  {{else if this.currentSession.isAcmidmConfigured}}
-    <li class="au-c-list-horizontal__item">
-      <AuButton @skin="link" @icon="login" {{on "click" this.login}}>
-        Aanmelden
-      </AuButton>
     </li>
   {{/if}}
 </AuMainHeader>

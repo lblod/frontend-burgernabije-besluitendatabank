@@ -2,7 +2,6 @@ import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import type Store from '@ember-data/store';
-import type CurrentSessionService from 'frontend-burgernabije-besluitendatabank/services/current-session';
 import type SessionModel from 'frontend-burgernabije-besluitendatabank/models/session';
 import type ValidationReportModel from 'frontend-burgernabije-besluitendatabank/models/validation-report';
 import type ValidationResultModel from 'frontend-burgernabije-besluitendatabank/models/validation-result';
@@ -118,7 +117,6 @@ async function toRows(
 
 export default class SessionEvaluation extends Component<Signature> {
   @service declare store: Store;
-  @service declare currentSession: CurrentSessionService;
 
   constructor(owner: unknown, args: Signature['Args']) {
     super(owner, args);
@@ -126,8 +124,6 @@ export default class SessionEvaluation extends Component<Signature> {
   }
 
   loadTask = task(async () => {
-    await this.currentSession.load();
-    if (!this.currentSession.isLoggedIn) return null;
     const reports = await this.store.query('validation-report', {
       filter: { session: { ':id:': this.args.session.id } },
       include: 'results.source-shape',

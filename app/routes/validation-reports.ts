@@ -9,8 +9,7 @@ export default class ValidationReportsRoute extends Route {
   @service declare router: RouterService;
   @service declare currentSession: CurrentSessionService;
 
-  async beforeModel() {
-    await this.currentSession.load();
+  beforeModel() {
     if (!this.currentSession.isLoggedIn) {
       this.router.transitionTo('home');
     }

@@ -5,8 +5,10 @@ import type SessionModel from 'frontend-burgernabije-besluitendatabank/models/se
 import type GoverningBodyModel from 'frontend-burgernabije-besluitendatabank/models/governing-body';
 import type AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
 import { tracked } from '@glimmer/tracking';
+import type CurrentSessionService from 'frontend-burgernabije-besluitendatabank/services/current-session';
 export default class SessionsSessionController extends Controller {
   @service declare store: Store;
+  @service declare currentSession: CurrentSessionService;
   queryParams = ['gemeentes', 'bestuursorganen'];
 
   @tracked bestuursorganen: string | null = null;

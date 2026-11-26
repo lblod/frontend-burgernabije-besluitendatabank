@@ -143,5 +143,10 @@
   },
   "pre-commit": [
     "lint"
-  ]
+  ],
+  "dependencies": {
+    "@lblod/ember-acmidm-login": "^2.3.0",
+    "@lblod/ember-mock-login": "^0.14.0",
+    "ember-simple-auth": "^8.4.1"
+  }
 }
