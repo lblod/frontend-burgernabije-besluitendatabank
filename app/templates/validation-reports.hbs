@@ -17,19 +17,23 @@
         data-test-validation-reports
         as |Item|
       >
-        {{#each @model as |report|}}
+        {{#each @model as |row|}}
           <Item class="c-validation-report-item">
             <div>
-              <AuLink
-                @route="sessions.session"
-                @model={{report.session.id}}
-                class="au-u-medium"
-              >
-                {{report.session.governingBodyNameResolved}}
-              </AuLink>
-              <p class="au-u-muted">{{report.session.dateFormatted}}</p>
+              {{#if row.session}}
+                <AuLink
+                  @route="sessions.session"
+                  @model={{row.session.id}}
+                  class="au-u-medium"
+                >
+                  {{row.session.governingBodyNameResolved}}
+                </AuLink>
+                <p class="au-u-muted">{{row.session.dateFormatted}}</p>
+              {{else}}
+                <p class="au-u-medium">Onbekende zitting</p>
+              {{/if}}
             </div>
-            {{#if report.conforms}}
+            {{#if row.report.conforms}}
               <AuPill @skin="success" @icon="circle-check">Conform</AuPill>
             {{else}}
               <AuPill @skin="warning" @icon="alert-triangle">Niet conform</AuPill>
