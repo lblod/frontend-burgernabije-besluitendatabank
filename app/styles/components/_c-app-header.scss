@@ -34,3 +34,15 @@
   justify-content: space-between;
   gap: $au-unit-small;
 }
+
+.c-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $au-unit-small;
+}
+
+.c-pagination__links {
+  display: flex;
+  gap: $au-unit-small;
+}

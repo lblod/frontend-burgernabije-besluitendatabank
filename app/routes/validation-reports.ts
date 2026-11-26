@@ -5,16 +5,34 @@ import type RouterService from '@ember/routing/router-service';
 import type CurrentSessionService from 'frontend-burgernabije-besluitendatabank/services/current-session';
 import type ReportModel from 'frontend-burgernabije-besluitendatabank/models/report';
 import type SessionModel from 'frontend-burgernabije-besluitendatabank/models/session';
+import type { AdapterPopulatedRecordArrayWithMeta } from 'frontend-burgernabije-besluitendatabank/utils/ember-data';
+
+export const PAGE_SIZE = 10;
+
+type Params = { page?: number };
 
 export type ReportRow = {
   report: ReportModel;
   session: SessionModel | null;
 };
 
-export default class ValidationReportsRoute extends Route<ReportRow[]> {
+export type ValidationReportsModel = {
+  rows: ReportRow[];
+  page: number;
+  total: number;
+};
+
+export default class ValidationReportsRoute extends Route<
+  ValidationReportsModel,
+  Params
+> {
   @service declare store: Store;
   @service declare router: RouterService;
   @service declare currentSession: CurrentSessionService;
+
+  queryParams = {
+    page: { refreshModel: true },
+  };
 
   beforeModel() {
     if (!this.currentSession.isLoggedIn) {
@@ -22,12 +40,17 @@ export default class ValidationReportsRoute extends Route<ReportRow[]> {
     }
   }
 
-  async model(): Promise<ReportRow[]> {
-    const reports = await this.store.query('report', {
+  async model(params: Params): Promise<ValidationReportsModel> {
+    const page = Number(params.page) || 0;
+    const reports = (await this.store.query('report', {
       sort: '-created',
-      page: { size: 100 },
-    });
-    return Promise.all(reports.slice().map((r) => this.#toRow(r)));
+      page: { size: PAGE_SIZE, number: page },
+    })) as AdapterPopulatedRecordArrayWithMeta<ReportModel>;
+    return {
+      rows: await Promise.all(reports.slice().map((r) => this.#toRow(r))),
+      page,
+      total: reports.meta?.count ?? 0,
+    };
   }
 
   // A report has no relation to its session: the session is the focus node of

@@ -10,14 +10,14 @@
         "de besturen die u mag bekijken"
       }}.
     </p>
-    {{#if @model.length}}
+    {{#if @model.rows.length}}
       <AuList
         @divider={{true}}
         class="c-validation-reports"
         data-test-validation-reports
         as |Item|
       >
-        {{#each @model as |row|}}
+        {{#each @model.rows as |row|}}
           <Item class="c-validation-report-item">
             <div>
               {{#if row.session}}
@@ -41,6 +41,30 @@
           </Item>
         {{/each}}
       </AuList>
+      <div class="c-pagination au-u-margin-top" data-test-pagination>
+        <span>{{this.rangeLabel}}</span>
+        <div class="c-pagination__links">
+          {{#if this.hasPreviousPage}}
+            <AuButton
+              @skin="link"
+              @icon="nav-left"
+              {{on "click" this.previousPage}}
+            >
+              Vorige
+            </AuButton>
+          {{/if}}
+          {{#if this.hasNextPage}}
+            <AuButton
+              @skin="link"
+              @icon="nav-right"
+              @iconAlignment="right"
+              {{on "click" this.nextPage}}
+            >
+              Volgende
+            </AuButton>
+          {{/if}}
+        </div>
+      </div>
     {{else}}
       <AuAlert @skin="info" @icon="info-circle">
         Er zijn nog geen validatierapporten.
