@@ -89,6 +89,23 @@
   padding: 0;
 }
 
+.c-interface__content--table {
+  @include mq(small) {
+    overflow: hidden;
+
+    > * {
+      flex-shrink: 0;
+    }
+  }
+}
+
+.c-interface__table {
+  @include mq(small) {
+    flex: 1 1 0%;
+    min-height: 0;
+  }
+}
+
 .c-interface__sidebar-main {
   display: flex;
   flex-direction: column;

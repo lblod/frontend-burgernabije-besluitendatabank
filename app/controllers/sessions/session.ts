@@ -1,18 +1,36 @@
 import Controller from '@ember/controller';
+
 import type Store from '@ember-data/store';
 import { service } from '@ember/service';
 import type SessionModel from 'frontend-burgernabije-besluitendatabank/models/session';
 import type GoverningBodyModel from 'frontend-burgernabije-besluitendatabank/models/governing-body';
 import type AgendaItemModel from 'frontend-burgernabije-besluitendatabank/models/agenda-item';
 import { tracked } from '@glimmer/tracking';
+import QueryParameterKeys from 'frontend-burgernabije-besluitendatabank/constants/query-parameter-keys';
+import type { PublicationStatus } from 'frontend-burgernabije-besluitendatabank/components/publication-pill';
 import type CurrentSessionService from 'frontend-burgernabije-besluitendatabank/services/current-session';
+
 export default class SessionsSessionController extends Controller {
   @service declare store: Store;
   @service declare currentSession: CurrentSessionService;
-  queryParams = ['gemeentes', 'bestuursorganen'];
+
+  queryParams = [
+    'gemeentes',
+    'bestuursorganen',
+    { origin: QueryParameterKeys.origin },
+  ];
 
   @tracked bestuursorganen: string | null = null;
   @tracked gemeentes: string | null = null;
+  @tracked origin: string | null = null;
+
+  get fromValidationReports() {
+    return this.origin === 'validatierapporten';
+  }
+
+  get isValidationVisible() {
+    return this.currentSession.isLoggedIn;
+  }
 
   declare model: {
     classificationLabel: string;
@@ -38,6 +56,14 @@ export default class SessionsSessionController extends Controller {
     return this.model?.agendaItems.isFinished
       ? this.model?.agendaItems.value
       : [];
+  }
+
+  get publicationStatus(): PublicationStatus {
+    if (this.agendaItems.length === 0) {
+      return 'not-published';
+    }
+
+    return 'on-time';
   }
 
   get governingBodies() {

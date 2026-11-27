@@ -1,0 +1,55 @@
+<section class="c-accordion-holder">
+  <AuBadge @icon="document" @skin="brand" />
+  <Accordion
+    @reverse={{true}}
+    @iconOpen="nav-down"
+    @iconClosed="nav-right"
+    @buttonLabel="Publicatieplicht"
+    @defaultOpen={{true}}
+  >
+    <:default>
+      <div class="au-u-margin-top c-bordered-table">
+        <AuDataTable @content={{this.rows}} @hidePagination={{true}} as |t|>
+          <t.content as |c|>
+            <c.header>
+              <AuDataTableThSortable
+                @field="label"
+                @currentSorting={{this.sort}}
+                @label="Type document"
+                @class="au-c-data-table__header-title"
+              />
+              <AuDataTableThSortable
+                @field="publicationDate"
+                @currentSorting={{this.sort}}
+                @label="Publicatiedatum"
+                @class="au-c-data-table__header-title"
+              />
+              <AuDataTableThSortable
+                @field="linkStatus"
+                @currentSorting={{this.sort}}
+                @label="Correct gelinkt?"
+                @class="au-c-data-table__header-title"
+              />
+            </c.header>
+            <c.body as |row|>
+              <td>{{row.label}}</td>
+              <td
+                class="au-u-flex au-u-flex--vertical-center au-u-flex--spaced-tiny"
+              >
+                {{#if row.publicationDate}}
+                  {{row.publicationDate}}
+                {{else}}
+                  <em class="au-u-muted">Niet gevonden</em>
+                {{/if}}
+                <PublicationPill @status={{row.publicationStatus}} />
+              </td>
+              <td>
+                <LinkPill @status={{row.linkStatus}} />
+              </td>
+            </c.body>
+          </t.content>
+        </AuDataTable>
+      </div>
+    </:default>
+  </Accordion>
+</section>

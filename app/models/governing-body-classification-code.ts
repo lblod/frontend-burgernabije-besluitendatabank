@@ -7,7 +7,7 @@ export default class GoverningBodyClassificationCodeModel extends Model {
 
   @hasMany('governing-body', {
     async: false,
-    inverse: 'classification',
+    inverse: null,
     polymorphic: true,
   })
   declare governingBodies: AsyncHasMany<GoverningBodyModel>;

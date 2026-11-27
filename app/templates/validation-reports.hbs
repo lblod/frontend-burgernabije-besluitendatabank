@@ -1,74 +1,172 @@
 {{page-title "Validatierapporten"}}
-<section class="au-o-region" id="content">
-  <div class="au-o-layout au-o-layout--small">
-    <AuHeading @level="1" @skin="2">Validatierapporten</AuHeading>
-    <p class="au-u-margin-top-small au-u-margin-bottom">
-      De evaluatie van de publicaties van
-      {{if
-        this.currentSession.isBestuur
-        "uw bestuur"
-        "de besturen die u mag bekijken"
-      }}.
-    </p>
-    {{#if @model.rows.length}}
-      <AuList
-        @divider={{true}}
-        class="c-validation-reports"
-        data-test-validation-reports
-        as |Item|
+{{breadcrumb "Terug naar Lokaal Beslist" route="home" icon="arrow-left"}}
+{{breadcrumb "Validatierapporten" route="validation-reports"}}
+{{breadcrumb this.currentSession.userLabel}}
+<AuBodyContainer>
+  <Breadcrumbs />
+  <div class="c-interface">
+    <div
+      id="content"
+      class="c-interface__content c-interface__content--table au-u-flex au-u-flex--column"
+    >
+      <AuToolbar @size="large" as |Group|>
+        <Group class="au-u-flex au-u-flex--vertical-center">
+          <AuHeading @level="1" @skin="2">
+            {{this.currentSession.userLabel}}
+          </AuHeading>
+          <MaturityPill @level={{this.maturityLevel}} />
+        </Group>
+        <Group>
+          <AuPill @skin="border" @icon="clock">
+            {{this.lastHarvestLabel}}
+          </AuPill>
+          <AuButton @skin="primary" @icon="download" @disabled={{true}}>
+            Download rapport
+          </AuButton>
+        </Group>
+      </AuToolbar>
+      <div
+        id="report-overview-stat-cards"
+        class="au-u-flex au-u-flex--spaced au-o-box"
       >
-        {{#each @model.rows as |row|}}
-          <Item class="c-validation-report-item">
-            <div>
-              {{#if row.session}}
-                <AuLink
-                  @route="sessions.session"
-                  @model={{row.session.id}}
-                  class="au-u-medium"
-                >
-                  {{row.session.governingBodyNameResolved}}
-                </AuLink>
-                <p class="au-u-muted">{{row.session.dateFormatted}}</p>
-              {{else}}
-                <p class="au-u-medium">Onbekende zitting</p>
-              {{/if}}
-            </div>
-            {{#if row.report.conforms}}
-              <AuPill @skin="success" @icon="circle-check">Conform</AuPill>
-            {{else}}
-              <AuPill @skin="warning" @icon="alert-triangle">Niet conform</AuPill>
-            {{/if}}
-          </Item>
-        {{/each}}
-      </AuList>
-      <div class="c-pagination au-u-margin-top" data-test-pagination>
-        <span>{{this.rangeLabel}}</span>
-        <div class="c-pagination__links">
-          {{#if this.hasPreviousPage}}
-            <AuButton
-              @skin="link"
-              @icon="nav-left"
-              {{on "click" this.previousPage}}
-            >
-              Vorige
-            </AuButton>
-          {{/if}}
-          {{#if this.hasNextPage}}
-            <AuButton
-              @skin="link"
-              @icon="nav-right"
-              @iconAlignment="right"
-              {{on "click" this.nextPage}}
-            >
-              Volgende
-            </AuButton>
-          {{/if}}
+        <div
+          class="au-u-1-1 au-u-flex au-u-flex--column au-u-flex--between au-u-padding au-u-padding-top-small border-radius au-u-background-gray-200"
+        >
+          <p class="au-u-h4">Gepubliceerde zittingen</p>
+          <p class="au-u-h2 au-u-medium">550</p>
+        </div>
+        <div
+          class="au-u-1-1 au-u-flex au-u-flex--column au-u-flex--between au-u-padding au-u-padding-top-small border-radius au-u-background-gray-200"
+        >
+          <p class="au-u-h4">Gepubliceerde agenda's</p>
+          <p><span class="au-u-h2 au-u-medium">540</span>/550</p>
+        </div>
+        <div
+          class="au-u-1-1 au-u-flex au-u-flex--column au-u-flex--between au-u-padding au-u-padding-top-small border-radius au-u-background-gray-200"
+        >
+          <p class="au-u-h4">Gepubliceerde besluitenlijsten</p>
+          <p><span class="au-u-h2 au-u-medium">540</span>/550</p>
+        </div>
+        <div
+          class="au-u-1-1 au-u-flex au-u-flex--column au-u-flex--between au-u-padding au-u-padding-top-small border-radius au-u-background-gray-200"
+        >
+          <p class="au-u-h4">Gepubliceerde notulen</p>
+          <p><span class="au-u-h2 au-u-medium">540</span>/550</p>
         </div>
       </div>
-    {{else}}
-      <AuAlert @skin="info" @icon="info-circle">
-        Er zijn nog geen validatierapporten.
-      </AuAlert>
-    {{/if}}
+
+      <div class="c-interface__table">
+        <AuDataTable
+          @content={{@model}}
+          @page={{this.page}}
+          @size={{this.itemsPerPage}}
+          @noDataMessage="Er werden geen resultaten gevonden"
+          @sort={{this.sort}}
+          @hidePagination={{this.hidePagination}}
+          as |t|
+        >
+          <t.content as |c|>
+            <c.header>
+              <th class="au-c-data-table__header-title">Zitting</th>
+              <th class="au-c-data-table__header-title">Bestuursorgaan</th>
+              <th class="au-c-data-table__header-title">Maturiteitsniveau</th>
+              <AuDataTableThSortable
+                @field="conforms"
+                @currentSorting={{this.sort}}
+                @label="Zijn alle documenten gepubliceerd?"
+                @class="au-c-data-table__header-title"
+              />
+              <th>
+                {{! Actions }}
+              </th>
+            </c.header>
+            <c.body as |row|>
+              {{#if row.session}}
+                <td>{{row.session.sessionTitle}}</td>
+                <td>
+                  {{row.session.classification}}
+                  {{row.session.administrativeUnitName}}
+                </td>
+              {{else}}
+                <td>Onbekende zitting</td>
+                <td></td>
+              {{/if}}
+              <td>
+                <MaturityPill @level={{row.report.maturityLevel}} />
+              </td>
+              <td>
+                {{#if row.report.conforms}}
+                  Ja
+                {{else}}
+                  Nee
+                {{/if}}
+              </td>
+              <td>
+                {{#if row.session}}
+                  <AuLink
+                    @route="sessions.session"
+                    @model={{row.session.id}}
+                    @query={{hash origin="validatierapporten"}}
+                    @icon="eye"
+                  >
+                    {{#if row.report.conforms}}
+                      Bekijk details
+                    {{else}}
+                      Los fouten op
+                    {{/if}}
+                  </AuLink>
+                {{/if}}
+              </td>
+            </c.body>
+          </t.content>
+        </AuDataTable>
+      </div>
+    </div>
+    <FilterSidebar @id="filtersidebar" @class="c-interface__sidebar">
+      <div class="c-interface__sidebar-main">
+        <h3 class="au-u-h4 au-u-medium">Filters</h3>
+        {{#if this.canFilterByGovernment}}
+          <Filters::SelectMultipleFilter
+            @id="municipality"
+            @label="Besturen"
+            @options={{this.governmentList.options}}
+            @selected={{this.selectedGovernments}}
+            @updateSelected={{this.updateSelectedGovernments}}
+            @noMatchesMessage="Geen besturen gevonden"
+            @searchField="label"
+            @queryParam="gemeentes+provincies"
+            @placeholder="Alle besturen"
+          />
+        {{/if}}
+        <Filters::SelectMultipleFilter
+          @id="governing-body"
+          @label="Bestuursorganen"
+          @options={{this.governingBodyOptions}}
+          @selected={{this.selectedGoverningBodies}}
+          @updateSelected={{this.updateSelectedGoverningBodies}}
+          @noMatchesMessage="Geen bestuursorganen gevonden"
+          @searchField="label"
+          @queryParam="bestuursorganen"
+          @placeholder="Alle bestuursorganen"
+        />
+        {{#if this.canFilterByGovernment}}
+          <AuCheckbox
+            @checked={{this.latestSessionPerMunicipality}}
+            @onChange={{this.toggleLatestSessionPerMunicipality}}
+            @disabled={{true}}
+          >
+            Toon recentste zitting per gemeente
+          </AuCheckbox>
+        {{/if}}
+        <AuButton
+          @skin="naked"
+          @icon="cross"
+          class="au-u-flex-self-end"
+          {{on "click" this.resetFilters}}
+        >
+          Herstel alle filters
+        </AuButton>
+      </div>
+    </FilterSidebar>
   </div>
-</section>
+</AuBodyContainer>

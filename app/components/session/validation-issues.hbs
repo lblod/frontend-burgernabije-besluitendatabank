@@ -1,0 +1,42 @@
+<section class="c-accordion-holder">
+  <AuBadge @icon="alert-triangle" @skin="brand" />
+  <Accordion
+    @reverse={{true}}
+    @iconOpen="nav-down"
+    @iconClosed="nav-right"
+    @buttonLabel="Validatieproblemen"
+    @defaultOpen={{true}}
+  >
+    <:titleExtra>
+      <AuPill @skin="warning" @icon="alert-triangle" class="c-title-pill">
+        {{this.issueCount}}
+        problemen
+      </AuPill>
+    </:titleExtra>
+    <:default>
+      <AuTabs
+        class="c-content-tabs au-u-margin-top au-u-background-gray-100"
+        as |Tab|
+      >
+        {{#each this.tabs as |tab|}}
+          <Tab>
+            <AuButton
+              @skin="link"
+              class="au-c-link {{if (eq this.activeTab tab.key) 'active'}}"
+              {{on "click" (fn this.selectTab tab.key)}}
+            >
+              {{tab.label}}
+              {{#if tab.issueCount}}
+                <AuPill
+                  @skin="warning"
+                  @size="small"
+                >{{tab.issueCount}}</AuPill>
+              {{/if}}
+            </AuButton>
+          </Tab>
+        {{/each}}
+      </AuTabs>
+      <AuAlert @title={{this.activeTabLabel}} class="au-u-margin-top" />
+    </:default>
+  </Accordion>
+</section>

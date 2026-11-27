@@ -419,3 +419,7 @@ cursor {
     transform: rotate(360deg);
   }
 }
+
+.border-radius {
+  border-radius: $au-radius !important;
+}

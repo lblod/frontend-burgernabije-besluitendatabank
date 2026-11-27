@@ -1,44 +1,119 @@
 import Controller from '@ember/controller';
+
 import { action } from '@ember/object';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import QueryParameterKeys from 'frontend-burgernabije-besluitendatabank/constants/query-parameter-keys';
 import type CurrentSessionService from 'frontend-burgernabije-besluitendatabank/services/current-session';
-import {
-  PAGE_SIZE,
-  type ValidationReportsModel,
-} from 'frontend-burgernabije-besluitendatabank/routes/validation-reports';
+import type GovernmentListService from 'frontend-burgernabije-besluitendatabank/services/government-list';
+import type { LocalGovernmentOption } from 'frontend-burgernabije-besluitendatabank/services/government-list';
+import { LocalGovernmentType } from 'frontend-burgernabije-besluitendatabank/services/government-list';
+import { getFormattedDate } from 'frontend-burgernabije-besluitendatabank/utils/get-formatted-date';
+import { deserializeLabels } from 'frontend-burgernabije-besluitendatabank/utils/query-params';
+import type { ValidationReportsModel } from 'frontend-burgernabije-besluitendatabank/routes/validation-reports';
+
+export type GoverningBodyOption = {
+  id: string;
+  label: string;
+  type: string;
+};
 
 export default class ValidationReportsController extends Controller {
-  @service declare currentSession: CurrentSessionService;
-
-  queryParams = ['page'];
-  @tracked page = 0;
-
   declare model: ValidationReportsModel;
 
-  // As in the design: "1 - 10 van 100".
-  get rangeLabel(): string {
-    const { page, total, rows } = this.model;
-    const from = page * PAGE_SIZE + 1;
-    const to = page * PAGE_SIZE + rows.length;
-    return `${from} - ${to} van ${total}`;
+  queryParams = [
+    { municipalityLabels: QueryParameterKeys.municipalities },
+    { provinceLabels: QueryParameterKeys.provinces },
+    { governingBodyClassifications: QueryParameterKeys.governingBodies },
+    { sort: QueryParameterKeys.sort },
+    { page: QueryParameterKeys.page },
+    { itemsPerPage: QueryParameterKeys.size },
+  ];
+
+  @tracked municipalityLabels = '';
+  @tracked provinceLabels = '';
+  @tracked governingBodyClassifications = '';
+  @tracked latestSessionPerMunicipality = false;
+  @tracked sort = '';
+  @tracked page = 0;
+  @tracked itemsPerPage = 20;
+  hidePagination = false;
+
+  @service declare currentSession: CurrentSessionService;
+  @service declare governmentList: GovernmentListService;
+
+  @tracked governingBodyOptions: GoverningBodyOption[] = [];
+  @tracked selectedGovernments: LocalGovernmentOption[] = [];
+  @tracked selectedGoverningBodies: GoverningBodyOption[] = [];
+
+  @tracked maturityLevel: string | null = null;
+  @tracked lastHarvestedAt: Date | null = null;
+
+  get canFilterByGovernment() {
+    return this.currentSession.isAbb || this.currentSession.isSupplier;
   }
 
-  get hasPreviousPage(): boolean {
-    return this.model.page > 0;
+  get maturityLevelLabel() {
+    return this.maturityLevel ?? 'Maturiteitsniveau onbekend';
   }
 
-  get hasNextPage(): boolean {
-    return (this.model.page + 1) * PAGE_SIZE < this.model.total;
+  get lastHarvestLabel() {
+    return this.lastHarvestedAt
+      ? `Laatste harvesting op ${getFormattedDate(this.lastHarvestedAt)}`
+      : 'Laatste harvesting onbekend';
+  }
+
+  restoreSelectedFilters() {
+    this.selectedGovernments = [
+      ...this.governmentOptionsFor(
+        this.municipalityLabels,
+        LocalGovernmentType.Municipality,
+      ),
+      ...this.governmentOptionsFor(
+        this.provinceLabels,
+        LocalGovernmentType.Province,
+      ),
+    ];
+
+    const labels = deserializeLabels(this.governingBodyClassifications);
+    this.selectedGoverningBodies = this.governingBodyOptions.filter(
+      ({ label }) => labels.includes(label),
+    );
   }
 
   @action
-  previousPage() {
-    this.page = Math.max(0, this.model.page - 1);
+  resetFilters() {
+    this.municipalityLabels = '';
+    this.provinceLabels = '';
+    this.governingBodyClassifications = '';
+    this.latestSessionPerMunicipality = false;
+    this.page = 0;
+    this.restoreSelectedFilters();
   }
 
   @action
-  nextPage() {
-    this.page = this.model.page + 1;
+  toggleLatestSessionPerMunicipality(checked: boolean) {
+    this.latestSessionPerMunicipality = checked;
+    this.sort = '';
+    this.page = 0;
+  }
+
+  @action
+  updateSelectedGovernments(newOptions: LocalGovernmentOption[]) {
+    this.selectedGovernments = newOptions;
+    this.page = 0;
+  }
+
+  @action
+  updateSelectedGoverningBodies(newOptions: GoverningBodyOption[]) {
+    this.selectedGoverningBodies = newOptions;
+    this.page = 0;
+  }
+
+  private governmentOptionsFor(
+    labels: string,
+    type: LocalGovernmentType,
+  ): LocalGovernmentOption[] {
+    return deserializeLabels(labels).map((label) => ({ label, type }));
   }
 }

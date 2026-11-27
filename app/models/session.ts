@@ -37,6 +37,10 @@ export default class SessionModel extends Model {
     return this.governingBodyResolved?.name || 'Ontbrekend bestuursorgaan';
   }
 
+  get sessionTitle() {
+    return `${this.governingBodyNameResolved} ${this.dateFormatted}`;
+  }
+
   get municipalityId() {
     return this.governingBodyResolved?.administrativeUnitValue?.locationValue
       ?.id;
@@ -44,6 +48,10 @@ export default class SessionModel extends Model {
 
   get classification() {
     return this.governingBodyResolved?.classification?.get('label') || '';
+  }
+
+  get administrativeUnitName() {
+    return this.governingBodyResolved?.administrativeUnitValue?.name;
   }
 
   get municipality() {

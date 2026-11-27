@@ -1,0 +1,52 @@
+<section class="c-accordion-holder">
+  <AuBadge @icon="users" @skin="brand" />
+  <Accordion
+    @reverse={{true}}
+    @iconOpen="nav-down"
+    @iconClosed="nav-right"
+    @buttonLabel="Mandatarissen"
+    @defaultOpen={{true}}
+  >
+    <:titleExtra>
+      <AuPill @skin="warning" @icon="alert-triangle" class="c-title-pill">
+        {{this.matchedCount}}/{{this.totalCount}}
+        mandatarissen
+      </AuPill>
+    </:titleExtra>
+    <:default>
+      <div class="au-u-margin-top c-bordered-table">
+        <AuDataTable @content={{this.rows}} @hidePagination={{true}} as |t|>
+          <t.content as |c|>
+            <c.header>
+              <AuDataTableThSortable
+                @field="mandateType"
+                @currentSorting={{this.sort}}
+                @label="Type mandaat"
+                @class="au-c-data-table__header-title"
+              />
+              <AuDataTableThSortable
+                @field="name"
+                @currentSorting={{this.sort}}
+                @label="Mandataris"
+                @class="au-c-data-table__header-title"
+              />
+              <AuDataTableThSortable
+                @field="linkStatus"
+                @currentSorting={{this.sort}}
+                @label="Validatie"
+                @class="au-c-data-table__header-title"
+              />
+            </c.header>
+            <c.body as |row|>
+              <td>{{row.mandateType}}</td>
+              <td>{{row.name}}</td>
+              <td>
+                <LinkPill @status={{row.linkStatus}} />
+              </td>
+            </c.body>
+          </t.content>
+        </AuDataTable>
+      </div>
+    </:default>
+  </Accordion>
+</section>
