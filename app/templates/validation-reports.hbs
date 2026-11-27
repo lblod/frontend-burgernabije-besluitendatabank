@@ -67,24 +67,9 @@
         >
           <t.content as |c|>
             <c.header>
-              <AuDataTableThSortable
-                @field="session.planned-start"
-                @currentSorting={{this.sort}}
-                @label="Zitting"
-                @class="au-c-data-table__header-title"
-              />
-              <AuDataTableThSortable
-                @field="session.governing-body-abstract.classification.label"
-                @currentSorting={{this.sort}}
-                @label="Bestuursorgaan"
-                @class="au-c-data-table__header-title"
-              />
-              <AuDataTableThSortable
-                @field="maturity-level"
-                @currentSorting={{this.sort}}
-                @label="Maturiteitsniveau"
-                @class="au-c-data-table__header-title"
-              />
+              <th class="au-c-data-table__header-title">Zitting</th>
+              <th class="au-c-data-table__header-title">Bestuursorgaan</th>
+              <th class="au-c-data-table__header-title">Maturiteitsniveau</th>
               <AuDataTableThSortable
                 @field="conforms"
                 @currentSorting={{this.sort}}
@@ -95,35 +80,42 @@
                 {{! Actions }}
               </th>
             </c.header>
-            <c.body as |report|>
-              <td>{{report.session.sessionTitle}}</td>
+            <c.body as |row|>
+              {{#if row.session}}
+                <td>{{row.session.sessionTitle}}</td>
+                <td>
+                  {{row.session.classification}}
+                  {{row.session.administrativeUnitName}}
+                </td>
+              {{else}}
+                <td>Onbekende zitting</td>
+                <td></td>
+              {{/if}}
               <td>
-                {{report.session.classification}}
-                {{report.session.administrativeUnitName}}
+                <MaturityPill @level={{row.report.maturityLevel}} />
               </td>
               <td>
-                <MaturityPill @level={{report.maturityLevel}} />
-              </td>
-              <td>
-                {{#if report.conforms}}
+                {{#if row.report.conforms}}
                   Ja
                 {{else}}
                   Nee
                 {{/if}}
               </td>
               <td>
-                <AuLink
-                  @route="sessions.session"
-                  @model={{report.session.id}}
-                  @query={{hash origin="validatierapporten"}}
-                  @icon="eye"
-                >
-                  {{#if report.conforms}}
-                    Bekijk details
-                  {{else}}
-                    Los fouten op
-                  {{/if}}
-                </AuLink>
+                {{#if row.session}}
+                  <AuLink
+                    @route="sessions.session"
+                    @model={{row.session.id}}
+                    @query={{hash origin="validatierapporten"}}
+                    @icon="eye"
+                  >
+                    {{#if row.report.conforms}}
+                      Bekijk details
+                    {{else}}
+                      Los fouten op
+                    {{/if}}
+                  </AuLink>
+                {{/if}}
               </td>
             </c.body>
           </t.content>

@@ -1,40 +1,83 @@
-{{#if this.isChoosingPresets}}
-  <AuFormRow>
-    <AuLabel for="date-period">Selecteer een periode</AuLabel>
-    <PowerSelect
-      @selected={{this.selectedPreset}}
-      @options={{this.presets}}
-      @onChange={{this.handleSelectionChange}}
-      @allowClear={{true}}
-      @placeholder="Alle periodes"
-      @triggerId="date-period"
-      class="au-u-1-1"
-      as |preset|
-    >{{preset}}</PowerSelect>
-
-    <Filters::DateRangeFilter::ToggleButton
-      @icon="calendar"
-      @onClick={{this.chooseCustomRange}}
-      class="au-u-margin-top-tiny"
-    >
-      Eigen periode kiezen
-    </Filters::DateRangeFilter::ToggleButton>
-  </AuFormRow>
-{{else}}
-  <AuFormRow>
-    <AuLabel for="date-from">Startdatum</AuLabel>
-    <Filters::DateRangeFilter::DateInput
-      @value={{this.start}}
-      @max={{this.MAX}}
-      @min={{this.MIN}}
-      @onChange={{this.handleStartDateChange}}
-      @errorMessage={{this.startDateError}}
-      id="date-from"
-      data-test-date-range-filter-from
-      data-test-date-range-filter-from-error={{this.startDateError}}
-    />
-  </AuFormRow>
-  <div>
+<div class="c-date-range-filter">
+  {{#if this.isChoosingPresets}}
+    <AuFormRow>
+      <AuLabel for="date-period">Periodes</AuLabel>
+      <PowerSelect
+        @selected={{this.selectedPreset}}
+        @options={{this.presets}}
+        @onChange={{this.handleSelectionChange}}
+        @allowClear={{true}}
+        @placeholder="Alle periodes"
+        @triggerId="date-period"
+        class="au-u-1-1"
+        as |preset|
+      >{{preset}}</PowerSelect>
+    </AuFormRow>
+    <div class="c-date-range-filter__toggles">
+      <Filters::DateRangeFilter::ToggleButton
+        @icon="switch"
+        @onClick={{this.chooseQuarters}}
+        data-test-toggle-quarters
+      >Kwartalen</Filters::DateRangeFilter::ToggleButton>
+      <Filters::DateRangeFilter::ToggleButton
+        @icon="calendar"
+        @onClick={{this.chooseCustomRange}}
+        data-test-toggle-custom
+      >Eigen periode</Filters::DateRangeFilter::ToggleButton>
+    </div>
+  {{else if this.isChoosingQuarters}}
+    <div class="c-date-range-filter__columns">
+      <div class="c-date-range-filter__column">
+        <AuLabel for="date-quarter">Kwartaal</AuLabel>
+        <PowerSelect
+          @selected={{this.selectedQuarter}}
+          @options={{this.quarters}}
+          @onChange={{this.handleQuarterChange}}
+          @allowClear={{true}}
+          @triggerId="date-quarter"
+          @searchEnabled={{false}}
+          class="au-u-1-1"
+          as |quarter|
+        >{{quarter}}</PowerSelect>
+        <Filters::DateRangeFilter::ToggleButton
+          @icon="switch"
+          @onClick={{this.choosePresets}}
+          data-test-toggle-presets
+        >Periodes</Filters::DateRangeFilter::ToggleButton>
+      </div>
+      <div class="c-date-range-filter__column">
+        <AuLabel for="date-year">Jaar</AuLabel>
+        <PowerSelect
+          @selected={{this.selectedYear}}
+          @options={{this.years}}
+          @onChange={{this.handleYearChange}}
+          @allowClear={{true}}
+          @triggerId="date-year"
+          @searchEnabled={{false}}
+          class="au-u-1-1"
+          as |year|
+        >{{year}}</PowerSelect>
+        <Filters::DateRangeFilter::ToggleButton
+          @icon="calendar"
+          @onClick={{this.chooseCustomRange}}
+          data-test-toggle-custom
+        >Eigen periode</Filters::DateRangeFilter::ToggleButton>
+      </div>
+    </div>
+  {{else}}
+    <AuFormRow>
+      <AuLabel for="date-from">Startdatum</AuLabel>
+      <Filters::DateRangeFilter::DateInput
+        @value={{this.start}}
+        @max={{this.MAX}}
+        @min={{this.MIN}}
+        @onChange={{this.handleStartDateChange}}
+        @errorMessage={{this.startDateError}}
+        id="date-from"
+        data-test-date-range-filter-from
+        data-test-date-range-filter-from-error={{this.startDateError}}
+      />
+    </AuFormRow>
     <AuFormRow>
       <AuLabel for="date-to">Einddatum</AuLabel>
       <Filters::DateRangeFilter::DateInput
@@ -48,12 +91,17 @@
         data-test-date-range-filter-to-error={{this.endDateError}}
       />
     </AuFormRow>
-
-    <Filters::DateRangeFilter::ToggleButton
-      @icon="nav-up-down"
-      @onClick={{this.choosePresets}}
-    >
-      Bestaande periodes
-    </Filters::DateRangeFilter::ToggleButton>
-  </div>
-{{/if}}
+    <div class="c-date-range-filter__toggles">
+      <Filters::DateRangeFilter::ToggleButton
+        @icon="switch"
+        @onClick={{this.choosePresets}}
+        data-test-toggle-presets
+      >Periodes</Filters::DateRangeFilter::ToggleButton>
+      <Filters::DateRangeFilter::ToggleButton
+        @icon="switch"
+        @onClick={{this.chooseQuarters}}
+        data-test-toggle-quarters
+      >Kwartalen</Filters::DateRangeFilter::ToggleButton>
+    </div>
+  {{/if}}
+</div>

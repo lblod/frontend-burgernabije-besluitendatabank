@@ -9,7 +9,10 @@ import type CurrentSessionService from 'frontend-burgernabije-besluitendatabank/
 import type MunicipalityListService from 'frontend-burgernabije-besluitendatabank/services/municipality-list';
 import type ProvinceListService from 'frontend-burgernabije-besluitendatabank/services/province-list';
 import type GoverningBodyClassificationCodeModel from 'frontend-burgernabije-besluitendatabank/models/governing-body-classification-code';
+import type ReportModel from 'frontend-burgernabije-besluitendatabank/models/report';
+import type SessionModel from 'frontend-burgernabije-besluitendatabank/models/session';
 import type ValidationReportsController from 'frontend-burgernabije-besluitendatabank/controllers/validation-reports';
+import type { AdapterPopulatedRecordArrayWithMeta } from 'frontend-burgernabije-besluitendatabank/utils/ember-data';
 import { deserializeLabels } from 'frontend-burgernabije-besluitendatabank/utils/query-params';
 
 type ValidationReportsParams = {
@@ -23,7 +26,21 @@ type ValidationReportsParams = {
 
 type Filter = Record<string, unknown>;
 
-export default class ValidationReportsRoute extends Route {
+export type ReportRow = {
+  report: ReportModel;
+  session: SessionModel | null;
+};
+
+// AuDataTable reads `length` for the rows on screen and `meta.count` for the
+// total, so the rows are handed over as an array carrying that meta.
+export type ValidationReportsModel = ReportRow[] & {
+  meta?: { count?: number };
+};
+
+export default class ValidationReportsRoute extends Route<
+  ValidationReportsModel,
+  ValidationReportsParams
+> {
   @service declare store: Store;
   @service declare router: RouterService;
   @service declare currentSession: CurrentSessionService;
@@ -57,10 +74,15 @@ export default class ValidationReportsRoute extends Route {
     }
   }
 
-  async model(params: ValidationReportsParams) {
+  async model(
+    params: ValidationReportsParams,
+  ): Promise<ValidationReportsModel> {
+    const focusNodes = await this.focusNodeUris(params);
+    if (focusNodes && !focusNodes.length) {
+      return this.rowsWithMeta([], 0);
+    }
+
     const query: Record<string, unknown> = {
-      include:
-        'session.governing-body-abstract.administrative-unit,session.governing-body-abstract.classification',
       sort: params.sort || '-created',
       page: {
         size: Number(params.itemsPerPage) || 20,
@@ -68,17 +90,29 @@ export default class ValidationReportsRoute extends Route {
       },
     };
 
-    const filter = await this.filterFor(params);
-    if (filter) {
-      query['filter'] = filter;
+    if (focusNodes) {
+      query['filter'] = {
+        validationresults: { ':exact:focus-node': focusNodes.join(',') },
+      };
     }
 
-    return this.store.query('validation-report', query);
+    const reports = (await this.store.query(
+      'report',
+      query,
+    )) as AdapterPopulatedRecordArrayWithMeta<ReportModel>;
+
+    const rows = await Promise.all(
+      reports.slice().map((report) => {
+        return this.toRow(report);
+      }),
+    );
+
+    return this.rowsWithMeta(rows, reports.meta?.count ?? 0);
   }
 
   async setupController(
     controller: ValidationReportsController,
-    model: Awaited<ReturnType<ValidationReportsRoute['model']>>,
+    model: ValidationReportsModel,
     transition: Transition,
   ) {
     super.setupController(controller, model, transition);
@@ -86,7 +120,68 @@ export default class ValidationReportsRoute extends Route {
     controller.restoreSelectedFilters();
   }
 
-  private async filterFor(
+  private rowsWithMeta(
+    rows: ReportRow[],
+    count: number,
+  ): ValidationReportsModel {
+    const model = rows as ValidationReportsModel;
+    model.meta = { count };
+
+    return model;
+  }
+
+  // A report has no relation to its session: the session is the focus node of
+  // its results.
+  private async toRow(report: ReportModel): Promise<ReportRow> {
+    const [result] = (
+      await this.store.query('validationresult', {
+        filter: { report: { ':id:': report.id } },
+        page: { size: 1 },
+      })
+    ).slice();
+
+    if (!result?.focusNode) {
+      return { report, session: null };
+    }
+
+    const [session] = (
+      await this.store.query('session', {
+        filter: { ':uri:': result.focusNode },
+        include:
+          'governing-body-abstract.administrative-unit,governing-body-abstract.classification',
+        page: { size: 1 },
+      })
+    ).slice();
+
+    return { report, session: session ?? null };
+  }
+
+  // Reports cannot be filtered on their session directly, so the matching
+  // sessions are resolved first and their URIs are used as focus nodes.
+  private async focusNodeUris(
+    params: ValidationReportsParams,
+  ): Promise<string[] | undefined> {
+    const governingBody = await this.governingBodyFilter(params);
+    if (!governingBody) {
+      return undefined;
+    }
+
+    const sessions = await this.store.query('session', {
+      filter: { 'governing-body-abstract': governingBody },
+      page: { size: 1000 },
+    });
+
+    const uris: string[] = [];
+    for (const session of sessions.slice()) {
+      if (session.uri) {
+        uris.push(session.uri);
+      }
+    }
+
+    return uris;
+  }
+
+  private async governingBodyFilter(
     params: ValidationReportsParams,
   ): Promise<Filter | undefined> {
     const governingBody: Filter = {};
@@ -109,7 +204,7 @@ export default class ValidationReportsRoute extends Route {
       return undefined;
     }
 
-    return { session: { 'governing-body-abstract': governingBody } };
+    return governingBody;
   }
 
   private async administrativeUnitFilter(

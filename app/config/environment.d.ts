@@ -16,7 +16,6 @@ declare const config: {
   features: Record<string, boolean | string>;
   login: {
     mock: boolean;
-    sessionsPath: string;
     acmidm: {
       clientId: string;
       authUrl: string;

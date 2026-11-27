@@ -26,7 +26,6 @@ module.exports = function (environment) {
     },
     login: {
       mock: false,
-      sessionsPath: '/sessions',
       // Filled in by the frontend container from EMBER_ACMIDM_* variables.
       acmidm: {
         clientId: '{{ACMIDM_CLIENT_ID}}',
@@ -45,7 +44,6 @@ module.exports = function (environment) {
 
   if (environment === 'development') {
     ENV.login.mock = true;
-    ENV.login.sessionsPath = '/mock/sessions';
   }
 
   if (environment === 'test') {

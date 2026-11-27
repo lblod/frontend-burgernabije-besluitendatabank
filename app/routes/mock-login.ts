@@ -2,8 +2,9 @@ import Route from '@ember/routing/route';
 import { service } from '@ember/service';
 import type Store from '@ember-data/store';
 import type RouterService from '@ember/routing/router-service';
-import type CurrentSessionService from 'frontend-burgernabije-besluitendatabank/services/current-session';
-import { ROLES } from 'frontend-burgernabije-besluitendatabank/services/current-session';
+import config from 'frontend-burgernabije-besluitendatabank/config/environment';
+import type AppSessionService from 'frontend-burgernabije-besluitendatabank/services/session';
+import { ROLES } from 'frontend-burgernabije-besluitendatabank/constants/roles';
 import type AccountModel from 'frontend-burgernabije-besluitendatabank/models/account';
 import type { AdapterPopulatedRecordArrayWithMeta } from 'frontend-burgernabije-besluitendatabank/utils/ember-data';
 
@@ -32,7 +33,7 @@ const DESCRIPTIONS: Record<string, string> = {
 export default class MockLoginRoute extends Route<MockLoginModel, Params> {
   @service declare store: Store;
   @service declare router: RouterService;
-  @service declare currentSession: CurrentSessionService;
+  @service declare session: AppSessionService;
 
   queryParams = {
     search: { refreshModel: true },
@@ -40,9 +41,11 @@ export default class MockLoginRoute extends Route<MockLoginModel, Params> {
   };
 
   beforeModel() {
-    if (!this.currentSession.isMockLogin) {
+    if (!config.login.mock) {
       this.router.transitionTo('home');
+      return;
     }
+    this.session.prohibitAuthentication('home');
   }
 
   async model(params: Params): Promise<MockLoginModel> {

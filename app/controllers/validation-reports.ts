@@ -10,6 +10,7 @@ import type { LocalGovernmentOption } from 'frontend-burgernabije-besluitendatab
 import { LocalGovernmentType } from 'frontend-burgernabije-besluitendatabank/services/government-list';
 import { getFormattedDate } from 'frontend-burgernabije-besluitendatabank/utils/get-formatted-date';
 import { deserializeLabels } from 'frontend-burgernabije-besluitendatabank/utils/query-params';
+import type { ValidationReportsModel } from 'frontend-burgernabije-besluitendatabank/routes/validation-reports';
 
 export type GoverningBodyOption = {
   id: string;
@@ -18,6 +19,8 @@ export type GoverningBodyOption = {
 };
 
 export default class ValidationReportsController extends Controller {
+  declare model: ValidationReportsModel;
+
   queryParams = [
     { municipalityLabels: QueryParameterKeys.municipalities },
     { provinceLabels: QueryParameterKeys.provinces },
