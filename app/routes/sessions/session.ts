@@ -24,7 +24,6 @@ export default class SessionRoute extends Route {
       include: [
         'governing-body-abstract.administrative-unit.location',
         'agenda-items.handled-by.resolutions',
-        'validation-reports.results.source-shape', // Check if the current user is allowed to see reports for the organization
       ].join(','),
     });
     const agendaItems = await session?.get('agendaItems');

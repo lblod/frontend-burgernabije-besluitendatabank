@@ -29,11 +29,7 @@ export default class SessionsSessionController extends Controller {
   }
 
   get isValidationVisible() {
-    if (!this.currentSession.isLoggedIn) {
-      return false;
-    }
-
-    return Boolean(this.model.session.validationReportsResolved?.length);
+    return this.currentSession.isLoggedIn;
   }
 
   declare model: {
