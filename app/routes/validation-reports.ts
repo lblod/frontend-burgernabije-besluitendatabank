@@ -70,7 +70,7 @@ export default class ValidationReportsRoute extends Route<
   async beforeModel() {
     await this.currentSession.load();
     if (!this.currentSession.isLoggedIn) {
-      this.router.transitionTo('home');
+      return this.router.transitionTo('home');
     }
   }
 
